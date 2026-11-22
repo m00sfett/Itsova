@@ -50,7 +50,7 @@ QString makeFilename(const QString &filenameTemplate,
     QString safeFilename;
     safeFilename.reserve(filename.size());
     for (const QChar character : filename) {
-        if (!character.isNull() && !character.isControl() &&
+        if (!character.isNull() && character.category() != QChar::Other_Control &&
             !QStringLiteral("/\\:*?\"<>|").contains(character)) {
             safeFilename.append(character);
         }
@@ -110,10 +110,17 @@ QImage cropLogicalRegion(const QImage &nativeFrame,
         return {};
     }
 
+    QImage cropped = nativeFrame.copy(left, top, right - left, bottom - top);
+    if (cropped.isNull()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Could not allocate the cropped image.");
+        }
+        return {};
+    }
     if (error) {
         error->clear();
     }
-    return nativeFrame.copy(left, top, right - left, bottom - top);
+    return cropped;
 }
 
 QString sanitizeFilenameToken(const QString &token)
@@ -123,7 +130,7 @@ QString sanitizeFilenameToken(const QString &token)
     for (const QChar character : token) {
         if (character.isSpace()) {
             sanitized.append(QLatin1Char('-'));
-        } else if (!character.isNull() && !character.isControl() &&
+        } else if (!character.isNull() && character.category() != QChar::Other_Control &&
                    !QStringLiteral("/\\:*?\"<>|").contains(character)) {
             sanitized.append(character);
         }
@@ -145,6 +152,9 @@ bool OutputWriter::writeImage(const QImage &image,
                               QString *writtenPath,
                               QString *error) const
 {
+    if (writtenPath) {
+        writtenPath->clear();
+    }
     if (image.isNull()) {
         if (error) {
             *error = ImageOutputStrings::tr("Cannot save an empty image.");
