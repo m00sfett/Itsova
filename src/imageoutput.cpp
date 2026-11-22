@@ -6,6 +6,9 @@
 #include <QImageWriter>
 #include <QTemporaryFile>
 
+#include <fcntl.h>
+#include <stdio.h>
+
 #include <cerrno>
 #include <cmath>
 #include <cstring>
@@ -44,9 +47,15 @@ QString makeFilename(const QString &filenameTemplate,
 
     // The template must still resolve to one flat filename, even if it contains
     // path separators or other characters that are invalid in common filesystems.
-    for (const QChar character : QStringLiteral("/\\:*?\"<>|")) {
-        filename.remove(character);
+    QString safeFilename;
+    safeFilename.reserve(filename.size());
+    for (const QChar character : filename) {
+        if (!character.isNull() && !character.isControl() &&
+            !QStringLiteral("/\\:*?\"<>|").contains(character)) {
+            safeFilename.append(character);
+        }
     }
+    filename = std::move(safeFilename);
 
     if (!filename.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)) {
         filename.append(QStringLiteral(".png"));
@@ -109,10 +118,15 @@ QImage cropLogicalRegion(const QImage &nativeFrame,
 
 QString sanitizeFilenameToken(const QString &token)
 {
-    QString sanitized = token;
-    sanitized.replace(QLatin1Char(' '), QLatin1Char('-'));
-    for (const QChar character : QStringLiteral("/\\:*?\"<>|")) {
-        sanitized.remove(character);
+    QString sanitized;
+    sanitized.reserve(token.size());
+    for (const QChar character : token) {
+        if (character.isSpace()) {
+            sanitized.append(QLatin1Char('-'));
+        } else if (!character.isNull() && !character.isControl() &&
+                   !QStringLiteral("/\\:*?\"<>|").contains(character)) {
+            sanitized.append(character);
+        }
     }
     return sanitized;
 }
@@ -193,6 +207,7 @@ bool OutputWriter::writeImage(const QImage &image,
         }
         return false;
     }
+    const QByteArray temporaryPath = QFile::encodeName(temporary.fileName());
     temporary.close();
 
     for (quint64 suffix = 1; suffix != 0; ++suffix) {
@@ -200,9 +215,8 @@ bool OutputWriter::writeImage(const QImage &image,
                                           ? filename
                                           : stem + QLatin1Char('-') + QString::number(suffix) + extension;
         const QString candidatePath = outputDirectory.absoluteFilePath(candidateName);
-        const QByteArray temporaryPath = QFile::encodeName(temporary.fileName());
         const QByteArray finalPath = QFile::encodeName(candidatePath);
-        if (::link(temporaryPath.constData(), finalPath.constData()) != 0) {
+        if (::renameat2(AT_FDCWD, temporaryPath.constData(), AT_FDCWD, finalPath.constData(), RENAME_NOREPLACE) != 0) {
             if (errno == EEXIST) {
                 continue;
             }
@@ -213,7 +227,7 @@ bool OutputWriter::writeImage(const QImage &image,
             return false;
         }
 
-        temporary.remove();
+        temporary.setAutoRemove(false);
         if (writtenPath) {
             *writtenPath = candidatePath;
         }

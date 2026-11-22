@@ -4,14 +4,14 @@
 #include <QFileInfo>
 #include <QImageReader>
 #include <QColor>
+#include <QSemaphore>
 #include <QTemporaryDir>
 #include <QTimeZone>
+#include <QThread>
 #include <QtTest>
 
 #include <array>
-#include <atomic>
 #include <set>
-#include <thread>
 
 using namespace glimply;
 
@@ -53,17 +53,21 @@ void ImageOutputTest::writesPngNamesWithoutOverwriting()
     QTemporaryDir temporaryDirectory;
     QVERIFY(temporaryDirectory.isValid());
 
-    QImage image(32, 24, QImage::Format_RGB32);
-    image.fill(QColor(12, 34, 56));
+    QImage frame(400, 300, QImage::Format_RGB32);
+    frame.fill(QColor(12, 34, 56));
+    const QImage firstCrop = cropLogicalRegion(frame, QRect(10, 20, 32, 24), 1.0);
+    const QImage secondCrop = cropLogicalRegion(frame, QRect(10, 20, 32, 24), 1.0);
+    QVERIFY(!firstCrop.isNull());
+    QVERIFY(!secondCrop.isNull());
     const QDateTime timestamp(QDate(2026, 11, 22), QTime(14, 5, 33), QTimeZone::UTC);
     const OutputWriter writer(temporaryDirectory.path());
     QString firstPath;
     QString secondPath;
     QString error;
 
-    QVERIFY2(writer.writeImage(image, QStringLiteral("DP 1/2"), timestamp, &firstPath, &error),
+    QVERIFY2(writer.writeImage(firstCrop, QStringLiteral("DP 1/2"), timestamp, &firstPath, &error),
              qPrintable(error));
-    QVERIFY2(writer.writeImage(image, QStringLiteral("DP 1/2"), timestamp, &secondPath, &error),
+    QVERIFY2(writer.writeImage(secondCrop, QStringLiteral("DP 1/2"), timestamp, &secondPath, &error),
              qPrintable(error));
 
     QCOMPARE(QFileInfo(firstPath).fileName(), QStringLiteral("2026-11-22_14-05-33_DP-12.png"));
@@ -78,7 +82,7 @@ void ImageOutputTest::writesPngNamesWithoutOverwriting()
 
     QImageReader reader(firstPath);
     QCOMPARE(reader.format(), QByteArray("png"));
-    QCOMPARE(reader.read().size(), image.size());
+    QCOMPARE(reader.read().size(), firstCrop.size());
 }
 
 void ImageOutputTest::concurrentWritesChooseDistinctNames()
@@ -92,24 +96,24 @@ void ImageOutputTest::concurrentWritesChooseDistinctNames()
     QImage image(64, 48, QImage::Format_RGB32);
     image.fill(QColor(90, 80, 70));
 
-    std::atomic_bool start{false};
+    QSemaphore start;
     std::array<bool, writerCount> succeeded{};
     std::array<QString, writerCount> paths{};
     std::array<QString, writerCount> errors{};
-    std::array<std::thread, writerCount> threads;
+    std::array<QThread *, writerCount> threads{};
     for (std::size_t index = 0; index < writerCount; ++index) {
-        threads[index] = std::thread([&, index] {
-            while (!start.load(std::memory_order_acquire)) {
-                std::this_thread::yield();
-            }
+        threads[index] = QThread::create([&, index] {
+            start.acquire();
             succeeded[index] = writer.writeImage(
                 image, QStringLiteral("DP-1-1"), timestamp, &paths[index], &errors[index]);
         });
+        threads[index]->start();
     }
 
-    start.store(true, std::memory_order_release);
-    for (std::thread &thread : threads) {
-        thread.join();
+    start.release(static_cast<int>(writerCount));
+    for (QThread *thread : threads) {
+        QVERIFY(thread->wait());
+        delete thread;
     }
 
     std::set<QString> distinctPaths;
