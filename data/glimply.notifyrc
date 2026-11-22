@@ -19,3 +19,9 @@ Urgency=Low
 Name=Settings problem
 Comment=glimply could not apply a setting, such as autostart
 Action=Popup
+
+[Event/captureSaved]
+Name=Capture saved
+Comment=A capture from the Print key or the overlay was saved
+Action=Popup
+Urgency=Low

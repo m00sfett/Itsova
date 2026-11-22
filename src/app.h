@@ -11,6 +11,7 @@
 namespace glimply
 {
 
+class CaptureSession;
 class ControlService;
 class ShortcutManager;
 class TrayController;
@@ -35,6 +36,16 @@ public:
     void storeChanged(const QStringList &deletedIds = {});
 
     void trigger(const QString &id);
+    // Print key: saves the full screenshot, then opens the capture overlay.
+    void startPrint();
+    // Opens the capture overlay to draw and save new areas, without capturing.
+    void addArea();
+    // Takes the Print key (on) or hands it back to its previous owner (off).
+    void setUsePrintKey(bool on);
+    // A capture was written: tray blink, status, "Open last capture".
+    void recordCapture(const QStringList &paths, const QString &displayName);
+    // Notification after an overlay session, with Open and Show in Folder.
+    void notifySaved(const QString &title, const QStringList &paths, const QStringList &errors);
     void openLastCapture();
     void openCaptureFolder();
     // addArea starts the selection overlay; targetId selects that target or group in the window.
@@ -59,6 +70,7 @@ private:
     void onTriggerFinished(const TriggerResult &result);
     void syncShortcuts(const QStringList &deletedIds = {});
     void migrateLegacyIds();
+    void claimPrintKey();
     void applyAutostart();
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
@@ -71,6 +83,8 @@ private:
     ControlService *control_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
+    QPointer<CaptureSession> session_;
+    QStringList lastPaths_;
 };
 
 } // namespace glimply

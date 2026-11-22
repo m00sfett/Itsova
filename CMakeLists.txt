@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.9 LANGUAGES CXX)
+project(glimply VERSION 0.2.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 
 include(GNUInstallDirs)
 
-find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets Concurrent DBus Gui)
 find_package(KF6Config REQUIRED)
 find_package(KF6GlobalAccel REQUIRED)
 find_package(KF6StatusNotifierItem REQUIRED)
@@ -24,6 +24,8 @@ add_executable(glimply
     src/app.cpp
     src/controlservice.cpp
     src/areaselector.cpp
+    src/captureoverlay.cpp
+    src/printkey.cpp
     src/settingswindow.cpp
     src/screens.cpp
     src/shortcutmanager.cpp
@@ -35,6 +37,7 @@ target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
 target_link_libraries(glimply
     PRIVATE
         glimply_capture
+        Qt6::Concurrent
         Qt6::DBus
         Qt6::Widgets
         KF6::ConfigCore
@@ -52,9 +55,11 @@ add_library(glimply_capture STATIC
     src/captureservice.cpp
     src/imageoutput.cpp
     src/selectiongeometry.cpp
+    src/selectionmodel.cpp
     src/targets.cpp
     src/triggerengine.cpp
     src/triggerplan.cpp
+    src/windowlist.cpp
 )
 target_include_directories(glimply_capture PUBLIC src)
 target_link_libraries(glimply_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
@@ -93,6 +98,9 @@ if(BUILD_TESTING)
     add_executable(selectiongeometrytest tests/selectiongeometrytest.cpp)
     target_link_libraries(selectiongeometrytest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME selectiongeometry COMMAND selectiongeometrytest)
+    add_executable(selectionmodeltest tests/selectionmodeltest.cpp)
+    target_link_libraries(selectionmodeltest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME selectionmodel COMMAND selectionmodeltest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

@@ -1,6 +1,8 @@
 #include "app.h"
 
 #include "areaselector.h"
+#include "captureoverlay.h"
+#include "printkey.h"
 #include "controlservice.h"
 #include "imageoutput.h"
 #include "screens.h"
@@ -18,6 +20,7 @@
 #include <QDBusPendingCall>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileInfo>
 #include <QFile>
 #include <QSaveFile>
 #include <QStandardPaths>
@@ -45,7 +48,7 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::openLastCaptureRequested, this, &App::openLastCapture);
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
     connect(tray_, &TrayController::configureRequested, this, [this] { showSettings(); });
-    connect(tray_, &TrayController::addAreaRequested, this, [this] { showSettings(true); });
+    connect(tray_, &TrayController::addAreaRequested, this, &App::addArea);
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -62,6 +65,30 @@ App::App(QObject *parent)
     syncShortcuts();
     migrateLegacyIds();
     applyAutostart();
+    // First start of a version with the Print key: take it over once. Later the user decides,
+    // here or in System Settings.
+    if (store_.usePrintKey && !PrintKey::isDecided(*config_)) {
+        claimPrintKey();
+    }
+}
+
+void App::claimPrintKey()
+{
+    PrintKey::claim(*config_);
+    shortcuts_->setShortcut(PrintKey::actionId(), QKeySequence(Qt::Key_Print));
+}
+
+void App::setUsePrintKey(bool on)
+{
+    store_.usePrintKey = on;
+    if (on) {
+        claimPrintKey();
+    } else {
+        // Clear our own binding first, so the previous owner gets Print without a conflict.
+        shortcuts_->setShortcut(PrintKey::actionId(), {});
+        PrintKey::release(*config_, false);
+    }
+    storeChanged();
 }
 
 void App::migrateLegacyIds()
@@ -127,6 +154,7 @@ QString App::targetLabel(const TargetStore &store, const QString &id)
 void App::syncShortcuts(const QStringList &deletedIds)
 {
     QList<ShortcutManager::Entry> entries;
+    entries.append({PrintKey::actionId(), tr("Save the screen and select (Print key)")});
     for (const Group &group : std::as_const(store_.groups)) {
         entries.append({group.id, tr("Capture group %1").arg(group.name)});
     }
@@ -168,8 +196,103 @@ QList<MenuTarget> App::menuTargets() const
     return targets;
 }
 
+void App::startPrint()
+{
+    if (auto *session = session_.data()) {
+        session->printPressed();
+        return;
+    }
+    auto *session = new CaptureSession(this, CaptureSession::Purpose::Print);
+    session_ = session;
+    connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
+    session->start();
+}
+
+void App::addArea()
+{
+    if (session_ || selector_) {
+        return;
+    }
+    auto *session = new CaptureSession(this, CaptureSession::Purpose::DefineArea);
+    session_ = session;
+    connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
+    session->start();
+}
+
+void App::recordCapture(const QStringList &paths, const QString &displayName)
+{
+    if (paths.isEmpty()) {
+        return;
+    }
+    lastPaths_ = paths;
+    Q_EMIT captured(true);
+    // Every frame is in memory by now, so the blink cannot end up in a capture (A2).
+    tray_->blink();
+    tray_->setLastCaptureAvailable(true);
+    tray_->setStatusText(tr("Last capture: %1 at %2")
+                             .arg(displayName, QLocale().toString(QDateTime::currentDateTime().time(),
+                                                                  QLocale::ShortFormat)));
+}
+
+void App::notifySaved(const QString &title, const QStringList &paths, const QStringList &errors)
+{
+    if (paths.isEmpty()) {
+        notifyError(title.isEmpty() ? tr("Capture failed") : title, errors);
+        return;
+    }
+    QStringList lines;
+    for (const QString &path : paths.mid(0, 3)) {
+        lines.append(QFileInfo(path).fileName());
+    }
+    if (paths.size() > 3) {
+        lines.append(tr("and %n more", nullptr, int(paths.size() - 3)));
+    }
+    lines += errors;
+    const QString heading = !title.isEmpty() ? title
+                            : paths.size() == 1 ? tr("Screenshot saved")
+                                                : tr("%n screenshots saved", nullptr, int(paths.size()));
+    static const bool haveEvents = !QStandardPaths::locate(QStandardPaths::GenericDataLocation,
+                                                           QStringLiteral("knotifications6/glimply.notifyrc"))
+                                        .isEmpty();
+    auto *notification = new KNotification(haveEvents ? QStringLiteral("captureSaved") : QStringLiteral("notification"));
+    if (haveEvents) {
+        notification->setComponentName(QStringLiteral("io.github.m00sfett.glimply"));
+    }
+    notification->setTitle(heading);
+    notification->setText(lines.join(QLatin1Char('\n')));
+    QList<QUrl> urls;
+    for (const QString &path : paths) {
+        urls.append(QUrl::fromLocalFile(path));
+    }
+    notification->setUrls(urls);
+    const QStringList files = paths;
+    KNotificationAction *open = notification->addAction(paths.size() == 1 ? tr("Open") : tr("Show Files"));
+    connect(open, &KNotificationAction::activated, this, [this, files] {
+        lastPaths_ = files;
+        openLastCapture();
+    });
+    KNotificationAction *folder = notification->addAction(tr("Show in Folder"));
+    connect(folder, &KNotificationAction::activated, this, [files] {
+        QStringList uris;
+        for (const QString &path : files) {
+            uris.append(QUrl::fromLocalFile(path).toString());
+        }
+        QDBusMessage call = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.FileManager1"),
+                                                           QStringLiteral("/org/freedesktop/FileManager1"),
+                                                           QStringLiteral("org.freedesktop.FileManager1"),
+                                                           QStringLiteral("ShowItems"));
+        call.setArguments({uris, QString()});
+        QDBusConnection::sessionBus().asyncCall(call);
+    });
+    notification->sendEvent();
+}
+
 void App::trigger(const QString &id)
 {
+    if (id == PrintKey::actionId()) {
+        startPrint();
+        return;
+    }
     TriggerPlan plan = planTrigger(store_, id, currentScreens());
     if (plan.outputs.isEmpty()) {
         notifyError(tr("Nothing captured"), plan.errors);
@@ -180,14 +303,10 @@ void App::trigger(const QString &id)
 
 void App::onTriggerFinished(const TriggerResult &result)
 {
-    Q_EMIT captured(!result.writtenPaths.isEmpty());
-    if (!result.writtenPaths.isEmpty()) {
-        // Every frame is in memory by now, so the blink cannot end up in a capture (A2).
-        tray_->blink();
-        tray_->setLastCaptureAvailable(true);
-        tray_->setStatusText(tr("Last capture: %1 at %2")
-                                 .arg(result.displayName,
-                                      QLocale().toString(result.timestamp.time(), QLocale::ShortFormat)));
+    if (result.writtenPaths.isEmpty()) {
+        Q_EMIT captured(false);
+    } else {
+        recordCapture(result.writtenPaths, result.displayName);
     }
     if (!result.errors.isEmpty()) {
         notifyError(result.writtenPaths.isEmpty() ? tr("Capture failed") : tr("Capture incomplete"), result.errors);
@@ -220,7 +339,7 @@ void App::notifyError(const QString &title, const QStringList &messages)
 
 void App::openLastCapture()
 {
-    const QStringList paths = engine_->lastPaths();
+    const QStringList paths = lastPaths_;
     if (paths.isEmpty()) {
         return;
     }
@@ -307,13 +426,13 @@ void App::removeTarget(const QString &id)
 
 bool App::hasLastCapture() const
 {
-    return !engine_->lastPaths().isEmpty();
+    return !lastPaths_.isEmpty();
 }
 
 void App::editArea(const QString &areaId)
 {
     const Area *area = store_.area(areaId);
-    if (!area || selector_) {
+    if (!area || selector_ || session_) {
         return;
     }
     // An open settings window has to step aside first; it runs the same overlay itself.

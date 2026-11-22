@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - Unreleased
+
+glimply becomes the Print key tool: one key press saves the screen, an optional overlay narrows it down.
+
+### Added
+
+- Print key: glimply takes Print over from its previous owner (usually Spectacle) on first start. Pressing it saves all monitors as one PNG and copies the picture to the clipboard, then opens the capture overlay. Settings: use the Print key (turning it off gives Print back exactly as it was), open the overlay after saving, start frozen, save as soon as the mouse is released.
+- Capture overlay with a top bar of labelled buttons (Frozen/Live, This Monitor, All Monitors, Window, Areas, Settings, Close) and a hint line that explains the next step.
+- Several rectangles at once, on any monitor and overlapping. Each has a number and a delete button; only the active one has handles. A click on a rectangle selects it, a drag outside the active one draws another, *Add Rectangle* forces the next drag to draw a new one.
+- Action bar at the active rectangle: Save (one PNG per rectangle, same timestamp, numbered), Copy, Save As…, Save as Area, Add Rectangle, Cancel. Saving replaces the full screenshot from the key press.
+- Save as Area right in the overlay, with name and optional shortcut. Several rectangles can be combined into a group with one shortcut that captures all of them at the same moment.
+- Window capture from the top bar: a list of open windows, captured on their own by KWin, also when covered or minimized. Hovering a window or a saved area outlines it on screen.
+- Live mode: the overlay stays see-through and lighter, so a video keeps playing; captures happen when you save.
+- Notification after a capture with Open and Show in Folder.
+- `glimply --release-print-key`, used by `scripts/install.sh --uninstall` to hand Print back.
+
+### Changed
+
+- *Add Area* in the widget and the tray opens the capture overlay instead of the settings window.
+
 ## [0.1.9] - Unreleased
 
 ### Added

@@ -1,14 +1,24 @@
 # glimply
 
-glimply is a KDE Plasma tray application for capturing fixed screen areas,
-individual monitors, or all monitors the moment a global shortcut is pressed:
-no selection, no dialog, no overlay.
+glimply is a KDE Plasma tray application for screenshots. The Print key saves
+all monitors instantly; an overlay then lets you cut the picture down to
+rectangles, one monitor or one window. Fixed areas, monitors and groups can be
+captured the moment a global shortcut is pressed, without any overlay.
 
-The project is in early development (0.1.x prototype) and targets KDE Plasma 6
+The project is in early development (0.2.x prototype) and targets KDE Plasma 6
 on Wayland.
 
 ## Features
 
+- **Print key** replacement: Print saves all monitors as one PNG and copies it
+  to the clipboard, then opens the capture overlay. glimply takes the key over
+  from Spectacle on first start and gives it back exactly when you turn the
+  option off or uninstall.
+- **Capture overlay** with labelled buttons: Frozen or Live, This Monitor, All
+  Monitors, Window, Areas. Draw several rectangles (they may overlap), save
+  them all at once as numbered files, copy one, or save them as areas or as a
+  group with one shortcut. Escape keeps the full screenshot.
+- **Windows** captured on their own, also when covered or minimized.
 - **Areas** bound to one monitor, stored in logical coordinates and captured
   at the monitor's native resolution. glimply names them `<connector>-<n>`
   (for example `DP-1-1`); you can rename them.
@@ -67,14 +77,23 @@ captures fail with a permission error, reinstall with `scripts/install.sh`.
 
 ## Usage
 
+Press **Print**. The full screenshot is saved and in the clipboard. In the
+overlay, drag a rectangle and press **Enter** (or *Save*) to keep only that
+part, or click a monitor to keep only that monitor. Draw more rectangles to
+save several parts at once. *Save as Area* remembers the rectangles for later.
+In **Live** mode the screen keeps moving and the capture happens when you
+save. Escape or a right click keeps the full screenshot.
+
+To set up areas without capturing:
+
 1. Open the glimply widget in the system tray and choose **Add Area**. Every
    monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
    want and adjust it: drag the round handles on corners and edges to resize,
    drag inside to move, use the centre crosshair to aim. Hold **Ctrl** while
    drawing or resizing to grow from the centre and **Alt** for a perfect
    square; both combine. Arrow keys move by a pixel, Shift+arrow keys resize,
-   Ctrl gives steps of ten. Press **Enter**.
-2. Record a shortcut for the new area in the settings window that opens.
+   Ctrl gives steps of ten. Choose **Save as Area**.
+2. Enter a name and, optionally, record a shortcut right there.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.
 

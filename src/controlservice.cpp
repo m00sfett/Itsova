@@ -107,7 +107,7 @@ void ControlService::Trigger(const QString &id)
 
 void ControlService::AddArea()
 {
-    app_->showSettings(true);
+    app_->addArea();
 }
 
 void ControlService::EditArea(const QString &id)
