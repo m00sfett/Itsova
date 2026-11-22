@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.8 LANGUAGES CXX)
+project(glimply VERSION 0.1.9 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -51,6 +51,7 @@ find_package(Qt6 REQUIRED COMPONENTS Concurrent DBus Gui)
 add_library(glimply_capture STATIC
     src/captureservice.cpp
     src/imageoutput.cpp
+    src/selectiongeometry.cpp
     src/targets.cpp
     src/triggerengine.cpp
     src/triggerplan.cpp
@@ -89,6 +90,9 @@ if(BUILD_TESTING)
     add_executable(targetstest tests/targetstest.cpp)
     target_link_libraries(targetstest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME targets COMMAND targetstest)
+    add_executable(selectiongeometrytest tests/selectiongeometrytest.cpp)
+    target_link_libraries(selectiongeometrytest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME selectiongeometry COMMAND selectiongeometrytest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

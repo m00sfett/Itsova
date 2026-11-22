@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9] - Unreleased
+
+### Added
+
+- Selection overlay: hold Ctrl while drawing or resizing to grow the area from its centre (an edge moves its opposite edge by the same amount, a corner scales both dimensions around the centre), and Alt to keep a perfect square. Both combine, react when pressed mid-drag and stay intact at the screen border.
+
 ## [0.1.8] - Unreleased
 
 ### Fixed
