@@ -14,6 +14,10 @@
 #include <QDBusPendingCall>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFile>
+#include <QSaveFile>
+#include <QStandardPaths>
+#include <QCoreApplication>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QScreen>
@@ -156,13 +160,29 @@ void App::onTriggerFinished(const TriggerResult &result)
         notifyError(result.writtenPaths.isEmpty() ? tr("Capture failed") : tr("Capture incomplete"), result.errors);
     }
     if (!result.warnings.isEmpty()) {
-        KNotification::event(KNotification::Warning, tr("Check region monitor"), result.warnings.join(QLatin1Char('\n')));
+        notify(QStringLiteral("monitorChanged"), tr("Check region monitor"), result.warnings);
+    }
+}
+
+void App::notify(const QString &eventId, const QString &title, const QStringList &messages)
+{
+    const QString text = messages.join(QLatin1Char('\n'));
+    // Installed builds ship glimply.notifyrc, so notifications carry glimply's name and can be
+    // configured in System Settings. Uninstalled development builds fall back to the system events.
+    static const bool haveEvents = !QStandardPaths::locate(QStandardPaths::GenericDataLocation,
+                                                           QStringLiteral("knotifications6/glimply.notifyrc"))
+                                        .isEmpty();
+    if (haveEvents) {
+        KNotification::event(eventId, title, text, QStringLiteral("io.github.m00sfett.glimply"));
+    } else {
+        KNotification::event(eventId == QLatin1String("monitorChanged") ? KNotification::Warning : KNotification::Error,
+                             title, text);
     }
 }
 
 void App::notifyError(const QString &title, const QStringList &messages)
 {
-    KNotification::event(KNotification::Error, title, messages.join(QLatin1Char('\n')));
+    notify(QStringLiteral("captureFailed"), title, messages);
 }
 
 void App::openLastCapture()
@@ -212,7 +232,54 @@ void App::showSettings(bool addRegion)
 
 void App::applyAutostart()
 {
-    // Milestone 6 adds autostart handling.
+    if (!store_.autostartInitialized) {
+        // First start: autostart is on by default (decision), and the choice is written down.
+        store_.autostart = true;
+        store_.autostartInitialized = true;
+        store_.save(*config_);
+    }
+
+    const QString fileName = QGuiApplication::desktopFileName() + QStringLiteral(".desktop");
+    const QString autostartDir =
+        QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/autostart");
+    const QString autostartPath = autostartDir + QLatin1Char('/') + fileName;
+
+    if (!store_.autostart) {
+        if (QFile::exists(autostartPath) && !QFile::remove(autostartPath)) {
+            notify(QStringLiteral("settingsProblem"), tr("Autostart"), {tr("Could not remove %1.").arg(autostartPath)});
+        }
+        return;
+    }
+
+    // Start the executable that is running now, so a moved or reinstalled binary stays consistent.
+    QByteArray content;
+    const QString installed = QStandardPaths::locate(QStandardPaths::ApplicationsLocation, fileName);
+    QFile source(installed);
+    if (!installed.isEmpty() && source.open(QIODevice::ReadOnly)) {
+        content = source.readAll();
+    } else {
+        content = QByteArrayLiteral("[Desktop Entry]\nType=Application\nName=glimply\nExec=@EXEC@\n"
+                                    "Icon=io.github.m00sfett.glimply\nStartupNotify=false\n"
+                                    "X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\n");
+    }
+    QStringList lines = QString::fromUtf8(content).split(QLatin1Char('\n'));
+    for (QString &line : lines) {
+        if (line.startsWith(QLatin1String("Exec="))) {
+            line = QStringLiteral("Exec=") + QCoreApplication::applicationFilePath();
+        }
+    }
+    content = lines.join(QLatin1Char('\n')).toUtf8();
+
+    QFile existing(autostartPath);
+    if (existing.open(QIODevice::ReadOnly) && existing.readAll() == content) {
+        return;
+    }
+    existing.close();
+    QDir().mkpath(autostartDir);
+    QSaveFile file(autostartPath);
+    if (!file.open(QIODevice::WriteOnly) || file.write(content) != content.size() || !file.commit()) {
+        notify(QStringLiteral("settingsProblem"), tr("Autostart"), {tr("Could not write %1.").arg(autostartPath)});
+    }
 }
 
 } // namespace glimply

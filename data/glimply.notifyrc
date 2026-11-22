@@ -1,0 +1,21 @@
+[Global]
+IconName=io.github.m00sfett.glimply
+Name=glimply
+Comment=glimply screenshots
+
+[Event/captureFailed]
+Name=Capture failed
+Comment=A capture failed or a target was skipped
+Action=Popup
+Urgency=Normal
+
+[Event/monitorChanged]
+Name=Monitor changed
+Comment=A region's monitor differs from the one it was defined on
+Action=Popup
+Urgency=Low
+
+[Event/settingsProblem]
+Name=Settings problem
+Comment=glimply could not apply a setting, such as autostart
+Action=Popup
