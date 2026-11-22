@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - Unreleased
+
+### Added
+
+- `scripts/install.sh`: Release build, tests and installation into `~/.local` (binary, desktop entry with the KWin screenshot permission, icon, notification events); `--uninstall` removes the installed files again.
+- Start at login, on by default from the first start and switchable in the settings.
+- Application icon and own notification events, so errors appear under glimply's name and can be configured in System Settings.
+
+### Changed
+
+- README describes installation, permissions and usage.
+
 ## [0.1.5] - Unreleased
 
 ### Added

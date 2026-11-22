@@ -48,6 +48,7 @@ private:
     void syncShortcuts(const QStringList &deletedIds = {});
     void applyAutostart();
     [[nodiscard]] QList<MenuTarget> menuTargets() const;
+    void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
 
     KSharedConfigPtr config_;

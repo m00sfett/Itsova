@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.5 LANGUAGES CXX)
+project(glimply VERSION 0.1.6 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_AUTOMOC ON)
+
+include(GNUInstallDirs)
 
 find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets)
 find_package(KF6Config REQUIRED)
@@ -54,6 +56,15 @@ add_library(glimply_capture STATIC
 )
 target_include_directories(glimply_capture PUBLIC src)
 target_link_libraries(glimply_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
+
+# KWin grants access to org.kde.KWin.ScreenShot2 to the executable named in this desktop file, so
+# Exec must be the absolute installed path.
+set(GLIMPLY_EXEC "${CMAKE_INSTALL_FULL_BINDIR}/glimply")
+configure_file(data/io.github.m00sfett.glimply.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" @ONLY)
+install(TARGETS glimply RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+install(FILES data/glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
+install(FILES data/io.github.m00sfett.glimply.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 include(CTest)
 if(BUILD_TESTING)
