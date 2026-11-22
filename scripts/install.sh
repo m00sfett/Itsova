@@ -34,7 +34,12 @@ fi
 cmake -S "${source_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${prefix}"
 cmake --build "${build_dir}" --parallel "$(( $(nproc) > 4 ? 4 : $(nproc) ))"
 ctest --test-dir "${build_dir}" --output-on-failure
+widget_metadata="${prefix}/share/plasma/plasmoids/io.github.m00sfett.glimply.widget/metadata.json"
+widget_before="$(sha256sum "${widget_metadata}" 2>/dev/null || true)"
+
 cmake --install "${build_dir}"
+
+widget_after="$(sha256sum "${widget_metadata}" 2>/dev/null || true)"
 
 if command -v update-desktop-database >/dev/null; then
     update-desktop-database "${prefix}/share/applications" 2>/dev/null || true
@@ -46,4 +51,22 @@ fi
 if command -v kbuildsycoca6 >/dev/null; then
     kbuildsycoca6 >/dev/null 2>&1 || true
 fi
-echo "Installed glimply to ${prefix}. Start it from the application menu or run ${prefix}/bin/glimply."
+# Replace a running older glimply and start the new one (through D-Bus activation), so the
+# installation works right away without logging out.
+if pgrep -u "$(id -u)" -x glimply >/dev/null; then
+    pkill -u "$(id -u)" -x glimply || true
+    for _ in $(seq 50); do pgrep -u "$(id -u)" -x glimply >/dev/null || break; sleep 0.1; done
+fi
+if command -v busctl >/dev/null; then
+    busctl --user call io.github.m00sfett.glimply /Control io.github.m00sfett.glimply.Control HasLastCapture >/dev/null 2>&1 \
+        || echo "Note: glimply could not be started through D-Bus; start it from the application menu."
+fi
+
+# Plasma's system tray only picks up new or changed widgets when the shell starts. Reload it once
+# in that case, so the glimply widget appears without any manual configuration.
+if [[ "${widget_before}" != "${widget_after}" ]] && systemctl --user is-active --quiet plasma-plasmashell 2>/dev/null; then
+    echo "Reloading the Plasma shell once so the glimply widget appears in the system tray..."
+    systemctl --user restart plasma-plasmashell || true
+fi
+
+echo "Installed glimply to ${prefix}. It is running and starts automatically at login."

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - Unreleased
+
+### Fixed
+
+- The Plasma widget now appears in the system tray by itself: it is enabled by default, and `scripts/install.sh` restarts a running glimply and reloads the Plasma shell once when the widget is new or changed. No manual tray configuration is needed.
+
 ## [0.1.7] - Unreleased
 
 ### Added

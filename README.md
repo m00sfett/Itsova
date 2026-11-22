@@ -49,11 +49,10 @@ The script builds a Release version, runs the tests and installs into
 `--prefix DIR` for another prefix and `--uninstall` to remove the installed
 files again; settings and captures are kept.
 
-The script also installs the Plasma widget and a D-Bus activation file, so
-the widget can start glimply when needed. Plasma picks up a newly installed
-widget after `systemctl --user restart plasma-plasmashell` or a new login;
-then enable *glimply* under *System Tray Settings → Entries* if it is not
-shown automatically.
+The script also installs the Plasma widget and a D-Bus activation file, starts
+glimply, and reloads the Plasma shell once when the widget is new or changed,
+so the widget shows up in the system tray right away. Nothing needs to be
+configured by hand.
 
 On first start glimply adds itself to autostart. You can turn that off under
 *Configure glimply… → General*.
