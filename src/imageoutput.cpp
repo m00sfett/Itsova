@@ -36,7 +36,7 @@ bool scaledEdge(int logicalEdge, qreal scale, int *nativeEdge)
     return true;
 }
 
-QString makeFilename(const QString &filenameTemplate,
+QString makeFilenameImpl(const QString &filenameTemplate,
                      const QString &regionToken,
                      const QDateTime &timestamp)
 {
@@ -64,6 +64,11 @@ QString makeFilename(const QString &filenameTemplate,
 }
 
 } // namespace
+
+QString filenameFor(const QString &filenameTemplate, const QString &regionToken, const QDateTime &timestamp)
+{
+    return makeFilenameImpl(filenameTemplate, regionToken, timestamp);
+}
 
 QImage cropLogicalRegion(const QImage &nativeFrame,
                          const QRect &logicalRegion,
@@ -183,7 +188,7 @@ bool OutputWriter::writeImage(const QImage &image,
     }
 
     const QDir outputDirectory(directory_);
-    const QString filename = makeFilename(filenameTemplate_, regionToken, timestamp);
+    const QString filename = filenameFor(filenameTemplate_, regionToken, timestamp);
     const qsizetype extensionPosition = filename.lastIndexOf(QLatin1Char('.'));
     const QString stem = filename.left(extensionPosition);
     const QString extension = filename.mid(extensionPosition);
