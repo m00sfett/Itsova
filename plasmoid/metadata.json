@@ -8,6 +8,7 @@
         ],
         "Category": "Utilities",
         "Description": "Capture fixed screen areas and monitors, and manage them",
+        "EnabledByDefault": true,
         "Icon": "io.github.m00sfett.glimply",
         "Id": "io.github.m00sfett.glimply.widget",
         "License": "AGPL-3.0-or-later",
