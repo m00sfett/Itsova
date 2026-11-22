@@ -1,5 +1,8 @@
 #include "app.h"
+#include "printkey.h"
 
+#include <KConfig>
+#include <KConfigGroup>
 #include <KDBusService>
 #include <KLocalizedString>
 
@@ -42,6 +45,15 @@ int main(int argc, char *argv[])
     QApplication::installTranslator(new EnglishTranslator(&application));
     // A tray application keeps running when the settings window closes.
     QApplication::setQuitOnLastWindowClosed(false);
+
+    // Used by the uninstaller: give the Print key back to its previous owner (usually Spectacle).
+    if (QApplication::arguments().contains(QStringLiteral("--release-print-key"))) {
+        KConfig config(QStringLiteral("glimplyrc"), KConfig::SimpleConfig);
+        glimply::PrintKey::release(config, true);
+        config.group(QStringLiteral("General")).writeEntry("UsePrintKey", false);
+        config.sync();
+        return 0;
+    }
 
     // One instance per session: a second start just exits.
     KDBusService service(KDBusService::Unique);

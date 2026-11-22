@@ -23,6 +23,12 @@ if [[ "${uninstall}" == true ]]; then
         echo "No install manifest at ${manifest}; nothing to remove." >&2
         exit 1
     fi
+    # Stop glimply and give the Print key back to its previous owner (usually Spectacle) first.
+    pkill -u "$(id -u)" -x glimply || true
+    for _ in $(seq 50); do pgrep -u "$(id -u)" -x glimply >/dev/null || break; sleep 0.1; done
+    if [[ -x "${prefix}/bin/glimply" ]]; then
+        "${prefix}/bin/glimply" --release-print-key || echo "Note: could not hand the Print key back." >&2
+    fi
     while IFS= read -r file; do
         [[ -n "${file}" && -e "${file}" ]] && rm -v -- "${file}"
     done < "${manifest}"
