@@ -5,6 +5,7 @@
 #include <KConfig>
 
 #include <QAtomicInt>
+#include <QFile>
 #include <QFileInfo>
 #include <QImageReader>
 #include <QMutex>
@@ -49,6 +50,7 @@ private Q_SLOTS:
     void autoNamesAreSequentialAndUnique();
     void reservedNamesAreRejected();
     void configRoundTrip();
+    void legacyRegionConfigIsMigrated();
     void removingAreaDropsItFromGroups();
     void groupPlanCapturesEachMonitorOnce();
     void groupCursorOverridesTargets();
@@ -126,6 +128,44 @@ void TargetsTest::configRoundTrip()
     QCOMPARE(loaded.filenameTemplate, store.filenameTemplate);
     QVERIFY(!loaded.autostart);
     QVERIFY(loaded.autostartInitialized);
+}
+
+void TargetsTest::legacyRegionConfigIsMigrated()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        QFile file(path);
+        QVERIFY(file.open(QIODevice::WriteOnly));
+        file.write("[General]\nRegionOrder=region:b,region:a\n\n"
+                   "[Region region:a]\nName=DP-1-1\nConnector=DP-1\nRect=8,64,400,300\n\n"
+                   "[Region region:b]\nName=HDMI-A-1-1\nConnector=HDMI-A-1\nRect=1,2,3,4\n\n"
+                   "[Group group:g]\nName=G\nTargets=region:a,all\n");
+    }
+    TargetStore store;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.load(config);
+    }
+    QCOMPARE(store.areas.size(), 2);
+    QCOMPARE(store.areas.at(0).id, QStringLiteral("area:b"));
+    QCOMPARE(store.areas.at(1).id, QStringLiteral("area:a"));
+    QCOMPARE(store.areas.at(1).rect, QRect(8, 64, 400, 300));
+    QCOMPARE(store.groups.first().targetIds, (QStringList{QStringLiteral("area:a"), allMonitorsTargetId()}));
+    QCOMPARE(store.migratedIds.value(QStringLiteral("region:a")), QStringLiteral("area:a"));
+
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+    KConfig config(path, KConfig::SimpleConfig);
+    QVERIFY(!config.hasGroup(QStringLiteral("Region region:a")));
+    QVERIFY(config.hasGroup(QStringLiteral("Area area:a")));
+    TargetStore reloaded;
+    reloaded.load(config);
+    QVERIFY(reloaded.migratedIds.isEmpty());
+    QCOMPARE(reloaded.areas.size(), 2);
 }
 
 void TargetsTest::removingAreaDropsItFromGroups()
