@@ -217,6 +217,15 @@ bool OutputWriter::writeImage(const QImage &image,
         }
         return false;
     }
+    // QTemporaryFile creates 0600; captures are ordinary user files.
+    if (!temporary.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ReadGroup
+                                  | QFileDevice::ReadOther)) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Cannot set permissions of temporary capture file: %1")
+                         .arg(temporary.errorString());
+        }
+        return false;
+    }
     const QByteArray temporaryPath = QFile::encodeName(temporary.fileName());
     temporary.close();
 

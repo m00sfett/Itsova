@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - Unreleased
+
+### Added
+
+- Tray application: a click opens a menu with all groups, regions and monitors, their global shortcuts, Add Region, Open Last Capture, Open Capture Folder, Configure and Quit.
+- Global shortcuts for every target and group through KGlobalAccel, without defaults; shortcuts edited in System Settings are picked up.
+- The tray icon blinks once after a successful capture; failures, skipped targets and monitor changes raise notifications.
+- Open Last Capture opens a single file in the image viewer and shows all files of a group in the file manager.
+- Single-instance start through D-Bus.
+
+### Changed
+
+- Capture files are created with mode 0644 instead of 0600.
+
 ## [0.1.3] - Unreleased
 
 ### Added
