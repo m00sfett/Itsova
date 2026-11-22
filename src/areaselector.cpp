@@ -2,6 +2,7 @@
 
 #include "captureservice.h"
 #include "screens.h"
+#include "selectiongeometry.h"
 
 #include <QGuiApplication>
 #include <QKeyEvent>
@@ -238,8 +239,11 @@ void AreaOverlay::paintEvent(QPaintEvent *)
 
     painter.setFont(font);
     pill(selection_.isValid()
-             ? tr("Drag the edges or corners to resize, drag inside to move. Enter confirms, Escape cancels.")
-             : tr("Drag to select an area on %1. Press Escape to cancel.").arg(connector_),
+             ? tr("Drag edges or corners to resize, inside to move. Hold Ctrl to resize from the centre, Alt for a "
+                  "square. Enter confirms, Escape cancels.")
+             : tr("Drag to select an area on %1. Hold Ctrl to draw from the centre, Alt for a square. Escape "
+                  "cancels.")
+                   .arg(connector_),
          QPoint(area.center().x(), 24), true);
 
     if (selection_.isValid()) {
@@ -265,6 +269,7 @@ void AreaOverlay::mousePressEvent(QMouseEvent *event)
         return;
     }
     anchor_ = event->position().toPoint();
+    lastPosition_ = anchor_;
     dragStartSelection_ = selection_;
     if (const Qt::Edges edges = edgesAt(anchor_); edges) {
         drag_ = Drag::Resize;
@@ -281,42 +286,25 @@ void AreaOverlay::mousePressEvent(QMouseEvent *event)
 void AreaOverlay::mouseMoveEvent(QMouseEvent *event)
 {
     const QPoint position = event->position().toPoint();
+    lastPosition_ = position;
+    if (drag_ == Drag::None) {
+        updateCursor(position);
+    } else {
+        applyDrag(position, event->modifiers());
+    }
+}
+
+void AreaOverlay::applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers)
+{
+    const SelectionConstraints constraints{modifiers.testFlag(Qt::ControlModifier), modifiers.testFlag(Qt::AltModifier)};
     if (drag_ == Drag::Create) {
-        setSelection(QRect(anchor_, position));
+        selection_ = drawnSelection(anchor_, position, constraints, logicalSize_);
+        update();
     } else if (drag_ == Drag::Move) {
         setSelection(dragStartSelection_.translated(position - anchor_));
     } else if (drag_ == Drag::Resize) {
-        // Work on edge coordinates (right and bottom exclusive) so dragging past the opposite edge
-        // simply flips the rectangle instead of producing a negative size.
-        const QPoint delta = position - anchor_;
-        const QRect start = dragStartSelection_;
-        int left = start.left();
-        int top = start.top();
-        int right = start.left() + start.width();
-        int bottom = start.top() + start.height();
-        if (dragEdges_ & Qt::LeftEdge) {
-            left += delta.x();
-        }
-        if (dragEdges_ & Qt::RightEdge) {
-            right += delta.x();
-        }
-        if (dragEdges_ & Qt::TopEdge) {
-            top += delta.y();
-        }
-        if (dragEdges_ & Qt::BottomEdge) {
-            bottom += delta.y();
-        }
-        const auto clampX = [this](int x) { return std::clamp(x, 0, logicalSize_.width()); };
-        const auto clampY = [this](int y) { return std::clamp(y, 0, logicalSize_.height()); };
-        left = clampX(left);
-        right = clampX(right);
-        top = clampY(top);
-        bottom = clampY(bottom);
-        selection_ = QRect(QPoint(std::min(left, right), std::min(top, bottom)),
-                           QPoint(std::max(left, right) - 1, std::max(top, bottom) - 1));
+        selection_ = resizedSelection(dragStartSelection_, dragEdges_, position - anchor_, constraints, logicalSize_);
         update();
-    } else {
-        updateCursor(position);
     }
 }
 
@@ -402,8 +390,29 @@ void AreaOverlay::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
+bool AreaOverlay::reapplyModifiers(QKeyEvent *event)
+{
+    if (event->key() != Qt::Key_Control && event->key() != Qt::Key_Alt) {
+        return false;
+    }
+    if (drag_ != Drag::None) {
+        applyDrag(lastPosition_, event->modifiers());
+    }
+    return true;
+}
+
+void AreaOverlay::keyReleaseEvent(QKeyEvent *event)
+{
+    if (!reapplyModifiers(event)) {
+        QWidget::keyReleaseEvent(event);
+    }
+}
+
 void AreaOverlay::keyPressEvent(QKeyEvent *event)
 {
+    if (reapplyModifiers(event)) {
+        return;
+    }
     const int step = event->modifiers().testFlag(Qt::ControlModifier) ? 10 : 1;
     const bool resize = event->modifiers().testFlag(Qt::ShiftModifier);
     QPoint delta;

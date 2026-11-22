@@ -70,8 +70,10 @@ captures fail with a permission error, reinstall with `scripts/install.sh`.
 1. Open the glimply widget in the system tray and choose **Add Area**. Every
    monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
    want and adjust it: drag the round handles on corners and edges to resize,
-   drag inside to move, use the centre crosshair to aim, arrow keys move by a
-   pixel, Shift+arrow keys resize, Ctrl gives steps of ten. Press **Enter**.
+   drag inside to move, use the centre crosshair to aim. Hold **Ctrl** while
+   drawing or resizing to grow from the centre and **Alt** for a perfect
+   square; both combine. Arrow keys move by a pixel, Shift+arrow keys resize,
+   Ctrl gives steps of ten. Press **Enter**.
 2. Record a shortcut for the new area in the settings window that opens.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.

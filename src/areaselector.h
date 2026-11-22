@@ -59,11 +59,16 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 private:
     enum class Drag { None, Create, Move, Resize };
 
     void setSelection(const QRect &rect);
+    // Updates the selection for the current drag; Ctrl draws from the centre, Alt keeps a square.
+    void applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers);
+    // Redraws the drag when Ctrl or Alt is pressed or released mid-drag. True if the key was one of them.
+    bool reapplyModifiers(QKeyEvent *event);
     // Edges of the selection under pos: one edge near a side, two near a corner, none elsewhere.
     [[nodiscard]] Qt::Edges edgesAt(const QPoint &pos) const;
     void updateCursor(const QPoint &pos);
@@ -74,6 +79,7 @@ private:
     QRect selection_;
     Drag drag_ = Drag::None;
     QPoint anchor_;
+    QPoint lastPosition_;
     QRect dragStartSelection_;
     Qt::Edges dragEdges_;
 };
