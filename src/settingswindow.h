@@ -100,6 +100,10 @@ private:
     QLineEdit *template_ = nullptr;
     QLabel *templatePreview_ = nullptr;
     QCheckBox *autostart_ = nullptr;
+    QCheckBox *usePrintKey_ = nullptr;
+    QCheckBox *printOpensOverlay_ = nullptr;
+    QCheckBox *overlayStartsFrozen_ = nullptr;
+    QCheckBox *captureOnRelease_ = nullptr;
 };
 
 } // namespace glimply

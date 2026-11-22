@@ -39,7 +39,8 @@ CaptureResult failure(QString error)
     return {QImage(), 0, std::move(error)};
 }
 
-QString describeError(const QDBusError &error, const QString &connector)
+// subject names what was captured, e.g. "monitor DP-1" or "the window".
+QString describeError(const QDBusError &error, const QString &subject)
 {
     if (error.name() == QStringLiteral("org.kde.KWin.ScreenShot2.Error.NoAuthorized")
         || error.type() == QDBusError::AccessDenied) {
@@ -48,9 +49,12 @@ QString describeError(const QDBusError &error, const QString &connector)
     }
     if (error.type() == QDBusError::NoReply || error.type() == QDBusError::Timeout
         || error.type() == QDBusError::TimedOut) {
-        return CaptureText::tr("KWin timed out while capturing monitor %1.").arg(connector);
+        return CaptureText::tr("KWin timed out while capturing %1.").arg(subject);
     }
-    return CaptureText::tr("KWin could not capture monitor %1 (%2).").arg(connector, error.name());
+    if (error.name() == QStringLiteral("org.kde.KWin.ScreenShot2.Error.InvalidWindow")) {
+        return CaptureText::tr("The window is no longer open.");
+    }
+    return CaptureText::tr("KWin could not capture %1 (%2).").arg(subject, error.name());
 }
 
 struct RawFrame
@@ -63,6 +67,7 @@ struct RawFrame
     qreal scale;
 };
 
+// connector empty: the frame is not tied to a monitor (window captures).
 std::optional<RawFrame> parseMetadata(const QVariantMap &data, const QString &connector)
 {
     const QVariant widthValue = data.value(QStringLiteral("width"));
@@ -72,7 +77,7 @@ std::optional<RawFrame> parseMetadata(const QVariantMap &data, const QString &co
     const QVariant scaleValue = data.value(QStringLiteral("scale"));
     const auto screen = data.constFind(QStringLiteral("screen"));
     if (data.value(QStringLiteral("type")).toString() != QStringLiteral("raw")
-        || (screen != data.cend() && (screen->typeId() != QMetaType::QString || screen->toString() != connector))
+        || (!connector.isEmpty() && screen != data.cend() && (screen->typeId() != QMetaType::QString || screen->toString() != connector))
         || widthValue.typeId() != QMetaType::UInt || heightValue.typeId() != QMetaType::UInt
         || strideValue.typeId() != QMetaType::UInt || formatValue.typeId() != QMetaType::UInt
         || scaleValue.typeId() != QMetaType::Double) {
@@ -110,7 +115,7 @@ std::optional<RawFrame> parseMetadata(const QVariantMap &data, const QString &co
 }
 
 CaptureResult receiveFrame(QDBusPendingReply<QVariantMap> &reply, int readFd, const QDeadlineTimer &deadline,
-                           const QString &connector)
+                           const QString &connector, const QString &subject)
 {
     QByteArray pixels;
     std::optional<RawFrame> frame;
@@ -120,14 +125,14 @@ CaptureResult receiveFrame(QDBusPendingReply<QVariantMap> &reply, int readFd, co
     while (!deadline.hasExpired()) {
         if (!frame && reply.isFinished()) {
             if (reply.isError()) {
-                return failure(describeError(reply.error(), connector));
+                return failure(describeError(reply.error(), subject));
             }
             frame = parseMetadata(reply.value(), connector);
             // Qt keeps the outgoing D-Bus message (and its write descriptor) in the pending call.
             // Release it before waiting for pipe EOF.
             reply = QDBusPendingReply<QVariantMap>();
             if (!frame || pixels.size() > frame->bytes) {
-                return failure(CaptureText::tr("KWin returned invalid image data for monitor %1.").arg(connector));
+                return failure(CaptureText::tr("KWin returned invalid image data for %1.").arg(subject));
             }
             pixels.reserve(frame->bytes);
         }
@@ -156,7 +161,7 @@ CaptureResult receiveFrame(QDBusPendingReply<QVariantMap> &reply, int readFd, co
             return failure(CaptureText::tr("Could not read the screenshot from KWin."));
         }
         if (count > capacity) {
-            return failure(CaptureText::tr("KWin returned invalid image data for monitor %1.").arg(connector));
+            return failure(CaptureText::tr("KWin returned invalid image data for %1.").arg(subject));
         }
         atEnd = count == 0;
         pixels.append(buffer, count);
@@ -164,19 +169,19 @@ CaptureResult receiveFrame(QDBusPendingReply<QVariantMap> &reply, int readFd, co
 
     if (!frame || !atEnd) {
         if (!frame && reply.isFinished() && reply.isError()) {
-            return failure(describeError(reply.error(), connector));
+            return failure(describeError(reply.error(), subject));
         }
-        return failure(CaptureText::tr("KWin timed out while capturing monitor %1.").arg(connector));
+        return failure(CaptureText::tr("KWin timed out while capturing %1.").arg(subject));
     }
     if (pixels.size() != frame->bytes) {
-        return failure(CaptureText::tr("KWin returned incomplete image data for monitor %1.").arg(connector));
+        return failure(CaptureText::tr("KWin returned incomplete image data for %1.").arg(subject));
     }
 
     auto storage = std::make_unique<QByteArray>(std::move(pixels));
     QImage image(reinterpret_cast<uchar *>(storage->data()), frame->width, frame->height, frame->stride,
                  frame->format, [](void *buffer) { delete static_cast<QByteArray *>(buffer); }, storage.get());
     if (image.isNull()) {
-        return failure(CaptureText::tr("Could not create the screenshot image for monitor %1.").arg(connector));
+        return failure(CaptureText::tr("Could not create the screenshot image for %1.").arg(subject));
     }
     (void)storage.release(); // The image owns the bytes until the last shared copy is destroyed.
     return {std::move(image), frame->scale, {}};
@@ -184,12 +189,13 @@ CaptureResult receiveFrame(QDBusPendingReply<QVariantMap> &reply, int readFd, co
 
 } // namespace
 
-CaptureResult CaptureService::captureScreen(const QString &connector, bool includeCursor)
+namespace
 {
-    if (connector.isEmpty()) {
-        return failure(CaptureText::tr("Choose a monitor to capture."));
-    }
 
+// Runs one ScreenShot2 call. method takes the leading arguments, then options and the pipe.
+CaptureResult capture(const QString &method, const QVariantList &leading, bool includeCursor, const QString &connector,
+                      const QString &subject)
+{
     const QDBusConnection bus = QDBusConnection::sessionBus();
     if (!bus.isConnected() || !bus.connectionCapabilities().testFlag(QDBusConnection::UnixFileDescriptorPassing)) {
         return failure(CaptureText::tr("The KDE screenshot service is unavailable on the session bus."));
@@ -208,27 +214,52 @@ CaptureResult CaptureService::captureScreen(const QString &connector, bool inclu
         return failure(CaptureText::tr("Could not prepare the connection for screenshot data."));
     }
 
-    const QVariantMap options{
+    QVariantMap options{
         {QStringLiteral("native-resolution"), true},
         {QStringLiteral("include-cursor"), includeCursor},
     };
+    if (connector.isEmpty()) {
+        // Window captures: only the window content, like the window looks to its user.
+        options.insert(QStringLiteral("include-decoration"), false);
+        options.insert(QStringLiteral("include-shadow"), false);
+    }
     QDeadlineTimer deadline(captureTimeoutMs, Qt::PreciseTimer);
     QDBusPendingReply<QVariantMap> reply = [&] {
         QDBusMessage request = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
                                                               QStringLiteral("/org/kde/KWin/ScreenShot2"),
-                                                              QStringLiteral("org.kde.KWin.ScreenShot2"),
-                                                              QStringLiteral("CaptureScreen"));
+                                                              QStringLiteral("org.kde.KWin.ScreenShot2"), method);
         request.setInteractiveAuthorizationAllowed(false);
-        request.setArguments({connector, options, QVariant::fromValue(writer)});
+        QVariantList arguments = leading;
+        arguments << options << QVariant::fromValue(writer);
+        request.setArguments(arguments);
         return bus.asyncCall(request, captureTimeoutMs);
     }();
     writer = QDBusUnixFileDescriptor();
 
     try {
-        return receiveFrame(reply, reader.fileDescriptor(), deadline, connector);
+        return receiveFrame(reply, reader.fileDescriptor(), deadline, connector, subject);
     } catch (const std::bad_alloc &) {
-        return failure(CaptureText::tr("There is not enough memory to capture monitor %1.").arg(connector));
+        return failure(CaptureText::tr("There is not enough memory to capture %1.").arg(subject));
     }
+}
+
+} // namespace
+
+CaptureResult CaptureService::captureScreen(const QString &connector, bool includeCursor)
+{
+    if (connector.isEmpty()) {
+        return failure(CaptureText::tr("Choose a monitor to capture."));
+    }
+    return capture(QStringLiteral("CaptureScreen"), {connector}, includeCursor, connector,
+                   CaptureText::tr("monitor %1").arg(connector));
+}
+
+CaptureResult CaptureService::captureWindow(const QString &handle, bool includeCursor)
+{
+    if (handle.isEmpty()) {
+        return failure(CaptureText::tr("Choose a window to capture."));
+    }
+    return capture(QStringLiteral("CaptureWindow"), {handle}, includeCursor, QString(), CaptureText::tr("the window"));
 }
 
 } // namespace glimply

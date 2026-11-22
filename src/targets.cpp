@@ -98,6 +98,10 @@ void TargetStore::load(const KConfig &config)
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
     autostartInitialized = general.hasKey("Autostart");
     autostart = general.readEntry("Autostart", true);
+    usePrintKey = general.readEntry("UsePrintKey", true);
+    printOpensOverlay = general.readEntry("PrintOpensOverlay", true);
+    overlayStartsFrozen = general.readEntry("OverlayStartsFrozen", true);
+    captureOnRelease = general.readEntry("CaptureOnRelease", false);
 
     const KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     cursorScreens = builtIn.readEntry("CursorScreens", QStringList());
@@ -163,6 +167,10 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("CaptureDirectory", captureDirectory);
     general.writeEntry("FilenameTemplate", filenameTemplate);
     general.writeEntry("Autostart", autostart);
+    general.writeEntry("UsePrintKey", usePrintKey);
+    general.writeEntry("PrintOpensOverlay", printOpensOverlay);
+    general.writeEntry("OverlayStartsFrozen", overlayStartsFrozen);
+    general.writeEntry("CaptureOnRelease", captureOnRelease);
 
     KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     builtIn.writeEntry("CursorScreens", cursorScreens);

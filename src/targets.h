@@ -66,6 +66,12 @@ public:
     bool autostart = true;
     bool autostartInitialized = false;
 
+    // Print key and capture overlay.
+    bool usePrintKey = true; // glimply owns the Print key (handed back to its previous owner when off)
+    bool printOpensOverlay = true; // false: Print only saves the full screenshot
+    bool overlayStartsFrozen = true;
+    bool captureOnRelease = false; // save as soon as a new rectangle is drawn
+
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();
     [[nodiscard]] QString effectiveCaptureDirectory() const;

@@ -894,6 +894,51 @@ QWidget *SettingsWindow::createGeneralPage()
             app_->storeChanged();
         }
     });
+
+    usePrintKey_ = new QCheckBox(tr("Use the Print key for glimply"), page);
+    form->addRow(tr("Print key:"), usePrintKey_);
+    form->addRow(QString(), makeHint(tr("Print saves all monitors right away. Turning this off gives the Print key "
+                                        "back to the application that had it before, usually Spectacle."),
+                                     page));
+    connect(usePrintKey_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->setUsePrintKey(on);
+        }
+    });
+
+    printOpensOverlay_ = new QCheckBox(tr("Open the selection overlay after saving"), page);
+    form->addRow(tr("After Print:"), printOpensOverlay_);
+    form->addRow(QString(), makeHint(tr("In the overlay you can cut the screenshot down to rectangles, a monitor or a "
+                                        "window. Without it, Print only saves the full screenshot."),
+                                     page));
+    connect(printOpensOverlay_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().printOpensOverlay = on;
+            app_->storeChanged();
+        }
+    });
+
+    overlayStartsFrozen_ = new QCheckBox(tr("Start frozen"), page);
+    form->addRow(tr("Overlay:"), overlayStartsFrozen_);
+    form->addRow(QString(), makeHint(tr("Frozen shows the moment you pressed Print. Live lets videos keep playing and "
+                                        "captures when you save. You can switch in the overlay at any time."),
+                                     page));
+    connect(overlayStartsFrozen_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().overlayStartsFrozen = on;
+            app_->storeChanged();
+        }
+    });
+
+    captureOnRelease_ = new QCheckBox(tr("Save as soon as the mouse is released"), page);
+    form->addRow(tr("Selection:"), captureOnRelease_);
+    form->addRow(QString(), makeHint(tr("Skips the buttons: drawing one rectangle saves it right away."), page));
+    connect(captureOnRelease_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().captureOnRelease = on;
+            app_->storeChanged();
+        }
+    });
     return page;
 }
 
@@ -906,6 +951,10 @@ void SettingsWindow::refreshStorage()
     templatePreview_->setText(
         filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime()));
     autostart_->setChecked(store.autostart);
+    usePrintKey_->setChecked(store.usePrintKey);
+    printOpensOverlay_->setChecked(store.printOpensOverlay);
+    overlayStartsFrozen_->setChecked(store.overlayStartsFrozen);
+    captureOnRelease_->setChecked(store.captureOnRelease);
     updating_ = false;
 }
 
