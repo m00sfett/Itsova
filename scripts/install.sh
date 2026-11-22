@@ -39,6 +39,10 @@ cmake --install "${build_dir}"
 if command -v update-desktop-database >/dev/null; then
     update-desktop-database "${prefix}/share/applications" 2>/dev/null || true
 fi
+# Let the session bus see the new D-Bus activation file without a new login.
+if command -v busctl >/dev/null; then
+    busctl --user call org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus ReloadConfig >/dev/null 2>&1 || true
+fi
 if command -v kbuildsycoca6 >/dev/null; then
     kbuildsycoca6 >/dev/null 2>&1 || true
 fi

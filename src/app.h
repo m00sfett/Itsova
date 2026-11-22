@@ -11,6 +11,7 @@
 namespace glimply
 {
 
+class ControlService;
 class ShortcutManager;
 class TrayController;
 class TriggerEngine;
@@ -36,21 +37,29 @@ public:
     void trigger(const QString &id);
     void openLastCapture();
     void openCaptureFolder();
-    void showSettings(bool addArea = false);
+    // addArea starts the selection overlay; targetId selects that target or group in the window.
+    void showSettings(bool addArea = false, const QString &targetId = QString());
     // Opens the selection overlay for an existing area, without the settings window.
     void editArea(const QString &areaId);
+
+    // Renames an area or group. Returns an error message, or an empty string on success.
+    QString renameTarget(const QString &id, const QString &name);
+    // Removes an area or group (built-in targets cannot be removed).
+    void removeTarget(const QString &id);
+    [[nodiscard]] bool hasLastCapture() const;
+    [[nodiscard]] QList<MenuTarget> menuTargets() const;
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
 
 Q_SIGNALS:
     void targetsChanged();
+    void captured(bool success);
 
 private:
     void onTriggerFinished(const TriggerResult &result);
     void syncShortcuts(const QStringList &deletedIds = {});
     void migrateLegacyIds();
     void applyAutostart();
-    [[nodiscard]] QList<MenuTarget> menuTargets() const;
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
 
@@ -59,6 +68,7 @@ private:
     ShortcutManager *shortcuts_;
     TriggerEngine *engine_;
     TrayController *tray_;
+    ControlService *control_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
 };

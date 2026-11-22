@@ -30,6 +30,8 @@ public:
     explicit SettingsWindow(App *app, QWidget *parent = nullptr);
 
     void addArea();
+    // Shows the page of an area, monitor or group and selects it.
+    void showTarget(const QString &id);
     void editArea(const QString &areaId);
 
 private:
@@ -63,6 +65,7 @@ private:
     QPointer<AreaSelector> selector_;
     bool updating_ = false;
     KPageWidgetItem *targetsPage_ = nullptr;
+    KPageWidgetItem *groupsPage_ = nullptr;
 
     // Targets page
     QTreeWidget *targetTree_ = nullptr;

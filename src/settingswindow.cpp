@@ -74,7 +74,8 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     auto *targets = targetsPage_;
     targets->setHeader(tr("Areas and monitors"));
     targets->setIcon(QIcon::fromTheme(QStringLiteral("transform-crop")));
-    auto *groups = addPage(createGroupsPage(), tr("Groups"));
+    groupsPage_ = addPage(createGroupsPage(), tr("Groups"));
+    auto *groups = groupsPage_;
     groups->setHeader(tr("Capture several targets with one shortcut"));
     groups->setIcon(QIcon::fromTheme(QStringLiteral("view-group")));
     auto *storage = addPage(createStoragePage(), tr("Storage"));
@@ -395,6 +396,17 @@ void SettingsWindow::addArea()
 {
     setCurrentPage(targetsPage_);
     runSelector(QString(), QRect(), QString());
+}
+
+void SettingsWindow::showTarget(const QString &id)
+{
+    if (app_->store().group(id)) {
+        setCurrentPage(groupsPage_);
+        selectGroup(id);
+    } else {
+        setCurrentPage(targetsPage_);
+        selectTarget(id);
+    }
 }
 
 void SettingsWindow::editArea(const QString &areaId)

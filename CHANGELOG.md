@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - Unreleased
+
+### Added
+
+- Plasma widget for the system tray: areas, groups and monitors with their shortcuts and buttons to capture, edit the area on screen, rename and delete inline; Add Area, Open Last Capture, Open Capture Folder and Configure. The icon blinks after a capture.
+- Session bus interface `io.github.m00sfett.glimply.Control` and D-Bus activation, so the widget can start glimply.
+- Selection overlay: round grab handles on corners and edge midpoints, resizing from any edge or corner (grab zone adapts to small selections), and a translucent centre crosshair with dotted guides.
+
+### Changed
+
+- Regions are now called areas everywhere. Existing configurations, group members and global shortcuts are migrated automatically; `{region}` still works in file name templates, the default is `{date}_{time}_{area}.png`.
+- While the widget is loaded, the separate tray icon steps back into the hidden part of the tray.
+
 ## [0.1.6] - Unreleased
 
 ### Added

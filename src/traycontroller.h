@@ -37,6 +37,8 @@ public:
 
     void setLastCaptureAvailable(bool available);
     void setStatusText(const QString &text);
+    // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
+    void setStandby(bool standby);
     // One short blink. Call only after every frame of a trigger has been captured (A2).
     void blink();
 

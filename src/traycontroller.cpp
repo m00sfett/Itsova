@@ -74,6 +74,11 @@ void TrayController::setStatusText(const QString &text)
     item_->setToolTipSubTitle(text);
 }
 
+void TrayController::setStandby(bool standby)
+{
+    item_->setStatus(standby ? KStatusNotifierItem::Passive : KStatusNotifierItem::Active);
+}
+
 void TrayController::blink()
 {
     flashing_ = true;

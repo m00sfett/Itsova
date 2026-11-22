@@ -21,8 +21,11 @@ on Wayland.
 - **Global shortcuts** for every target and group, registered with KDE's global
   shortcut service (also editable in System Settings). There are no default
   shortcuts.
-- **Tray menu** with every target and its shortcut, *Open Last Capture*,
-  *Open Capture Folder* and the settings.
+- **Plasma widget** in the system tray: every area, group and monitor in one
+  list with its shortcut and buttons to capture, edit the area on screen,
+  rename and delete (inline, without dialogs), plus *Add Area*, *Open Last
+  Capture* and *Open Capture Folder*. Without the widget, glimply shows a
+  classic tray icon with a menu instead.
 - **Feedback** without interruptions: the tray icon blinks once after a
   capture. Errors, such as a missing monitor, raise a notification.
 - Captures are saved as PNG in `~/Pictures/glimply/` (your XDG pictures folder)
@@ -46,6 +49,12 @@ The script builds a Release version, runs the tests and installs into
 `--prefix DIR` for another prefix and `--uninstall` to remove the installed
 files again; settings and captures are kept.
 
+The script also installs the Plasma widget and a D-Bus activation file, so
+the widget can start glimply when needed. Plasma picks up a newly installed
+widget after `systemctl --user restart plasma-plasmashell` or a new login;
+then enable *glimply* under *System Tray Settings → Entries* if it is not
+shown automatically.
+
 On first start glimply adds itself to autostart. You can turn that off under
 *Configure glimply… → General*.
 
@@ -59,15 +68,25 @@ captures fail with a permission error, reinstall with `scripts/install.sh`.
 
 ## Usage
 
-1. Click the tray icon and choose **Add Area…**. Every monitor shows a
-   frozen, dimmed picture. Drag a rectangle on the monitor you want, adjust it
-   (drag to move, arrow keys to move by a pixel, Shift+arrow keys to resize,
-   Ctrl for steps of ten) and press **Enter**.
+1. Open the glimply widget in the system tray and choose **Add Area**. Every
+   monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
+   want and adjust it: drag the round handles on corners and edges to resize,
+   drag inside to move, use the centre crosshair to aim, arrow keys move by a
+   pixel, Shift+arrow keys resize, Ctrl gives steps of ten. Press **Enter**.
 2. Record a shortcut for the new area in the settings window that opens.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.
 
 Groups are created under *Configure glimply… → Groups*.
+
+### D-Bus interface
+
+The widget uses `io.github.m00sfett.glimply` at `/Control`
+(`io.github.m00sfett.glimply.Control`): `Targets` (JSON), `Trigger`, `AddArea`,
+`EditArea`, `Rename`, `Remove`, `OpenLastCapture`, `OpenCaptureFolder`,
+`Configure`, and the signals `Changed` and `Captured`. Scripts can use it too,
+for example `busctl --user call io.github.m00sfett.glimply /Control
+io.github.m00sfett.glimply.Control Trigger s all`.
 
 ## Development
 

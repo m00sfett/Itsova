@@ -1,6 +1,8 @@
 #include "app.h"
 
 #include "areaselector.h"
+#include "controlservice.h"
+#include "imageoutput.h"
 #include "screens.h"
 #include "settingswindow.h"
 #include "shortcutmanager.h"
@@ -52,6 +54,10 @@ App::App(QObject *parent)
     };
     connect(qGuiApp, &QGuiApplication::screenAdded, this, layoutChanged);
     connect(qGuiApp, &QGuiApplication::screenRemoved, this, layoutChanged);
+
+    // The Plasma widget replaces the separate tray icon while it is loaded.
+    control_ = new ControlService(this);
+    connect(control_, &ControlService::widgetActiveChanged, tray_, &TrayController::setStandby);
 
     syncShortcuts();
     migrateLegacyIds();
@@ -174,6 +180,7 @@ void App::trigger(const QString &id)
 
 void App::onTriggerFinished(const TriggerResult &result)
 {
+    Q_EMIT captured(!result.writtenPaths.isEmpty());
     if (!result.writtenPaths.isEmpty()) {
         // Every frame is in memory by now, so the blink cannot end up in a capture (A2).
         tray_->blink();
@@ -240,7 +247,7 @@ void App::openCaptureFolder()
     QDesktopServices::openUrl(QUrl::fromLocalFile(directory));
 }
 
-void App::showSettings(bool addArea)
+void App::showSettings(bool addArea, const QString &targetId)
 {
     auto *window = qobject_cast<SettingsWindow *>(settings_.data());
     if (!window) {
@@ -251,9 +258,56 @@ void App::showSettings(bool addArea)
         window->addArea();
         return;
     }
+    if (!targetId.isEmpty()) {
+        window->showTarget(targetId);
+    }
     window->show();
     window->raise();
     window->activateWindow();
+}
+
+QString App::renameTarget(const QString &id, const QString &name)
+{
+    const QString trimmed = name.trimmed();
+    Area *area = store_.area(id);
+    Group *group = store_.group(id);
+    if (!area && !group) {
+        return tr("Only areas and groups can be renamed.");
+    }
+    if ((area && trimmed == area->name) || (group && trimmed == group->name)) {
+        return {};
+    }
+    if (trimmed.isEmpty() || (area && sanitizeFilenameToken(trimmed).isEmpty())) {
+        return tr("Enter a name that can be used in a file name.");
+    }
+    QStringList connectors;
+    for (const ScreenInfo &screen : currentScreens()) {
+        connectors.append(screen.connector);
+    }
+    if (!store_.isNameAvailable(trimmed, id, connectors)) {
+        return tr("“%1” is already used by another target or group.").arg(trimmed);
+    }
+    if (area) {
+        area->name = trimmed;
+    } else {
+        group->name = trimmed;
+    }
+    storeChanged();
+    return {};
+}
+
+void App::removeTarget(const QString &id)
+{
+    if (!store_.area(id) && !store_.group(id)) {
+        return;
+    }
+    store_.remove(id);
+    storeChanged({id});
+}
+
+bool App::hasLastCapture() const
+{
+    return !engine_->lastPaths().isEmpty();
 }
 
 void App::editArea(const QString &areaId)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.6 LANGUAGES CXX)
+project(glimply VERSION 0.1.7 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,6 +22,7 @@ find_package(KF6I18n REQUIRED)
 add_executable(glimply
     src/main.cpp
     src/app.cpp
+    src/controlservice.cpp
     src/areaselector.cpp
     src/settingswindow.cpp
     src/screens.cpp
@@ -64,7 +65,20 @@ configure_file(data/io.github.m00sfett.glimply.desktop.in "${CMAKE_CURRENT_BINAR
 install(TARGETS glimply RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 install(FILES data/glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
-install(FILES data/io.github.m00sfett.glimply.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+install(FILES data/io.github.m00sfett.glimply.svg data/io.github.m00sfett.glimply-symbolic.svg
+              data/io.github.m00sfett.glimply-flash-symbolic.svg
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
+
+# D-Bus activation: the Plasma widget starts glimply on demand.
+configure_file(data/io.github.m00sfett.glimply.service.in "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.service" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.service" DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
+
+# Plasma widget (QML package).
+set(GLIMPLY_VERSION "${PROJECT_VERSION}")
+set(GLIMPLY_PLASMOID_DIR ${CMAKE_INSTALL_DATADIR}/plasma/plasmoids/io.github.m00sfett.glimply.widget)
+configure_file(plasmoid/metadata.json "${CMAKE_CURRENT_BINARY_DIR}/plasmoid/metadata.json" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/plasmoid/metadata.json" DESTINATION ${GLIMPLY_PLASMOID_DIR})
+install(DIRECTORY plasmoid/contents DESTINATION ${GLIMPLY_PLASMOID_DIR})
 
 include(CTest)
 if(BUILD_TESTING)
