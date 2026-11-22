@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.3 LANGUAGES CXX)
+project(glimply VERSION 0.1.4 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,16 +11,28 @@ find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets)
 find_package(KF6Config REQUIRED)
 find_package(KF6GlobalAccel REQUIRED)
 find_package(KF6StatusNotifierItem REQUIRED)
+find_package(KF6Notifications REQUIRED)
+find_package(KF6DBusAddons REQUIRED)
 
 add_executable(glimply
     src/main.cpp
+    src/app.cpp
+    src/screens.cpp
+    src/shortcutmanager.cpp
+    src/traycontroller.cpp
+    src/trayicon.cpp
 )
+target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
 
 target_link_libraries(glimply
     PRIVATE
+        glimply_capture
+        Qt6::DBus
         Qt6::Widgets
         KF6::ConfigCore
+        KF6::DBusAddons
         KF6::GlobalAccel
+        KF6::Notifications
         KF6::StatusNotifierItem
 )
 
