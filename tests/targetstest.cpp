@@ -1,0 +1,261 @@
+#include "targets.h"
+#include "triggerengine.h"
+#include "triggerplan.h"
+
+#include <KConfig>
+
+#include <QAtomicInt>
+#include <QFileInfo>
+#include <QImageReader>
+#include <QMutex>
+#include <QTemporaryDir>
+#include <QtTest>
+
+using namespace glimply;
+
+namespace
+{
+
+// The target system: DP-1 3840x2160 at scale 1.25, HDMI-A-1 1920x1080 at scale 1, vertically offset.
+QList<ScreenInfo> testLayout()
+{
+    return {
+        {QStringLiteral("DP-1"), QRect(1920, 0, 3072, 1728), QStringLiteral("Acme"), QStringLiteral("UHD"),
+         QStringLiteral("123")},
+        {QStringLiteral("HDMI-A-1"), QRect(0, 318, 1920, 1080), QStringLiteral("Acme"), QStringLiteral("FHD"),
+         QString()},
+    };
+}
+
+CaptureResult fakeFrame(const QString &connector)
+{
+    if (connector == QStringLiteral("DP-1")) {
+        QImage image(3840, 2160, QImage::Format_RGBX8888);
+        image.fill(QColor(200, 10, 10));
+        return {image, 1.25, {}};
+    }
+    QImage image(1920, 1080, QImage::Format_RGBX8888);
+    image.fill(QColor(10, 10, 200));
+    return {image, 1.0, {}};
+}
+
+} // namespace
+
+class TargetsTest : public QObject
+{
+    Q_OBJECT
+
+private Q_SLOTS:
+    void autoNamesAreSequentialAndUnique();
+    void reservedNamesAreRejected();
+    void configRoundTrip();
+    void removingRegionDropsItFromGroups();
+    void groupPlanCapturesEachMonitorOnce();
+    void groupCursorOverridesTargets();
+    void missingMonitorAndOversizedRegionAreSkipped();
+    void monitorIdentityChangeWarns();
+    void allMonitorsComposition();
+    void groupTriggerSharesTimestampAndFrames();
+};
+
+void TargetsTest::autoNamesAreSequentialAndUnique()
+{
+    TargetStore store;
+    const ScreenInfo dp = testLayout().at(0);
+    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
+    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-2"));
+    store.regions.first().name = QStringLiteral("Chat");
+    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
+    QVERIFY(store.regions.at(0).id != store.regions.at(1).id);
+}
+
+void TargetsTest::reservedNamesAreRejected()
+{
+    TargetStore store;
+    store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("ALL")));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("dp-1-1")));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("DP-1")));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("HDMI-A-1"), {}, {QStringLiteral("HDMI-A-1")}));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("   ")));
+    QVERIFY(store.isNameAvailable(QStringLiteral("DP-1-1"), store.regions.first().id));
+    QVERIFY(store.isNameAvailable(QStringLiteral("Chat")));
+}
+
+void TargetsTest::configRoundTrip()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+
+    TargetStore store;
+    const auto layout = testLayout();
+    Region &a = store.addRegion(layout.at(0), QRect(8, 64, 400, 300));
+    a.includeCursor = true;
+    const QString aId = a.id;
+    const QString bId = store.addRegion(layout.at(1), QRect(1, 2, 3, 4)).id;
+    Group &group = store.addGroup(QStringLiteral("Both"));
+    group.targetIds = {aId, bId, allMonitorsTargetId(), screenTargetId(QStringLiteral("DP-1"))};
+    group.includeCursor = true;
+    store.cursorScreens = {QStringLiteral("HDMI-A-1")};
+    store.allMonitorsCursor = true;
+    store.captureDirectory = dir.filePath(QStringLiteral("out"));
+    store.filenameTemplate = QStringLiteral("{region}_{date}.png");
+    store.autostart = false;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+
+    TargetStore loaded;
+    KConfig config(path, KConfig::SimpleConfig);
+    loaded.load(config);
+    QCOMPARE(loaded.regions.size(), 2);
+    QCOMPARE(loaded.regions.at(0).id, aId);
+    QCOMPARE(loaded.regions.at(0).name, QStringLiteral("DP-1-1"));
+    QCOMPARE(loaded.regions.at(0).rect, QRect(8, 64, 400, 300));
+    QCOMPARE(loaded.regions.at(0).monitorIdentity, QStringLiteral("Acme UHD 123"));
+    QVERIFY(loaded.regions.at(0).includeCursor);
+    QCOMPARE(loaded.regions.at(1).id, bId);
+    QCOMPARE(loaded.groups.size(), 1);
+    QCOMPARE(loaded.groups.at(0).targetIds, group.targetIds);
+    QVERIFY(loaded.groups.at(0).includeCursor);
+    QCOMPARE(loaded.cursorScreens, store.cursorScreens);
+    QVERIFY(loaded.allMonitorsCursor);
+    QCOMPARE(loaded.captureDirectory, store.captureDirectory);
+    QCOMPARE(loaded.filenameTemplate, store.filenameTemplate);
+    QVERIFY(!loaded.autostart);
+    QVERIFY(loaded.autostartInitialized);
+}
+
+void TargetsTest::removingRegionDropsItFromGroups()
+{
+    TargetStore store;
+    const QString id = store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10)).id;
+    store.addGroup(QStringLiteral("G")).targetIds = {id, allMonitorsTargetId()};
+    store.remove(id);
+    QVERIFY(store.regions.isEmpty());
+    QCOMPARE(store.groups.first().targetIds, QStringList{allMonitorsTargetId()});
+}
+
+void TargetsTest::groupPlanCapturesEachMonitorOnce()
+{
+    TargetStore store;
+    const auto layout = testLayout();
+    const QString a = store.addRegion(layout.at(0), QRect(0, 0, 400, 300)).id;
+    const QString b = store.addRegion(layout.at(0), QRect(100, 100, 50, 50)).id;
+    const QString c = store.addRegion(layout.at(1), QRect(0, 0, 400, 300)).id;
+    Group &group = store.addGroup(QStringLiteral("G"));
+    group.targetIds = {a, b, c, screenTargetId(QStringLiteral("DP-1")), a};
+
+    const TriggerPlan plan = planTrigger(store, group.id, layout);
+    QVERIFY(plan.errors.isEmpty());
+    QCOMPARE(plan.connectors, (QStringList{QStringLiteral("DP-1"), QStringLiteral("HDMI-A-1")}));
+    QCOMPARE(plan.outputs.size(), 4);
+}
+
+void TargetsTest::groupCursorOverridesTargets()
+{
+    TargetStore store;
+    Region &region = store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10));
+    region.includeCursor = true;
+    const QString regionId = region.id;
+    Group &group = store.addGroup(QStringLiteral("G"));
+    group.targetIds = {regionId};
+    QVERIFY(!planTrigger(store, group.id, testLayout()).includeCursor);
+    QVERIFY(planTrigger(store, regionId, testLayout()).includeCursor);
+}
+
+void TargetsTest::missingMonitorAndOversizedRegionAreSkipped()
+{
+    TargetStore store;
+    const auto layout = testLayout();
+    const QString tooBig = store.addRegion(layout.at(1), QRect(1800, 0, 400, 300)).id;
+    const QString elsewhere = store.addRegion({QStringLiteral("DP-2"), QRect(0, 0, 100, 100), {}, {}, {}}, QRect(0, 0, 10, 10)).id;
+    const QString fine = store.addRegion(layout.at(1), QRect(0, 0, 10, 10)).id;
+    Group &group = store.addGroup(QStringLiteral("G"));
+    group.targetIds = {tooBig, elsewhere, fine, screenTargetId(QStringLiteral("DP-3"))};
+
+    const TriggerPlan plan = planTrigger(store, group.id, layout);
+    QCOMPARE(plan.errors.size(), 3);
+    QCOMPARE(plan.outputs.size(), 1);
+    QCOMPARE(plan.connectors, QStringList{QStringLiteral("HDMI-A-1")});
+}
+
+void TargetsTest::monitorIdentityChangeWarns()
+{
+    TargetStore store;
+    auto layout = testLayout();
+    const QString id = store.addRegion(layout.at(0), QRect(0, 0, 10, 10)).id;
+    layout[0].serialNumber = QStringLiteral("999");
+    const TriggerPlan plan = planTrigger(store, id, layout);
+    QVERIFY(plan.errors.isEmpty());
+    QCOMPARE(plan.warnings.size(), 1);
+    QCOMPARE(plan.outputs.size(), 1);
+}
+
+void TargetsTest::allMonitorsComposition()
+{
+    const auto layout = testLayout();
+    QHash<QString, CaptureResult> frames;
+    for (const ScreenInfo &screen : layout) {
+        frames.insert(screen.connector, fakeFrame(screen.connector));
+    }
+    QString error;
+    const QImage image = composeAllMonitors(layout, frames, &error);
+    QVERIFY2(!image.isNull(), qPrintable(error));
+    QCOMPARE(image.size(), QSize(6240, 2160)); // A10
+    QVERIFY(image.hasAlphaChannel());
+    // Above and below the vertically offset HDMI monitor stays transparent.
+    QCOMPARE(qAlpha(image.pixel(10, 10)), 0);
+    QCOMPARE(qAlpha(image.pixel(10, 2150)), 0);
+    // HDMI-A-1 is upscaled to y 398..1748, x 0..2400.
+    QCOMPARE(image.pixelColor(1200, 1000), QColor(10, 10, 200));
+    QCOMPARE(qAlpha(image.pixel(1200, 396)), 0);
+    QCOMPARE(qAlpha(image.pixel(1200, 1749)), 0);
+    // DP-1 covers x 2400..6240 at native resolution.
+    QCOMPARE(image.pixelColor(2400, 0), QColor(200, 10, 10));
+    QCOMPARE(image.pixelColor(6239, 2159), QColor(200, 10, 10));
+}
+
+void TargetsTest::groupTriggerSharesTimestampAndFrames()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    TargetStore store;
+    const auto layout = testLayout();
+    const QString a = store.addRegion(layout.at(0), QRect(0, 0, 400, 300)).id;
+    const QString b = store.addRegion(layout.at(1), QRect(0, 0, 400, 300)).id;
+    Group &group = store.addGroup(QStringLiteral("G"));
+    group.targetIds = {a, b, screenTargetId(QStringLiteral("HDMI-A-1")), allMonitorsTargetId()};
+
+    QMutex mutex;
+    QStringList captured;
+    const TriggerEngine::Capturer capturer = [&](const QString &connector, bool) {
+        const QMutexLocker lock(&mutex);
+        captured.append(connector);
+        return fakeFrame(connector);
+    };
+    const QDateTime timestamp(QDate(2026, 11, 22), QTime(14, 5, 33));
+    const TriggerResult result = TriggerEngine::execute(planTrigger(store, group.id, layout), capturer, dir.path(),
+                                                        TargetStore::defaultFilenameTemplate(), timestamp);
+    QVERIFY2(result.errors.isEmpty(), qPrintable(result.errors.join(QLatin1Char('\n'))));
+    captured.sort();
+    QCOMPARE(captured, (QStringList{QStringLiteral("DP-1"), QStringLiteral("HDMI-A-1")})); // one frame per monitor
+    QCOMPARE(result.capturedMonitors, 2);
+
+    QStringList names;
+    for (const QString &path : result.writtenPaths) {
+        names.append(QFileInfo(path).fileName());
+    }
+    QCOMPARE(names, (QStringList{QStringLiteral("2026-11-22_14-05-33_DP-1-1.png"),
+                                 QStringLiteral("2026-11-22_14-05-33_HDMI-A-1-1.png"),
+                                 QStringLiteral("2026-11-22_14-05-33_HDMI-A-1.png"),
+                                 QStringLiteral("2026-11-22_14-05-33_all.png")}));
+    QCOMPARE(QImageReader(result.writtenPaths.at(0)).size(), QSize(500, 375)); // A8
+    QCOMPARE(QImageReader(result.writtenPaths.at(1)).size(), QSize(400, 300));
+    QCOMPARE(QImageReader(result.writtenPaths.at(3)).size(), QSize(6240, 2160));
+}
+
+QTEST_GUILESS_MAIN(TargetsTest)
+#include "targetstest.moc"
