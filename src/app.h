@@ -29,14 +29,16 @@ public:
     [[nodiscard]] TargetStore &store();
     [[nodiscard]] ShortcutManager *shortcuts() const;
 
-    // Persists the store and refreshes shortcuts and menus. Pass ids of removed regions/groups so
+    // Persists the store and refreshes shortcuts and menus. Pass ids of removed areas/groups so
     // their global shortcuts are cleared as well.
     void storeChanged(const QStringList &deletedIds = {});
 
     void trigger(const QString &id);
     void openLastCapture();
     void openCaptureFolder();
-    void showSettings(bool addRegion = false);
+    void showSettings(bool addArea = false);
+    // Opens the selection overlay for an existing area, without the settings window.
+    void editArea(const QString &areaId);
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
 
@@ -46,6 +48,7 @@ Q_SIGNALS:
 private:
     void onTriggerFinished(const TriggerResult &result);
     void syncShortcuts(const QStringList &deletedIds = {});
+    void migrateLegacyIds();
     void applyAutostart();
     [[nodiscard]] QList<MenuTarget> menuTargets() const;
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
@@ -57,6 +60,7 @@ private:
     TriggerEngine *engine_;
     TrayController *tray_;
     QPointer<QObject> settings_;
+    QPointer<QObject> selector_;
 };
 
 } // namespace glimply

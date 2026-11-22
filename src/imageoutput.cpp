@@ -37,13 +37,15 @@ bool scaledEdge(int logicalEdge, qreal scale, int *nativeEdge)
 }
 
 QString makeFilenameImpl(const QString &filenameTemplate,
-                     const QString &regionToken,
+                     const QString &areaToken,
                      const QDateTime &timestamp)
 {
     QString filename = filenameTemplate;
     filename.replace(QStringLiteral("{date}"), timestamp.toString(QStringLiteral("yyyy-MM-dd")));
     filename.replace(QStringLiteral("{time}"), timestamp.toString(QStringLiteral("HH-mm-ss")));
-    filename.replace(QStringLiteral("{region}"), sanitizeFilenameToken(regionToken));
+    filename.replace(QStringLiteral("{area}"), sanitizeFilenameToken(areaToken));
+    // Templates written before regions were renamed to areas keep working.
+    filename.replace(QStringLiteral("{region}"), sanitizeFilenameToken(areaToken));
 
     // The template must still resolve to one flat filename, even if it contains
     // path separators or other characters that are invalid in common filesystems.
@@ -65,13 +67,13 @@ QString makeFilenameImpl(const QString &filenameTemplate,
 
 } // namespace
 
-QString filenameFor(const QString &filenameTemplate, const QString &regionToken, const QDateTime &timestamp)
+QString filenameFor(const QString &filenameTemplate, const QString &areaToken, const QDateTime &timestamp)
 {
-    return makeFilenameImpl(filenameTemplate, regionToken, timestamp);
+    return makeFilenameImpl(filenameTemplate, areaToken, timestamp);
 }
 
-QImage cropLogicalRegion(const QImage &nativeFrame,
-                         const QRect &logicalRegion,
+QImage cropLogicalArea(const QImage &nativeFrame,
+                         const QRect &logicalArea,
                          qreal scale,
                          QString *error)
 {
@@ -82,20 +84,20 @@ QImage cropLogicalRegion(const QImage &nativeFrame,
         return {};
     }
 
-    if (logicalRegion.x() < 0 || logicalRegion.y() < 0 || logicalRegion.width() <= 0 ||
-        logicalRegion.height() <= 0 || !std::isfinite(scale) || scale <= 0.0) {
+    if (logicalArea.x() < 0 || logicalArea.y() < 0 || logicalArea.width() <= 0 ||
+        logicalArea.height() <= 0 || !std::isfinite(scale) || scale <= 0.0) {
         if (error) {
-            *error = ImageOutputStrings::tr("The capture region or monitor scale is invalid.");
+            *error = ImageOutputStrings::tr("The capture area or monitor scale is invalid.");
         }
         return {};
     }
 
-    const qint64 logicalRight = static_cast<qint64>(logicalRegion.x()) + logicalRegion.width();
-    const qint64 logicalBottom = static_cast<qint64>(logicalRegion.y()) + logicalRegion.height();
+    const qint64 logicalRight = static_cast<qint64>(logicalArea.x()) + logicalArea.width();
+    const qint64 logicalBottom = static_cast<qint64>(logicalArea.y()) + logicalArea.height();
     if (logicalRight > std::numeric_limits<int>::max() ||
         logicalBottom > std::numeric_limits<int>::max()) {
         if (error) {
-            *error = ImageOutputStrings::tr("The capture region is outside the monitor image.");
+            *error = ImageOutputStrings::tr("The capture area is outside the monitor image.");
         }
         return {};
     }
@@ -104,13 +106,13 @@ QImage cropLogicalRegion(const QImage &nativeFrame,
     int top = 0;
     int right = 0;
     int bottom = 0;
-    if (!scaledEdge(logicalRegion.x(), scale, &left) ||
-        !scaledEdge(logicalRegion.y(), scale, &top) ||
+    if (!scaledEdge(logicalArea.x(), scale, &left) ||
+        !scaledEdge(logicalArea.y(), scale, &top) ||
         !scaledEdge(static_cast<int>(logicalRight), scale, &right) ||
         !scaledEdge(static_cast<int>(logicalBottom), scale, &bottom) || right <= left ||
         bottom <= top || right > nativeFrame.width() || bottom > nativeFrame.height()) {
         if (error) {
-            *error = ImageOutputStrings::tr("The capture region is outside the monitor image.");
+            *error = ImageOutputStrings::tr("The capture area is outside the monitor image.");
         }
         return {};
     }
@@ -146,13 +148,13 @@ QString sanitizeFilenameToken(const QString &token)
 OutputWriter::OutputWriter(QString directory, QString filenameTemplate)
     : directory_(std::move(directory)),
       filenameTemplate_(filenameTemplate.isEmpty()
-                            ? QStringLiteral("{date}_{time}_{region}.png")
+                            ? QStringLiteral("{date}_{time}_{area}.png")
                             : std::move(filenameTemplate))
 {
 }
 
 bool OutputWriter::writeImage(const QImage &image,
-                              const QString &regionToken,
+                              const QString &areaToken,
                               const QDateTime &timestamp,
                               QString *writtenPath,
                               QString *error) const
@@ -188,7 +190,7 @@ bool OutputWriter::writeImage(const QImage &image,
     }
 
     const QDir outputDirectory(directory_);
-    const QString filename = filenameFor(filenameTemplate_, regionToken, timestamp);
+    const QString filename = filenameFor(filenameTemplate_, areaToken, timestamp);
     const qsizetype extensionPosition = filename.lastIndexOf(QLatin1Char('.'));
     const QString stem = filename.left(extensionPosition);
     const QString extension = filename.mid(extensionPosition);

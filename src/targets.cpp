@@ -15,7 +15,18 @@ namespace
 {
 
 constexpr auto screenPrefix = "screen:";
-constexpr auto regionGroupPrefix = "Region ";
+constexpr auto areaGroupPrefix = "Area ";
+// Before 0.1.7 areas were called regions; such configurations are migrated on load.
+constexpr auto legacyAreaGroupPrefix = "Region ";
+constexpr auto legacyAreaIdPrefix = "region:";
+constexpr auto areaIdPrefix = "area:";
+
+QString migrateId(const QString &id)
+{
+    return id.startsWith(QLatin1String(legacyAreaIdPrefix))
+        ? QLatin1String(areaIdPrefix) + id.mid(int(qstrlen(legacyAreaIdPrefix)))
+        : id;
+}
 constexpr auto groupGroupPrefix = "Group ";
 
 QString newId(const char *prefix)
@@ -63,7 +74,7 @@ QString TargetStore::defaultCaptureDirectory()
 
 QString TargetStore::defaultFilenameTemplate()
 {
-    return QStringLiteral("{date}_{time}_{region}.png");
+    return QStringLiteral("{date}_{time}_{area}.png");
 }
 
 QString TargetStore::effectiveCaptureDirectory() const
@@ -78,7 +89,8 @@ QString TargetStore::effectiveFilenameTemplate() const
 
 void TargetStore::load(const KConfig &config)
 {
-    regions.clear();
+    areas.clear();
+    migratedIds.clear();
     groups.clear();
 
     const KConfigGroup general = config.group(QStringLiteral("General"));
@@ -95,22 +107,29 @@ void TargetStore::load(const KConfig &config)
     std::sort(groupNames.begin(), groupNames.end());
     for (const QString &name : std::as_const(groupNames)) {
         const KConfigGroup entry = config.group(name);
-        if (name.startsWith(QLatin1String(regionGroupPrefix))) {
-            Region region;
-            region.id = name.mid(int(qstrlen(regionGroupPrefix)));
-            region.name = entry.readEntry("Name", QString());
-            region.connector = entry.readEntry("Connector", QString());
-            region.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
-            region.rect = entry.readEntry("Rect", QRect());
-            region.includeCursor = entry.readEntry("IncludeCursor", false);
-            if (!region.id.isEmpty() && !region.name.isEmpty() && !region.connector.isEmpty()) {
-                regions.append(region);
+        const bool legacy = name.startsWith(QLatin1String(legacyAreaGroupPrefix));
+        if (name.startsWith(QLatin1String(areaGroupPrefix)) || legacy) {
+            Area area;
+            const QString storedId = name.mid(int(qstrlen(legacy ? legacyAreaGroupPrefix : areaGroupPrefix)));
+            area.id = migrateId(storedId);
+            if (area.id != storedId) {
+                migratedIds.insert(storedId, area.id);
+            }
+            area.name = entry.readEntry("Name", QString());
+            area.connector = entry.readEntry("Connector", QString());
+            area.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
+            area.rect = entry.readEntry("Rect", QRect());
+            area.includeCursor = entry.readEntry("IncludeCursor", false);
+            if (!area.id.isEmpty() && !area.name.isEmpty() && !area.connector.isEmpty()) {
+                areas.append(area);
             }
         } else if (name.startsWith(QLatin1String(groupGroupPrefix))) {
             Group group;
             group.id = name.mid(int(qstrlen(groupGroupPrefix)));
             group.name = entry.readEntry("Name", QString());
-            group.targetIds = entry.readEntry("Targets", QStringList());
+            for (const QString &target : entry.readEntry("Targets", QStringList())) {
+                group.targetIds.append(migrateId(target));
+            }
             group.includeCursor = entry.readEntry("IncludeCursor", false);
             if (!group.id.isEmpty() && !group.name.isEmpty()) {
                 groups.append(group);
@@ -118,10 +137,13 @@ void TargetStore::load(const KConfig &config)
         }
     }
     // Keep the order in which the user created entries.
-    const QStringList regionOrder = general.readEntry("RegionOrder", QStringList());
+    QStringList areaOrder;
+    for (const QString &id : general.readEntry("AreaOrder", general.readEntry("RegionOrder", QStringList()))) {
+        areaOrder.append(migrateId(id));
+    }
     const QStringList groupOrder = general.readEntry("GroupOrder", QStringList());
-    std::stable_sort(regions.begin(), regions.end(), [&](const Region &a, const Region &b) {
-        return regionOrder.indexOf(a.id) < regionOrder.indexOf(b.id);
+    std::stable_sort(areas.begin(), areas.end(), [&](const Area &a, const Area &b) {
+        return areaOrder.indexOf(a.id) < areaOrder.indexOf(b.id);
     });
     std::stable_sort(groups.begin(), groups.end(), [&](const Group &a, const Group &b) {
         return groupOrder.indexOf(a.id) < groupOrder.indexOf(b.id);
@@ -131,7 +153,8 @@ void TargetStore::load(const KConfig &config)
 void TargetStore::save(KConfig &config) const
 {
     for (const QString &name : config.groupList()) {
-        if (name.startsWith(QLatin1String(regionGroupPrefix)) || name.startsWith(QLatin1String(groupGroupPrefix))) {
+        if (name.startsWith(QLatin1String(areaGroupPrefix)) || name.startsWith(QLatin1String(legacyAreaGroupPrefix))
+            || name.startsWith(QLatin1String(groupGroupPrefix))) {
             config.deleteGroup(name);
         }
     }
@@ -145,15 +168,15 @@ void TargetStore::save(KConfig &config) const
     builtIn.writeEntry("CursorScreens", cursorScreens);
     builtIn.writeEntry("AllMonitorsCursor", allMonitorsCursor);
 
-    QStringList regionOrder;
-    for (const Region &region : regions) {
-        KConfigGroup entry = config.group(QLatin1String(regionGroupPrefix) + region.id);
-        entry.writeEntry("Name", region.name);
-        entry.writeEntry("Connector", region.connector);
-        entry.writeEntry("MonitorIdentity", region.monitorIdentity);
-        entry.writeEntry("Rect", region.rect);
-        entry.writeEntry("IncludeCursor", region.includeCursor);
-        regionOrder.append(region.id);
+    QStringList areaOrder;
+    for (const Area &area : areas) {
+        KConfigGroup entry = config.group(QLatin1String(areaGroupPrefix) + area.id);
+        entry.writeEntry("Name", area.name);
+        entry.writeEntry("Connector", area.connector);
+        entry.writeEntry("MonitorIdentity", area.monitorIdentity);
+        entry.writeEntry("Rect", area.rect);
+        entry.writeEntry("IncludeCursor", area.includeCursor);
+        areaOrder.append(area.id);
     }
     QStringList groupOrder;
     for (const Group &group : groups) {
@@ -163,20 +186,21 @@ void TargetStore::save(KConfig &config) const
         entry.writeEntry("IncludeCursor", group.includeCursor);
         groupOrder.append(group.id);
     }
-    general.writeEntry("RegionOrder", regionOrder);
+    general.writeEntry("AreaOrder", areaOrder);
+    general.deleteEntry("RegionOrder");
     general.writeEntry("GroupOrder", groupOrder);
     config.sync();
 }
 
-const Region *TargetStore::region(const QString &id) const
+const Area *TargetStore::area(const QString &id) const
 {
-    const auto it = std::find_if(regions.cbegin(), regions.cend(), [&](const Region &r) { return r.id == id; });
-    return it == regions.cend() ? nullptr : &*it;
+    const auto it = std::find_if(areas.cbegin(), areas.cend(), [&](const Area &r) { return r.id == id; });
+    return it == areas.cend() ? nullptr : &*it;
 }
 
-Region *TargetStore::region(const QString &id)
+Area *TargetStore::area(const QString &id)
 {
-    return const_cast<Region *>(std::as_const(*this).region(id));
+    return const_cast<Area *>(std::as_const(*this).area(id));
 }
 
 const Group *TargetStore::group(const QString &id) const
@@ -190,7 +214,7 @@ Group *TargetStore::group(const QString &id)
     return const_cast<Group *>(std::as_const(*this).group(id));
 }
 
-QString TargetStore::nextRegionName(const QString &connector) const
+QString TargetStore::nextAreaName(const QString &connector) const
 {
     for (int n = 1;; ++n) {
         const QString candidate = connector + QLatin1Char('-') + QString::number(n);
@@ -207,10 +231,10 @@ bool TargetStore::isNameAvailable(const QString &name, const QString &exceptId, 
         || reservedTokens.contains(trimmed, Qt::CaseInsensitive)) {
         return false;
     }
-    for (const Region &region : regions) {
-        if (region.id != exceptId
-            && (region.name.compare(trimmed, Qt::CaseInsensitive) == 0
-                || region.connector.compare(trimmed, Qt::CaseInsensitive) == 0)) {
+    for (const Area &area : areas) {
+        if (area.id != exceptId
+            && (area.name.compare(trimmed, Qt::CaseInsensitive) == 0
+                || area.connector.compare(trimmed, Qt::CaseInsensitive) == 0)) {
             return false;
         }
     }
@@ -222,16 +246,16 @@ bool TargetStore::isNameAvailable(const QString &name, const QString &exceptId, 
     return true;
 }
 
-Region &TargetStore::addRegion(const ScreenInfo &screen, const QRect &rect)
+Area &TargetStore::addArea(const ScreenInfo &screen, const QRect &rect)
 {
-    Region region;
-    region.id = newId("region:");
-    region.name = nextRegionName(screen.connector);
-    region.connector = screen.connector;
-    region.monitorIdentity = screen.identity();
-    region.rect = rect;
-    regions.append(region);
-    return regions.last();
+    Area area;
+    area.id = newId(areaIdPrefix);
+    area.name = nextAreaName(screen.connector);
+    area.connector = screen.connector;
+    area.monitorIdentity = screen.identity();
+    area.rect = rect;
+    areas.append(area);
+    return areas.last();
 }
 
 Group &TargetStore::addGroup(const QString &name)
@@ -245,7 +269,7 @@ Group &TargetStore::addGroup(const QString &name)
 
 void TargetStore::remove(const QString &id)
 {
-    regions.removeIf([&](const Region &r) { return r.id == id; });
+    areas.removeIf([&](const Area &r) { return r.id == id; });
     groups.removeIf([&](const Group &g) { return g.id == id; });
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
@@ -260,7 +284,7 @@ bool TargetStore::targetIncludesCursor(const QString &targetId) const
     if (isScreenTargetId(targetId)) {
         return cursorScreens.contains(connectorFromScreenTargetId(targetId));
     }
-    if (const Region *r = region(targetId)) {
+    if (const Area *r = area(targetId)) {
         return r->includeCursor;
     }
     if (const Group *g = group(targetId)) {

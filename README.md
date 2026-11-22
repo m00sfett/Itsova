@@ -1,6 +1,6 @@
 # glimply
 
-glimply is a KDE Plasma tray application for capturing fixed screen regions,
+glimply is a KDE Plasma tray application for capturing fixed screen areas,
 individual monitors, or all monitors the moment a global shortcut is pressed:
 no selection, no dialog, no overlay.
 
@@ -9,12 +9,12 @@ on Wayland.
 
 ## Features
 
-- **Regions** bound to one monitor, stored in logical coordinates and captured
+- **Areas** bound to one monitor, stored in logical coordinates and captured
   at the monitor's native resolution. glimply names them `<connector>-<n>`
   (for example `DP-1-1`); you can rename them.
 - **Monitors and All monitors** are always available. *All monitors* is one
-  image in the current arrangement at the highest monitor scale; areas without
-  a monitor are transparent.
+  image in the current arrangement at the highest monitor scale; gaps between
+  monitors are transparent.
 - **Groups** capture several targets with one shortcut. Each monitor is
   captured once per trigger, so all files show the same moment and share one
   timestamp.
@@ -26,7 +26,7 @@ on Wayland.
 - **Feedback** without interruptions: the tray icon blinks once after a
   capture. Errors, such as a missing monitor, raise a notification.
 - Captures are saved as PNG in `~/Pictures/glimply/` (your XDG pictures folder)
-  as `{date}_{time}_{region}.png`. Existing files are never overwritten.
+  as `{date}_{time}_{area}.png`. Existing files are never overwritten.
 
 ## Build requirements
 
@@ -59,11 +59,11 @@ captures fail with a permission error, reinstall with `scripts/install.sh`.
 
 ## Usage
 
-1. Click the tray icon and choose **Add Region…**. Every monitor shows a
+1. Click the tray icon and choose **Add Area…**. Every monitor shows a
    frozen, dimmed picture. Drag a rectangle on the monitor you want, adjust it
    (drag to move, arrow keys to move by a pixel, Shift+arrow keys to resize,
    Ctrl for steps of ten) and press **Enter**.
-2. Record a shortcut for the new region in the settings window that opens.
+2. Record a shortcut for the new area in the settings window that opens.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.
 
@@ -86,7 +86,7 @@ in `~/.config/glimply/capture-smoke.ini`:
 ```ini
 [General]
 screen=DP-1
-region=@Rect(8 64 400 300)
+area=@Rect(8 64 400 300)
 ```
 
 The interface is English. Translations are planned; until they ship, KDE and

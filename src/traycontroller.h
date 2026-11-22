@@ -16,9 +16,9 @@ namespace glimply
 
 struct MenuTarget
 {
-    enum class Section { Group, Region, Monitor };
+    enum class Section { Group, Area, Monitor };
 
-    Section section = Section::Region;
+    Section section = Section::Area;
     QString id;
     QString name;
     QString detail; // e.g. "not connected"
@@ -45,7 +45,7 @@ Q_SIGNALS:
     void openLastCaptureRequested();
     void openFolderRequested();
     void configureRequested();
-    void addRegionRequested();
+    void addAreaRequested();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;

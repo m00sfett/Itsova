@@ -2,7 +2,7 @@
 
 #include "app.h"
 #include "imageoutput.h"
-#include "regionselector.h"
+#include "areaselector.h"
 #include "screens.h"
 #include "shortcutmanager.h"
 
@@ -72,7 +72,7 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
 
     targetsPage_ = addPage(createTargetsPage(), tr("Targets"));
     auto *targets = targetsPage_;
-    targets->setHeader(tr("Regions and monitors"));
+    targets->setHeader(tr("Areas and monitors"));
     targets->setIcon(QIcon::fromTheme(QStringLiteral("transform-crop")));
     auto *groups = addPage(createGroupsPage(), tr("Groups"));
     groups->setHeader(tr("Capture several targets with one shortcut"));
@@ -117,11 +117,11 @@ QWidget *SettingsWindow::createTargetsPage()
     targetTree_->header()->setStretchLastSection(false);
     listLayout->addWidget(targetTree_);
     auto *buttons = new QHBoxLayout;
-    auto *addButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Region…"), listSide);
+    auto *addButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), listSide);
     addButton->setToolTip(tr("Drag a rectangle on any monitor"));
-    removeRegionButton_ = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), tr("Remove"), listSide);
+    removeAreaButton_ = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), tr("Remove"), listSide);
     buttons->addWidget(addButton);
-    buttons->addWidget(removeRegionButton_);
+    buttons->addWidget(removeAreaButton_);
     buttons->addStretch();
     listLayout->addLayout(buttons);
 
@@ -135,17 +135,17 @@ QWidget *SettingsWindow::createTargetsPage()
     targetTitle_->setFont(titleFont);
     form->addRow(targetTitle_);
 
-    regionName_ = new QLineEdit(targetDetails_);
-    regionName_->setAccessibleName(tr("Region name"));
-    regionNameError_ = makeError(targetDetails_);
+    areaName_ = new QLineEdit(targetDetails_);
+    areaName_->setAccessibleName(tr("Area name"));
+    areaNameError_ = makeError(targetDetails_);
     auto *nameBox = new QWidget(targetDetails_);
     auto *nameLayout = new QVBoxLayout(nameBox);
     nameLayout->setContentsMargins(0, 0, 0, 0);
-    nameLayout->addWidget(regionName_);
-    nameLayout->addWidget(regionNameError_);
+    nameLayout->addWidget(areaName_);
+    nameLayout->addWidget(areaNameError_);
     nameLayout->addWidget(makeHint(tr("Also used in the file name."), nameBox));
     form->addRow(tr("Name:"), nameBox);
-    regionOnly_ = {nameBox, form->labelForField(nameBox)};
+    areaOnly_ = {nameBox, form->labelForField(nameBox)};
 
     monitorLabel_ = new QLabel(targetDetails_);
     monitorLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -161,21 +161,21 @@ QWidget *SettingsWindow::createTargetsPage()
         spin->setRange(0, 100000);
         spin->setAccelerated(true);
         spin->setKeyboardTracking(false);
-        connect(spin, &QSpinBox::valueChanged, this, &SettingsWindow::applyRegionGeometry);
+        connect(spin, &QSpinBox::valueChanged, this, &SettingsWindow::applyAreaGeometry);
         return spin;
     };
-    regionX_ = makeSpin(tr("X: "), tr("Left edge"));
-    regionY_ = makeSpin(tr("Y: "), tr("Top edge"));
-    regionWidth_ = makeSpin(tr("Width: "), tr("Width"));
-    regionHeight_ = makeSpin(tr("Height: "), tr("Height"));
-    regionWidth_->setMinimum(1);
-    regionHeight_->setMinimum(1);
+    areaX_ = makeSpin(tr("X: "), tr("Left edge"));
+    areaY_ = makeSpin(tr("Y: "), tr("Top edge"));
+    areaWidth_ = makeSpin(tr("Width: "), tr("Width"));
+    areaHeight_ = makeSpin(tr("Height: "), tr("Height"));
+    areaWidth_->setMinimum(1);
+    areaHeight_->setMinimum(1);
     auto *positionRow = new QHBoxLayout;
-    positionRow->addWidget(regionX_);
-    positionRow->addWidget(regionY_);
+    positionRow->addWidget(areaX_);
+    positionRow->addWidget(areaY_);
     auto *sizeRow = new QHBoxLayout;
-    sizeRow->addWidget(regionWidth_);
-    sizeRow->addWidget(regionHeight_);
+    sizeRow->addWidget(areaWidth_);
+    sizeRow->addWidget(areaHeight_);
     geometryLayout->addLayout(positionRow);
     geometryLayout->addLayout(sizeRow);
     auto *reselect = new QPushButton(QIcon::fromTheme(QStringLiteral("transform-crop")), tr("Select on Screen…"),
@@ -187,11 +187,11 @@ QWidget *SettingsWindow::createTargetsPage()
     geometryLayout->addWidget(makeHint(tr("Logical pixels relative to the monitor's top left corner. Captures use "
                                           "the monitor's native resolution."),
                                        geometryRow_));
-    form->addRow(tr("Area:"), geometryRow_);
-    regionOnly_ << geometryRow_ << form->labelForField(geometryRow_);
+    form->addRow(tr("Position and size:"), geometryRow_);
+    areaOnly_ << geometryRow_ << form->labelForField(geometryRow_);
 
-    regionWarning_ = makeError(targetDetails_);
-    form->addRow(QString(), regionWarning_);
+    areaWarning_ = makeError(targetDetails_);
+    form->addRow(QString(), areaWarning_);
 
     targetCursor_ = new QCheckBox(tr("Include the mouse pointer"), targetDetails_);
     form->addRow(tr("Pointer:"), targetCursor_);
@@ -209,12 +209,12 @@ QWidget *SettingsWindow::createTargetsPage()
     splitter->setStretchFactor(1, 1);
 
     connect(targetTree_, &QTreeWidget::currentItemChanged, this, &SettingsWindow::refreshTargetDetails);
-    connect(addButton, &QPushButton::clicked, this, &SettingsWindow::addRegion);
-    connect(removeRegionButton_, &QPushButton::clicked, this, &SettingsWindow::removeSelectedRegion);
-    connect(regionName_, &QLineEdit::editingFinished, this, &SettingsWindow::renameRegion);
+    connect(addButton, &QPushButton::clicked, this, &SettingsWindow::addArea);
+    connect(removeAreaButton_, &QPushButton::clicked, this, &SettingsWindow::removeSelectedArea);
+    connect(areaName_, &QLineEdit::editingFinished, this, &SettingsWindow::renameArea);
     connect(reselect, &QPushButton::clicked, this, [this] {
-        if (const Region *region = app_->store().region(selectedTargetId())) {
-            runSelector(region->connector, region->rect, region->id);
+        if (const Area *area = app_->store().area(selectedTargetId())) {
+            runSelector(area->connector, area->rect, area->id);
         }
     });
     connect(targetCursor_, &QCheckBox::toggled, this, [this](bool on) {
@@ -223,8 +223,8 @@ QWidget *SettingsWindow::createTargetsPage()
         }
         TargetStore &store = app_->store();
         const QString id = selectedTargetId();
-        if (Region *region = store.region(id)) {
-            region->includeCursor = on;
+        if (Area *area = store.area(id)) {
+            area->includeCursor = on;
         } else if (id == allMonitorsTargetId()) {
             store.allMonitorsCursor = on;
         } else if (isScreenTargetId(id)) {
@@ -256,9 +256,9 @@ void SettingsWindow::refreshTargets()
         connectors.append(screen.connector);
     }
     QStringList disconnected;
-    for (const Region &region : store.regions) {
-        if (!connectors.contains(region.connector) && !disconnected.contains(region.connector)) {
-            disconnected.append(region.connector);
+    for (const Area &area : store.areas) {
+        if (!connectors.contains(area.connector) && !disconnected.contains(area.connector)) {
+            disconnected.append(area.connector);
         }
     }
 
@@ -270,15 +270,15 @@ void SettingsWindow::refreshTargets()
         item->setIcon(0, QIcon::fromTheme(QStringLiteral("video-display")));
         item->setText(1, shortcuts->shortcut(id).toString(QKeySequence::NativeText));
         item->setData(0, idRole, id);
-        for (const Region &region : store.regions) {
-            if (region.connector != connector) {
+        for (const Area &area : store.areas) {
+            if (area.connector != connector) {
                 continue;
             }
             auto *child = new QTreeWidgetItem(item);
-            child->setText(0, region.name);
+            child->setText(0, area.name);
             child->setIcon(0, QIcon::fromTheme(QStringLiteral("transform-crop")));
-            child->setText(1, shortcuts->shortcut(region.id).toString(QKeySequence::NativeText));
-            child->setData(0, idRole, region.id);
+            child->setText(1, shortcuts->shortcut(area.id).toString(QKeySequence::NativeText));
+            child->setData(0, idRole, area.id);
         }
         item->setExpanded(true);
     };
@@ -294,7 +294,7 @@ void SettingsWindow::refreshTargets()
     all->setText(1, shortcuts->shortcut(allMonitorsTargetId()).toString(QKeySequence::NativeText));
     all->setData(0, idRole, allMonitorsTargetId());
 
-    selectTarget(current.isEmpty() && !store.regions.isEmpty() ? store.regions.first().id : current);
+    selectTarget(current.isEmpty() && !store.areas.isEmpty() ? store.areas.first().id : current);
     if (!targetTree_->currentItem() && targetTree_->topLevelItemCount() > 0) {
         targetTree_->setCurrentItem(targetTree_->topLevelItem(0));
     }
@@ -305,21 +305,21 @@ void SettingsWindow::refreshTargetDetails()
 {
     const QString id = selectedTargetId();
     const TargetStore &store = app_->store();
-    const Region *region = store.region(id);
-    const bool isRegion = region != nullptr;
-    removeRegionButton_->setEnabled(isRegion);
+    const Area *area = store.area(id);
+    const bool isArea = area != nullptr;
+    removeAreaButton_->setEnabled(isArea);
     targetDetails_->setEnabled(!id.isEmpty());
 
     updating_ = true;
-    for (QWidget *widget : std::as_const(regionOnly_)) {
+    for (QWidget *widget : std::as_const(areaOnly_)) {
         if (widget) {
-            widget->setVisible(isRegion);
+            widget->setVisible(isArea);
         }
     }
-    regionNameError_->hide();
-    regionWarning_->hide();
+    areaNameError_->hide();
+    areaWarning_->hide();
 
-    const QString connector = isRegion ? region->connector : connectorFromScreenTargetId(id);
+    const QString connector = isArea ? area->connector : connectorFromScreenTargetId(id);
     const QScreen *screen = connector.isEmpty() ? nullptr : findScreen(connector);
     if (id == allMonitorsTargetId()) {
         targetTitle_->setText(tr("All monitors"));
@@ -336,31 +336,31 @@ void SettingsWindow::refreshTargetDetails()
     } else {
         monitorLabel_->setText(tr("%1 · not connected").arg(connector));
     }
-    if (isRegion) {
-        targetTitle_->setText(region->name);
-        regionName_->setText(region->name);
-        const QSize area = screen ? screen->geometry().size() : QSize(100000, 100000);
-        regionX_->setMaximum(std::max(0, area.width() - 1));
-        regionY_->setMaximum(std::max(0, area.height() - 1));
-        regionWidth_->setMaximum(area.width());
-        regionHeight_->setMaximum(area.height());
-        regionX_->setValue(region->rect.x());
-        regionY_->setValue(region->rect.y());
-        regionWidth_->setValue(region->rect.width());
-        regionHeight_->setValue(region->rect.height());
+    if (isArea) {
+        targetTitle_->setText(area->name);
+        areaName_->setText(area->name);
+        const QSize bounds = screen ? screen->geometry().size() : QSize(100000, 100000);
+        areaX_->setMaximum(std::max(0, bounds.width() - 1));
+        areaY_->setMaximum(std::max(0, bounds.height() - 1));
+        areaWidth_->setMaximum(bounds.width());
+        areaHeight_->setMaximum(bounds.height());
+        areaX_->setValue(area->rect.x());
+        areaY_->setValue(area->rect.y());
+        areaWidth_->setValue(area->rect.width());
+        areaHeight_->setValue(area->rect.height());
         geometryRow_->setEnabled(screen != nullptr);
         if (!screen) {
-            regionWarning_->setText(tr("The monitor is not connected. This region is skipped when triggered."));
-            regionWarning_->show();
-        } else if (!QRect(QPoint(), screen->geometry().size()).contains(region->rect)) {
-            regionWarning_->setText(tr("The region no longer fits on this monitor and is skipped when triggered. "
+            areaWarning_->setText(tr("The monitor is not connected. This area is skipped when triggered."));
+            areaWarning_->show();
+        } else if (!QRect(QPoint(), screen->geometry().size()).contains(area->rect)) {
+            areaWarning_->setText(tr("The area no longer fits on this monitor and is skipped when triggered. "
                                        "Adjust it or select it again."));
-            regionWarning_->show();
-        } else if (!region->monitorIdentity.isEmpty() && screenInfo(screen).identity() != region->monitorIdentity) {
-            regionWarning_->setText(tr("A different monitor is connected to %1 than when this region was defined "
+            areaWarning_->show();
+        } else if (!area->monitorIdentity.isEmpty() && screenInfo(screen).identity() != area->monitorIdentity) {
+            areaWarning_->setText(tr("A different monitor is connected to %1 than when this area was defined "
                                        "(%2).")
-                                        .arg(connector, region->monitorIdentity));
-            regionWarning_->show();
+                                        .arg(connector, area->monitorIdentity));
+            areaWarning_->show();
         }
     } else if (screen) {
         targetTitle_->setText(tr("Monitor %1").arg(connector));
@@ -369,9 +369,9 @@ void SettingsWindow::refreshTargetDetails()
     }
 
     targetCursor_->setChecked(store.targetIncludesCursor(id));
-    targetCursor_->setEnabled(isRegion || screen || id == allMonitorsTargetId());
+    targetCursor_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetShortcut_->setKeySequence(app_->shortcuts()->shortcut(id));
-    targetShortcut_->setEnabled(isRegion || screen || id == allMonitorsTargetId());
+    targetShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     updating_ = false;
 }
 
@@ -391,30 +391,39 @@ void SettingsWindow::selectTarget(const QString &id)
     }
 }
 
-void SettingsWindow::addRegion()
+void SettingsWindow::addArea()
 {
     setCurrentPage(targetsPage_);
     runSelector(QString(), QRect(), QString());
 }
 
-void SettingsWindow::runSelector(const QString &connector, const QRect &initial, const QString &regionId)
+void SettingsWindow::editArea(const QString &areaId)
+{
+    if (const Area *area = app_->store().area(areaId)) {
+        setCurrentPage(targetsPage_);
+        selectTarget(areaId);
+        runSelector(area->connector, area->rect, area->id);
+    }
+}
+
+void SettingsWindow::runSelector(const QString &connector, const QRect &initial, const QString &areaId)
 {
     if (selector_) {
         return;
     }
-    selector_ = new RegionSelector(this);
-    connect(selector_, &RegionSelector::selected, this,
-            [this, regionId](const QString &selectedConnector, const QRect &rect) {
+    selector_ = new AreaSelector(this);
+    connect(selector_, &AreaSelector::selected, this,
+            [this, areaId](const QString &selectedConnector, const QRect &rect) {
                 selector_->deleteLater();
                 TargetStore &store = app_->store();
-                QString id = regionId;
-                if (Region *region = store.region(regionId)) {
-                    region->rect = rect;
+                QString id = areaId;
+                if (Area *area = store.area(areaId)) {
+                    area->rect = rect;
                     if (const QScreen *screen = findScreen(selectedConnector)) {
-                        region->monitorIdentity = screenInfo(screen).identity();
+                        area->monitorIdentity = screenInfo(screen).identity();
                     }
                 } else if (const QScreen *screen = findScreen(selectedConnector)) {
-                    id = store.addRegion(screenInfo(screen), rect).id;
+                    id = store.addArea(screenInfo(screen), rect).id;
                 }
                 app_->storeChanged();
                 show();
@@ -422,12 +431,12 @@ void SettingsWindow::runSelector(const QString &connector, const QRect &initial,
                 activateWindow();
                 setCurrentPage(targetsPage_);
                 selectTarget(id);
-                if (regionId.isEmpty()) {
-                    // A fresh region is most useful with a shortcut: start recording right away.
+                if (areaId.isEmpty()) {
+                    // A fresh area is most useful with a shortcut: start recording right away.
                     targetShortcut_->captureKeySequence();
                 }
             });
-    connect(selector_, &RegionSelector::cancelled, this, [this] {
+    connect(selector_, &AreaSelector::cancelled, this, [this] {
         selector_->deleteLater();
         show();
         raise();
@@ -439,37 +448,37 @@ void SettingsWindow::runSelector(const QString &connector, const QRect &initial,
     });
 }
 
-void SettingsWindow::applyRegionGeometry()
+void SettingsWindow::applyAreaGeometry()
 {
     if (updating_) {
         return;
     }
-    Region *region = app_->store().region(selectedTargetId());
-    const QScreen *screen = region ? findScreen(region->connector) : nullptr;
-    if (!region || !screen) {
+    Area *area = app_->store().area(selectedTargetId());
+    const QScreen *screen = area ? findScreen(area->connector) : nullptr;
+    if (!area || !screen) {
         return;
     }
-    const QSize area = screen->geometry().size();
-    QRect rect(regionX_->value(), regionY_->value(), regionWidth_->value(), regionHeight_->value());
-    // Keep the region on its monitor: shrink the size if the position pushes it over the edge.
-    rect.setWidth(std::min(rect.width(), area.width() - rect.x()));
-    rect.setHeight(std::min(rect.height(), area.height() - rect.y()));
-    region->rect = rect;
+    const QSize bounds = screen->geometry().size();
+    QRect rect(areaX_->value(), areaY_->value(), areaWidth_->value(), areaHeight_->value());
+    // Keep the area on its monitor: shrink the size if the position pushes it over the edge.
+    rect.setWidth(std::min(rect.width(), bounds.width() - rect.x()));
+    rect.setHeight(std::min(rect.height(), bounds.height() - rect.y()));
+    area->rect = rect;
     app_->storeChanged();
 }
 
-void SettingsWindow::renameRegion()
+void SettingsWindow::renameArea()
 {
     if (updating_) {
         return;
     }
-    Region *region = app_->store().region(selectedTargetId());
-    if (!region) {
+    Area *area = app_->store().area(selectedTargetId());
+    if (!area) {
         return;
     }
-    const QString name = regionName_->text().trimmed();
-    if (name == region->name) {
-        regionNameError_->hide();
+    const QString name = areaName_->text().trimmed();
+    if (name == area->name) {
+        areaNameError_->hide();
         return;
     }
     QStringList connectors;
@@ -477,32 +486,32 @@ void SettingsWindow::renameRegion()
         connectors.append(screen.connector);
     }
     if (sanitizeFilenameToken(name).isEmpty()) {
-        regionNameError_->setText(tr("Enter a name that can be used in a file name."));
-        regionNameError_->show();
+        areaNameError_->setText(tr("Enter a name that can be used in a file name."));
+        areaNameError_->show();
         return;
     }
-    if (!app_->store().isNameAvailable(name, region->id, connectors)) {
-        regionNameError_->setText(tr("“%1” is already used by another target or group.").arg(name));
-        regionNameError_->show();
+    if (!app_->store().isNameAvailable(name, area->id, connectors)) {
+        areaNameError_->setText(tr("“%1” is already used by another target or group.").arg(name));
+        areaNameError_->show();
         return;
     }
-    region->name = name;
-    regionNameError_->hide();
+    area->name = name;
+    areaNameError_->hide();
     app_->storeChanged();
 }
 
-void SettingsWindow::removeSelectedRegion()
+void SettingsWindow::removeSelectedArea()
 {
     const QString id = selectedTargetId();
-    const Region *region = app_->store().region(id);
-    if (!region) {
+    const Area *area = app_->store().area(id);
+    if (!area) {
         return;
     }
     const auto answer = QMessageBox::question(
-        this, tr("Remove Region"),
-        tr("Remove region “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are "
+        this, tr("Remove Area"),
+        tr("Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are "
            "kept.")
-            .arg(region->name),
+            .arg(area->name),
         QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
     if (answer != QMessageBox::Yes) {
         return;
@@ -522,8 +531,8 @@ void SettingsWindow::assignShortcut(const QString &id, const QKeySequence &seque
         for (const Group &group : app_->store().groups) {
             owners.append(group.id);
         }
-        for (const Region &region : app_->store().regions) {
-            owners.append(region.id);
+        for (const Area &area : app_->store().areas) {
+            owners.append(area.id);
         }
         for (const ScreenInfo &screen : currentScreens()) {
             owners.append(screenTargetId(screen.connector));
@@ -714,8 +723,8 @@ void SettingsWindow::refreshGroupDetails()
             item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
             item->setCheckState(group->targetIds.contains(id) ? Qt::Checked : Qt::Unchecked);
         };
-        for (const Region &region : store.regions) {
-            addMember(region.id, tr("%1 (region on %2)").arg(region.name, region.connector),
+        for (const Area &area : store.areas) {
+            addMember(area.id, tr("%1 (area on %2)").arg(area.name, area.connector),
                       QStringLiteral("transform-crop"));
         }
         QStringList connectors;
@@ -812,7 +821,7 @@ QWidget *SettingsWindow::createStoragePage()
     templatePreview_ = new QLabel(page);
     templatePreview_->setTextInteractionFlags(Qt::TextSelectableByMouse);
     form->addRow(tr("Example:"), templatePreview_);
-    form->addRow(QString(), makeHint(tr("Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {region} (target "
+    form->addRow(QString(), makeHint(tr("Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target "
                                         "name). Captures are saved as PNG. Existing files are never overwritten: "
                                         "a number is appended instead."),
                                      page));

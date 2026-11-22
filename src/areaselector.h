@@ -10,18 +10,18 @@
 namespace glimply
 {
 
-class RegionOverlay;
+class AreaOverlay;
 
-// Setup-time selection of a region. Shows one overlay per monitor (or only on the monitor of an
-// existing region) with a frozen, dimmed picture of the screen. The user drags a rectangle on any
+// Setup-time selection of an area. Shows one overlay per monitor (or only on the monitor of an
+// existing area) with a frozen, dimmed picture of the screen. The user drags a rectangle on any
 // of them; Enter or a double click confirms, Escape cancels.
-class RegionSelector : public QObject
+class AreaSelector : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit RegionSelector(QObject *parent = nullptr);
-    ~RegionSelector() override;
+    explicit AreaSelector(QObject *parent = nullptr);
+    ~AreaSelector() override;
 
     // connector empty: every connected monitor. initial: monitor-local logical rectangle.
     void start(const QString &connector = QString(), const QRect &initial = QRect());
@@ -31,17 +31,17 @@ Q_SIGNALS:
     void cancelled();
 
 private:
-    void finish(RegionOverlay *source, bool accepted);
+    void finish(AreaOverlay *source, bool accepted);
 
-    QList<QPointer<RegionOverlay>> overlays_;
+    QList<QPointer<AreaOverlay>> overlays_;
 };
 
-class RegionOverlay : public QWidget
+class AreaOverlay : public QWidget
 {
     Q_OBJECT
 
 public:
-    RegionOverlay(const QString &connector, const QSize &logicalSize, const QImage &background, const QRect &initial);
+    AreaOverlay(const QString &connector, const QSize &logicalSize, const QImage &background, const QRect &initial);
 
     [[nodiscard]] QString connector() const;
     [[nodiscard]] QRect selection() const;
@@ -61,9 +61,12 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    enum class Drag { None, Create, Move };
+    enum class Drag { None, Create, Move, Resize };
 
     void setSelection(const QRect &rect);
+    // Edges of the selection under pos: one edge near a side, two near a corner, none elsewhere.
+    [[nodiscard]] Qt::Edges edgesAt(const QPoint &pos) const;
+    void updateCursor(const QPoint &pos);
 
     QString connector_;
     QSize logicalSize_;
@@ -72,6 +75,7 @@ private:
     Drag drag_ = Drag::None;
     QPoint anchor_;
     QRect dragStartSelection_;
+    Qt::Edges dragEdges_;
 };
 
 } // namespace glimply

@@ -22,7 +22,7 @@ find_package(KF6I18n REQUIRED)
 add_executable(glimply
     src/main.cpp
     src/app.cpp
-    src/regionselector.cpp
+    src/areaselector.cpp
     src/settingswindow.cpp
     src/screens.cpp
     src/shortcutmanager.cpp
