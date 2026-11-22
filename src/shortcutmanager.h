@@ -23,11 +23,11 @@ public:
     struct Entry
     {
         QString id;
-        QString text; // shown in System Settings, e.g. "Capture region DP-1-1"
+        QString text; // shown in System Settings, e.g. "Capture area DP-1-1"
     };
 
     // Registers actions for all entries and drops actions that are no longer listed. Ids in
-    // deletedIds also lose their stored shortcut (deleted regions and groups); other dropped ids
+    // deletedIds also lose their stored shortcut (deleted areas and groups); other dropped ids
     // (for example disconnected monitors) keep theirs for later.
     void sync(const QList<Entry> &entries, const QStringList &deletedIds = {});
 

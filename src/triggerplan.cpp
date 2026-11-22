@@ -58,30 +58,30 @@ void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const
         return;
     }
 
-    const Region *region = store.region(targetId);
-    if (!region) {
+    const Area *area = store.area(targetId);
+    if (!area) {
         plan.errors.append(PlanText::tr("The capture target no longer exists."));
         return;
     }
-    const ScreenInfo *screen = findScreen(screens, region->connector);
+    const ScreenInfo *screen = findScreen(screens, area->connector);
     if (!screen) {
-        plan.errors.append(PlanText::tr("Region %1 was skipped: monitor %2 is not connected.")
-                               .arg(region->name, region->connector));
+        plan.errors.append(PlanText::tr("Area %1 was skipped: monitor %2 is not connected.")
+                               .arg(area->name, area->connector));
         return;
     }
-    if (!region->rect.isValid() || !QRect(QPoint(), screen->geometry.size()).contains(region->rect)) {
-        plan.errors.append(PlanText::tr("Region %1 was skipped: it no longer fits on monitor %2.")
-                               .arg(region->name, region->connector));
+    if (!area->rect.isValid() || !QRect(QPoint(), screen->geometry.size()).contains(area->rect)) {
+        plan.errors.append(PlanText::tr("Area %1 was skipped: it no longer fits on monitor %2.")
+                               .arg(area->name, area->connector));
         return;
     }
-    if (!region->monitorIdentity.isEmpty() && !screen->identity().isEmpty()
-        && region->monitorIdentity != screen->identity()) {
-        plan.warnings.append(PlanText::tr("Region %1: a different monitor is connected to %2 than when the "
-                                          "region was defined.")
-                                 .arg(region->name, region->connector));
+    if (!area->monitorIdentity.isEmpty() && !screen->identity().isEmpty()
+        && area->monitorIdentity != screen->identity()) {
+        plan.warnings.append(PlanText::tr("Area %1: a different monitor is connected to %2 than when the "
+                                          "area was defined.")
+                                 .arg(area->name, area->connector));
     }
-    addConnector(plan, region->connector);
-    plan.outputs.append({OutputSpec::Kind::Region, targetId, region->name, region->connector, region->rect});
+    addConnector(plan, area->connector);
+    plan.outputs.append({OutputSpec::Kind::Area, targetId, area->name, area->connector, area->rect});
 }
 
 } // namespace
@@ -108,8 +108,8 @@ TriggerPlan planTrigger(const TargetStore &store, const QString &triggerId, cons
         return plan;
     }
 
-    if (const Region *region = store.region(triggerId)) {
-        plan.displayName = region->name;
+    if (const Area *area = store.area(triggerId)) {
+        plan.displayName = area->name;
     } else if (triggerId == allMonitorsTargetId()) {
         plan.displayName = PlanText::tr("All monitors");
     } else {
@@ -189,9 +189,9 @@ QList<RenderedOutput> renderOutputs(const TriggerPlan &plan, const QHash<QString
             } else if (output.kind == OutputSpec::Kind::Screen) {
                 result.image = frame->image;
             } else {
-                result.image = cropLogicalRegion(frame->image, output.rect, frame->scale, &result.error);
+                result.image = cropLogicalArea(frame->image, output.rect, frame->scale, &result.error);
                 if (!result.error.isEmpty()) {
-                    result.error = PlanText::tr("Region %1: %2").arg(output.token, result.error);
+                    result.error = PlanText::tr("Area %1: %2").arg(output.token, result.error);
                 }
             }
         }

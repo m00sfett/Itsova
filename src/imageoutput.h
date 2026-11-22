@@ -7,25 +7,25 @@
 
 namespace glimply {
 
-[[nodiscard]] QImage cropLogicalRegion(const QImage &nativeFrame,
-                                       const QRect &logicalRegion,
+[[nodiscard]] QImage cropLogicalArea(const QImage &nativeFrame,
+                                       const QRect &logicalArea,
                                        qreal scale,
                                        QString *error = nullptr);
 
 [[nodiscard]] QString sanitizeFilenameToken(const QString &token);
 
-// Expands {date}, {time} and {region} and returns one flat, safe PNG file name.
-[[nodiscard]] QString filenameFor(const QString &filenameTemplate, const QString &regionToken,
+// Expands {date}, {time} and {area} and returns one flat, safe PNG file name.
+[[nodiscard]] QString filenameFor(const QString &filenameTemplate, const QString &areaToken,
                                   const QDateTime &timestamp);
 
 class OutputWriter {
 public:
     explicit OutputWriter(
         QString directory,
-        QString filenameTemplate = QStringLiteral("{date}_{time}_{region}.png"));
+        QString filenameTemplate = QStringLiteral("{date}_{time}_{area}.png"));
 
     [[nodiscard]] bool writeImage(const QImage &image,
-                                  const QString &regionToken,
+                                  const QString &areaToken,
                                   const QDateTime &timestamp,
                                   QString *writtenPath = nullptr,
                                   QString *error = nullptr) const;

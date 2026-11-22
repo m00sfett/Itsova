@@ -26,7 +26,7 @@ QString sectionIcon(MenuTarget::Section section)
     switch (section) {
     case MenuTarget::Section::Group:
         return QStringLiteral("view-group");
-    case MenuTarget::Section::Region:
+    case MenuTarget::Section::Area:
         return QStringLiteral("transform-crop");
     case MenuTarget::Section::Monitor:
         return QStringLiteral("video-display");
@@ -74,6 +74,11 @@ void TrayController::setStatusText(const QString &text)
     item_->setToolTipSubTitle(text);
 }
 
+void TrayController::setStandby(bool standby)
+{
+    item_->setStatus(standby ? KStatusNotifierItem::Passive : KStatusNotifierItem::Active);
+}
+
 void TrayController::blink()
 {
     flashing_ = true;
@@ -115,19 +120,19 @@ void TrayController::rebuildMenu()
     };
 
     const QList<MenuTarget> targets = provider_();
-    bool hasRegion = false;
+    bool hasArea = false;
     for (const MenuTarget::Section section :
-         {MenuTarget::Section::Group, MenuTarget::Section::Region, MenuTarget::Section::Monitor}) {
+         {MenuTarget::Section::Group, MenuTarget::Section::Area, MenuTarget::Section::Monitor}) {
         QList<MenuTarget> entries;
         for (const MenuTarget &target : targets) {
             if (target.section == section) {
                 entries.append(target);
             }
         }
-        if (section == MenuTarget::Section::Region) {
-            hasRegion = !entries.isEmpty();
+        if (section == MenuTarget::Section::Area) {
+            hasArea = !entries.isEmpty();
         }
-        if (entries.isEmpty() && section != MenuTarget::Section::Region) {
+        if (entries.isEmpty() && section != MenuTarget::Section::Area) {
             continue;
         }
         addSection();
@@ -146,15 +151,15 @@ void TrayController::rebuildMenu()
                 QTimer::singleShot(menuCloseDelayMs, this, [this, id] { Q_EMIT triggerRequested(id); });
             });
         }
-        if (section == MenuTarget::Section::Region && !hasRegion) {
-            auto *empty = add(new QAction(tr("No regions yet"), menu_));
+        if (section == MenuTarget::Section::Area && !hasArea) {
+            auto *empty = add(new QAction(tr("No areas yet"), menu_));
             empty->setEnabled(false);
         }
     }
 
     addSeparator();
-    auto *addRegion = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Region…"), menu_));
-    connect(addRegion, &QAction::triggered, this, &TrayController::addRegionRequested);
+    auto *addArea = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), menu_));
+    connect(addArea, &QAction::triggered, this, &TrayController::addAreaRequested);
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));
     openLast->setEnabled(lastCaptureAvailable_);
     connect(openLast, &QAction::triggered, this, &TrayController::openLastCaptureRequested);

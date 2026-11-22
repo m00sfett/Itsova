@@ -8,28 +8,28 @@ desktop (KDE Plasma on Wayland, native Qt 6 Widgets with the Breeze style; not o
 
 ## Users
 
-First the author, a KDE Plasma power user with two monitors at different scales. Later other KDE Plasma users who find the project on GitHub. Their job: capture the same fixed screen regions, single monitors or all monitors again and again, at the exact moment a shortcut is pressed.
+First the author, a KDE Plasma power user with two monitors at different scales. Later other KDE Plasma users who find the project on GitHub. Their job: capture the same fixed screen areas, single monitors or all monitors again and again, at the exact moment a shortcut is pressed.
 
 ## Product Purpose
 
-glimply captures predefined targets instantly: no selection, no dialog, no overlay, no confirmation. It exists because general screenshot tools forget the last region, are not bound to a monitor and ask for input. Success: a region is set up once and every shortcut press yields an identical, native-resolution PNG in a predictable place.
+glimply captures predefined targets instantly: no selection, no dialog, no overlay, no confirmation. It exists because general screenshot tools forget the last area, are not bound to a monitor and ask for input. Success: an area is set up once and every shortcut press yields an identical, native-resolution PNG in a predictable place.
 
 ## Positioning
 
-Fixed regions bound to a specific monitor, groups that capture several targets from one frame per monitor with one shared timestamp, and true native resolution on mixed-scale setups.
+Fixed areas bound to a specific monitor, groups that capture several targets from one frame per monitor with one shared timestamp, and true native resolution on mixed-scale setups.
 
 ## Operating Context
 
-Runs as a tray icon only. Triggered by global shortcuts (registered in KDE's global shortcut system) or from the tray menu. Configuration happens rarely, in one settings window opened from the tray. Defining a region uses a selection overlay on the chosen monitor plus numeric fields.
+Runs as a tray icon only. Triggered by global shortcuts (registered in KDE's global shortcut system) or from the tray menu. Configuration happens rarely, in one settings window opened from the tray. Defining an area uses a selection overlay on the chosen monitor plus numeric fields.
 
 ## Capabilities and Constraints
 
-- Targets: regions (one monitor, logical coordinates, auto-named `<connector>-<n>`), built-in per-monitor targets, "All monitors". Groups of targets with their own shortcut.
+- Targets: areas (one monitor, logical coordinates, auto-named `<connector>-<n>`), built-in per-monitor targets, "All monitors". Groups of targets with their own shortcut.
 - No default shortcuts. Cursor off by default, per target and per group.
-- Storage: `~/Pictures/glimply/`, flat, `{date}_{time}_{region}.png`, PNG only.
+- Storage: `~/Pictures/glimply/`, flat, `{date}_{time}_{area}.png`, PNG only.
 - Feedback: one short tray icon blink after success; notifications only for errors.
 - All UI text translatable; English by default, 18 more languages later.
-- Not in v0.1: interval captures, cross-monitor regions, clipboard, editing, upload.
+- Not in v0.1: interval captures, cross-monitor areas, clipboard, editing, upload.
 
 ## Brand Commitments
 

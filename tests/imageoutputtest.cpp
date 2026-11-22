@@ -20,7 +20,7 @@ class ImageOutputTest : public QObject {
 
 private Q_SLOTS:
     void cropsAtMonitorScale();
-    void rejectsRegionsOutsideFrame();
+    void rejectsAreasOutsideFrame();
     void writesPngNamesWithoutOverwriting();
     void concurrentWritesChooseDistinctNames();
 };
@@ -29,22 +29,22 @@ void ImageOutputTest::cropsAtMonitorScale()
 {
     const QImage frame(1600, 1200, QImage::Format_RGB32);
 
-    const QImage scaledCrop = cropLogicalRegion(frame, QRect(0, 0, 400, 300), 1.25);
+    const QImage scaledCrop = cropLogicalArea(frame, QRect(0, 0, 400, 300), 1.25);
     QCOMPARE(scaledCrop.size(), QSize(500, 375));
 
-    const QImage unscaledCrop = cropLogicalRegion(frame, QRect(0, 0, 400, 300), 1.0);
+    const QImage unscaledCrop = cropLogicalArea(frame, QRect(0, 0, 400, 300), 1.0);
     QCOMPARE(unscaledCrop.size(), QSize(400, 300));
 
-    const QImage offsetCrop = cropLogicalRegion(frame, QRect(10, 20, 400, 300), 1.25);
+    const QImage offsetCrop = cropLogicalArea(frame, QRect(10, 20, 400, 300), 1.25);
     QCOMPARE(offsetCrop.size(), QSize(500, 375));
 }
 
-void ImageOutputTest::rejectsRegionsOutsideFrame()
+void ImageOutputTest::rejectsAreasOutsideFrame()
 {
     const QImage frame(400, 300, QImage::Format_RGB32);
     QString error;
 
-    QVERIFY(cropLogicalRegion(frame, QRect(300, 0, 200, 100), 1.0, &error).isNull());
+    QVERIFY(cropLogicalArea(frame, QRect(300, 0, 200, 100), 1.0, &error).isNull());
     QVERIFY(!error.isEmpty());
 }
 
@@ -55,8 +55,8 @@ void ImageOutputTest::writesPngNamesWithoutOverwriting()
 
     QImage frame(400, 300, QImage::Format_RGB32);
     frame.fill(QColor(12, 34, 56));
-    const QImage firstCrop = cropLogicalRegion(frame, QRect(10, 20, 32, 24), 1.0);
-    const QImage secondCrop = cropLogicalRegion(frame, QRect(10, 20, 32, 24), 1.0);
+    const QImage firstCrop = cropLogicalArea(frame, QRect(10, 20, 32, 24), 1.0);
+    const QImage secondCrop = cropLogicalArea(frame, QRect(10, 20, 32, 24), 1.0);
     QVERIFY(!firstCrop.isNull());
     QVERIFY(!secondCrop.isNull());
     const QDateTime timestamp(QDate(2026, 11, 22), QTime(14, 5, 33), QTimeZone::UTC);

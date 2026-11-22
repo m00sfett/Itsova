@@ -19,7 +19,7 @@ namespace glimply
 {
 
 class App;
-class RegionSelector;
+class AreaSelector;
 
 // The only window of glimply. Changes apply immediately; there is nothing to confirm.
 class SettingsWindow : public KPageDialog
@@ -29,7 +29,10 @@ class SettingsWindow : public KPageDialog
 public:
     explicit SettingsWindow(App *app, QWidget *parent = nullptr);
 
-    void addRegion();
+    void addArea();
+    // Shows the page of an area, monitor or group and selects it.
+    void showTarget(const QString &id);
+    void editArea(const QString &areaId);
 
 private:
     QWidget *createTargetsPage();
@@ -49,37 +52,38 @@ private:
     void selectTarget(const QString &id);
     void selectGroup(const QString &id);
 
-    void selectRegion(const QString &regionId);
-    void applyRegionGeometry();
-    void renameRegion();
+    void selectArea(const QString &areaId);
+    void applyAreaGeometry();
+    void renameArea();
     void renameGroup();
-    void removeSelectedRegion();
+    void removeSelectedArea();
     // Assigns a shortcut; asks before taking it away from another glimply target.
     void assignShortcut(const QString &id, const QKeySequence &sequence, KKeySequenceWidget *editor);
-    void runSelector(const QString &connector, const QRect &initial, const QString &regionId);
+    void runSelector(const QString &connector, const QRect &initial, const QString &areaId);
 
     App *app_;
-    QPointer<RegionSelector> selector_;
+    QPointer<AreaSelector> selector_;
     bool updating_ = false;
     KPageWidgetItem *targetsPage_ = nullptr;
+    KPageWidgetItem *groupsPage_ = nullptr;
 
     // Targets page
     QTreeWidget *targetTree_ = nullptr;
-    QPushButton *removeRegionButton_ = nullptr;
+    QPushButton *removeAreaButton_ = nullptr;
     QWidget *targetDetails_ = nullptr;
     QLabel *targetTitle_ = nullptr;
-    QLineEdit *regionName_ = nullptr;
-    QLabel *regionNameError_ = nullptr;
+    QLineEdit *areaName_ = nullptr;
+    QLabel *areaNameError_ = nullptr;
     QLabel *monitorLabel_ = nullptr;
     QWidget *geometryRow_ = nullptr;
-    QSpinBox *regionX_ = nullptr;
-    QSpinBox *regionY_ = nullptr;
-    QSpinBox *regionWidth_ = nullptr;
-    QSpinBox *regionHeight_ = nullptr;
-    QLabel *regionWarning_ = nullptr;
+    QSpinBox *areaX_ = nullptr;
+    QSpinBox *areaY_ = nullptr;
+    QSpinBox *areaWidth_ = nullptr;
+    QSpinBox *areaHeight_ = nullptr;
+    QLabel *areaWarning_ = nullptr;
     QCheckBox *targetCursor_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
-    QList<QWidget *> regionOnly_;
+    QList<QWidget *> areaOnly_;
 
     // Groups page
     QListWidget *groupList_ = nullptr;

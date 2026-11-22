@@ -15,13 +15,13 @@ namespace glimply
 
 struct OutputSpec
 {
-    enum class Kind { Region, Screen, AllMonitors };
+    enum class Kind { Area, Screen, AllMonitors };
 
-    Kind kind = Kind::Region;
+    Kind kind = Kind::Area;
     QString targetId;
     QString token; // filename token
-    QString connector; // Region and Screen only
-    QRect rect; // Region only, monitor-local logical coordinates
+    QString connector; // Area and Screen only
+    QRect rect; // Area only, monitor-local logical coordinates
 };
 
 // What one trigger (shortcut, menu, later a timer) has to do. Every involved monitor is captured

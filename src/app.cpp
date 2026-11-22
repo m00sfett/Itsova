@@ -1,5 +1,8 @@
 #include "app.h"
 
+#include "areaselector.h"
+#include "controlservice.h"
+#include "imageoutput.h"
 #include "screens.h"
 #include "settingswindow.h"
 #include "shortcutmanager.h"
@@ -7,6 +10,7 @@
 #include "triggerengine.h"
 
 #include <KConfig>
+#include <KGlobalAccel>
 #include <KNotification>
 
 #include <QDBusConnection>
@@ -41,7 +45,7 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::openLastCaptureRequested, this, &App::openLastCapture);
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
     connect(tray_, &TrayController::configureRequested, this, [this] { showSettings(); });
-    connect(tray_, &TrayController::addRegionRequested, this, [this] { showSettings(true); });
+    connect(tray_, &TrayController::addAreaRequested, this, [this] { showSettings(true); });
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -51,8 +55,36 @@ App::App(QObject *parent)
     connect(qGuiApp, &QGuiApplication::screenAdded, this, layoutChanged);
     connect(qGuiApp, &QGuiApplication::screenRemoved, this, layoutChanged);
 
+    // The Plasma widget replaces the separate tray icon while it is loaded.
+    control_ = new ControlService(this);
+    connect(control_, &ControlService::widgetActiveChanged, tray_, &TrayController::setStandby);
+
     syncShortcuts();
+    migrateLegacyIds();
     applyAutostart();
+}
+
+void App::migrateLegacyIds()
+{
+    if (store_.migratedIds.isEmpty()) {
+        return;
+    }
+    // Areas used to be called regions. Move their global shortcuts to the new action ids, drop the
+    // old actions from KGlobalAccel and write the configuration in the new format.
+    for (auto it = store_.migratedIds.cbegin(); it != store_.migratedIds.cend(); ++it) {
+        const QList<QKeySequence> old = KGlobalAccel::self()->globalShortcut(QCoreApplication::applicationName(), it.key());
+        if (!old.isEmpty() && shortcuts_->shortcut(it.value()).isEmpty()) {
+            shortcuts_->setShortcut(it.value(), old.first());
+        }
+        QDBusMessage unregister = QDBusMessage::createMethodCall(QStringLiteral("org.kde.kglobalaccel"),
+                                                                 QStringLiteral("/kglobalaccel"),
+                                                                 QStringLiteral("org.kde.KGlobalAccel"),
+                                                                 QStringLiteral("unregister"));
+        unregister.setArguments({QCoreApplication::applicationName(), it.key()});
+        QDBusConnection::sessionBus().call(unregister);
+    }
+    store_.migratedIds.clear();
+    store_.save(*config_);
 }
 
 App::~App() = default;
@@ -83,8 +115,8 @@ QString App::targetLabel(const TargetStore &store, const QString &id)
     if (isScreenTargetId(id)) {
         return connectorFromScreenTargetId(id);
     }
-    if (const Region *region = store.region(id)) {
-        return region->name;
+    if (const Area *area = store.area(id)) {
+        return area->name;
     }
     if (const Group *group = store.group(id)) {
         return group->name;
@@ -98,8 +130,8 @@ void App::syncShortcuts(const QStringList &deletedIds)
     for (const Group &group : std::as_const(store_.groups)) {
         entries.append({group.id, tr("Capture group %1").arg(group.name)});
     }
-    for (const Region &region : std::as_const(store_.regions)) {
-        entries.append({region.id, tr("Capture region %1").arg(region.name)});
+    for (const Area &area : std::as_const(store_.areas)) {
+        entries.append({area.id, tr("Capture area %1").arg(area.name)});
     }
     for (const ScreenInfo &screen : currentScreens()) {
         entries.append({screenTargetId(screen.connector), tr("Capture monitor %1").arg(screen.connector)});
@@ -121,11 +153,11 @@ QList<MenuTarget> App::menuTargets() const
         targets.append({MenuTarget::Section::Group, group.id, group.name, {}, shortcuts_->shortcut(group.id),
                         !group.targetIds.isEmpty()});
     }
-    for (const Region &region : store_.regions) {
-        const bool present = connected(region.connector);
-        targets.append({MenuTarget::Section::Region, region.id, region.name,
-                        present ? QString() : tr("%1 not connected").arg(region.connector),
-                        shortcuts_->shortcut(region.id), present});
+    for (const Area &area : store_.areas) {
+        const bool present = connected(area.connector);
+        targets.append({MenuTarget::Section::Area, area.id, area.name,
+                        present ? QString() : tr("%1 not connected").arg(area.connector),
+                        shortcuts_->shortcut(area.id), present});
     }
     for (const ScreenInfo &screen : screens) {
         const QString id = screenTargetId(screen.connector);
@@ -148,6 +180,7 @@ void App::trigger(const QString &id)
 
 void App::onTriggerFinished(const TriggerResult &result)
 {
+    Q_EMIT captured(!result.writtenPaths.isEmpty());
     if (!result.writtenPaths.isEmpty()) {
         // Every frame is in memory by now, so the blink cannot end up in a capture (A2).
         tray_->blink();
@@ -160,7 +193,7 @@ void App::onTriggerFinished(const TriggerResult &result)
         notifyError(result.writtenPaths.isEmpty() ? tr("Capture failed") : tr("Capture incomplete"), result.errors);
     }
     if (!result.warnings.isEmpty()) {
-        notify(QStringLiteral("monitorChanged"), tr("Check region monitor"), result.warnings);
+        notify(QStringLiteral("monitorChanged"), tr("Check area monitor"), result.warnings);
     }
 }
 
@@ -214,20 +247,96 @@ void App::openCaptureFolder()
     QDesktopServices::openUrl(QUrl::fromLocalFile(directory));
 }
 
-void App::showSettings(bool addRegion)
+void App::showSettings(bool addArea, const QString &targetId)
 {
     auto *window = qobject_cast<SettingsWindow *>(settings_.data());
     if (!window) {
         window = new SettingsWindow(this);
         settings_ = window;
     }
-    if (addRegion) {
-        window->addRegion();
+    if (addArea) {
+        window->addArea();
         return;
+    }
+    if (!targetId.isEmpty()) {
+        window->showTarget(targetId);
     }
     window->show();
     window->raise();
     window->activateWindow();
+}
+
+QString App::renameTarget(const QString &id, const QString &name)
+{
+    const QString trimmed = name.trimmed();
+    Area *area = store_.area(id);
+    Group *group = store_.group(id);
+    if (!area && !group) {
+        return tr("Only areas and groups can be renamed.");
+    }
+    if ((area && trimmed == area->name) || (group && trimmed == group->name)) {
+        return {};
+    }
+    if (trimmed.isEmpty() || (area && sanitizeFilenameToken(trimmed).isEmpty())) {
+        return tr("Enter a name that can be used in a file name.");
+    }
+    QStringList connectors;
+    for (const ScreenInfo &screen : currentScreens()) {
+        connectors.append(screen.connector);
+    }
+    if (!store_.isNameAvailable(trimmed, id, connectors)) {
+        return tr("“%1” is already used by another target or group.").arg(trimmed);
+    }
+    if (area) {
+        area->name = trimmed;
+    } else {
+        group->name = trimmed;
+    }
+    storeChanged();
+    return {};
+}
+
+void App::removeTarget(const QString &id)
+{
+    if (!store_.area(id) && !store_.group(id)) {
+        return;
+    }
+    store_.remove(id);
+    storeChanged({id});
+}
+
+bool App::hasLastCapture() const
+{
+    return !engine_->lastPaths().isEmpty();
+}
+
+void App::editArea(const QString &areaId)
+{
+    const Area *area = store_.area(areaId);
+    if (!area || selector_) {
+        return;
+    }
+    // An open settings window has to step aside first; it runs the same overlay itself.
+    if (auto *window = qobject_cast<SettingsWindow *>(settings_.data()); window && window->isVisible()) {
+        window->editArea(areaId);
+        return;
+    }
+    auto *selector = new AreaSelector(this);
+    selector_ = selector;
+    connect(selector, &AreaSelector::selected, this, [this, selector, areaId](const QString &connector, const QRect &rect) {
+        selector->deleteLater();
+        Area *edited = store_.area(areaId);
+        if (!edited) {
+            return;
+        }
+        edited->rect = rect;
+        if (const QScreen *screen = findScreen(connector)) {
+            edited->monitorIdentity = screenInfo(screen).identity();
+        }
+        storeChanged();
+    });
+    connect(selector, &AreaSelector::cancelled, selector, &QObject::deleteLater);
+    selector->start(area->connector, area->rect);
 }
 
 void App::applyAutostart()

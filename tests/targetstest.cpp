@@ -5,6 +5,7 @@
 #include <KConfig>
 
 #include <QAtomicInt>
+#include <QFile>
 #include <QFileInfo>
 #include <QImageReader>
 #include <QMutex>
@@ -49,10 +50,11 @@ private Q_SLOTS:
     void autoNamesAreSequentialAndUnique();
     void reservedNamesAreRejected();
     void configRoundTrip();
-    void removingRegionDropsItFromGroups();
+    void legacyRegionConfigIsMigrated();
+    void removingAreaDropsItFromGroups();
     void groupPlanCapturesEachMonitorOnce();
     void groupCursorOverridesTargets();
-    void missingMonitorAndOversizedRegionAreSkipped();
+    void missingMonitorAndOversizedAreaAreSkipped();
     void monitorIdentityChangeWarns();
     void allMonitorsComposition();
     void groupTriggerSharesTimestampAndFrames();
@@ -62,23 +64,23 @@ void TargetsTest::autoNamesAreSequentialAndUnique()
 {
     TargetStore store;
     const ScreenInfo dp = testLayout().at(0);
-    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
-    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-2"));
-    store.regions.first().name = QStringLiteral("Chat");
-    QCOMPARE(store.addRegion(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
-    QVERIFY(store.regions.at(0).id != store.regions.at(1).id);
+    QCOMPARE(store.addArea(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
+    QCOMPARE(store.addArea(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-2"));
+    store.areas.first().name = QStringLiteral("Chat");
+    QCOMPARE(store.addArea(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("DP-1-1"));
+    QVERIFY(store.areas.at(0).id != store.areas.at(1).id);
 }
 
 void TargetsTest::reservedNamesAreRejected()
 {
     TargetStore store;
-    store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10));
+    store.addArea(testLayout().at(0), QRect(0, 0, 10, 10));
     QVERIFY(!store.isNameAvailable(QStringLiteral("ALL")));
     QVERIFY(!store.isNameAvailable(QStringLiteral("dp-1-1")));
     QVERIFY(!store.isNameAvailable(QStringLiteral("DP-1")));
     QVERIFY(!store.isNameAvailable(QStringLiteral("HDMI-A-1"), {}, {QStringLiteral("HDMI-A-1")}));
     QVERIFY(!store.isNameAvailable(QStringLiteral("   ")));
-    QVERIFY(store.isNameAvailable(QStringLiteral("DP-1-1"), store.regions.first().id));
+    QVERIFY(store.isNameAvailable(QStringLiteral("DP-1-1"), store.areas.first().id));
     QVERIFY(store.isNameAvailable(QStringLiteral("Chat")));
 }
 
@@ -90,17 +92,17 @@ void TargetsTest::configRoundTrip()
 
     TargetStore store;
     const auto layout = testLayout();
-    Region &a = store.addRegion(layout.at(0), QRect(8, 64, 400, 300));
+    Area &a = store.addArea(layout.at(0), QRect(8, 64, 400, 300));
     a.includeCursor = true;
     const QString aId = a.id;
-    const QString bId = store.addRegion(layout.at(1), QRect(1, 2, 3, 4)).id;
+    const QString bId = store.addArea(layout.at(1), QRect(1, 2, 3, 4)).id;
     Group &group = store.addGroup(QStringLiteral("Both"));
     group.targetIds = {aId, bId, allMonitorsTargetId(), screenTargetId(QStringLiteral("DP-1"))};
     group.includeCursor = true;
     store.cursorScreens = {QStringLiteral("HDMI-A-1")};
     store.allMonitorsCursor = true;
     store.captureDirectory = dir.filePath(QStringLiteral("out"));
-    store.filenameTemplate = QStringLiteral("{region}_{date}.png");
+    store.filenameTemplate = QStringLiteral("{area}_{date}.png");
     store.autostart = false;
     {
         KConfig config(path, KConfig::SimpleConfig);
@@ -110,13 +112,13 @@ void TargetsTest::configRoundTrip()
     TargetStore loaded;
     KConfig config(path, KConfig::SimpleConfig);
     loaded.load(config);
-    QCOMPARE(loaded.regions.size(), 2);
-    QCOMPARE(loaded.regions.at(0).id, aId);
-    QCOMPARE(loaded.regions.at(0).name, QStringLiteral("DP-1-1"));
-    QCOMPARE(loaded.regions.at(0).rect, QRect(8, 64, 400, 300));
-    QCOMPARE(loaded.regions.at(0).monitorIdentity, QStringLiteral("Acme UHD 123"));
-    QVERIFY(loaded.regions.at(0).includeCursor);
-    QCOMPARE(loaded.regions.at(1).id, bId);
+    QCOMPARE(loaded.areas.size(), 2);
+    QCOMPARE(loaded.areas.at(0).id, aId);
+    QCOMPARE(loaded.areas.at(0).name, QStringLiteral("DP-1-1"));
+    QCOMPARE(loaded.areas.at(0).rect, QRect(8, 64, 400, 300));
+    QCOMPARE(loaded.areas.at(0).monitorIdentity, QStringLiteral("Acme UHD 123"));
+    QVERIFY(loaded.areas.at(0).includeCursor);
+    QCOMPARE(loaded.areas.at(1).id, bId);
     QCOMPARE(loaded.groups.size(), 1);
     QCOMPARE(loaded.groups.at(0).targetIds, group.targetIds);
     QVERIFY(loaded.groups.at(0).includeCursor);
@@ -128,13 +130,51 @@ void TargetsTest::configRoundTrip()
     QVERIFY(loaded.autostartInitialized);
 }
 
-void TargetsTest::removingRegionDropsItFromGroups()
+void TargetsTest::legacyRegionConfigIsMigrated()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        QFile file(path);
+        QVERIFY(file.open(QIODevice::WriteOnly));
+        file.write("[General]\nRegionOrder=region:b,region:a\n\n"
+                   "[Region region:a]\nName=DP-1-1\nConnector=DP-1\nRect=8,64,400,300\n\n"
+                   "[Region region:b]\nName=HDMI-A-1-1\nConnector=HDMI-A-1\nRect=1,2,3,4\n\n"
+                   "[Group group:g]\nName=G\nTargets=region:a,all\n");
+    }
+    TargetStore store;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.load(config);
+    }
+    QCOMPARE(store.areas.size(), 2);
+    QCOMPARE(store.areas.at(0).id, QStringLiteral("area:b"));
+    QCOMPARE(store.areas.at(1).id, QStringLiteral("area:a"));
+    QCOMPARE(store.areas.at(1).rect, QRect(8, 64, 400, 300));
+    QCOMPARE(store.groups.first().targetIds, (QStringList{QStringLiteral("area:a"), allMonitorsTargetId()}));
+    QCOMPARE(store.migratedIds.value(QStringLiteral("region:a")), QStringLiteral("area:a"));
+
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+    KConfig config(path, KConfig::SimpleConfig);
+    QVERIFY(!config.hasGroup(QStringLiteral("Region region:a")));
+    QVERIFY(config.hasGroup(QStringLiteral("Area area:a")));
+    TargetStore reloaded;
+    reloaded.load(config);
+    QVERIFY(reloaded.migratedIds.isEmpty());
+    QCOMPARE(reloaded.areas.size(), 2);
+}
+
+void TargetsTest::removingAreaDropsItFromGroups()
 {
     TargetStore store;
-    const QString id = store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10)).id;
+    const QString id = store.addArea(testLayout().at(0), QRect(0, 0, 10, 10)).id;
     store.addGroup(QStringLiteral("G")).targetIds = {id, allMonitorsTargetId()};
     store.remove(id);
-    QVERIFY(store.regions.isEmpty());
+    QVERIFY(store.areas.isEmpty());
     QCOMPARE(store.groups.first().targetIds, QStringList{allMonitorsTargetId()});
 }
 
@@ -142,9 +182,9 @@ void TargetsTest::groupPlanCapturesEachMonitorOnce()
 {
     TargetStore store;
     const auto layout = testLayout();
-    const QString a = store.addRegion(layout.at(0), QRect(0, 0, 400, 300)).id;
-    const QString b = store.addRegion(layout.at(0), QRect(100, 100, 50, 50)).id;
-    const QString c = store.addRegion(layout.at(1), QRect(0, 0, 400, 300)).id;
+    const QString a = store.addArea(layout.at(0), QRect(0, 0, 400, 300)).id;
+    const QString b = store.addArea(layout.at(0), QRect(100, 100, 50, 50)).id;
+    const QString c = store.addArea(layout.at(1), QRect(0, 0, 400, 300)).id;
     Group &group = store.addGroup(QStringLiteral("G"));
     group.targetIds = {a, b, c, screenTargetId(QStringLiteral("DP-1")), a};
 
@@ -157,22 +197,22 @@ void TargetsTest::groupPlanCapturesEachMonitorOnce()
 void TargetsTest::groupCursorOverridesTargets()
 {
     TargetStore store;
-    Region &region = store.addRegion(testLayout().at(0), QRect(0, 0, 10, 10));
-    region.includeCursor = true;
-    const QString regionId = region.id;
+    Area &area = store.addArea(testLayout().at(0), QRect(0, 0, 10, 10));
+    area.includeCursor = true;
+    const QString areaId = area.id;
     Group &group = store.addGroup(QStringLiteral("G"));
-    group.targetIds = {regionId};
+    group.targetIds = {areaId};
     QVERIFY(!planTrigger(store, group.id, testLayout()).includeCursor);
-    QVERIFY(planTrigger(store, regionId, testLayout()).includeCursor);
+    QVERIFY(planTrigger(store, areaId, testLayout()).includeCursor);
 }
 
-void TargetsTest::missingMonitorAndOversizedRegionAreSkipped()
+void TargetsTest::missingMonitorAndOversizedAreaAreSkipped()
 {
     TargetStore store;
     const auto layout = testLayout();
-    const QString tooBig = store.addRegion(layout.at(1), QRect(1800, 0, 400, 300)).id;
-    const QString elsewhere = store.addRegion({QStringLiteral("DP-2"), QRect(0, 0, 100, 100), {}, {}, {}}, QRect(0, 0, 10, 10)).id;
-    const QString fine = store.addRegion(layout.at(1), QRect(0, 0, 10, 10)).id;
+    const QString tooBig = store.addArea(layout.at(1), QRect(1800, 0, 400, 300)).id;
+    const QString elsewhere = store.addArea({QStringLiteral("DP-2"), QRect(0, 0, 100, 100), {}, {}, {}}, QRect(0, 0, 10, 10)).id;
+    const QString fine = store.addArea(layout.at(1), QRect(0, 0, 10, 10)).id;
     Group &group = store.addGroup(QStringLiteral("G"));
     group.targetIds = {tooBig, elsewhere, fine, screenTargetId(QStringLiteral("DP-3"))};
 
@@ -186,7 +226,7 @@ void TargetsTest::monitorIdentityChangeWarns()
 {
     TargetStore store;
     auto layout = testLayout();
-    const QString id = store.addRegion(layout.at(0), QRect(0, 0, 10, 10)).id;
+    const QString id = store.addArea(layout.at(0), QRect(0, 0, 10, 10)).id;
     layout[0].serialNumber = QStringLiteral("999");
     const TriggerPlan plan = planTrigger(store, id, layout);
     QVERIFY(plan.errors.isEmpty());
@@ -224,8 +264,8 @@ void TargetsTest::groupTriggerSharesTimestampAndFrames()
     QVERIFY(dir.isValid());
     TargetStore store;
     const auto layout = testLayout();
-    const QString a = store.addRegion(layout.at(0), QRect(0, 0, 400, 300)).id;
-    const QString b = store.addRegion(layout.at(1), QRect(0, 0, 400, 300)).id;
+    const QString a = store.addArea(layout.at(0), QRect(0, 0, 400, 300)).id;
+    const QString b = store.addArea(layout.at(1), QRect(0, 0, 400, 300)).id;
     Group &group = store.addGroup(QStringLiteral("G"));
     group.targetIds = {a, b, screenTargetId(QStringLiteral("HDMI-A-1")), allMonitorsTargetId()};
 

@@ -16,9 +16,9 @@ namespace glimply
 
 struct MenuTarget
 {
-    enum class Section { Group, Region, Monitor };
+    enum class Section { Group, Area, Monitor };
 
-    Section section = Section::Region;
+    Section section = Section::Area;
     QString id;
     QString name;
     QString detail; // e.g. "not connected"
@@ -37,6 +37,8 @@ public:
 
     void setLastCaptureAvailable(bool available);
     void setStatusText(const QString &text);
+    // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
+    void setStandby(bool standby);
     // One short blink. Call only after every frame of a trigger has been captured (A2).
     void blink();
 
@@ -45,7 +47,7 @@ Q_SIGNALS:
     void openLastCaptureRequested();
     void openFolderRequested();
     void configureRequested();
-    void addRegionRequested();
+    void addAreaRequested();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;

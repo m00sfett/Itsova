@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHash>
 #include <QList>
 #include <QRect>
 #include <QString>
@@ -23,12 +24,12 @@ struct ScreenInfo
 };
 
 // A fixed rectangle on one monitor, stored in logical coordinates relative to that monitor.
-struct Region
+struct Area
 {
-    QString id; // stable, e.g. "region:<uuid>"; used as shortcut action id
+    QString id; // stable, e.g. "area:<uuid>"; used as shortcut action id
     QString name; // unique, user visible, filename token
     QString connector;
-    QString monitorIdentity; // ScreenInfo::identity() when the region was defined
+    QString monitorIdentity; // ScreenInfo::identity() when the area was defined
     QRect rect;
     bool includeCursor = false;
 };
@@ -47,14 +48,18 @@ struct Group
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 
-// The persistent configuration: regions, groups and per-target settings of built-in targets.
+// The persistent configuration: areas, groups and per-target settings of built-in targets.
 class TargetStore
 {
 public:
-    QList<Region> regions;
+    QList<Area> areas;
     QList<Group> groups;
     QStringList cursorScreens; // connectors whose built-in full-screen target includes the cursor
     bool allMonitorsCursor = false;
+
+    // Ids renamed while loading an older configuration (old id -> new id), so callers can move
+    // state such as global shortcuts.
+    QHash<QString, QString> migratedIds;
 
     QString captureDirectory; // empty = default
     QString filenameTemplate; // empty = default
@@ -69,21 +74,21 @@ public:
     void load(const KConfig &config);
     void save(KConfig &config) const;
 
-    [[nodiscard]] const Region *region(const QString &id) const;
-    [[nodiscard]] Region *region(const QString &id);
+    [[nodiscard]] const Area *area(const QString &id) const;
+    [[nodiscard]] Area *area(const QString &id);
     [[nodiscard]] const Group *group(const QString &id) const;
     [[nodiscard]] Group *group(const QString &id);
 
     // Next free automatic name "<connector>-<n>".
-    [[nodiscard]] QString nextRegionName(const QString &connector) const;
-    // True if no region or group other than exceptId uses name (case-insensitive) and it is not a
+    [[nodiscard]] QString nextAreaName(const QString &connector) const;
+    // True if no area or group other than exceptId uses name (case-insensitive) and it is not a
     // built-in token ("all" or a connector name in reservedTokens).
     [[nodiscard]] bool isNameAvailable(const QString &name, const QString &exceptId = QString(),
                                        const QStringList &reservedTokens = {}) const;
 
-    Region &addRegion(const ScreenInfo &screen, const QRect &rect);
+    Area &addArea(const ScreenInfo &screen, const QRect &rect);
     Group &addGroup(const QString &name);
-    // Removes a region or group and drops it from all groups.
+    // Removes an area or group and drops it from all groups.
     void remove(const QString &id);
 
     [[nodiscard]] bool targetIncludesCursor(const QString &targetId) const;
