@@ -1,0 +1,13 @@
+/build/
+/cmake-build-*/
+/CMakeUserPresets.json
+/compile_commands.json
+
+# Local agent and editor instructions
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.codex/
+.claude/
+/.idea/
+/.vscode/
