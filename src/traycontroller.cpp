@@ -137,8 +137,8 @@ void TrayController::rebuildMenu()
                 text = tr("%1 (%2)").arg(target.name, target.detail);
             }
             auto *action = add(new QAction(QIcon::fromTheme(sectionIcon(section)), text, menu_));
-            // Shown in the shortcut column. The global shortcut itself is owned by KGlobalAccel; this
-            // copy only fires while the menu has focus, where it does the same thing.
+            // Exported as the DBusMenu shortcut property and shown in the shortcut column. The global
+            // shortcut itself belongs to KGlobalAccel; this copy only acts while the menu has focus.
             action->setShortcut(target.shortcut);
             action->setShortcutContext(Qt::WidgetShortcut);
             action->setEnabled(target.available);

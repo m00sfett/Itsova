@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - Unreleased
+
+### Added
+
+- Settings window (Targets, Groups, Storage, General) with immediate apply: rename regions, adjust position and size numerically, pointer setting, global shortcut fields with conflict checks, group members, capture folder, file name template with live example, start at login.
+- Region selection overlay on every monitor with a frozen, dimmed picture; drag, move, nudge with arrow keys, confirm with Enter or double click.
+- Accessible names for all editable fields.
+
+### Changed
+
+- The whole interface stays in English until glimply ships translations, instead of mixing in system-language texts from KDE widgets.
+
 ## [0.1.4] - Unreleased
 
 ### Added

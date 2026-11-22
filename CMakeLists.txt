@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.1.4 LANGUAGES CXX)
+project(glimply VERSION 0.1.5 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -13,10 +13,15 @@ find_package(KF6GlobalAccel REQUIRED)
 find_package(KF6StatusNotifierItem REQUIRED)
 find_package(KF6Notifications REQUIRED)
 find_package(KF6DBusAddons REQUIRED)
+find_package(KF6WidgetsAddons REQUIRED)
+find_package(KF6XmlGui REQUIRED)
+find_package(KF6I18n REQUIRED)
 
 add_executable(glimply
     src/main.cpp
     src/app.cpp
+    src/regionselector.cpp
+    src/settingswindow.cpp
     src/screens.cpp
     src/shortcutmanager.cpp
     src/traycontroller.cpp
@@ -32,8 +37,11 @@ target_link_libraries(glimply
         KF6::ConfigCore
         KF6::DBusAddons
         KF6::GlobalAccel
+        KF6::I18n
         KF6::Notifications
         KF6::StatusNotifierItem
+        KF6::WidgetsAddons
+        KF6::XmlGui
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Concurrent DBus Gui)

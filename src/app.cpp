@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include "screens.h"
+#include "settingswindow.h"
 #include "shortcutmanager.h"
 #include "traycontroller.h"
 #include "triggerengine.h"
@@ -195,8 +196,18 @@ void App::openCaptureFolder()
 
 void App::showSettings(bool addRegion)
 {
-    Q_UNUSED(addRegion)
-    // Milestone 5 adds the settings window.
+    auto *window = qobject_cast<SettingsWindow *>(settings_.data());
+    if (!window) {
+        window = new SettingsWindow(this);
+        settings_ = window;
+    }
+    if (addRegion) {
+        window->addRegion();
+        return;
+    }
+    window->show();
+    window->raise();
+    window->activateWindow();
 }
 
 void App::applyAutostart()

@@ -14,6 +14,10 @@ namespace glimply {
 
 [[nodiscard]] QString sanitizeFilenameToken(const QString &token);
 
+// Expands {date}, {time} and {region} and returns one flat, safe PNG file name.
+[[nodiscard]] QString filenameFor(const QString &filenameTemplate, const QString &regionToken,
+                                  const QDateTime &timestamp);
+
 class OutputWriter {
 public:
     explicit OutputWriter(
