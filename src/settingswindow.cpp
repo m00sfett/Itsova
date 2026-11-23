@@ -115,7 +115,7 @@ void SettingsWindow::addFooter()
 {
     auto *footer = new QWidget(this);
     auto *row = new QHBoxLayout(footer);
-    row->setContentsMargins(0, 0, 0, 0);
+    row->setContentsMargins(10, 0, 6, 4);
     row->setSpacing(4);
 
     // Link text: plain, readable label with the links in the theme's link colour.
@@ -129,7 +129,7 @@ void SettingsWindow::addFooter()
     small.setPointSizeF(small.pointSizeF() * 0.9);
     about->setFont(small);
     row->addWidget(about);
-    row->addSpacing(8);
+    row->addStretch();
 
     const auto addMark = [&](const QString &resource, const QString &tooltip, const QString &url) {
         auto *mark = new QToolButton(footer);
@@ -145,22 +145,10 @@ void SettingsWindow::addFooter()
     addMark(QStringLiteral(":/brand/brand-roteson.png"), tr("roteson.de"), websiteUrl());
     addMark(QStringLiteral(":/brand/brand-r2w2.png"), tr("R²W² Development · glimply on GitHub"), projectUrl());
 
-    // KPageDialog stacks the pages and the button box; the footer shares the button box's row.
-    auto *box = buttonBox();
-    auto *stack = qobject_cast<QBoxLayout *>(layout());
-    const int index = stack && box ? stack->indexOf(box) : -1;
-    if (index < 0) {
-        if (stack) {
-            stack->addWidget(footer);
-        }
-        return;
+    // A full-width line under the pages and the Close button.
+    if (auto *top = qobject_cast<QBoxLayout *>(layout())) {
+        top->addWidget(footer);
     }
-    stack->removeWidget(box);
-    auto *bottom = new QHBoxLayout;
-    bottom->addWidget(footer);
-    bottom->addStretch();
-    bottom->addWidget(box);
-    stack->insertLayout(index, bottom);
 }
 
 // ---------------------------------------------------------------- Targets
