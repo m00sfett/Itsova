@@ -1,5 +1,7 @@
 #include "selectiongeometry.h"
 
+#include <QPair>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -94,6 +96,33 @@ QRect fit(Axis x, Axis y, bool square, int squareSide, const QSize &bounds)
     return QRect(x.low(bounds.width()), y.low(bounds.height()), x.side, y.side);
 }
 
+// Largest value <= limit whose parity matches reference.
+int floorWithParity(int limit, int reference)
+{
+    return (limit - reference) % 2 == 0 ? limit : limit - 1;
+}
+
+// Smallest value >= minimum whose parity matches reference.
+int ceilWithParity(int minimum, int reference)
+{
+    return (minimum - reference) % 2 == 0 ? minimum : minimum + 1;
+}
+
+// One axis resized symmetrically: low and side of the result. The side keeps its parity, so the
+// centre (low + side / 2) does not move by half a pixel.
+QPair<int, int> centredStep(int low, int side, int delta, int minimum, int limit)
+{
+    const int doubledCentre = 2 * low + side;
+    const int largest = floorWithParity(std::min(doubledCentre, 2 * limit - doubledCentre), side);
+    const int smallest = ceilWithParity(minimum, side);
+    if (smallest > largest) {
+        return {low, side};
+    }
+    const int wanted = std::clamp(side + 2 * delta, smallest, std::max(largest, side));
+    const int result = std::min(wanted, std::max(largest, side));
+    return {(doubledCentre - result) / 2, result};
+}
+
 } // namespace
 
 QRect drawnSelection(const QPoint &anchor, const QPoint &position, SelectionConstraints constraints, const QSize &bounds)
@@ -119,6 +148,50 @@ QRect resizedSelection(const QRect &start, Qt::Edges edges, const QPoint &delta,
         squareSide = horizontal ? x.side : y.side;
     }
     return fit(x, y, constraints.square, squareSide, bounds);
+}
+
+QRect steppedSelection(const QRect &rect, const QPoint &step, SelectionConstraints constraints, int minimum,
+                       const QSize &bounds)
+{
+    if (!constraints.fromCentre && !constraints.square) {
+        QRect moved = rect.translated(step);
+        moved.moveLeft(std::clamp(moved.left(), 0, std::max(0, bounds.width() - moved.width())));
+        moved.moveTop(std::clamp(moved.top(), 0, std::max(0, bounds.height() - moved.height())));
+        return moved;
+    }
+    const int delta = step.x() + step.y();
+    if (!constraints.square) {
+        QRect result = rect;
+        if (step.x() != 0) {
+            const auto [left, width] = centredStep(rect.left(), rect.width(), step.x(), minimum, bounds.width());
+            result.setRect(left, rect.top(), width, rect.height());
+        } else if (step.y() != 0) {
+            const auto [top, height] = centredStep(rect.top(), rect.height(), step.y(), minimum, bounds.height());
+            result.setRect(rect.left(), top, rect.width(), height);
+        }
+        return result;
+    }
+    if (!constraints.fromCentre) {
+        const int largest = std::min(bounds.width() - rect.left(), bounds.height() - rect.top());
+        if (largest < minimum) {
+            return rect;
+        }
+        const int side = std::clamp(rect.width() + delta, minimum, largest);
+        return QRect(rect.left(), rect.top(), side, side);
+    }
+    // Centred square: the width keeps its exact centre; the height follows around its own centre.
+    const int doubledX = 2 * rect.left() + rect.width();
+    const int doubledY = 2 * rect.top() + rect.height();
+    const int roomX = std::min(doubledX, 2 * bounds.width() - doubledX);
+    const int roomY = std::min(doubledY, 2 * bounds.height() - doubledY);
+    const int largest = floorWithParity(std::min(roomX, roomY), rect.width());
+    const int smallest = ceilWithParity(minimum, rect.width());
+    if (smallest > largest) {
+        return rect;
+    }
+    const int side = std::clamp(rect.width() + 2 * delta, smallest, largest);
+    const int top = std::clamp((doubledY - side) / 2, 0, std::max(0, bounds.height() - side));
+    return QRect((doubledX - side) / 2, top, side, side);
 }
 
 } // namespace glimply

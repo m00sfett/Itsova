@@ -313,7 +313,7 @@ void CaptureSession::setDragging(bool dragging)
 QString CaptureSession::hint() const
 {
     if (dragging_) {
-        return tr("Hold Ctrl to grow from the centre, Alt for a square.");
+        return tr("Hold Alt to grow from the centre, Ctrl for a square.");
     }
     if (forceNew_) {
         return tr("Drag the next rectangle anywhere, also over another one.");
@@ -1295,6 +1295,7 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
 
     const QPalette pal = palette();
     const QColor accent = pal.color(QPalette::Highlight);
+    const QColor negative(218, 68, 83); // Breeze "negative text"
 
     // Outlines of areas or windows hovered in a list.
     for (const CaptureSession::Highlight &highlight : session_->highlights()) {
@@ -1322,9 +1323,11 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             painter.setPen(QPen(accent, 2));
             painter.drawRect(frame.adjusted(1, 1, -1, -1));
         } else {
+            // A hovered rectangle shows in the theme's negative colour: a right click deletes it.
+            const bool hovered = selection.id == hoverId_ && drag_ == Drag::None;
             painter.setPen(QPen(QColor(0, 0, 0, 120), 3));
             painter.drawRect(frame.adjusted(0.5, 0.5, -0.5, -0.5));
-            painter.setPen(QPen(QColor(255, 255, 255, 200), 1));
+            painter.setPen(QPen(hovered ? negative : QColor(255, 255, 255, 200), hovered ? 2 : 1));
             painter.drawRect(frame.adjusted(0.5, 0.5, -0.5, -0.5));
         }
 
@@ -1474,7 +1477,17 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
 void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
-        session_->close();
+        // Right click deletes the rectangle under the pointer; elsewhere it does nothing, so a
+        // missed rectangle never throws the whole selection away.
+        if (drag_ == Drag::None) {
+            const QPoint pos = event->position().toPoint();
+            if (const int id = session_->selections().topmostAt(screen_.connector, pos)) {
+                session_->selections().remove(id);
+                hoverId_ = 0;
+                session_->changed();
+                updateCursor(pos);
+            }
+        }
         return;
     }
     if (event->button() != Qt::LeftButton) {
@@ -1545,8 +1558,8 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
 
 void CaptureOverlay::applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers)
 {
-    const SelectionConstraints constraints{modifiers.testFlag(Qt::ControlModifier),
-                                           modifiers.testFlag(Qt::AltModifier)};
+    const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
+                                           modifiers.testFlag(Qt::ControlModifier)};
     SelectionModel &model = session_->selections();
     const QSize bounds = size();
     if (drag_ == Drag::Create) {
@@ -1648,10 +1661,19 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         return;
     }
     SelectionModel &model = session_->selections();
-    const int step = event->modifiers().testFlag(Qt::ControlModifier) ? 10 : 1;
-    const bool resize = event->modifiers().testFlag(Qt::ShiftModifier);
+    // One meaning per modifier, as with the mouse: Shift = steps of 10, Alt = around the centre,
+    // Ctrl = square. Alt or Ctrl turn the arrow keys from moving into resizing.
+    const Qt::KeyboardModifiers modifiers = event->modifiers();
+    const int step = modifiers.testFlag(Qt::ShiftModifier) ? 10 : 1;
+    const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
+                                           modifiers.testFlag(Qt::ControlModifier)};
     QPoint delta;
     switch (event->key()) {
+    case Qt::Key_Space:
+        if (!event->isAutoRepeat() && drag_ == Drag::None) {
+            session_->setFrozen(!session_->frozen());
+        }
+        return;
     case Qt::Key_Escape:
         if (areaPanel_) {
             showActionButtons();
@@ -1699,14 +1721,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     if (!active) {
         return;
     }
-    QRect rect = active->rect;
-    if (resize) {
-        rect.setWidth(std::max(minimumAreaSize, rect.width() + delta.x()));
-        rect.setHeight(std::max(minimumAreaSize, rect.height() + delta.y()));
-    } else {
-        rect.translate(delta);
-    }
-    model.setRect(active->id, clampToArea(rect, size()));
+    model.setRect(active->id, steppedSelection(active->rect, delta, constraints, minimumAreaSize, size()));
     session_->changed();
 }
 

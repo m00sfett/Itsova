@@ -120,6 +120,57 @@ private Q_SLOTS:
         QCOMPARE(result.width(), result.height());
         QCOMPARE(result.width(), 101);
     }
+
+    void arrowsMove()
+    {
+        const QRect start(100, 100, 50, 40);
+        QCOMPARE(steppedSelection(start, {1, 0}, none, 4, bounds), QRect(101, 100, 50, 40));
+        QCOMPARE(steppedSelection(start, {0, -10}, none, 4, bounds), QRect(100, 90, 50, 40));
+        // Moving stops at the screen border without shrinking.
+        QCOMPARE(steppedSelection(QRect(995, 0, 5, 5), {10, 0}, none, 4, bounds), QRect(995, 0, 5, 5));
+    }
+
+    void arrowsResizeAroundCentre()
+    {
+        const QRect start(100, 100, 50, 40);
+        QCOMPARE(steppedSelection(start, {1, 0}, centre, 4, bounds), QRect(99, 100, 52, 40));
+        QCOMPARE(steppedSelection(start, {-1, 0}, centre, 4, bounds), QRect(101, 100, 48, 40));
+        QCOMPARE(steppedSelection(start, {0, 10}, centre, 4, bounds), QRect(100, 90, 50, 60));
+        QCOMPARE(steppedSelection(start, {0, -10}, centre, 4, bounds), QRect(100, 110, 50, 20));
+        // An odd width keeps its odd parity, so the centre never shifts by half a pixel.
+        QCOMPARE(steppedSelection(QRect(100, 100, 51, 40), {-1, 0}, centre, 4, bounds), QRect(101, 100, 49, 40));
+    }
+
+    void arrowsResizeAroundCentreStopAtLimits()
+    {
+        // Growing stops symmetrically at the border: 5 px room on the left allows 10 px more.
+        QCOMPARE(steppedSelection(QRect(5, 100, 50, 40), {10, 0}, centre, 4, bounds), QRect(0, 100, 60, 40));
+        // Shrinking stops at the minimum with the same parity.
+        QCOMPARE(steppedSelection(QRect(100, 100, 6, 40), {-10, 0}, centre, 4, bounds), QRect(101, 100, 4, 40));
+        QCOMPARE(steppedSelection(QRect(100, 100, 7, 40), {-10, 0}, centre, 4, bounds), QRect(101, 100, 5, 40));
+    }
+
+    void arrowsSquare()
+    {
+        // The first press makes a square of the width, then grows or shrinks it.
+        QCOMPARE(steppedSelection(QRect(100, 100, 50, 30), {1, 0}, square, 4, bounds), QRect(100, 100, 51, 51));
+        QCOMPARE(steppedSelection(QRect(100, 100, 50, 50), {0, 10}, square, 4, bounds), QRect(100, 100, 60, 60));
+        QCOMPARE(steppedSelection(QRect(100, 100, 50, 50), {0, -10}, square, 4, bounds), QRect(100, 100, 40, 40));
+        // Bounded by the nearer of right and bottom border.
+        QCOMPARE(steppedSelection(QRect(900, 700, 90, 90), {10, 0}, square, 4, bounds), QRect(900, 700, 100, 100));
+        QCOMPARE(steppedSelection(QRect(900, 750, 40, 40), {10, 0}, square, 4, bounds), QRect(900, 750, 50, 50));
+    }
+
+    void arrowsCentredSquare()
+    {
+        QCOMPARE(steppedSelection(QRect(100, 100, 50, 50), {1, 0}, centredSquare, 4, bounds), QRect(99, 99, 52, 52));
+        // A rectangle becomes a square of its width around its own centre.
+        QCOMPARE(steppedSelection(QRect(100, 100, 50, 30), {-1, 0}, centredSquare, 4, bounds),
+                 QRect(101, 91, 48, 48));
+        // The nearer border limits both sides.
+        QCOMPARE(steppedSelection(QRect(10, 300, 40, 40), {10, 0}, centredSquare, 4, bounds),
+                 QRect(0, 290, 60, 60));
+    }
 };
 
 QTEST_GUILESS_MAIN(SelectionGeometryTest)
