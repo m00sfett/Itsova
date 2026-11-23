@@ -34,6 +34,8 @@ public:
     // Persists the store and refreshes shortcuts and menus. Pass ids of removed areas/groups so
     // their global shortcuts are cleared as well.
     void storeChanged(const QStringList &deletedIds = {});
+    // Persists the store only, for state that changes nothing else (overlay mode, help).
+    void saveSettings();
 
     void trigger(const QString &id);
     // Print key: saves the full screenshot, then opens the capture overlay.

@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QImageWriter>
 #include <QKeyEvent>
@@ -187,7 +188,7 @@ void CaptureSession::start()
         finish({}, {}, {tr("No monitor is connected.")});
         return;
     }
-    frozen_ = store().overlayStartsFrozen;
+    frozen_ = store().overlayStartsFrozen();
     if (purpose_ == Purpose::Print) {
         savePrintImage();
         if (finished_) {
@@ -205,15 +206,9 @@ void CaptureSession::start()
         captureFrames(connectors);
     }
 
-    const QPoint cursor = QCursor::pos();
-    QString cursorConnector = screens_.first().connector;
+    // Every monitor gets its own top bar, so "This Monitor" always means the one you look at.
     for (const ScreenInfo &screen : std::as_const(screens_)) {
-        if (screen.geometry.contains(cursor)) {
-            cursorConnector = screen.connector;
-        }
-    }
-    for (const ScreenInfo &screen : std::as_const(screens_)) {
-        auto *overlay = new CaptureOverlay(this, screen, screen.connector == cursorConnector);
+        auto *overlay = new CaptureOverlay(this, screen);
         overlays_.append(overlay);
         overlay->setAttribute(Qt::WA_DeleteOnClose);
         overlay->winId();
@@ -713,17 +708,25 @@ void CaptureSession::captureWindow(const WindowInfo &window)
 
 void CaptureSession::setFrozen(bool frozen)
 {
-    if (frozen == frozen_) {
+    if (frozen == frozen_ || switching_ || finished_) {
         return;
     }
+    // The next overlay starts in this mode when the setting says "Last used".
+    store().lastOverlayFrozen = frozen;
+    app_->saveSettings();
     if (!frozen) {
         frozen_ = false;
         frames_.clear();
         changed();
         return;
     }
+    switching_ = true;
     hideOverlays();
     QTimer::singleShot(liveHideDelayMs, this, [this] {
+        switching_ = false;
+        if (finished_) {
+            return;
+        }
         QStringList connectors;
         for (const ScreenInfo &screen : std::as_const(screens_)) {
             connectors.append(screen.connector);
@@ -732,6 +735,18 @@ void CaptureSession::setFrozen(bool frozen)
         frozen_ = true;
         showOverlays();
     });
+}
+
+bool CaptureSession::helpExpanded() const
+{
+    return store().overlayHelpExpanded;
+}
+
+void CaptureSession::toggleHelp()
+{
+    store().overlayHelpExpanded = !store().overlayHelpExpanded;
+    app_->saveSettings();
+    changed();
 }
 
 void CaptureSession::openSettings()
@@ -793,10 +808,9 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
 
 // ------------------------------------------------------------------------------------------ Overlay
 
-CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen, bool withTopBar)
+CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen)
     : session_(session)
     , screen_(screen)
-    , withTopBar_(withTopBar)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     setWindowTitle(tr("glimply capture on %1").arg(screen.connector));
@@ -805,9 +819,7 @@ CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen
     setCursor(Qt::CrossCursor);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
-    if (withTopBar_) {
-        buildTopBar();
-    }
+    buildTopBar();
     buildActionBar();
 }
 
@@ -828,9 +840,10 @@ void CaptureOverlay::buildTopBar()
     column->addLayout(row);
 
     frozenButton_ = barButton(panel, QStringLiteral("media-playback-pause"), tr("Frozen"),
-                              tr("Show the moment you pressed the key. Captures cut from this picture."));
+                              tr("Show the moment you pressed the key. Captures cut from this picture. (Space)"));
     liveButton_ = barButton(panel, QStringLiteral("media-playback-start"), tr("Live"),
-                            tr("See the screen move on, for example a video. Captures are taken when you save."));
+                            tr("See the screen move on, for example a video. Captures are taken when you save. "
+                               "(Space)"));
     frozenButton_->setCheckable(true);
     liveButton_->setCheckable(true);
     connect(frozenButton_, &QToolButton::clicked, this, [this] { session_->setFrozen(true); });
@@ -879,6 +892,10 @@ void CaptureOverlay::buildTopBar()
     row->addWidget(areas);
 
     separator();
+    helpButton_ = barButton(panel, QStringLiteral("help-contextual"), tr("Help"), tr("Show or hide the controls (F1)"));
+    helpButton_->setCheckable(true);
+    connect(helpButton_, &QToolButton::clicked, this, [this] { session_->toggleHelp(); });
+    row->addWidget(helpButton_);
     if (print) {
         auto *settings = barButton(panel, QStringLiteral("configure"), tr("Settings"),
                                    tr("Keep the full screenshot and open the settings"));
@@ -899,6 +916,68 @@ void CaptureOverlay::buildTopBar()
     hintPalette.setColor(QPalette::WindowText, muted);
     hint_->setPalette(hintPalette);
     column->addWidget(hint_);
+
+    helpPanel_ = buildHelpPanel(panel);
+    column->addWidget(helpPanel_);
+}
+
+QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
+{
+    const bool print = session_->purpose() == CaptureSession::Purpose::Print;
+    auto *panel = new QWidget(parent);
+    auto *columns = new QHBoxLayout(panel);
+    columns->setContentsMargins(8, 6, 8, 4);
+    columns->setSpacing(28);
+
+    const auto section = [&](const QString &title, const QList<QPair<QString, QString>> &rows) {
+        auto *grid = new QGridLayout;
+        grid->setHorizontalSpacing(14);
+        grid->setVerticalSpacing(3);
+        auto *heading = new QLabel(title, panel);
+        QFont bold = heading->font();
+        bold.setBold(true);
+        heading->setFont(bold);
+        grid->addWidget(heading, 0, 0, 1, 2);
+        grid->setRowMinimumHeight(1, 2);
+        int line = 2;
+        for (const auto &[keys, meaning] : rows) {
+            auto *keyLabel = new QLabel(keys, panel);
+            keyLabel->setFont(bold);
+            keyLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+            auto *meaningLabel = new QLabel(meaning, panel);
+            meaningLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+            grid->addWidget(keyLabel, line, 0);
+            grid->addWidget(meaningLabel, line, 1);
+            ++line;
+        }
+        grid->setRowStretch(line, 1);
+        columns->addLayout(grid);
+    };
+
+    QList<QPair<QString, QString>> mouse{
+        {tr("Drag"), tr("Draw a rectangle")},
+        {tr("Drag inside / edge"), tr("Move / resize the active rectangle")},
+        {tr("Alt / Ctrl while dragging"), tr("Grow from the centre / keep a square")},
+        {tr("Click a rectangle"), tr("Make it active")},
+        {tr("Right-click a rectangle"), tr("Delete it")},
+        {tr("Double-click a rectangle"), print ? tr("Save it") : tr("Save it as an area")},
+    };
+    if (print) {
+        mouse.append({tr("Click, nothing drawn"), tr("Capture this monitor")});
+    }
+    section(tr("Mouse"), mouse);
+
+    section(tr("Keys"), {
+        {tr("Space"), tr("Switch between Frozen and Live")},
+        {tr("Arrows"), tr("Move by 1 px; with Shift by 10 px")},
+        {tr("Alt + arrows"), tr("Resize around the centre")},
+        {tr("Ctrl + arrows"), tr("Resize as a square; with Alt around the centre")},
+        {tr("Enter"), print ? tr("Save") : tr("Save as area")},
+        {tr("Delete"), tr("Delete the active rectangle")},
+        {tr("Escape"), print ? tr("Close and keep the full screenshot") : tr("Cancel")},
+        {tr("F1"), tr("Show or hide this help")},
+    });
+    return panel;
 }
 
 void CaptureOverlay::fillWindowsMenu()
@@ -1204,6 +1283,8 @@ void CaptureOverlay::refresh()
         frozenButton_->setChecked(session_->frozen());
         liveButton_->setChecked(!session_->frozen());
         hint_->setText(session_->hint());
+        helpButton_->setChecked(session_->helpExpanded());
+        helpPanel_->setVisible(session_->helpExpanded());
         topBar_->adjustSize();
         const QSize size = topBar_->sizeHint();
         topBar_->setGeometry((width() - size.width()) / 2, 16, size.width(), size.height());
@@ -1669,6 +1750,9 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
                                            modifiers.testFlag(Qt::ControlModifier)};
     QPoint delta;
     switch (event->key()) {
+    case Qt::Key_F1:
+        session_->toggleHelp();
+        return;
     case Qt::Key_Space:
         if (!event->isAutoRepeat() && drag_ == Drag::None) {
             session_->setFrozen(!session_->frozen());

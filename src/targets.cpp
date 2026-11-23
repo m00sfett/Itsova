@@ -77,6 +77,19 @@ QString TargetStore::defaultFilenameTemplate()
     return QStringLiteral("{date}_{time}_{area}.png");
 }
 
+bool TargetStore::overlayStartsFrozen() const
+{
+    switch (overlayStart) {
+    case OverlayStart::Frozen:
+        return true;
+    case OverlayStart::Live:
+        return false;
+    case OverlayStart::LastUsed:
+        break;
+    }
+    return lastOverlayFrozen;
+}
+
 QString TargetStore::effectiveCaptureDirectory() const
 {
     return captureDirectory.isEmpty() ? defaultCaptureDirectory() : captureDirectory;
@@ -100,7 +113,18 @@ void TargetStore::load(const KConfig &config)
     autostart = general.readEntry("Autostart", true);
     usePrintKey = general.readEntry("UsePrintKey", true);
     printOpensOverlay = general.readEntry("PrintOpensOverlay", true);
-    overlayStartsFrozen = general.readEntry("OverlayStartsFrozen", true);
+    const QString start = general.readEntry("OverlayStart", QString());
+    if (start == QLatin1String("frozen")) {
+        overlayStart = OverlayStart::Frozen;
+    } else if (start == QLatin1String("live")) {
+        overlayStart = OverlayStart::Live;
+    } else if (start.isEmpty() && !general.readEntry("OverlayStartsFrozen", true)) {
+        overlayStart = OverlayStart::Live; // before 0.3.0: "Start frozen" was switched off
+    } else {
+        overlayStart = OverlayStart::LastUsed;
+    }
+    lastOverlayFrozen = general.readEntry("LastOverlayFrozen", true);
+    overlayHelpExpanded = general.readEntry("OverlayHelpExpanded", true);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
 
     const KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
@@ -169,7 +193,20 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("Autostart", autostart);
     general.writeEntry("UsePrintKey", usePrintKey);
     general.writeEntry("PrintOpensOverlay", printOpensOverlay);
-    general.writeEntry("OverlayStartsFrozen", overlayStartsFrozen);
+    switch (overlayStart) {
+    case OverlayStart::LastUsed:
+        general.writeEntry("OverlayStart", QStringLiteral("last"));
+        break;
+    case OverlayStart::Frozen:
+        general.writeEntry("OverlayStart", QStringLiteral("frozen"));
+        break;
+    case OverlayStart::Live:
+        general.writeEntry("OverlayStart", QStringLiteral("live"));
+        break;
+    }
+    general.deleteEntry("OverlayStartsFrozen");
+    general.writeEntry("LastOverlayFrozen", lastOverlayFrozen);
+    general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
 
     KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));

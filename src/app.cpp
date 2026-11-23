@@ -134,6 +134,11 @@ void App::storeChanged(const QStringList &deletedIds)
     Q_EMIT targetsChanged();
 }
 
+void App::saveSettings()
+{
+    store_.save(*config_);
+}
+
 QString App::targetLabel(const TargetStore &store, const QString &id)
 {
     if (id == allMonitorsTargetId()) {

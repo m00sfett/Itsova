@@ -69,7 +69,11 @@ public:
     // Print key and capture overlay.
     bool usePrintKey = true; // glimply owns the Print key (handed back to its previous owner when off)
     bool printOpensOverlay = true; // false: Print only saves the full screenshot
-    bool overlayStartsFrozen = true;
+    enum class OverlayStart { LastUsed, Frozen, Live };
+    OverlayStart overlayStart = OverlayStart::LastUsed;
+    bool lastOverlayFrozen = true; // the mode the overlay was in when it was last used
+    bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
+    [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
 
     [[nodiscard]] static QString defaultCaptureDirectory();

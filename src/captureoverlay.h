@@ -82,6 +82,8 @@ public:
     void addTarget(const QString &id);
     void captureWindow(const WindowInfo &window);
     void setFrozen(bool frozen);
+    [[nodiscard]] bool helpExpanded() const;
+    void toggleHelp();
     void openSettings();
     // Escape, right click, Close: keeps the full screenshot (Print) or discards (Add Area).
     void close();
@@ -114,6 +116,7 @@ private:
     bool forceNew_ = false;
     bool dragging_ = false;
     bool finished_ = false;
+    bool switching_ = false; // Live to Frozen: overlays hidden while the frames are taken
     QList<ScreenInfo> screens_;
     QHash<QString, CaptureResult> frames_;
     SelectionModel selections_;
@@ -129,7 +132,7 @@ class CaptureOverlay : public QWidget
     Q_OBJECT
 
 public:
-    CaptureOverlay(CaptureSession *session, const ScreenInfo &screen, bool withTopBar);
+    CaptureOverlay(CaptureSession *session, const ScreenInfo &screen);
 
     [[nodiscard]] QString connector() const;
     void refresh();
@@ -148,6 +151,7 @@ private:
     enum class Drag { None, Pending, Create, Move, Resize };
 
     void buildTopBar();
+    [[nodiscard]] QWidget *buildHelpPanel(QWidget *parent) const;
     void buildActionBar();
     void showAreaPanel();
     void showActionButtons();
@@ -166,7 +170,6 @@ private:
 
     CaptureSession *session_;
     ScreenInfo screen_;
-    bool withTopBar_;
 
     Drag drag_ = Drag::None;
     int dragId_ = 0;
@@ -179,6 +182,8 @@ private:
 
     QWidget *topBar_ = nullptr;
     QLabel *hint_ = nullptr;
+    QToolButton *helpButton_ = nullptr;
+    QWidget *helpPanel_ = nullptr;
     QToolButton *frozenButton_ = nullptr;
     QToolButton *liveButton_ = nullptr;
     QWidget *actionBar_ = nullptr;

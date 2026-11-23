@@ -10,6 +10,7 @@
 #include <KPageWidgetItem>
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QFileDialog>
@@ -918,14 +919,17 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
-    overlayStartsFrozen_ = new QCheckBox(tr("Start frozen"), page);
-    form->addRow(tr("Overlay:"), overlayStartsFrozen_);
+    overlayStart_ = new QComboBox(page);
+    overlayStart_->addItem(tr("Last used"), int(TargetStore::OverlayStart::LastUsed));
+    overlayStart_->addItem(tr("Frozen"), int(TargetStore::OverlayStart::Frozen));
+    overlayStart_->addItem(tr("Live"), int(TargetStore::OverlayStart::Live));
+    form->addRow(tr("Overlay starts:"), overlayStart_);
     form->addRow(QString(), makeHint(tr("Frozen shows the moment you pressed Print. Live lets videos keep playing and "
-                                        "captures when you save. You can switch in the overlay at any time."),
+                                        "captures when you save. Space switches in the overlay at any time."),
                                      page));
-    connect(overlayStartsFrozen_, &QCheckBox::toggled, this, [this](bool on) {
+    connect(overlayStart_, &QComboBox::currentIndexChanged, this, [this] {
         if (!updating_) {
-            app_->store().overlayStartsFrozen = on;
+            app_->store().overlayStart = TargetStore::OverlayStart(overlayStart_->currentData().toInt());
             app_->storeChanged();
         }
     });
@@ -953,7 +957,7 @@ void SettingsWindow::refreshStorage()
     autostart_->setChecked(store.autostart);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
-    overlayStartsFrozen_->setChecked(store.overlayStartsFrozen);
+    overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));
     captureOnRelease_->setChecked(store.captureOnRelease);
     updating_ = false;
 }

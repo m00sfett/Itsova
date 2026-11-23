@@ -3,6 +3,7 @@
 #include "triggerplan.h"
 
 #include <KConfig>
+#include <KConfigGroup>
 
 #include <QAtomicInt>
 #include <QFile>
@@ -51,6 +52,7 @@ private Q_SLOTS:
     void reservedNamesAreRejected();
     void configRoundTrip();
     void legacyRegionConfigIsMigrated();
+    void overlayStartMode();
     void removingAreaDropsItFromGroups();
     void groupPlanCapturesEachMonitorOnce();
     void groupCursorOverridesTargets();
@@ -166,6 +168,45 @@ void TargetsTest::legacyRegionConfigIsMigrated()
     reloaded.load(config);
     QVERIFY(reloaded.migratedIds.isEmpty());
     QCOMPARE(reloaded.areas.size(), 2);
+}
+
+void TargetsTest::overlayStartMode()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        QFile file(path);
+        QVERIFY(file.open(QIODevice::WriteOnly));
+        file.write("[General]\nOverlayStartsFrozen=false\n");
+    }
+    TargetStore store;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.load(config);
+    }
+    // "Start frozen" switched off before 0.3.0 becomes a fixed Live start.
+    QCOMPARE(store.overlayStart, TargetStore::OverlayStart::Live);
+    QVERIFY(!store.overlayStartsFrozen());
+
+    // A fresh configuration remembers the last mode.
+    TargetStore fresh;
+    QCOMPARE(fresh.overlayStart, TargetStore::OverlayStart::LastUsed);
+    QVERIFY(fresh.overlayStartsFrozen());
+    fresh.lastOverlayFrozen = false;
+    QVERIFY(!fresh.overlayStartsFrozen());
+    fresh.overlayHelpExpanded = false;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        fresh.save(config);
+    }
+    KConfig config(path, KConfig::SimpleConfig);
+    QVERIFY(!config.group(QStringLiteral("General")).hasKey("OverlayStartsFrozen"));
+    TargetStore reloaded;
+    reloaded.load(config);
+    QCOMPARE(reloaded.overlayStart, TargetStore::OverlayStart::LastUsed);
+    QVERIFY(!reloaded.lastOverlayFrozen);
+    QVERIFY(!reloaded.overlayHelpExpanded);
 }
 
 void TargetsTest::removingAreaDropsItFromGroups()
