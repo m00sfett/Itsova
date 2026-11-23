@@ -138,16 +138,17 @@ QWidget *SettingsWindow::createTargetsPage()
     form->addRow(targetTitle_);
 
     areaName_ = new QLineEdit(targetDetails_);
-    areaName_->setAccessibleName(tr("Area name"));
+    areaName_->setAccessibleName(tr("Name"));
     areaNameError_ = makeError(targetDetails_);
     auto *nameBox = new QWidget(targetDetails_);
     auto *nameLayout = new QVBoxLayout(nameBox);
     nameLayout->setContentsMargins(0, 0, 0, 0);
     nameLayout->addWidget(areaName_);
     nameLayout->addWidget(areaNameError_);
-    nameLayout->addWidget(makeHint(tr("Also used in the file name."), nameBox));
+    nameHint_ = makeHint(tr("Also used in the file name."), nameBox);
+    nameLayout->addWidget(nameHint_);
     form->addRow(tr("Name:"), nameBox);
-    areaOnly_ = {nameBox, form->labelForField(nameBox)};
+    nameRow_ = {nameBox, form->labelForField(nameBox)};
 
     monitorLabel_ = new QLabel(targetDetails_);
     monitorLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -268,7 +269,7 @@ void SettingsWindow::refreshTargets()
     const auto addMonitor = [&](const QString &connector, bool connected) {
         const QString id = screenTargetId(connector);
         auto *item = new QTreeWidgetItem(targetTree_);
-        item->setText(0, connected ? connector : tr("%1 (not connected)").arg(connector));
+        item->setText(0, connected ? monitorName(store, connector) : tr("%1 (not connected)").arg(connector));
         item->setIcon(0, QIcon::fromTheme(QStringLiteral("video-display")));
         item->setText(1, shortcuts->shortcut(id).toString(QKeySequence::NativeText));
         item->setData(0, idRole, id);
@@ -323,6 +324,17 @@ void SettingsWindow::refreshTargetDetails()
 
     const QString connector = isArea ? area->connector : connectorFromScreenTargetId(id);
     const QScreen *screen = connector.isEmpty() ? nullptr : findScreen(connector);
+    const bool isMonitor = !isArea && screen && isScreenTargetId(id);
+    for (QWidget *widget : std::as_const(nameRow_)) {
+        if (widget) {
+            widget->setVisible(isArea || isMonitor);
+        }
+    }
+    areaName_->setPlaceholderText(isMonitor ? connector : QString());
+    nameHint_->setText(isMonitor ? tr("Also used in file names and for new areas on this monitor. Leave empty "
+                                      "for %1.")
+                                       .arg(connector)
+                                 : tr("Also used in the file name."));
     if (id == allMonitorsTargetId()) {
         targetTitle_->setText(tr("All monitors"));
         monitorLabel_->setText(tr("One image of all monitors in their current arrangement, at the highest scale. "
@@ -365,7 +377,9 @@ void SettingsWindow::refreshTargetDetails()
             areaWarning_->show();
         }
     } else if (screen) {
-        targetTitle_->setText(tr("Monitor %1").arg(connector));
+        const QString name = store.monitorName(screenInfo(screen));
+        targetTitle_->setText(tr("Monitor %1").arg(name));
+        areaName_->setText(name == connector ? QString() : name);
     } else if (id != allMonitorsTargetId()) {
         targetTitle_->setText(tr("Monitor %1").arg(connector));
     }
@@ -485,7 +499,14 @@ void SettingsWindow::renameArea()
     if (updating_) {
         return;
     }
-    Area *area = app_->store().area(selectedTargetId());
+    const QString id = selectedTargetId();
+    if (isScreenTargetId(id)) {
+        const QString error = app_->renameTarget(id, areaName_->text());
+        areaNameError_->setText(error);
+        areaNameError_->setVisible(!error.isEmpty());
+        return;
+    }
+    Area *area = app_->store().area(id);
     if (!area) {
         return;
     }
@@ -737,7 +758,7 @@ void SettingsWindow::refreshGroupDetails()
             item->setCheckState(group->targetIds.contains(id) ? Qt::Checked : Qt::Unchecked);
         };
         for (const Area &area : store.areas) {
-            addMember(area.id, tr("%1 (area on %2)").arg(area.name, area.connector),
+            addMember(area.id, tr("%1 (area on %2)").arg(area.name, monitorName(store, area.connector)),
                       QStringLiteral("transform-crop"));
         }
         QStringList connectors;
@@ -750,7 +771,8 @@ void SettingsWindow::refreshGroupDetails()
             }
         }
         for (const QString &connector : std::as_const(connectors)) {
-            addMember(screenTargetId(connector), tr("Monitor %1").arg(connector), QStringLiteral("video-display"));
+            addMember(screenTargetId(connector), tr("Monitor %1").arg(monitorName(store, connector)),
+                      QStringLiteral("video-display"));
         }
         addMember(allMonitorsTargetId(), tr("All monitors"), QStringLiteral("video-display"));
     }

@@ -22,6 +22,8 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFile>
+#include <QInputDialog>
+#include <QLineEdit>
 #include <QSaveFile>
 #include <QStandardPaths>
 #include <QCoreApplication>
@@ -49,6 +51,7 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
     connect(tray_, &TrayController::configureRequested, this, [this] { showSettings(); });
     connect(tray_, &TrayController::addAreaRequested, this, &App::addArea);
+    connect(tray_, &TrayController::renameMonitorRequested, this, &App::renameMonitorWithDialog);
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -145,7 +148,7 @@ QString App::targetLabel(const TargetStore &store, const QString &id)
         return tr("All monitors");
     }
     if (isScreenTargetId(id)) {
-        return connectorFromScreenTargetId(id);
+        return monitorName(store, connectorFromScreenTargetId(id));
     }
     if (const Area *area = store.area(id)) {
         return area->name;
@@ -167,7 +170,7 @@ void App::syncShortcuts(const QStringList &deletedIds)
         entries.append({area.id, tr("Capture area %1").arg(area.name)});
     }
     for (const ScreenInfo &screen : currentScreens()) {
-        entries.append({screenTargetId(screen.connector), tr("Capture monitor %1").arg(screen.connector)});
+        entries.append({screenTargetId(screen.connector), tr("Capture monitor %1").arg(store_.monitorName(screen))});
     }
     entries.append({allMonitorsTargetId(), tr("Capture all monitors")});
     shortcuts_->sync(entries, deletedIds);
@@ -194,7 +197,8 @@ QList<MenuTarget> App::menuTargets() const
     }
     for (const ScreenInfo &screen : screens) {
         const QString id = screenTargetId(screen.connector);
-        targets.append({MenuTarget::Section::Monitor, id, screen.connector, {}, shortcuts_->shortcut(id), true});
+        targets.append({MenuTarget::Section::Monitor, id, store_.monitorName(screen), {}, shortcuts_->shortcut(id),
+                        true});
     }
     targets.append({MenuTarget::Section::Monitor, allMonitorsTargetId(), tr("All monitors"), {},
                     shortcuts_->shortcut(allMonitorsTargetId()), !screens.isEmpty()});
@@ -393,10 +397,39 @@ void App::showSettings(bool addArea, const QString &targetId)
 QString App::renameTarget(const QString &id, const QString &name)
 {
     const QString trimmed = name.trimmed();
+    if (isScreenTargetId(id)) {
+        const QString connector = connectorFromScreenTargetId(id);
+        const QList<ScreenInfo> screens = currentScreens();
+        const auto screen = std::find_if(screens.cbegin(), screens.cend(),
+                                         [&](const ScreenInfo &s) { return s.connector == connector; });
+        if (screen == screens.cend()) {
+            return tr("Monitor %1 is not connected.").arg(connector);
+        }
+        if (trimmed == store_.monitorName(*screen)) {
+            return {};
+        }
+        if (!trimmed.isEmpty() && trimmed != connector) {
+            if (sanitizeFilenameToken(trimmed).isEmpty()) {
+                return tr("Enter a name that can be used in a file name.");
+            }
+            QStringList otherConnectors;
+            for (const ScreenInfo &other : screens) {
+                if (other.connector != connector) {
+                    otherConnectors.append(other.connector);
+                }
+            }
+            if (!store_.isNameAvailable(trimmed, TargetStore::monitorKey(*screen), otherConnectors)) {
+                return tr("“%1” is already used by another target or group.").arg(trimmed);
+            }
+        }
+        store_.setMonitorName(*screen, trimmed);
+        storeChanged();
+        return {};
+    }
     Area *area = store_.area(id);
     Group *group = store_.group(id);
     if (!area && !group) {
-        return tr("Only areas and groups can be renamed.");
+        return tr("Only areas, groups and monitors can be renamed.");
     }
     if ((area && trimmed == area->name) || (group && trimmed == group->name)) {
         return {};
@@ -418,6 +451,29 @@ QString App::renameTarget(const QString &id, const QString &name)
     }
     storeChanged();
     return {};
+}
+
+void App::renameMonitorWithDialog(const QString &id)
+{
+    const QString connector = connectorFromScreenTargetId(id);
+    QString name = monitorName(store_, connector);
+    QString error;
+    for (;;) {
+        QString label = tr("Name for monitor %1 (leave empty for %1):").arg(connector);
+        if (!error.isEmpty()) {
+            label = error + QStringLiteral("\n\n") + label;
+        }
+        bool ok = false;
+        name = QInputDialog::getText(nullptr, tr("Rename Monitor"), label, QLineEdit::Normal,
+                                     name == connector ? QString() : name, &ok);
+        if (!ok) {
+            return;
+        }
+        error = renameTarget(id, name);
+        if (error.isEmpty()) {
+            return;
+        }
+    }
 }
 
 void App::removeTarget(const QString &id)

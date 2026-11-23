@@ -127,6 +127,15 @@ void TargetStore::load(const KConfig &config)
     overlayHelpExpanded = general.readEntry("OverlayHelpExpanded", true);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
 
+    monitorNames.clear();
+    const KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
+    for (const QString &key : monitors.keyList()) {
+        const QString name = monitors.readEntry(key, QString()).trimmed();
+        if (!name.isEmpty()) {
+            monitorNames.insert(key, name);
+        }
+    }
+
     const KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     cursorScreens = builtIn.readEntry("CursorScreens", QStringList());
     allMonitorsCursor = builtIn.readEntry("AllMonitorsCursor", false);
@@ -209,6 +218,14 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
 
+    config.deleteGroup(QStringLiteral("MonitorNames"));
+    if (!monitorNames.isEmpty()) {
+        KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
+        for (auto it = monitorNames.cbegin(); it != monitorNames.cend(); ++it) {
+            monitors.writeEntry(it.key(), it.value());
+        }
+    }
+
     KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     builtIn.writeEntry("CursorScreens", cursorScreens);
     builtIn.writeEntry("AllMonitorsCursor", allMonitorsCursor);
@@ -259,10 +276,31 @@ Group *TargetStore::group(const QString &id)
     return const_cast<Group *>(std::as_const(*this).group(id));
 }
 
-QString TargetStore::nextAreaName(const QString &connector) const
+QString TargetStore::monitorKey(const ScreenInfo &screen)
+{
+    const QString identity = screen.identity();
+    return identity.isEmpty() ? QStringLiteral("connector:") + screen.connector : identity;
+}
+
+QString TargetStore::monitorName(const ScreenInfo &screen) const
+{
+    return monitorNames.value(monitorKey(screen), screen.connector);
+}
+
+void TargetStore::setMonitorName(const ScreenInfo &screen, const QString &name)
+{
+    const QString trimmed = name.trimmed();
+    if (trimmed.isEmpty() || trimmed == screen.connector) {
+        monitorNames.remove(monitorKey(screen));
+    } else {
+        monitorNames.insert(monitorKey(screen), trimmed);
+    }
+}
+
+QString TargetStore::nextAreaName(const QString &prefix) const
 {
     for (int n = 1;; ++n) {
-        const QString candidate = connector + QLatin1Char('-') + QString::number(n);
+        const QString candidate = prefix + QLatin1Char('-') + QString::number(n);
         if (isNameAvailable(candidate)) {
             return candidate;
         }
@@ -288,6 +326,11 @@ bool TargetStore::isNameAvailable(const QString &name, const QString &exceptId, 
             return false;
         }
     }
+    for (auto it = monitorNames.cbegin(); it != monitorNames.cend(); ++it) {
+        if (it.key() != exceptId && it.value().compare(trimmed, Qt::CaseInsensitive) == 0) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -295,7 +338,7 @@ Area &TargetStore::addArea(const ScreenInfo &screen, const QRect &rect)
 {
     Area area;
     area.id = newId(areaIdPrefix);
-    area.name = nextAreaName(screen.connector);
+    area.name = nextAreaName(monitorName(screen));
     area.connector = screen.connector;
     area.monitorIdentity = screen.identity();
     area.rect = rect;

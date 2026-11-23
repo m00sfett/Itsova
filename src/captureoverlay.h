@@ -69,6 +69,8 @@ public:
     [[nodiscard]] QList<WindowInfo> windows() const;
     [[nodiscard]] QKeySequence shortcut(const QString &id) const;
     [[nodiscard]] bool isConnected(const QString &connector) const;
+    // The user's name for the monitor, or its connector.
+    [[nodiscard]] QString monitorName(const QString &connector) const;
 
     // Actions.
     void save();

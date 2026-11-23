@@ -48,6 +48,7 @@ Q_SIGNALS:
     void openFolderRequested();
     void configureRequested();
     void addAreaRequested();
+    void renameMonitorRequested(const QString &id);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;

@@ -39,4 +39,10 @@ QScreen *findScreen(const QString &connector)
     return nullptr;
 }
 
+QString monitorName(const TargetStore &store, const QString &connector)
+{
+    const QScreen *screen = findScreen(connector);
+    return screen ? store.monitorName(screenInfo(screen)) : connector;
+}
+
 } // namespace glimply

@@ -53,6 +53,7 @@ private Q_SLOTS:
     void configRoundTrip();
     void legacyRegionConfigIsMigrated();
     void overlayStartMode();
+    void monitorNames();
     void removingAreaDropsItFromGroups();
     void groupPlanCapturesEachMonitorOnce();
     void groupCursorOverridesTargets();
@@ -207,6 +208,62 @@ void TargetsTest::overlayStartMode()
     QCOMPARE(reloaded.overlayStart, TargetStore::OverlayStart::LastUsed);
     QVERIFY(!reloaded.lastOverlayFrozen);
     QVERIFY(!reloaded.overlayHelpExpanded);
+}
+
+void TargetsTest::monitorNames()
+{
+    TargetStore store;
+    const auto layout = testLayout();
+    const ScreenInfo dp = layout.at(0);
+    const ScreenInfo hdmi = layout.at(1);
+    QCOMPARE(store.monitorName(dp), QStringLiteral("DP-1"));
+    store.addArea(dp, QRect(0, 0, 10, 10)); // DP-1-1, named before the monitor got a name
+
+    // The name belongs to the physical monitor, not to the connector.
+    store.setMonitorName(dp, QStringLiteral("Left"));
+    QCOMPARE(store.monitorName(dp), QStringLiteral("Left"));
+    ScreenInfo moved = dp;
+    moved.connector = QStringLiteral("DP-2");
+    QCOMPARE(store.monitorName(moved), QStringLiteral("Left"));
+    // A monitor without identity falls back to its connector as the key.
+    ScreenInfo anonymous{QStringLiteral("DP-3"), QRect(0, 0, 100, 100), {}, {}, {}};
+    QCOMPARE(TargetStore::monitorKey(anonymous), QStringLiteral("connector:DP-3"));
+
+    // New automatic area names use the monitor name; existing ones stay.
+    QCOMPARE(store.addArea(dp, QRect(0, 0, 10, 10)).name, QStringLiteral("Left-1"));
+    QCOMPARE(store.areas.first().name, QStringLiteral("DP-1-1"));
+
+    // Monitor names, area and group names must not collide.
+    QVERIFY(!store.isNameAvailable(QStringLiteral("left")));
+    QVERIFY(store.isNameAvailable(QStringLiteral("Left"), TargetStore::monitorKey(dp)));
+    QVERIFY(!store.isNameAvailable(QStringLiteral("Left-1"), TargetStore::monitorKey(hdmi)));
+
+    // The file name token and display name of a monitor capture follow the name.
+    const TriggerPlan plan = planTrigger(store, screenTargetId(QStringLiteral("DP-1")), layout);
+    QCOMPARE(plan.outputs.size(), 1);
+    QCOMPARE(plan.outputs.first().token, QStringLiteral("Left"));
+    QCOMPARE(plan.outputs.first().connector, QStringLiteral("DP-1"));
+    QCOMPARE(plan.displayName, QStringLiteral("Left"));
+
+    // Survives a save and load; an empty name or the connector itself removes it.
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+    TargetStore reloaded;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        reloaded.load(config);
+    }
+    QCOMPARE(reloaded.monitorName(dp), QStringLiteral("Left"));
+    reloaded.setMonitorName(dp, QStringLiteral("DP-1"));
+    QCOMPARE(reloaded.monitorName(dp), QStringLiteral("DP-1"));
+    QVERIFY(reloaded.monitorNames.isEmpty());
+    store.setMonitorName(dp, QStringLiteral("  "));
+    QVERIFY(store.monitorNames.isEmpty());
 }
 
 void TargetsTest::removingAreaDropsItFromGroups()

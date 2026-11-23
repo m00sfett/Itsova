@@ -1,5 +1,6 @@
 #include "traycontroller.h"
 
+#include "targets.h"
 #include "trayicon.h"
 
 #include <KStatusNotifierItem>
@@ -158,6 +159,20 @@ void TrayController::rebuildMenu()
     }
 
     addSeparator();
+    // DBusMenu cannot edit text inline, so renaming a monitor opens a small dialog.
+    auto *rename = new QMenu(tr("Rename Monitor"), menu_);
+    rename->setIcon(QIcon::fromTheme(QStringLiteral("edit-rename")));
+    for (const MenuTarget &target : targets) {
+        if (target.section == MenuTarget::Section::Monitor && isScreenTargetId(target.id)) {
+            auto *action = rename->addAction(QIcon::fromTheme(QStringLiteral("video-display")),
+                                             tr("%1…").arg(target.name));
+            connect(action, &QAction::triggered, this, [this, id = target.id] {
+                QTimer::singleShot(menuCloseDelayMs, this, [this, id] { Q_EMIT renameMonitorRequested(id); });
+            });
+        }
+    }
+    rename->setEnabled(!rename->isEmpty());
+    add(rename->menuAction());
     auto *addArea = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), menu_));
     connect(addArea, &QAction::triggered, this, &TrayController::addAreaRequested);
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));

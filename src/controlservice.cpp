@@ -65,7 +65,7 @@ QString ControlService::Targets() const
         const TargetStore &store = app_->store();
         if (const Area *area = store.area(target.id); area && detail.isEmpty()) {
             detail = tr("%1 · %2 × %3 at %4, %5")
-                         .arg(area->connector)
+                         .arg(monitorName(store, area->connector))
                          .arg(area->rect.width())
                          .arg(area->rect.height())
                          .arg(area->rect.x())
@@ -77,8 +77,11 @@ QString ControlService::Targets() const
             }
             detail = names.isEmpty() ? tr("No targets") : names.join(QStringLiteral(", "));
         } else if (kind == QLatin1String("monitor")) {
-            if (const QScreen *screen = findScreen(target.name)) {
-                detail = tr("%1 × %2").arg(screen->geometry().width()).arg(screen->geometry().height());
+            const QString connector = connectorFromScreenTargetId(target.id);
+            if (const QScreen *screen = findScreen(connector)) {
+                const QString size = tr("%1 × %2").arg(screen->geometry().width()).arg(screen->geometry().height());
+                // A renamed monitor still shows where it is plugged in.
+                detail = target.name == connector ? size : tr("%1 · %2").arg(connector, size);
             }
         } else if (kind == QLatin1String("all")) {
             detail = tr("One image of every monitor");

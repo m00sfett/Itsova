@@ -85,6 +85,8 @@ private:
     QCheckBox *targetCursor_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
+    QList<QWidget *> nameRow_; // areas and connected monitors
+    QLabel *nameHint_ = nullptr;
 
     // Groups page
     QListWidget *groupList_ = nullptr;

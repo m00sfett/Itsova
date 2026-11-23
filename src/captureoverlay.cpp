@@ -352,6 +352,13 @@ bool CaptureSession::isConnected(const QString &connector) const
     return std::any_of(screens_.cbegin(), screens_.cend(), [&](const ScreenInfo &s) { return s.connector == connector; });
 }
 
+QString CaptureSession::monitorName(const QString &connector) const
+{
+    const auto screen = std::find_if(screens_.cbegin(), screens_.cend(),
+                                     [&](const ScreenInfo &s) { return s.connector == connector; });
+    return screen == screens_.cend() ? connector : store().monitorName(*screen);
+}
+
 void CaptureSession::changed()
 {
     for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
@@ -628,7 +635,8 @@ void CaptureSession::captureMonitor(const QString &connector)
             return;
         }
         QStringList errors;
-        finishWith(write({{connector, frame.image}}, &errors), frame.image, errors, connector);
+        const QString name = monitorName(connector);
+        finishWith(write({{name, frame.image}}, &errors), frame.image, errors, name);
     });
 }
 
@@ -813,7 +821,7 @@ CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen
     , screen_(screen)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-    setWindowTitle(tr("glimply capture on %1").arg(screen.connector));
+    setWindowTitle(tr("glimply capture on %1").arg(session->monitorName(screen.connector)));
     // Always translucent, so the same window can show the frozen picture or the live screen.
     setAttribute(Qt::WA_TranslucentBackground);
     setCursor(Qt::CrossCursor);
@@ -863,7 +871,7 @@ void CaptureOverlay::buildTopBar()
 
     if (print) {
         auto *monitor = barButton(panel, QStringLiteral("video-display"), tr("This Monitor"),
-                                  tr("Capture all of %1").arg(screen_.connector));
+                                  tr("Capture all of %1").arg(session_->monitorName(screen_.connector)));
         connect(monitor, &QToolButton::clicked, this, [this] { session_->captureMonitor(screen_.connector); });
         row->addWidget(monitor);
         auto *all = barButton(panel, QStringLiteral("view-fullscreen"), tr("All Monitors"),
@@ -1192,7 +1200,7 @@ void CaptureOverlay::showAreaPanel()
     auto *name = new QLineEdit(areaPanel_);
     name->setMinimumWidth(260);
     if (count == 1) {
-        name->setText(store.nextAreaName(model.inDrawingOrder().first().connector));
+        name->setText(store.nextAreaName(session_->monitorName(model.inDrawingOrder().first().connector)));
     } else {
         int n = 1;
         while (!store.isNameAvailable(tr("Group %1").arg(n))) {

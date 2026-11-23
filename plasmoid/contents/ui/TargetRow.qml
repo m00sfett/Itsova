@@ -1,6 +1,7 @@
 /*
     One target in the glimply widget. Clicking the row captures it; the buttons on the right edit,
-    rename and delete areas and groups. Renaming and deleting happen inline, without dialogs.
+    rename and delete areas and groups, and rename monitors. Renaming and deleting happen inline,
+    without dialogs.
 */
 import QtQuick
 import QtQuick.Layouts
@@ -23,6 +24,7 @@ PlasmaComponents3.ItemDelegate {
     property string error: ""
 
     readonly property bool editable: kind === "area" || kind === "group"
+    readonly property bool renamable: editable || kind === "monitor"
 
     signal captureRequested(string id)
     signal editRequested(string id, string kind)
@@ -46,7 +48,7 @@ PlasmaComponents3.ItemDelegate {
 
     function commitRename() {
         const wanted = nameField.text.trim();
-        if (wanted === name) {
+        if (wanted === name && kind !== "monitor") {
             mode = "normal";
             return;
         }
@@ -107,6 +109,7 @@ PlasmaComponents3.ItemDelegate {
                 Layout.fillWidth: true
                 visible: row.mode === "rename"
                 Accessible.name: i18n("New name")
+                placeholderText: row.kind === "monitor" ? i18n("Empty: back to the connector name") : ""
                 onAccepted: row.commitRename()
                 Keys.onEscapePressed: {
                     row.error = "";
@@ -141,7 +144,7 @@ PlasmaComponents3.ItemDelegate {
                     onClicked: row.editRequested(row.targetId, row.kind)
                 }
                 RowButton {
-                    visible: row.editable
+                    visible: row.renamable
                     iconName: "edit-rename"
                     label: i18n("Rename")
                     onClicked: row.startRename()
