@@ -60,7 +60,6 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
         updateIcon();
     });
     connect(menu_, &QMenu::aboutToShow, this, &TrayController::rebuildMenu);
-    qApp->installEventFilter(this);
     updateIcon();
     rebuildMenu();
 }
@@ -89,10 +88,8 @@ void TrayController::blink()
 
 void TrayController::updateIcon()
 {
-    const QColor color = QApplication::palette().color(QPalette::WindowText);
-    const QIcon icon = trayIcon(color, flashing_);
-    item_->setIconByPixmap(icon);
-    item_->setToolTipIconByPixmap(trayIcon(color));
+    item_->setIconByPixmap(trayIcon(flashing_));
+    item_->setToolTipIconByPixmap(trayIcon());
 }
 
 void TrayController::rebuildMenu()
@@ -185,14 +182,6 @@ void TrayController::rebuildMenu()
     connect(configure, &QAction::triggered, this, &TrayController::configureRequested);
     auto *quit = add(new QAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("Quit"), menu_));
     connect(quit, &QAction::triggered, qApp, &QCoreApplication::quit);
-}
-
-bool TrayController::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == qApp && event->type() == QEvent::ApplicationPaletteChange) {
-        updateIcon();
-    }
-    return QObject::eventFilter(watched, event);
 }
 
 } // namespace glimply

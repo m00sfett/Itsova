@@ -33,6 +33,8 @@ add_executable(glimply
     src/trayicon.cpp
 )
 target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
+# Brand marks for the footer of the settings window.
+qt_add_resources(glimply "brand" PREFIX "/brand" BASE data FILES data/brand-roteson.png data/brand-r2w2.png)
 
 target_link_libraries(glimply
     PRIVATE
@@ -71,8 +73,8 @@ configure_file(data/io.github.m00sfett.glimply.desktop.in "${CMAKE_CURRENT_BINAR
 install(TARGETS glimply RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 install(FILES data/glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
-install(FILES data/io.github.m00sfett.glimply.svg data/io.github.m00sfett.glimply-symbolic.svg
-              data/io.github.m00sfett.glimply-flash-symbolic.svg
+install(FILES data/io.github.m00sfett.glimply.svg data/io.github.m00sfett.glimply-tray.svg
+              data/io.github.m00sfett.glimply-tray-flash.svg
         DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 # D-Bus activation: the Plasma widget starts glimply on demand.

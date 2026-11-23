@@ -50,9 +50,6 @@ Q_SIGNALS:
     void addAreaRequested();
     void renameMonitorRequested(const QString &id);
 
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
-
 private:
     void rebuildMenu();
     void updateIcon();

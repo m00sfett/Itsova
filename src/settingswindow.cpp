@@ -12,6 +12,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
 #include <QFormLayout>
@@ -26,7 +27,9 @@
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTimer>
+#include <QToolButton>
 #include <QTreeWidget>
+#include <QUrl>
 #include <QVBoxLayout>
 
 namespace glimply
@@ -37,6 +40,17 @@ namespace
 constexpr int idRole = Qt::UserRole;
 // The settings window must be gone before the frozen screen picture is taken.
 constexpr int hideBeforeSelectDelayMs = 300;
+
+QString websiteUrl()
+{
+    return QStringLiteral("https://roteson.de");
+}
+
+// The repository; private until the name is cleared, then public under the same address.
+QString projectUrl()
+{
+    return QStringLiteral("https://github.com/m00sfett/glimply");
+}
 
 QLabel *makeHint(const QString &text, QWidget *parent)
 {
@@ -92,8 +106,61 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
             refresh();
         }
     });
+    addFooter();
     resize(860, 600);
     refresh();
+}
+
+void SettingsWindow::addFooter()
+{
+    auto *footer = new QWidget(this);
+    auto *row = new QHBoxLayout(footer);
+    row->setContentsMargins(0, 0, 0, 0);
+    row->setSpacing(4);
+
+    // Link text: plain, readable label with the links in the theme's link colour.
+    auto *about = new QLabel(footer);
+    about->setTextFormat(Qt::RichText);
+    about->setOpenExternalLinks(true);
+    about->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    about->setText(tr("glimply v%1 · AGPL-3.0 · <a href=\"%2\">roteson.de</a> · <a href=\"%3\">GitHub</a>")
+                       .arg(QCoreApplication::applicationVersion(), websiteUrl(), projectUrl()));
+    QFont small = about->font();
+    small.setPointSizeF(small.pointSizeF() * 0.9);
+    about->setFont(small);
+    row->addWidget(about);
+    row->addSpacing(8);
+
+    const auto addMark = [&](const QString &resource, const QString &tooltip, const QString &url) {
+        auto *mark = new QToolButton(footer);
+        mark->setIcon(QIcon(resource));
+        mark->setIconSize(QSize(28, 28));
+        mark->setAutoRaise(true);
+        mark->setToolTip(tooltip);
+        mark->setAccessibleName(tooltip);
+        mark->setCursor(Qt::PointingHandCursor);
+        connect(mark, &QToolButton::clicked, this, [url] { QDesktopServices::openUrl(QUrl(url)); });
+        row->addWidget(mark);
+    };
+    addMark(QStringLiteral(":/brand/brand-roteson.png"), tr("roteson.de"), websiteUrl());
+    addMark(QStringLiteral(":/brand/brand-r2w2.png"), tr("R²W² Development · glimply on GitHub"), projectUrl());
+
+    // KPageDialog stacks the pages and the button box; the footer shares the button box's row.
+    auto *box = buttonBox();
+    auto *stack = qobject_cast<QBoxLayout *>(layout());
+    const int index = stack && box ? stack->indexOf(box) : -1;
+    if (index < 0) {
+        if (stack) {
+            stack->addWidget(footer);
+        }
+        return;
+    }
+    stack->removeWidget(box);
+    auto *bottom = new QHBoxLayout;
+    bottom->addWidget(footer);
+    bottom->addStretch();
+    bottom->addWidget(box);
+    stack->insertLayout(index, bottom);
 }
 
 // ---------------------------------------------------------------- Targets

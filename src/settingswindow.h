@@ -37,6 +37,8 @@ public:
 
 private:
     QWidget *createTargetsPage();
+    // Version, licence and links, in one row with the Close button.
+    void addFooter();
     QWidget *createGroupsPage();
     QWidget *createStoragePage();
     QWidget *createGeneralPage();
