@@ -4,341 +4,331 @@
 # Automatically generated, 2026.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: glimply 0.8.0\n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: ru\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+msgstr "Project-Id-Version: glimply 0.8.0\nReport-Msgid-Bugs-To: \nPO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\nLast-Translator: Automatically generated\nLanguage-Team: none\nLanguage: ru\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: plasmoid/contents/ui/RecentSection.qml:49
 #, kde-format
 msgctxt "@label capture time"
 msgid "Yesterday %1"
-msgstr ""
+msgstr "Вчера %1"
 
 #: plasmoid/contents/ui/RecentSection.qml:73
 #: plasmoid/contents/ui/RecentSection.qml:85
 #, kde-format
 msgctxt "@title section"
 msgid "Recent"
-msgstr ""
+msgstr "Недавние"
 
 #: plasmoid/contents/ui/RecentSection.qml:74
 #, kde-format
 msgid "Collapse recent captures"
-msgstr ""
+msgstr "Свернуть недавние снимки"
 
 #: plasmoid/contents/ui/RecentSection.qml:74
 #, kde-format
 msgid "Expand recent captures"
-msgstr ""
+msgstr "Развернуть недавние снимки"
 
 #: plasmoid/contents/ui/RecentSection.qml:84
 #, kde-format
 msgctxt "@title section"
 msgid "Recent (%1)"
-msgstr ""
+msgstr "Недавние (%1)"
 
 #: plasmoid/contents/ui/RecentSection.qml:96
 #, kde-format
 msgid "Clear History"
-msgstr ""
+msgstr "Очистить историю"
 
 #: plasmoid/contents/ui/RecentSection.qml:98
 #, kde-format
 msgid "Clear the list (image files are kept)"
-msgstr ""
+msgstr "Очистить список (файлы изображений сохраняются)"
 
 #: plasmoid/contents/ui/RecentSection.qml:109
 #, kde-format
 msgid "No captures yet. Press Print or a target shortcut."
-msgstr ""
+msgstr "Снимков пока нет. Нажмите Print или горячую клавишу цели."
 
 #: plasmoid/contents/ui/RecentSection.qml:159
 #, kde-format
 msgid "Show all (%1)"
-msgstr ""
+msgstr "Показать все (%1)"
 
 #: plasmoid/contents/ui/RecentSection.qml:159
 #, kde-format
 msgid "Show fewer"
-msgstr ""
+msgstr "Показать меньше"
 
 #: plasmoid/contents/ui/RecentSection.qml:174
 #, kde-format
 msgid "%2: 1 file"
 msgid_plural "%2: %1 files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%2: %n файл"
+msgstr[1] "%2: %n файла"
+msgstr[2] "%2: %n файлов"
 
 #: plasmoid/contents/ui/RecentSection.qml:217
 #, kde-format
 msgid "Open"
-msgstr ""
+msgstr "Открыть"
 
 #: plasmoid/contents/ui/RecentSection.qml:222
 #, kde-format
 msgid "Edit in Window"
-msgstr ""
+msgstr "Открыть в окне"
 
 #: plasmoid/contents/ui/RecentSection.qml:227
 #, kde-format
 msgid "Copy"
-msgstr ""
+msgstr "Копировать"
 
 #: plasmoid/contents/ui/RecentSection.qml:232
 #: plasmoid/contents/ui/RecentSection.qml:261
 #, kde-format
 msgid "Show in Folder"
-msgstr ""
+msgstr "Показать в папке"
 
 #: plasmoid/contents/ui/RecentSection.qml:237
 #, kde-format
 msgid "Pin to Screen"
-msgstr ""
+msgstr "Закрепить на экране"
 
 #: plasmoid/contents/ui/RecentSection.qml:243
 #, kde-format
 msgid "Move to Trash"
-msgstr ""
+msgstr "Переместить в корзину"
 
 #: plasmoid/contents/ui/RecentSection.qml:254
 #, kde-format
 msgid "Hide Files"
-msgstr ""
+msgstr "Скрыть файлы"
 
 #: plasmoid/contents/ui/RecentSection.qml:255
 #, kde-format
 msgid "Show Files"
-msgstr ""
+msgstr "Показать файлы"
 
 #: plasmoid/contents/ui/RecentSection.qml:267
 #, kde-format
 msgid "Move All to Trash"
-msgstr ""
+msgstr "Переместить все в корзину"
 
 #: plasmoid/contents/ui/RecentTile.qml:30
 #, kde-format
 msgid "(1 file)"
 msgid_plural "(%1 files)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "(%n файл)"
+msgstr[1] "(%n файла)"
+msgstr[2] "(%n файлов)"
 
 #: plasmoid/contents/ui/RecentTile.qml:124
 #, kde-format
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 #: plasmoid/contents/ui/RecentTile.qml:125
 #, kde-format
 msgid "Actions for %1"
-msgstr ""
+msgstr "Действия для %1"
 
 #: plasmoid/contents/ui/TargetRow.qml:41
 #, kde-format
 msgctxt "target name, shortcut"
 msgid "%1, %2"
-msgstr ""
+msgstr "%1, %2"
 
 #: plasmoid/contents/ui/TargetRow.qml:42
 #, kde-format
 msgid "Press to capture"
-msgstr ""
+msgstr "Нажмите для захвата"
 
 #: plasmoid/contents/ui/TargetRow.qml:92
 #, kde-format
 msgid "Delete “%1”?"
-msgstr ""
+msgstr "Удалить «%1»?"
 
 #: plasmoid/contents/ui/TargetRow.qml:99
 #, kde-format
 msgid "Its shortcut is cleared. Saved captures are kept."
-msgstr ""
+msgstr "Её горячая клавиша будет очищена. Сохранённые снимки сохранятся."
 
 #: plasmoid/contents/ui/TargetRow.qml:100
 #, kde-format
 msgid "Its targets stay. Only the group and its shortcut go."
-msgstr ""
+msgstr "Её цели останутся. Удалятся только группа и её горячая клавиша."
 
 #: plasmoid/contents/ui/TargetRow.qml:114
 #, kde-format
 msgid "New name"
-msgstr ""
+msgstr "Новое имя"
 
 #: plasmoid/contents/ui/TargetRow.qml:115
 #, kde-format
 msgid "Empty: back to the connector name"
-msgstr ""
+msgstr "Пусто: вернуться к имени разъёма"
 
 #: plasmoid/contents/ui/TargetRow.qml:138
 #, kde-format
 msgid "Capture now"
-msgstr ""
+msgstr "Снять сейчас"
 
 #: plasmoid/contents/ui/TargetRow.qml:144
 #, kde-format
 msgid "Stop interval"
-msgstr ""
+msgstr "Остановить интервал"
 
 #: plasmoid/contents/ui/TargetRow.qml:145
 #, kde-format
 msgid "Start interval (%1 s)"
-msgstr ""
+msgstr "Запустить интервал (%1 с)"
 
 #: plasmoid/contents/ui/TargetRow.qml:153
 #, kde-format
 msgid "Edit area on screen"
-msgstr ""
+msgstr "Изменить область на экране"
 
 #: plasmoid/contents/ui/TargetRow.qml:153
 #, kde-format
 msgid "Edit group…"
-msgstr ""
+msgstr "Изменить группу…"
 
 #: plasmoid/contents/ui/TargetRow.qml:160
 #, kde-format
 msgid "Rename"
-msgstr ""
+msgstr "Переименовать"
 
 #: plasmoid/contents/ui/TargetRow.qml:166
 #: plasmoid/contents/ui/TargetRow.qml:196
 #, kde-format
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: plasmoid/contents/ui/TargetRow.qml:177
 #, kde-format
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 #: plasmoid/contents/ui/TargetRow.qml:182
 #: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:228
 #, kde-format
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: plasmoid/contents/ui/main.qml:39 plasmoid/contents/ui/main.qml:348
 #, kde-format
 msgid "glimply is not running"
-msgstr ""
+msgstr "glimply не запущен"
 
 #: plasmoid/contents/ui/main.qml:41 plasmoid/contents/ui/main.qml:376
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Активен %n интервальный захват"
+msgstr[1] "Активны %n интервальных захвата"
+msgstr[2] "Активно %n интервальных захватов"
 
 #: plasmoid/contents/ui/main.qml:42
 #, kde-format
 msgid "Capture fixed areas and monitors"
-msgstr ""
+msgstr "Снимать фиксированные области и экраны"
 
 #: plasmoid/contents/ui/main.qml:80
 #, kde-format
 msgid "Groups"
-msgstr ""
+msgstr "Группы"
 
 #: plasmoid/contents/ui/main.qml:81
 #, kde-format
 msgid "Areas"
-msgstr ""
+msgstr "Области"
 
 #: plasmoid/contents/ui/main.qml:82
 #, kde-format
 msgid "Monitors"
-msgstr ""
+msgstr "Экраны"
 
 #: plasmoid/contents/ui/main.qml:229
 #, kde-format
 msgid "%1 s"
-msgstr ""
+msgstr "%1 с"
 
 #: plasmoid/contents/ui/main.qml:230
 #, kde-format
 msgid "Delay"
-msgstr ""
+msgstr "Задержка"
 
 #: plasmoid/contents/ui/main.qml:246
 #, kde-format
 msgid "No delay"
-msgstr ""
+msgstr "Без задержки"
 
 #: plasmoid/contents/ui/main.qml:253
 #, kde-format
 msgid "3 seconds"
-msgstr ""
+msgstr "3 секунды"
 
 #: plasmoid/contents/ui/main.qml:259
 #, kde-format
 msgid "5 seconds"
-msgstr ""
+msgstr "5 секунд"
 
 #: plasmoid/contents/ui/main.qml:265
 #, kde-format
 msgid "10 seconds"
-msgstr ""
+msgstr "10 секунд"
 
 #: plasmoid/contents/ui/main.qml:272
 #, kde-format
 msgid "Keep delay active"
-msgstr ""
+msgstr "Сохранять задержку активной"
 
 #: plasmoid/contents/ui/main.qml:282
 #, kde-format
 msgid "Pick Color"
-msgstr ""
+msgstr "Выбрать цвет"
 
 #: plasmoid/contents/ui/main.qml:289
 #, kde-format
 msgid "Add Area"
-msgstr ""
+msgstr "Добавить область"
 
 #: plasmoid/contents/ui/main.qml:295
 #, kde-format
 msgid "Configure glimply…"
-msgstr ""
+msgstr "Настроить glimply…"
 
 #: plasmoid/contents/ui/main.qml:313
 #, kde-format
 msgid "Open Last Capture"
-msgstr ""
+msgstr "Открыть последний снимок"
 
 #: plasmoid/contents/ui/main.qml:322
 #, kde-format
 msgid "Edit Last Capture"
-msgstr ""
+msgstr "Редактировать последний снимок"
 
 #: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "Open Capture Folder"
-msgstr ""
+msgstr "Открыть папку снимков"
 
 #: plasmoid/contents/ui/main.qml:349
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
-msgstr ""
+msgstr "Для горячих клавиш и снимков нужна служба glimply."
 
 #: plasmoid/contents/ui/main.qml:352
 #, kde-format
 msgid "Start glimply"
-msgstr ""
+msgstr "Запустить glimply"
 
 #: plasmoid/contents/ui/main.qml:381
 #, kde-format
 msgid "Stop All"
-msgstr ""
+msgstr "Остановить все"
 
 #: plasmoid/contents/ui/main.qml:447
 #, kde-format
 msgid "Loading…"
-msgstr ""
+msgstr "Загрузка…"

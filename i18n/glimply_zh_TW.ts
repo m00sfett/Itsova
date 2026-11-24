@@ -1,3539 +1,3552 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="zh_TW" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
     <message>
         <source>Crop image</source>
-        <translation type="unfinished"></translation>
+        <translation>裁剪圖片</translation>
     </message>
 </context>
 <context>
     <name>AnnotationCommands</name>
     <message>
         <source>Add Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>新增標註</translation>
     </message>
     <message>
         <source>Delete Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除標註</translation>
     </message>
     <message>
         <source>Modify Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>修改標註</translation>
     </message>
     <message>
         <source>Reorder Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>重新排列標註</translation>
     </message>
 </context>
 <context>
     <name>CaptureService</name>
     <message>
         <source>KWin denied permission to capture the screen. Install glimply with its desktop entry to grant access to the KDE screenshot service.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin 拒絕了擷取螢幕的權限。請連同桌面項目一併安裝 glimply，以取得 KDE 螢幕擷取服務的存取權。</translation>
     </message>
     <message>
         <source>KWin timed out while capturing %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin 擷取 %1 時逾時。</translation>
     </message>
     <message>
         <source>The window is no longer open.</source>
-        <translation type="unfinished"></translation>
+        <translation>該視窗已關閉。</translation>
     </message>
     <message>
         <source>KWin could not capture %1 (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin 無法擷取 %1（%2）。</translation>
     </message>
     <message>
         <source>KWin returned invalid image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin 為 %1 傳回了無效的圖片資料。</translation>
     </message>
     <message>
         <source>Could not read the screenshot from KWin.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法從 KWin 讀取螢幕擷取畫面。</translation>
     </message>
     <message>
         <source>KWin returned incomplete image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin 為 %1 傳回了不完整的圖片資料。</translation>
     </message>
     <message>
         <source>Could not create the screenshot image for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法為 %1 建立螢幕擷取圖片。</translation>
     </message>
     <message>
         <source>The KDE screenshot service is unavailable on the session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>工作階段匯流排上的 KDE 螢幕擷取服務無法使用。</translation>
     </message>
     <message>
         <source>Could not create the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法建立螢幕擷取資料的連線。</translation>
     </message>
     <message>
         <source>Could not prepare the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法準備螢幕擷取資料的連線。</translation>
     </message>
     <message>
         <source>There is not enough memory to capture %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>記憶體不足，無法擷取 %1。</translation>
     </message>
     <message>
         <source>Choose a monitor to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>請選擇要擷取的螢幕。</translation>
     </message>
     <message>
         <source>monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕 %1</translation>
     </message>
     <message>
         <source>Choose a window to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>請選擇要擷取的視窗。</translation>
     </message>
     <message>
         <source>the window</source>
-        <translation type="unfinished"></translation>
+        <translation>該視窗</translation>
     </message>
 </context>
 <context>
     <name>ColorFormat</name>
     <message>
         <source>HEX</source>
-        <translation type="unfinished"></translation>
+        <translation>HEX</translation>
     </message>
     <message>
         <source>RGB</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB</translation>
     </message>
     <message>
         <source>HSL</source>
-        <translation type="unfinished"></translation>
+        <translation>HSL</translation>
     </message>
     <message>
         <source>HSV</source>
-        <translation type="unfinished"></translation>
+        <translation>HSV</translation>
     </message>
 </context>
 <context>
     <name>HookRunner</name>
     <message>
         <source>Hook command is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 指令為空。</translation>
     </message>
     <message>
         <source>Could not parse hook command.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法剖析 Hook 指令。</translation>
     </message>
     <message>
         <source>Command timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>指令執行逾時。</translation>
     </message>
     <message>
         <source>Exited with status %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已結束，狀態碼 %1。</translation>
     </message>
 </context>
 <context>
     <name>ImageOutput</name>
     <message>
         <source>PNG (lossless)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG（無損）</translation>
     </message>
     <message>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <source>WebP</source>
-        <translation type="unfinished"></translation>
+        <translation>WebP</translation>
     </message>
     <message>
         <source>AVIF</source>
-        <translation type="unfinished"></translation>
+        <translation>AVIF</translation>
     </message>
     <message>
         <source>JPEG XL</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG XL</translation>
     </message>
     <message>
         <source>TIFF</source>
-        <translation type="unfinished"></translation>
+        <translation>TIFF</translation>
     </message>
     <message>
         <source>BMP</source>
-        <translation type="unfinished"></translation>
+        <translation>BMP</translation>
     </message>
     <message>
         <source>QOI</source>
-        <translation type="unfinished"></translation>
+        <translation>QOI</translation>
     </message>
     <message>
         <source>No output device was provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>未提供輸出裝置。</translation>
     </message>
     <message>
         <source>Cannot save an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法儲存空白圖片。</translation>
     </message>
     <message>
         <source>Could not encode image.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法編碼圖片。</translation>
     </message>
     <message>
         <source>Cannot estimate size of an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法估算空白圖片的大小。</translation>
     </message>
     <message>
         <source>Cannot create capture directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法建立擷取資料夾：%1</translation>
     </message>
     <message>
         <source>The monitor capture is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕擷取畫面為空。</translation>
     </message>
     <message>
         <source>The capture area or monitor scale is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取區域或螢幕縮放比例無效。</translation>
     </message>
     <message>
         <source>The capture area is outside the monitor image.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取區域超出螢幕圖片範圍。</translation>
     </message>
     <message>
         <source>Could not allocate the cropped image.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法配置裁剪後的圖片。</translation>
     </message>
     <message>
         <source>The capture directory is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取資料夾為空。</translation>
     </message>
     <message>
         <source>Cannot create a temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法建立暫存擷取檔案：%1</translation>
     </message>
     <message>
         <source>Cannot write temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法寫入暫存擷取檔案：%1</translation>
     </message>
     <message>
         <source>Cannot finish temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法完成暫存擷取檔案：%1</translation>
     </message>
     <message>
         <source>Cannot set permissions of temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法設定暫存擷取檔案的權限：%1</translation>
     </message>
     <message>
         <source>Cannot publish capture file %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>無法發佈擷取檔案 %1：%2</translation>
     </message>
     <message>
         <source>No available filename remains for this capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>此擷取沒有可用的檔案名稱。</translation>
     </message>
     <message>
         <source>The capture timestamp is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取時間戳記無效。</translation>
     </message>
 </context>
 <context>
     <name>PixelLoupe</name>
     <message>
         <source>%1, %2 · %3 × %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊：複製 · Alt+點擊：使用 · Tab：格式</translation>
     </message>
     <message>
         <source>Click: Copy · Tab: Format · Esc: Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊：複製 · Tab：格式 · Esc：取消</translation>
     </message>
 </context>
 <context>
     <name>ProgrammaticAnnotator</name>
     <message>
         <source>Input image path is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>必須提供輸入圖片路徑。</translation>
     </message>
     <message>
         <source>Input file does not exist: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>輸入檔案不存在：%1</translation>
     </message>
     <message>
         <source>Could not read input image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法讀取輸入圖片：%1</translation>
     </message>
     <message>
         <source>Requested export image format is not supported on this system.</source>
-        <translation type="unfinished"></translation>
+        <translation>此系統不支援要求的匯出圖片格式。</translation>
     </message>
     <message>
         <source>Operation #%1 must be a JSON object.</source>
-        <translation type="unfinished"></translation>
+        <translation>操作 #%1 必須是 JSON 物件。</translation>
     </message>
     <message>
         <source>Arrow operation #%1 requires x1, y1, x2, and y2.</source>
-        <translation type="unfinished"></translation>
+        <translation>箭頭操作 #%1 需要 x1、y1、x2 與 y2。</translation>
     </message>
     <message>
         <source>Shape operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>形狀操作 #%1 需要 x、y、width &gt; 0、height &gt; 0。</translation>
     </message>
     <message>
         <source>Stroke operation #%1 requires at least 2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>筆劃操作 #%1 至少需要 2 個點。</translation>
     </message>
     <message>
         <source>Text operation #%1 requires x, y, and non-empty text.</source>
-        <translation type="unfinished"></translation>
+        <translation>文字操作 #%1 需要 x、y 與非空文字。</translation>
     </message>
     <message>
         <source>Step operation #%1 requires x and y.</source>
-        <translation type="unfinished"></translation>
+        <translation>步驟操作 #%1 需要 x 與 y。</translation>
     </message>
     <message>
         <source>Spotlight operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>聚光燈操作 #%1 需要 x、y、width &gt; 0、height &gt; 0。</translation>
     </message>
     <message>
         <source>Redact operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>遮蔽操作 #%1 需要 x、y、width &gt; 0、height &gt; 0。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>操作 #%2 的標註類型「%1」不受支援。</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
-        <translation type="unfinished"></translation>
+        <translation>算繪已標註圖片失敗。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation type="unfinished"></translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>未設定 overwrite=true，拒絕覆寫輸入檔案「%1」。</translation>
     </message>
 </context>
 <context>
     <name>TriggerPlan</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>未連接任何螢幕。</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕 %1 未連接。</translation>
     </message>
     <message>
         <source>The capture target no longer exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取目標已不存在。</translation>
     </message>
     <message>
         <source>Area %1: a different monitor is connected to %2 than when the area was defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>區域 %1：%2 目前連接的螢幕與定義該區域時不同。</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer overlaps any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>已略過區域 %1：不再與任何已連接的螢幕重疊。</translation>
     </message>
     <message>
         <source>Area %1 was not captured: none of its monitors (%2) are connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>未擷取區域 %1：其螢幕（%2）皆未連接。</translation>
     </message>
     <message>
         <source>Area %1 was not captured: it does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>未擷取區域 %1：未與任何已連接的螢幕重疊。</translation>
     </message>
     <message>
         <source>%1 not connected — saved visible part of %2 on %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 未連接 — 已儲存 %2 在 %3 上的可見部分。</translation>
     </message>
     <message>
         <source>Area %1 was skipped: monitor %2 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>已略過區域 %1：螢幕 %2 未連接。</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer fits on monitor %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>已略過區域 %1：已無法容納於螢幕 %2 上。</translation>
     </message>
     <message>
         <source>Group %1 contains no targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>群組 %1 未包含任何目標。</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>所有螢幕</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>選取範圍未與任何已連接的螢幕重疊。</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法為合併圖片擷取螢幕 %1。</translation>
     </message>
     <message>
         <source>Invalid monitor scale for combined capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>合併擷取的螢幕縮放比例無效。</translation>
     </message>
     <message>
         <source>Selection size is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>選取範圍大小為空。</translation>
     </message>
     <message>
         <source>There is not enough memory for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>記憶體不足，無法建立合併圖片。</translation>
     </message>
     <message>
         <source>Area %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>區域 %1：%2</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法擷取螢幕 %1。</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationCanvas</name>
     <message>
         <source>Bring to Front</source>
-        <translation type="unfinished"></translation>
+        <translation>移至最上層</translation>
     </message>
     <message>
         <source>Send to Back</source>
-        <translation type="unfinished"></translation>
+        <translation>移至最下層</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationToolbar</name>
     <message>
         <source>Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>選取 / 移動</translation>
     </message>
     <message>
         <source>Select, move, or resize annotations (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>選取、移動或調整標註大小 (V)</translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>裁剪</translation>
     </message>
     <message>
         <source>Crop image (C)</source>
-        <translation type="unfinished"></translation>
+        <translation>裁剪圖片 (C)</translation>
     </message>
     <message>
         <source>Arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>箭頭</translation>
     </message>
     <message>
         <source>Draw arrow; hold Shift to snap angle (A)</source>
-        <translation type="unfinished"></translation>
+        <translation>繪製箭頭；按住 Shift 鎖定角度 (A)</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>矩形</translation>
     </message>
     <message>
         <source>Draw rectangle; Shift for square, Alt from center (R)</source>
-        <translation type="unfinished"></translation>
+        <translation>繪製矩形；按住 Shift 繪製正方形，按住 Alt 從中心繪製 (R)</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation>橢圓形</translation>
     </message>
     <message>
         <source>Draw ellipse; Shift for circle, Alt from center (E)</source>
-        <translation type="unfinished"></translation>
+        <translation>繪製橢圓形；按住 Shift 繪製正圓，按住 Alt 從中心繪製 (E)</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>畫筆</translation>
     </message>
     <message>
         <source>Freehand pen (B)</source>
-        <translation type="unfinished"></translation>
+        <translation>手繪畫筆 (B)</translation>
     </message>
     <message>
         <source>Highlighter</source>
-        <translation type="unfinished"></translation>
+        <translation>螢光筆</translation>
     </message>
     <message>
         <source>Multiply highlighter (M)</source>
-        <translation type="unfinished"></translation>
+        <translation>疊色螢光筆 (M)</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>文字</translation>
     </message>
     <message>
         <source>Add text annotation; click or drag box (T)</source>
-        <translation type="unfinished"></translation>
+        <translation>新增文字標註；點擊或拖曳方框 (T)</translation>
     </message>
     <message>
         <source>Step Counter</source>
-        <translation type="unfinished"></translation>
+        <translation>步驟編號</translation>
     </message>
     <message>
         <source>Place numbered badge; drag to add pointer (N)</source>
-        <translation type="unfinished"></translation>
+        <translation>放置編號標記；拖曳以新增指標 (N)</translation>
     </message>
     <message>
         <source>Redact</source>
-        <translation type="unfinished"></translation>
+        <translation>遮蔽</translation>
     </message>
     <message>
         <source>Irreversible redaction (X)</source>
-        <translation type="unfinished"></translation>
+        <translation>不可逆遮蔽 (X)</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>聚光燈</translation>
     </message>
     <message>
         <source>Highlight region and dim surroundings (S)</source>
-        <translation type="unfinished"></translation>
+        <translation>突顯區域並調暗周圍 (S)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>復原 (Ctrl+Z)</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>復原</translation>
     </message>
     <message>
         <source>Redo (Ctrl+Shift+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>重做 (Ctrl+Shift+Z)</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>重做</translation>
     </message>
     <message>
         <source>Color %1</source>
-        <translation type="unfinished"></translation>
+        <translation>色彩 %1</translation>
     </message>
     <message>
         <source>Choose custom color…</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇自訂色彩…</translation>
     </message>
     <message>
         <source>Custom color</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂色彩</translation>
     </message>
     <message>
         <source>Select Annotation Color</source>
-        <translation type="unfinished"></translation>
+        <translation>選取標註色彩</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>寬度：</translation>
     </message>
     <message>
         <source>Stroke width</source>
-        <translation type="unfinished"></translation>
+        <translation>筆劃寬度</translation>
     </message>
     <message>
         <source>Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>外框</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>填滿</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明度：</translation>
     </message>
     <message>
         <source>Fill opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>填滿不透明度</translation>
     </message>
     <message>
         <source>Dim:</source>
-        <translation type="unfinished"></translation>
+        <translation>調暗：</translation>
     </message>
     <message>
         <source>Spotlight dim opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>聚光燈調暗不透明度</translation>
     </message>
     <message>
         <source>Font family</source>
-        <translation type="unfinished"></translation>
+        <translation>字型家族</translation>
     </message>
     <message>
         <source> pt</source>
-        <translation type="unfinished"></translation>
+        <translation> pt</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>字型大小</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>粗體</translation>
     </message>
     <message>
         <source>Bold (Ctrl+B)</source>
-        <translation type="unfinished"></translation>
+        <translation>粗體 (Ctrl+B)</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>斜體</translation>
     </message>
     <message>
         <source>Italic (Ctrl+I)</source>
-        <translation type="unfinished"></translation>
+        <translation>斜體 (Ctrl+I)</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>靠左對齊</translation>
     </message>
     <message>
         <source>Align Center</source>
-        <translation type="unfinished"></translation>
+        <translation>置中對齊</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>靠右對齊</translation>
     </message>
     <message>
         <source>Plain</source>
-        <translation type="unfinished"></translation>
+        <translation>純文字</translation>
     </message>
     <message>
         <source>Plain text without backing</source>
-        <translation type="unfinished"></translation>
+        <translation>無背景的純文字</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>陰影</translation>
     </message>
     <message>
         <source>Soft drop shadow for contrast</source>
-        <translation type="unfinished"></translation>
+        <translation>柔和投影以增強對比</translation>
     </message>
     <message>
         <source>Contrasting glyph outline</source>
-        <translation type="unfinished"></translation>
+        <translation>對比字形外框</translation>
     </message>
     <message>
         <source>Pill</source>
-        <translation type="unfinished"></translation>
+        <translation>膠囊底色</translation>
     </message>
     <message>
         <source>Filled contrast pill behind text</source>
-        <translation type="unfinished"></translation>
+        <translation>文字後方填滿對比膠囊底色</translation>
     </message>
     <message>
         <source>Apply text (Esc or Ctrl+Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>套用文字 (Esc 或 Ctrl+Enter)</translation>
     </message>
     <message>
         <source>Apply text</source>
-        <translation type="unfinished"></translation>
+        <translation>套用文字</translation>
     </message>
     <message>
         <source>Discard active text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>捨棄目前的文字編輯</translation>
     </message>
     <message>
         <source>Discard text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>捨棄文字編輯</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
+        <translation>實心</translation>
     </message>
     <message>
         <source>Solid Block — permanently replaces pixels (recommended for sensitive text).</source>
-        <translation type="unfinished"></translation>
+        <translation>實心色塊 — 永久取代像素（建議用於機密文字）。</translation>
     </message>
     <message>
         <source>Solid redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>實心遮蔽</translation>
     </message>
     <message>
         <source>Pixelate</source>
-        <translation type="unfinished"></translation>
+        <translation>馬賽克</translation>
     </message>
     <message>
         <source>Pixelate — coarse randomized blocks; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>馬賽克 — 粗糙隨機方塊；若需嚴格保密文字請改用實心色塊。</translation>
     </message>
     <message>
         <source>Pixelate redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>馬賽克遮蔽</translation>
     </message>
     <message>
         <source>Blur</source>
-        <translation type="unfinished"></translation>
+        <translation>模糊</translation>
     </message>
     <message>
         <source>Blur — heavy visual obfuscation; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>模糊 — 高度視覺模糊化；若需嚴格保密文字請改用實心色塊。</translation>
     </message>
     <message>
         <source>Blur redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>模糊遮蔽</translation>
     </message>
     <message>
         <source>Block:</source>
-        <translation type="unfinished"></translation>
+        <translation>方塊：</translation>
     </message>
     <message>
         <source>Redaction strength</source>
-        <translation type="unfinished"></translation>
+        <translation>遮蔽強度</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>半徑：</translation>
     </message>
 </context>
 <context>
     <name>glimply::App</name>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 在 %1 ms 後逾時。</translation>
     </message>
     <message>
         <source>Hook failed with exit code %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 失敗，結束代碼 %1。</translation>
     </message>
     <message>
         <source>Post-capture hook failed</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後 Hook 失敗</translation>
     </message>
     <message>
         <source>Post-capture hook failed (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後 Hook 失敗（%1）</translation>
     </message>
     <message>
         <source>Interval capture finished</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取已完成</translation>
     </message>
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>已在擷取 %n 次後停止 %1 的定時擷取。</numerusform></translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取已停止</translation>
     </message>
     <message>
         <source>Recent capture</source>
-        <translation type="unfinished"></translation>
+        <translation>最近的擷取</translation>
     </message>
     <message>
         <source>Interval: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>間隔：%1</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>所有螢幕</translation>
     </message>
     <message>
         <source>Pick screen color</source>
-        <translation type="unfinished"></translation>
+        <translation>選取螢幕色彩</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存螢幕並選取（Print 鍵）</translation>
     </message>
     <message>
         <source>Capture group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取群組 %1</translation>
     </message>
     <message>
         <source>Toggle interval for group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>切換群組 %1 的定時擷取</translation>
     </message>
     <message>
         <source>Capture area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取區域 %1</translation>
     </message>
     <message>
         <source>Toggle interval for area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>切換區域 %1 的定時擷取</translation>
     </message>
     <message>
         <source>Capture monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取螢幕 %1</translation>
     </message>
     <message>
         <source>Toggle interval for monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>切換螢幕 %1 的定時擷取</translation>
     </message>
     <message>
         <source>Capture all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取所有螢幕</translation>
     </message>
     <message>
         <source>Toggle interval for all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>切換所有螢幕的定時擷取</translation>
     </message>
     <message>
         <source>Pin last capture to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>將上次擷取釘選到螢幕</translation>
     </message>
     <message>
         <source>Show or hide pinned screenshots</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示或隱藏已釘選的螢幕擷取</translation>
     </message>
     <message>
         <source>Copy text from a screen selection</source>
-        <translation type="unfinished"></translation>
+        <translation>從螢幕選取範圍複製文字</translation>
     </message>
     <message>
         <source>Monitors not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕未連接</translation>
     </message>
     <message>
         <source>Partial: %1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>部分：%1 未連接</translation>
     </message>
     <message>
         <source>%1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 未連接</translation>
     </message>
     <message>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕</translation>
     </message>
     <message>
         <source>Text recognition is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>文字辨識無法使用</translation>
     </message>
     <message>
         <source>Install tesseract and a language package, for example tesseract-data-eng, then try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>請安裝 tesseract 與語言套件（例如 tesseract-data-eng），然後再試一次。</translation>
     </message>
     <message>
         <source>Text recognition failed</source>
-        <translation type="unfinished"></translation>
+        <translation>文字辨識失敗</translation>
     </message>
     <message>
         <source>No text recognized</source>
-        <translation type="unfinished"></translation>
+        <translation>未辨識出文字</translation>
     </message>
     <message>
         <source>The clipboard was left unchanged.</source>
-        <translation type="unfinished"></translation>
+        <translation>剪貼簿未變更。</translation>
     </message>
     <message>
         <source>Text copied</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製文字</translation>
     </message>
     <message>
         <source>Could not start interval</source>
-        <translation type="unfinished"></translation>
+        <translation>無法啟動定時擷取</translation>
     </message>
     <message>
         <source>Color copied</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製色彩</translation>
     </message>
     <message>
         <source>%1 copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
         <source>Last capture: %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>上次擷取：%1 於 %2</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就緒</translation>
     </message>
     <message>
         <source>Capture failed</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取失敗</translation>
     </message>
     <message numerus="yes">
         <source>and %n more</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>以及另外 %n 個</numerusform></translation>
     </message>
     <message>
         <source>Screenshot saved</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存螢幕擷取</translation>
     </message>
     <message numerus="yes">
         <source>%n screenshots saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>已儲存 %n 張螢幕擷取</numerusform></translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟</translation>
     </message>
     <message>
         <source>Show Files</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示檔案</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>編輯</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>在資料夾中顯示</translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>未擷取區域</translation>
     </message>
     <message>
         <source>Nothing captured</source>
-        <translation type="unfinished"></translation>
+        <translation>未擷取任何內容</translation>
     </message>
     <message>
         <source>Capture incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取不完整</translation>
     </message>
     <message>
         <source>Check area monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>檢查區域螢幕</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>部分擷取</translation>
     </message>
     <message>
         <source>This capture is no longer in the history.</source>
-        <translation type="unfinished"></translation>
+        <translation>此擷取已不在紀錄中。</translation>
     </message>
     <message>
         <source>This file does not belong to the capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>此檔案不屬於該擷取。</translation>
     </message>
     <message>
         <source>The file was moved or deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案已被移動或刪除。</translation>
     </message>
     <message>
         <source>Could not read %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>無法讀取 %1：%2</translation>
     </message>
     <message>
         <source>Image copied</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製圖片</translation>
     </message>
     <message>
         <source>%1 copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
         <source>Moved to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>已移至垃圾桶</translation>
     </message>
     <message>
         <source>Could not move to the trash: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法移至垃圾桶：%1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown action "%1".</source>
+        <translation>未知的動作「%1」。</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有可釘選的項目</translation>
     </message>
     <message>
         <source>There is no recent capture file to pin.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有可釘選的近期擷取檔案。</translation>
     </message>
     <message>
         <source>Save Pinned Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存已釘選的螢幕擷取</translation>
     </message>
     <message>
         <source>Could not save the pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>無法儲存已釘選的螢幕擷取</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>釘選</translation>
     </message>
     <message>
         <source>No capture to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有可編輯的擷取</translation>
     </message>
     <message>
         <source>The most recent screenshot file is missing or was moved.</source>
-        <translation type="unfinished"></translation>
+        <translation>最近的螢幕擷取檔案遺失或已被移動。</translation>
     </message>
     <message>
         <source>Could not open image</source>
-        <translation type="unfinished"></translation>
+        <translation>無法開啟圖片</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕 %1 未連接。</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入可用於檔案名稱的名稱。</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>「%1」已被其他目標或群組使用。</translation>
     </message>
     <message>
         <source>Only areas, groups and monitors can be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>僅可重新命名區域、群組與螢幕。</translation>
     </message>
     <message>
         <source>Name for monitor %1 (leave empty for %1):</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕 %1 的名稱（留空則使用 %1）：</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>重新命名螢幕</translation>
     </message>
     <message>
         <source>Target query is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>目標查詢為空。</translation>
     </message>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>未連接任何螢幕。</translation>
     </message>
     <message>
         <source>Monitor “%1” was not found or is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到螢幕「%1」或其未連接。</translation>
     </message>
     <message>
         <source>Target “%1” matches multiple targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>目標「%1」符合多個目標。</translation>
     </message>
     <message>
         <source>Target “%1” was not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到目標「%1」。</translation>
     </message>
     <message>
         <source>Area width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>區域寬度與高度必須為正數。</translation>
     </message>
     <message>
         <source>Area name cannot be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>區域名稱無法用於檔案名稱。</translation>
     </message>
     <message>
         <source>Monitor “%1” is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕「%1」未連接。</translation>
     </message>
     <message>
         <source>Rectangle lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>矩形超出螢幕 %1（%2×%3）的範圍。</translation>
     </message>
     <message>
         <source>Global rectangle does not intersect any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>全域矩形未與任何已連接的螢幕相交。</translation>
     </message>
     <message>
         <source>Invalid overlay mode: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的覆疊層模式：%1</translation>
     </message>
     <message>
         <source>A capture countdown is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取倒數計時已在執行中。</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation type="unfinished"></translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>「window:」後的視窗指定子不可為空。</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有開啟的視窗符合「%1」。</translation>
     </message>
     <message>
         <source>Window query “%1” matches multiple open windows.</source>
-        <translation type="unfinished"></translation>
+        <translation>視窗查詢「%1」符合多個開啟的視窗。</translation>
     </message>
     <message>
         <source>Invalid region specification (expected region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的區域規格（預期為 region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;）。</translation>
     </message>
     <message>
         <source>Invalid region geometry (expected &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的區域幾何位置（預期為 &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;）。</translation>
     </message>
     <message>
         <source>Invalid region coordinate value.</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的區域座標值。</translation>
     </message>
     <message>
         <source>Region width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>區域寬度與高度必須為正數。</translation>
     </message>
     <message>
         <source>Region lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>區域超出螢幕 %1（%2×%3）的範圍。</translation>
     </message>
     <message>
         <source>Target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>目標無法使用。</translation>
     </message>
     <message>
         <source>Groups produce multiple images and cannot be written to a single --out path, --stdout, or --clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>群組會產生多張圖片，無法寫入單一 --out 路徑、--stdout 或 --clipboard。</translation>
     </message>
     <message>
         <source>Window capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>視窗擷取失敗。</translation>
     </message>
     <message>
         <source>Text recognition needs tesseract. Install tesseract and a language package such as tesseract-data-eng.</source>
-        <translation type="unfinished"></translation>
+        <translation>文字辨識需要 tesseract。請安裝 tesseract 與語言套件，例如 tesseract-data-eng。</translation>
     </message>
     <message>
         <source>Capture countdown was cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取倒數計時已取消。</translation>
     </message>
     <message>
         <source>Autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>自動啟動</translation>
     </message>
     <message>
         <source>Could not remove %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法移除 %1。</translation>
     </message>
     <message>
         <source>Could not write %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法寫入 %1。</translation>
     </message>
     <message>
         <source>Could not read saved image for inline MCP output: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法讀取已儲存的圖片以供內嵌 MCP 輸出：%1</translation>
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的 MCP 工具引數 JSON：%1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP 要求已被使用者拒絕或逾時。</translation>
     </message>
     <message>
         <source>glimply is shutting down.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply 正在關閉。</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取失敗。</translation>
     </message>
     <message>
         <source>MCP captured %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP 已擷取 %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>不支援的圖片格式「%1」。</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>「quality」必須是介於 1 到 100 之間的整數。</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'target' is required.</source>
+        <translation>必須提供「target」。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>外部 MCP 用戶端想要擷取「%1」（%2）。</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
-        <translation type="unfinished"></translation>
+        <translation>capture_region 需要 monitor、x、y、width 與 height。</translation>
     </message>
     <message>
         <source>An external MCP client wants to capture region %1x%2 at (%3, %4) on %5.</source>
-        <translation type="unfinished"></translation>
+        <translation>外部 MCP 用戶端想要擷取 %5 上位於 (%3, %4) 的區域 %1x%2。</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'window_id' is required.</source>
+        <translation>必須提供「window_id」。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>外部 MCP 用戶端想要擷取視窗「%1」。</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
-        <translation type="unfinished"></translation>
+        <translation>此 glimply 工作階段尚未記錄任何擷取。</translation>
     </message>
     <message>
         <source>An external MCP client wants to read the last capture (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>外部 MCP 用戶端想要讀取上次的擷取（%1）。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>外部 MCP 用戶端想要為「%2」啟動每 %1 秒一次的定時擷取。</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation type="unfinished"></translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>請指定「target」或設定「all」：true。</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
-        <translation type="unfinished"></translation>
+        <translation>annotate_image 需要非空的 input_path 與 operations 陣列。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <translation>在 MCP 允許清單模式下，input_path 必須是 glimply 擷取資料夾內的現有檔案。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <translation>在 MCP 允許清單模式下，output_path 必須位於 glimply 擷取資料夾內。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>外部 MCP 用戶端想要標註「%1」（%2 個操作）。</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的 MCP 工具：%1</translation>
     </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
     <message>
         <source>Select an area on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>在 %1 上選取區域</translation>
     </message>
     <message>
         <source>Drag inside to move, edges or corners to resize. Shift: square, Alt: from centre, Space while dragging: reposition. Enter confirms, Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>在內部拖曳以移動，拖曳邊緣或角落以調整大小。Shift：正方形，Alt：從中心繪製，拖曳時按 Space：重新定位。Enter 確認，Escape 取消。</translation>
     </message>
     <message>
         <source>Drag to select an area across one or more monitors. Shift: square, Alt: from centre, Space while dragging: reposition. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳以跨越多個螢幕選取區域。Shift：正方形，Alt：從中心繪製，拖曳時按 Space：重新定位。Escape 取消。</translation>
     </message>
     <message>
         <source>%1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 位於 %3, %4</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureOverlay</name>
     <message>
         <source>glimply capture on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply 在 %1 上的擷取</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>凍結</translation>
     </message>
     <message>
         <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示按下按鍵時的畫面。擷取將從此圖片裁切。(Space)</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>即時</translation>
     </message>
     <message>
         <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>觀看螢幕動態（例如影片）。儲存時才會進行擷取。(Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>此螢幕</translation>
     </message>
     <message>
         <source>Capture all of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取 %1 的全部畫面</translation>
     </message>
     <message>
         <source>All Monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>所有螢幕</translation>
     </message>
     <message>
         <source>Capture every monitor in one picture</source>
-        <translation type="unfinished"></translation>
+        <translation>將所有螢幕擷取為單一張圖片</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>視窗</translation>
     </message>
     <message>
         <source>Capture one window, also when it is covered or minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取單一視窗，即使被遮擋或最小化亦可</translation>
     </message>
     <message>
         <source>Areas</source>
-        <translation type="unfinished"></translation>
+        <translation>區域</translation>
     </message>
     <message>
         <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取已儲存的區域或群組，或將其新增為矩形</translation>
     </message>
     <message>
         <source>Add a saved area or group as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>將已儲存的區域或群組新增為矩形</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲</translation>
     </message>
     <message>
         <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation type="unfinished"></translation>
+        <translation>倒數計時後重新擷取螢幕，讓選單保持開啟</translation>
     </message>
     <message>
         <source>Annotate</source>
-        <translation type="unfinished"></translation>
+        <translation>標註</translation>
     </message>
     <message>
         <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示或隱藏標記工具 (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>選取色彩</translation>
     </message>
     <message>
         <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>使用放大鏡取樣像素色彩 (I)</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>在視窗中編輯</translation>
     </message>
     <message>
         <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>在快速編輯器視窗中開啟以進行裁剪、縮放與精細編輯 (Ctrl+E)</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>說明</translation>
     </message>
     <message>
         <source>Show or hide the controls (F1)</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示或隱藏控制項 (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Keep the full screenshot and open the settings</source>
-        <translation type="unfinished"></translation>
+        <translation>保留完整螢幕擷取並開啟設定</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>關閉</translation>
     </message>
     <message>
         <source>Keep the full screenshot and close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>保留完整螢幕擷取並關閉 (Escape)</translation>
     </message>
     <message>
         <source>Cancel (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>取消 (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳</translation>
     </message>
     <message>
         <source>Draw a rectangle (or active markup tool)</source>
-        <translation type="unfinished"></translation>
+        <translation>繪製矩形（或使用目前標記工具）</translation>
     </message>
     <message>
         <source>Drag inside / edge</source>
-        <translation type="unfinished"></translation>
+        <translation>在內部 / 邊緣拖曳</translation>
     </message>
     <message>
         <source>Move / resize the active rectangle or annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>移動 / 調整目前矩形或標註的大小</translation>
     </message>
     <message>
         <source>Shift / Alt while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳時按 Shift / Alt</translation>
     </message>
     <message>
         <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>保持正方形或 15° 對齊 / 從中心放大或複製</translation>
     </message>
     <message>
         <source>Space while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳時按 Space</translation>
     </message>
     <message>
         <source>Reposition shape or selection live</source>
-        <translation type="unfinished"></translation>
+        <translation>即時重新定位形狀或選取範圍</translation>
     </message>
     <message>
         <source>Ctrl in markup tool</source>
-        <translation type="unfinished"></translation>
+        <translation>在標記工具中按 Ctrl</translation>
     </message>
     <message>
         <source>Temporarily switch to Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>暫時切換至選取 / 移動</translation>
     </message>
     <message>
         <source>Click / Right-click</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊 / 右鍵點擊</translation>
     </message>
     <message>
         <source>Activate / delete topmost annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>啟用 / 刪除最上層的標註或矩形</translation>
     </message>
     <message>
         <source>Double-click</source>
-        <translation type="unfinished"></translation>
+        <translation>連按兩下</translation>
     </message>
     <message>
         <source>Edit text annotation or save rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>編輯文字標註或儲存矩形</translation>
     </message>
     <message>
         <source>Save rectangle as area</source>
-        <translation type="unfinished"></translation>
+        <translation>將矩形儲存為區域</translation>
     </message>
     <message>
         <source>Click, nothing drawn</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊，未繪製任何內容</translation>
     </message>
     <message>
         <source>Capture this monitor (before annotating)</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取此螢幕（在標註之前）</translation>
     </message>
     <message>
         <source>Mouse</source>
-        <translation type="unfinished"></translation>
+        <translation>滑鼠</translation>
     </message>
     <message>
         <source>V / A R E B M T N X S</source>
-        <translation type="unfinished"></translation>
+        <translation>V / A R E B M T N X S</translation>
     </message>
     <message>
         <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>選取 / 箭頭 矩形 橢圓 畫筆 螢光筆 文字 步驟 遮蔽 聚光燈</translation>
     </message>
     <message>
         <source>Selection modifiers work on all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>選取修飾鍵適用於所有螢幕</translation>
     </message>
     <message>
         <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
     </message>
     <message>
         <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>調整畫筆或字型大小  ·  復原 / 重做</translation>
     </message>
     <message>
         <source>Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Space</translation>
     </message>
     <message>
         <source>Switch between Frozen and Live (when idle)</source>
-        <translation type="unfinished"></translation>
+        <translation>在凍結與即時之間切換（閒置時）</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>方向鍵 / Shift+方向鍵</translation>
     </message>
     <message>
         <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation type="unfinished"></translation>
+        <translation>將目前的標註或矩形移動 1 px / 10 px</translation>
     </message>
     <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+方向鍵 / Ctrl+方向鍵</translation>
     </message>
     <message>
         <source>Resize from centre / resize square</source>
-        <translation type="unfinished"></translation>
+        <translation>從中心調整大小 / 調整為正方形</translation>
     </message>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <source>Save selection or annotated screen</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存選取範圍或已標註的螢幕</translation>
     </message>
     <message>
         <source>Save as area</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存為區域</translation>
     </message>
     <message>
         <source>Delete / Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete / Backspace</translation>
     </message>
     <message>
         <source>Delete active annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除目前的標註或矩形</translation>
     </message>
     <message>
         <source>Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape</translation>
     </message>
     <message>
         <source>Commit text, step back, or close</source>
-        <translation type="unfinished"></translation>
+        <translation>確認文字、返回上一步或關閉</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
         <source>Show or hide this help</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示或隱藏此說明</translation>
     </message>
     <message>
         <source>I</source>
-        <translation type="unfinished"></translation>
+        <translation>I</translation>
     </message>
     <message>
         <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation type="unfinished"></translation>
+        <translation>選取像素色彩（Tab 切換格式，Alt+點擊套用至標記）</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Open selection or screen in Quick Editor window</source>
-        <translation type="unfinished"></translation>
+        <translation>在快速編輯器視窗中開啟選取範圍或螢幕</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>P</translation>
     </message>
     <message>
         <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation type="unfinished"></translation>
+        <translation>將選取範圍釘選到螢幕（每個矩形一個釘選）</translation>
     </message>
     <message>
         <source>O</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <source>Copy the text of the selection (needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>複製選取範圍中的文字（需要 tesseract）</translation>
     </message>
     <message>
         <source>Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>按鍵</translation>
     </message>
     <message>
         <source>No windows found</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到視窗</translation>
     </message>
     <message>
         <source>%1 (minimized)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（已最小化）</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>無延遲</translation>
     </message>
     <message>
         <source>Retake in %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 秒後重新擷取</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂延遲後重新擷取…</translation>
     </message>
     <message>
         <source>Retake Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>重新擷取延遲</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>秒數：</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>保持延遲啟用</translation>
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation type="unfinished"></translation>
+        <translation>尚無已儲存的區域。請先繪製矩形，再選擇「儲存為區域」。</translation>
     </message>
     <message>
         <source>%1    %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1    %2</translation>
     </message>
     <message>
         <source>Capture now</source>
-        <translation type="unfinished"></translation>
+        <translation>立即擷取</translation>
     </message>
     <message>
         <source>Add as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>新增為矩形</translation>
     </message>
     <message>
         <source>Add as a rectangle to adjust it</source>
-        <translation type="unfinished"></translation>
+        <translation>新增為矩形以進行調整</translation>
     </message>
     <message>
         <source>Add %1 as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>將 %1 新增為矩形</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存至擷取資料夾並複製到剪貼簿 (Enter)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Copy to the clipboard only</source>
-        <translation type="unfinished"></translation>
+        <translation>僅複製到剪貼簿</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>複製文字</translation>
     </message>
     <message>
         <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation type="unfinished"></translation>
+        <translation>辨識文字並複製到剪貼簿 (O)</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>釘選</translation>
     </message>
     <message>
         <source>Keep the selection on screen above other windows (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>將選取範圍保持在螢幕其他視窗上方 (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>另存新檔…</translation>
     </message>
     <message>
         <source>Choose where to save</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇儲存位置</translation>
     </message>
     <message>
         <source>Open markup tools to draw or redact</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟標記工具以繪圖或遮蔽</translation>
     </message>
     <message>
         <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>在快速編輯器視窗中開啟選取範圍與標註 (Ctrl+E)</translation>
     </message>
     <message>
         <source>Save as Area</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存為區域</translation>
     </message>
     <message>
         <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>記住此矩形以便日後一鍵或透過快捷鍵再次擷取</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>新增矩形</translation>
     </message>
     <message>
         <source>Draw another rectangle, also over an existing one</source>
-        <translation type="unfinished"></translation>
+        <translation>繪製另一個矩形，亦可重疊於現有矩形上</translation>
     </message>
     <message>
         <source>Close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>關閉 (Escape)</translation>
     </message>
     <message>
         <source>Combine into a group</source>
-        <translation type="unfinished"></translation>
+        <translation>合併為群組</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>群組 %1</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>名稱：</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵：</translation>
     </message>
     <message>
         <source>Area capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>區域擷取延遲</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>無</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n 秒</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂…</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲：</translation>
     </message>
     <message>
         <source>Area Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>區域延遲</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>返回</translation>
     </message>
     <message>
         <source>The shortcut is optional and works in every application. You can also capture the area from the glimply widget.</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵為選填，且適用於所有應用程式。您也可以從 glimply 小工具擷取該區域。</translation>
     </message>
     <message>
         <source>Save Area</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存區域</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas as a group</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>將 %n 個區域儲存為群組</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>單一快捷鍵可同時擷取全部 %n 個區域，並各自存為獨立檔案。</numerusform></translation>
     </message>
     <message>
         <source>Save Group</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存群組</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>儲存 %n 個區域</numerusform></translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>每個矩形都會成為擁有自動名稱的獨立區域。您稍後可在小工具或設定中重新命名並設定快捷鍵。</translation>
     </message>
     <message numerus="yes">
         <source>Save %n Areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>儲存 %n 個區域</numerusform></translation>
     </message>
     <message>
         <source>Clear or undo annotations to return to Live mode</source>
-        <translation type="unfinished"></translation>
+        <translation>清除或復原標註以返回即時模式</translation>
     </message>
     <message>
         <source>Delay: %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲：%1 秒</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureSession</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>未連接任何螢幕。</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>所有螢幕</translation>
     </message>
     <message>
         <source>The screen could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法擷取螢幕。</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已套用 %1 並複製到剪貼簿</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
         <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊以複製色彩，Alt+點擊套用至目前的標記工具，Tab 切換格式，Escape 結束。</translation>
     </message>
     <message>
         <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift 保持正方形，Alt 從中心放大，拖曳時按 Space 可重新定位。</translation>
     </message>
     <message>
         <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation type="unfinished"></translation>
+        <translation>輸入文字，拖曳外框邊緣以移動；Escape 或 Ctrl+Enter 確認。</translation>
     </message>
     <message>
         <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳以繪製（Ctrl 暫時選取；Shift 對齊、Alt 置中、Space 移動；V 返回）。</translation>
     </message>
     <message>
         <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>在任意位置拖曳下一個矩形，亦可重疊於另一個矩形上。</translation>
     </message>
     <message>
         <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter 儲存已標註的擷取，或先繪製裁剪矩形。Escape 關閉。</translation>
     </message>
     <message>
         <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>拖曳矩形、點擊螢幕以擷取，或開啟標註。Escape 保留完整螢幕擷取。</translation>
     </message>
     <message>
         <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>為新區域拖曳一個矩形。Escape 取消。</translation>
     </message>
     <message>
         <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>點擊矩形以變更，或拖曳一個新的矩形。</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation type="unfinished"></translation>
+        <translation>在內部拖曳以移動，拖曳邊緣以調整大小。在其他位置拖曳可繪製另一個矩形。Enter 儲存。</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>在內部拖曳以移動，拖曳邊緣以調整大小。在其他位置拖曳可繪製另一個矩形。</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>選取範圍未與任何已連接的螢幕重疊。</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法擷取螢幕 %1。</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>選取範圍</translation>
     </message>
     <message>
         <source>Copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製到剪貼簿</translation>
     </message>
     <message>
         <source>Pinned to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>已釘選到螢幕</translation>
     </message>
     <message>
         <source>Could not write %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>無法寫入 %1：%2</translation>
     </message>
     <message>
         <source>Draw a rectangle first.</source>
-        <translation type="unfinished"></translation>
+        <translation>請先繪製矩形。</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入可用於檔案名稱的名稱。</translation>
     </message>
     <message>
         <source>“%1” is already used by another area or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>「%1」已被其他區域或群組使用。</translation>
     </message>
     <message>
         <source>Area “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存區域「%1」</translation>
     </message>
     <message>
         <source>Group “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存群組「%1」</translation>
     </message>
     <message numerus="yes">
         <source>%n areas saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>已儲存 %n 個區域</numerusform></translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>未擷取區域</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>部分擷取</translation>
     </message>
     <message>
         <source>Retake</source>
-        <translation type="unfinished"></translation>
+        <translation>重新擷取</translation>
     </message>
     <message>
         <source>Unredacted Screenshot Exists</source>
-        <translation type="unfinished"></translation>
+        <translation>存在未遮蔽的螢幕擷取</translation>
     </message>
     <message>
         <source>The full screenshot saved when you pressed Print does not include your redactions.</source>
-        <translation type="unfinished"></translation>
+        <translation>您按下 Print 時儲存的完整螢幕擷取尚未包含您的遮蔽處理。</translation>
     </message>
     <message>
         <source>Delete the unredacted file (%1) from disk, keep it, or return to editing?</source>
-        <translation type="unfinished"></translation>
+        <translation>要從磁碟刪除未遮蔽的檔案（%1）、保留它，還是返回編輯？</translation>
     </message>
     <message>
         <source>Delete Unredacted Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除未遮蔽的螢幕擷取</translation>
     </message>
     <message>
         <source>Keep Full Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>保留完整螢幕擷取</translation>
     </message>
     <message>
         <source>Back to Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>返回覆疊層</translation>
     </message>
     <message>
         <source>Unredacted screenshot deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>已刪除未遮蔽的螢幕擷取</translation>
     </message>
 </context>
 <context>
     <name>glimply::ColorPickerOverlay</name>
     <message>
         <source>Pick color on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>在 %1 上選取色彩</translation>
     </message>
 </context>
 <context>
     <name>glimply::ControlService</name>
     <message>
         <source>%1 · %2 × %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 at %4, %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 位於 %4, %5</translation>
     </message>
     <message>
         <source>No targets</source>
-        <translation type="unfinished"></translation>
+        <translation>無目標</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>One image of every monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>每個螢幕一張圖片</translation>
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的擷取要求 JSON。</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取要求缺少有效的目標或格式。</translation>
     </message>
 </context>
 <context>
     <name>glimply::CountdownBanner</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>將於 %1 秒後擷取…</translation>
     </message>
     <message>
         <source>Capturing %1 in %2 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>將於 %2 秒後擷取 %1…</translation>
     </message>
 </context>
 <context>
     <name>glimply::ExportDialog</name>
     <message>
         <source>Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>圖片（%1）</translation>
     </message>
     <message>
         <source>All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>所有檔案 (*)</translation>
     </message>
     <message>
         <source>Save Screenshot As</source>
-        <translation type="unfinished"></translation>
+        <translation>另存螢幕擷取</translation>
     </message>
     <message>
         <source>Destination file path</source>
-        <translation type="unfinished"></translation>
+        <translation>目的地檔案路徑</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>瀏覽…</translation>
     </message>
     <message>
         <source>File:</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案：</translation>
     </message>
     <message>
         <source>Image format</source>
-        <translation type="unfinished"></translation>
+        <translation>圖片格式</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>格式：</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>品質：</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>無損</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>壓縮或品質等級</translation>
     </message>
     <message>
         <source>Compression or quality value</source>
-        <translation type="unfinished"></translation>
+        <translation>壓縮或品質數值</translation>
     </message>
     <message>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>無法使用</translation>
     </message>
     <message>
         <source>Calculating…</source>
-        <translation type="unfinished"></translation>
+        <translation>計算中…</translation>
     </message>
     <message>
         <source>Estimated size:</source>
-        <translation type="unfinished"></translation>
+        <translation>預估大小：</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>壓縮：</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>≈ %1</source>
-        <translation type="unfinished"></translation>
+        <translation>≈ %1</translation>
     </message>
     <message>
         <source>Choose Destination File</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇目的地檔案</translation>
     </message>
 </context>
 <context>
     <name>glimply::HookRunner</name>
     <message>
         <source>Could not create a temporary directory for testing.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法建立測試用的暫存資料夾。</translation>
     </message>
 </context>
 <context>
     <name>glimply::IntervalController</name>
     <message>
         <source>Invalid interval target.</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的定時擷取目標。</translation>
     </message>
     <message>
         <source>The capture target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取目標無法使用。</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation type="unfinished"></translation>
+        <translation>已停止「%1」的定時擷取：剩餘可用磁碟空間低於 100 MB。</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>已停止「%1」的定時擷取：目標已不再可用。</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>已停止「%1」的定時擷取：%2</translation>
     </message>
 </context>
 <context>
     <name>glimply::McpConfirmDialog</name>
     <message>
         <source>Allow MCP Capture?</source>
-        <translation type="unfinished"></translation>
+        <translation>允許 MCP 擷取嗎？</translation>
     </message>
     <message>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>拒絕</translation>
     </message>
     <message>
         <source>Allow Once</source>
-        <translation type="unfinished"></translation>
+        <translation>允許一次</translation>
     </message>
     <message>
         <source>Auto-denying in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>將於 %1 秒後自動拒絕…</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>移除所有釘選</translation>
     </message>
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>要永久移除 %n 個釘選嗎？</numerusform></translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>其圖片將會被刪除。儲存在擷取資料夾中的擷取不受影響。</translation>
     </message>
     <message>
         <source>Remove Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>移除釘選</translation>
     </message>
     <message>
         <source>Pin removed</source>
-        <translation type="unfinished"></translation>
+        <translation>已移除釘選</translation>
     </message>
     <message>
         <source>The pinned screenshot was removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>已移除釘選的螢幕擷取。</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>復原</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinWindow</name>
     <message>
         <source>Pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>已釘選的螢幕擷取</translation>
     </message>
     <message>
         <source>Opacity %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明度 %1</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>在視窗中編輯</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>另存新檔…</translation>
     </message>
     <message>
         <source>Zoom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>縮放（%1）</translation>
     </message>
     <message>
         <source>Opacity (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明度（%1）</translation>
     </message>
     <message>
         <source>Remove Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>移除釘選</translation>
     </message>
 </context>
 <context>
     <name>glimply::QuickEditorWindow</name>
     <message>
         <source>Could not open image file.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法開啟圖片檔案。</translation>
     </message>
     <message>
         <source>The captured image is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取的圖片為空。</translation>
     </message>
     <message>
         <source>Editor Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>編輯器動作</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <source>Save changes cleanly to file without altering the clipboard (Ctrl+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>將變更儲存至檔案，不變更剪貼簿 (Ctrl+S)</translation>
     </message>
     <message>
         <source>Save Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存複本</translation>
     </message>
     <message>
         <source>Save a new edited copy alongside the original without overwriting (Ctrl+Alt+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>在原檔旁儲存新的已編輯複本而不覆寫 (Ctrl+Alt+S)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>另存新檔…</translation>
     </message>
     <message>
         <source>Choose a new file path (Ctrl+Shift+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇新的檔案路徑 (Ctrl+Shift+S)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Copy flattened image to clipboard (Ctrl+C)</source>
-        <translation type="unfinished"></translation>
+        <translation>將平面化圖片複製到剪貼簿 (Ctrl+C)</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>複製文字</translation>
     </message>
     <message>
         <source>Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>辨識圖片中的文字並複製 (Ctrl+Alt+C，需要 tesseract)</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>釘選到螢幕</translation>
     </message>
     <message>
         <source>Keep the current image on screen above other windows</source>
-        <translation type="unfinished"></translation>
+        <translation>將目前圖片保持在螢幕其他視窗上方</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>選取色彩</translation>
     </message>
     <message>
         <source>Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color.</source>
-        <translation type="unfinished"></translation>
+        <translation>從圖片取樣像素色彩 (I)。Tab 切換格式，Alt+點擊設定標記色彩。</translation>
     </message>
     <message>
         <source>Drag on canvas to select crop area</source>
-        <translation type="unfinished"></translation>
+        <translation>在畫布上拖曳以選取裁剪區域</translation>
     </message>
     <message>
         <source>Apply Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>套用裁剪</translation>
     </message>
     <message>
         <source>Crop image cleanly to selection (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>依選取範圍裁剪圖片 (Enter)</translation>
     </message>
     <message>
         <source>Cancel Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>取消裁剪</translation>
     </message>
     <message>
         <source>Exit crop mode (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>結束裁剪模式 (Escape)</translation>
     </message>
     <message>
         <source>Zoom out (Ctrl+-)</source>
-        <translation type="unfinished"></translation>
+        <translation>縮小 (Ctrl+-)</translation>
     </message>
     <message>
         <source>Zoom out</source>
-        <translation type="unfinished"></translation>
+        <translation>縮小</translation>
     </message>
     <message>
         <source>Zoom preset</source>
-        <translation type="unfinished"></translation>
+        <translation>縮放預設</translation>
     </message>
     <message>
         <source>Zoom level (Ctrl+0 Fit, Ctrl+1 100%, Ctrl/Alt+Wheel)</source>
-        <translation type="unfinished"></translation>
+        <translation>縮放比例 (Ctrl+0 符合視窗、Ctrl+1 100%、Ctrl/Alt+滾輪)</translation>
     </message>
     <message>
         <source>Fit in Window (Ctrl+0)</source>
-        <translation type="unfinished"></translation>
+        <translation>符合視窗大小 (Ctrl+0)</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Zoom in (Ctrl++)</source>
-        <translation type="unfinished"></translation>
+        <translation>放大 (Ctrl++)</translation>
     </message>
     <message>
         <source>Zoom in</source>
-        <translation type="unfinished"></translation>
+        <translation>放大</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已套用 %1 並複製到剪貼簿</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
         <source>Untitled capture</source>
-        <translation type="unfinished"></translation>
+        <translation>未命名擷取</translation>
     </message>
     <message>
         <source>%1[*] — glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*] — glimply</translation>
     </message>
     <message>
         <source>100%</source>
-        <translation type="unfinished"></translation>
+        <translation>100%</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 px</translation>
     </message>
     <message>
         <source>Crop: %1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>裁剪：%1 × %2 位於 %3, %4</translation>
     </message>
     <message>
         <source>Nothing to save.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有可儲存的內容。</translation>
     </message>
     <message>
         <source>Save Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存失敗</translation>
     </message>
     <message>
         <source>Could not save %1:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>無法儲存 %1：
+%2</translation>
     </message>
     <message>
         <source>Saved %1</source>
-        <translation type="unfinished"></translation>
+        <translation>已儲存 %1</translation>
     </message>
     <message>
         <source>Save Copy Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存複本失敗</translation>
     </message>
     <message>
         <source>Saved copy as %1</source>
-        <translation type="unfinished"></translation>
+        <translation>已將複本儲存為 %1</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製到剪貼簿</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>未儲存的變更</translation>
     </message>
     <message>
         <source>Save changes to “%1” before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation>關閉前要儲存對「%1」的變更嗎？</translation>
     </message>
     <message>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>捨棄</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
     <name>glimply::SettingsWindow</name>
     <message>
         <source>Export image format</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出圖片格式</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>無損</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>品質：</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>壓縮或品質等級</translation>
     </message>
     <message>
         <source>Use default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>使用預設 (%1)</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>壓縮：</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>每隔</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> 秒</translation>
     </message>
     <message>
         <source>Interval duration in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取間隔（秒）</translation>
     </message>
     <message>
         <source>Only save when changed</source>
-        <translation type="unfinished"></translation>
+        <translation>僅在畫面變更時儲存</translation>
     </message>
     <message>
         <source>Stop after:</source>
-        <translation type="unfinished"></translation>
+        <translation>停止條件：</translation>
     </message>
     <message>
         <source>No capture limit</source>
-        <translation type="unfinished"></translation>
+        <translation>無擷取次數限制</translation>
     </message>
     <message>
         <source> captures</source>
-        <translation type="unfinished"></translation>
+        <translation> 次擷取</translation>
     </message>
     <message>
         <source>Maximum captures per interval run</source>
-        <translation type="unfinished"></translation>
+        <translation>每次定時擷取的最大次數</translation>
     </message>
     <message>
         <source>No time limit</source>
-        <translation type="unfinished"></translation>
+        <translation>無時間限制</translation>
     </message>
     <message>
         <source> min</source>
-        <translation type="unfinished"></translation>
+        <translation> 分鐘</translation>
     </message>
     <message>
         <source>Maximum interval duration in minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取的最大持續時間（分鐘）</translation>
     </message>
     <message>
         <source>Post-capture hook mode</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後 Hook 模式</translation>
     </message>
     <message>
         <source>Use global hook setting</source>
-        <translation type="unfinished"></translation>
+        <translation>使用全域 Hook 設定</translation>
     </message>
     <message>
         <source>Custom command</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂指令</translation>
     </message>
     <message>
         <source>Disable hook</source>
-        <translation type="unfinished"></translation>
+        <translation>停用 Hook</translation>
     </message>
     <message>
         <source>/path/to/script %f</source>
-        <translation type="unfinished"></translation>
+        <translation>/path/to/script %f</translation>
     </message>
     <message>
         <source>Custom hook command</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂 Hook 指令</translation>
     </message>
     <message>
         <source>Custom hook timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂 Hook 逾時</translation>
     </message>
     <message>
         <source>Configure glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>設定 glimply</translation>
     </message>
     <message>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>目標</translation>
     </message>
     <message>
         <source>Areas and monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>區域與螢幕</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>群組</translation>
     </message>
     <message>
         <source>Capture several targets with one shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>使用單一快捷鍵擷取多個目標</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存空間</translation>
     </message>
     <message>
         <source>Where captures are saved</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取檔案的儲存位置</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>一般</translation>
     </message>
     <message>
         <source>Automation</source>
-        <translation type="unfinished"></translation>
+        <translation>自動化</translation>
     </message>
     <message>
         <source>Post-capture hooks and external automation</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後 Hook 與外部自動化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
-        <translation type="unfinished"></translation>
+        <translation>roteson.de</translation>
     </message>
     <message>
         <source>R²W² Development · glimply on GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation>R²W² Development · GitHub 上的 glimply</translation>
     </message>
     <message>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>目標</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>新增區域…</translation>
     </message>
     <message>
         <source>Drag a rectangle on any monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>在任意螢幕上拖曳矩形</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>名稱</translation>
     </message>
     <message>
         <source>Also used in the file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>亦會用於檔案名稱。</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>名稱：</translation>
     </message>
     <message>
         <source>Monitor:</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕：</translation>
     </message>
     <message>
         <source>X: </source>
-        <translation type="unfinished"></translation>
+        <translation>X：</translation>
     </message>
     <message>
         <source>Left edge</source>
-        <translation type="unfinished"></translation>
+        <translation>左邊緣</translation>
     </message>
     <message>
         <source>Y: </source>
-        <translation type="unfinished"></translation>
+        <translation>Y：</translation>
     </message>
     <message>
         <source>Top edge</source>
-        <translation type="unfinished"></translation>
+        <translation>上邊緣</translation>
     </message>
     <message>
         <source>Width: </source>
-        <translation type="unfinished"></translation>
+        <translation>寬度：</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>寬度</translation>
     </message>
     <message>
         <source>Height: </source>
-        <translation type="unfinished"></translation>
+        <translation>高度：</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished"></translation>
+        <translation>高度</translation>
     </message>
     <message>
         <source>Select on Screen…</source>
-        <translation type="unfinished"></translation>
+        <translation>在螢幕上選取…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
-        <translation type="unfinished"></translation>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <translation>相對於螢幕左上角的邏輯像素。擷取將使用螢幕的原生解析度。</translation>
     </message>
     <message>
         <source>Position and size:</source>
-        <translation type="unfinished"></translation>
+        <translation>位置與大小：</translation>
     </message>
     <message>
         <source>Include the mouse pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>包含滑鼠游標</translation>
     </message>
     <message>
         <source>Pointer:</source>
-        <translation type="unfinished"></translation>
+        <translation>游標：</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>格式：</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>無</translation>
     </message>
     <message>
         <source>Capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取延遲</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲：</translation>
     </message>
     <message>
         <source>Interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>間隔：</translation>
     </message>
     <message>
         <source>Hook:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook：</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵：</translation>
     </message>
     <message>
         <source>Interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取切換快捷鍵</translation>
     </message>
     <message>
         <source>Interval shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取快捷鍵：</translation>
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>全域：適用於所有應用程式。亦可在系統設定中編輯。</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（未連接）</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>所有螢幕</translation>
     </message>
     <message>
         <source>Also used in file names and for new areas on this monitor. Leave empty for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>亦用於檔案名稱及此螢幕上的新區域。留空則使用 %1。</translation>
     </message>
     <message>
         <source>Cross-monitor (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>跨螢幕 (%1)</translation>
     </message>
     <message>
         <source>Global logical coordinates across monitors. Captures compose intersected monitors at the highest scale.</source>
-        <translation type="unfinished"></translation>
+        <translation>跨螢幕的全域邏輯座標。擷取將以最高縮放比例合成相交的螢幕。</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
-        <translation type="unfinished"></translation>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <translation>此區域的螢幕皆未連接。觸發時不會儲存任何內容。</translation>
     </message>
     <message>
         <source>This area no longer overlaps any connected monitor. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>此區域不再與任何已連接的螢幕重疊。請調整或重新選取。</translation>
     </message>
     <message>
         <source>%1 not connected. Triggering saves the visible part on %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 未連接。觸發時將儲存 %2 上的可見部分。</translation>
     </message>
     <message>
         <source>A different monitor is connected to %1 than when this area was defined (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 目前連接的螢幕與定義此區域時不同（%2）。</translation>
     </message>
     <message>
         <source>One image of all monitors in their current arrangement, at the highest scale. Gaps are transparent.</source>
-        <translation type="unfinished"></translation>
+        <translation>依目前排列方式將所有螢幕擷取為單一張圖片，採用最高縮放比例。間隙為透明。</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 (logical)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3（邏輯）</translation>
     </message>
     <message>
         <source>%1 · not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · 未連接</translation>
     </message>
     <message>
         <source>The monitor is not connected. This area is skipped when triggered.</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕未連接。觸發時將略過此區域。</translation>
     </message>
     <message>
         <source>The area no longer fits on this monitor and is skipped when triggered. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>區域已無法容納於此螢幕上，觸發時將被略過。請調整或重新選取。</translation>
     </message>
     <message>
         <source>Monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>螢幕 %1</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入可用於檔案名稱的名稱。</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>「%1」已被其他目標或群組使用。</translation>
     </message>
     <message>
         <source>Remove Area</source>
-        <translation type="unfinished"></translation>
+        <translation>移除區域</translation>
     </message>
     <message>
         <source>Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are kept.</source>
-        <translation type="unfinished"></translation>
+        <translation>要移除區域「%1」嗎？其快捷鍵將被清除，並從所有群組中移除。已儲存的擷取將保留。</translation>
     </message>
     <message>
         <source>Shortcut Already in Use</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵已被使用</translation>
     </message>
     <message>
         <source>%1 is already assigned to “%2”. Move it to “%3”?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 已指派給「%2」。要將其移至「%3」嗎？</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"></translation>
+        <translation>新增群組</translation>
     </message>
     <message>
         <source>Group name</source>
-        <translation type="unfinished"></translation>
+        <translation>群組名稱</translation>
     </message>
     <message>
         <source>Targets in this group</source>
-        <translation type="unfinished"></translation>
+        <translation>此群組中的目標</translation>
     </message>
     <message>
         <source>Targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>目標：</translation>
     </message>
     <message>
         <source>Each monitor is captured once per trigger, so all files show the same moment and share one timestamp.</source>
-        <translation type="unfinished"></translation>
+        <translation>每次觸發時每個螢幕只會擷取一次，因此所有檔案都會顯示同一瞬間並共用一個時間戳記。</translation>
     </message>
     <message>
         <source>Applies to every target of this group, regardless of their own setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>套用至此群組的所有目標，無論其各自設定為何。</translation>
     </message>
     <message>
         <source>Used when this group is triggered, unless a member target sets its own format.</source>
-        <translation type="unfinished"></translation>
+        <translation>觸發此群組時使用，除非成員目標另有設定格式。</translation>
     </message>
     <message>
         <source>Group capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>群組擷取延遲</translation>
     </message>
     <message>
         <source>Group shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>群組快捷鍵</translation>
     </message>
     <message>
         <source>Group interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>群組定時擷取切換快捷鍵</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>群組 %1</translation>
     </message>
     <message>
         <source>Remove Group</source>
-        <translation type="unfinished"></translation>
+        <translation>移除群組</translation>
     </message>
     <message>
         <source>Remove group “%1”? Its targets stay; only the group and its shortcut are removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>要移除群組「%1」嗎？其目標將會保留；僅移除群組及其快捷鍵。</translation>
     </message>
     <message>
         <source>%1 (cross-monitor: %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（跨螢幕：%2）</translation>
     </message>
     <message>
         <source>%1 (area on %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（%2 上的區域）</translation>
     </message>
     <message>
         <source>Enter a name.</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入名稱。</translation>
     </message>
     <message>
         <source>Capture folder</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取資料夾</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>瀏覽…</translation>
     </message>
     <message>
         <source>Folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>資料夾：</translation>
     </message>
     <message>
         <source>All captures go into this folder, without subfolders. Leave empty for the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>所有擷取都會儲存在此資料夾中，不含子資料夾。留空則使用預設值。</translation>
     </message>
     <message>
         <source>File name template</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案名稱範本</translation>
     </message>
     <message>
         <source>File name:</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案名稱：</translation>
     </message>
     <message>
         <source>Example:</source>
-        <translation type="unfinished"></translation>
+        <translation>範例：</translation>
     </message>
     <message>
         <source>Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target name). The file extension matches the chosen format. Existing files are never overwritten: a number is appended instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>預留位置：{date} (YYYY-MM-DD)、{time} (HH-MM-SS)、{area}（目標名稱）。副檔名會配合所選格式。現有檔案絕不會被覆寫：系統會改為附加編號。</translation>
     </message>
     <message>
         <source>Number of recent captures to keep</source>
-        <translation type="unfinished"></translation>
+        <translation>保留的近期擷取數量</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>清除紀錄</translation>
     </message>
     <message>
         <source>Recent captures:</source>
-        <translation type="unfinished"></translation>
+        <translation>最近的擷取：</translation>
     </message>
     <message>
         <source>Shown in the widget and the tray menu. Interval captures are not listed. Clearing the list never deletes image files.</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示於小工具與系統匣選單中。不會列出定時擷取。清除清單絕不會刪除圖片檔案。</translation>
     </message>
     <message>
         <source>History cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>已清除紀錄</translation>
     </message>
     <message>
         <source>Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取資料夾</translation>
+    </message>
+    <message>
+        <source>System default (%1)</source>
+        <translation>系統預設 (%1)</translation>
+    </message>
+    <message>
+        <source>Language:</source>
+        <translation>語言：</translation>
+    </message>
+    <message>
+        <source>glimply needs to restart to switch the language.</source>
+        <translation>glimply 需要重新啟動才能切換語言。</translation>
+    </message>
+    <message>
+        <source>Restart now</source>
+        <translation>立即重新啟動</translation>
+    </message>
+    <message>
+        <source>The Plasma widget follows the Plasma language.</source>
+        <translation>Plasma 小工具會跟隨 Plasma 語言。</translation>
+    </message>
+    <message>
+        <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
+        <translation>glimply 無法自行重新啟動。請結束後再重新啟動以切換語言。</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
-        <translation type="unfinished"></translation>
+        <translation>登入時啟動 glimply</translation>
     </message>
     <message>
         <source>Startup:</source>
-        <translation type="unfinished"></translation>
+        <translation>啟動：</translation>
     </message>
     <message>
         <source>Shortcuts only work while glimply is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>快捷鍵僅在 glimply 執行時有效。</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 Print 鍵觸發 glimply</translation>
     </message>
     <message>
         <source>Print key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Print 鍵：</translation>
     </message>
     <message>
         <source>Print saves all monitors right away. Turning this off gives the Print key back to the application that had it before, usually Spectacle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Print 會立即儲存所有螢幕。關閉此選項會將 Print 鍵歸還給原本的應用程式（通常為 Spectacle）。</translation>
     </message>
     <message>
         <source>Open the selection overlay after saving</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存後開啟選取覆疊層</translation>
     </message>
     <message>
         <source>After Print:</source>
-        <translation type="unfinished"></translation>
+        <translation>按下 Print 後：</translation>
     </message>
     <message>
         <source>In the overlay you can cut the screenshot down to rectangles, a monitor or a window. Without it, Print only saves the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>在覆疊層中，您可以將螢幕擷取裁切為矩形、螢幕或視窗。若關閉此選項，Print 只會儲存完整螢幕擷取。</translation>
     </message>
     <message>
         <source>Last used</source>
-        <translation type="unfinished"></translation>
+        <translation>上次使用</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>凍結</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>即時</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>覆疊層啟動時：</translation>
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation type="unfinished"></translation>
+        <translation>「凍結」顯示按下 Print 時的瞬間。「即時」讓影片繼續播放並在儲存時才擷取。在覆疊層中可隨時按 Space 切換。</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
-        <translation type="unfinished"></translation>
+        <translation>放開滑鼠後立即儲存</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished"></translation>
+        <translation>選取：</translation>
     </message>
     <message>
         <source>Skips the buttons: drawing one rectangle saves it right away.</source>
-        <translation type="unfinished"></translation>
+        <translation>略過按鈕：繪製一個矩形後立即儲存。</translation>
     </message>
     <message>
         <source>Show magnifier loupe while selecting</source>
-        <translation type="unfinished"></translation>
+        <translation>選取時顯示放大鏡</translation>
     </message>
     <message>
         <source>Loupe:</source>
-        <translation type="unfinished"></translation>
+        <translation>放大鏡：</translation>
     </message>
     <message>
         <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>在拖曳或調整凍結選取範圍大小時，顯示 11 × 11 原生像素的放大預覽。</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>選取色彩快捷鍵</translation>
     </message>
     <message>
         <source>Pick color shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>選取色彩快捷鍵：</translation>
     </message>
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
-        <translation type="unfinished"></translation>
+        <translation>在任意位置開啟像素色彩選取器的全域快捷鍵。</translation>
     </message>
     <message>
         <source>Text recognition:</source>
-        <translation type="unfinished"></translation>
+        <translation>文字辨識：</translation>
     </message>
     <message>
         <source>Text recognition languages</source>
-        <translation type="unfinished"></translation>
+        <translation>文字辨識語言</translation>
     </message>
     <message>
         <source>Languages:</source>
-        <translation type="unfinished"></translation>
+        <translation>語言：</translation>
     </message>
     <message>
         <source>Not installed. Install the tesseract package and a language package, for example tesseract-data-eng, to copy text from captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>尚未安裝。請安裝 tesseract 套件及語言套件（例如 tesseract-data-eng），以從擷取複製文字。</translation>
     </message>
     <message>
         <source>glimply works the same without it; Copy Text then explains what is missing.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有它 glimply 仍可正常運作；使用「複製文字」時會說明缺少的項目。</translation>
     </message>
     <message>
         <source>%1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>找到 %1</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Copy Text uses the checked languages; with none checked it uses all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>「複製文字」會使用勾選的語言；若未勾選任何語言，則使用全部語言。</translation>
     </message>
     <message>
         <source>English is not installed (package tesseract-data-eng).</source>
-        <translation type="unfinished"></translation>
+        <translation>未安裝英文（套件 tesseract-data-eng）。</translation>
     </message>
     <message>
         <source>Post-Capture Command Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後指令 Hook</translation>
     </message>
     <message>
         <source>Run a command after saving captures</source>
-        <translation type="unfinished"></translation>
+        <translation>儲存擷取後執行指令</translation>
     </message>
     <message>
         <source>Post-capture command</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取後指令</translation>
     </message>
     <message>
         <source>Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>指令：</translation>
     </message>
     <message>
         <source>Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell features.</source>
-        <translation type="unfinished"></translation>
+        <translation>不透過 shell 直接執行。可傳入 %f 代表檔案路徑，或讀取 GLIMPLY_FILE、GLIMPLY_FILES、GLIMPLY_TARGET_NAME、GLIMPLY_FORMAT 與 GLIMPLY_TIMESTAMP。若需管線或 shell 功能請使用指令稿檔案。</translation>
     </message>
     <message>
         <source>Hook timeout in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 逾時（秒）</translation>
     </message>
     <message>
         <source>Timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>逾時：</translation>
     </message>
     <message>
         <source>Run hooks on interval captures</source>
-        <translation type="unfinished"></translation>
+        <translation>在定時擷取時執行 Hook</translation>
     </message>
     <message>
         <source>Intervals:</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取：</translation>
     </message>
     <message>
         <source>Test Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>測試 Hook</translation>
     </message>
     <message>
         <source>Local MCP Server</source>
-        <translation type="unfinished"></translation>
+        <translation>本機 MCP 伺服器</translation>
     </message>
     <message>
         <source>Enable local MCP server (stdio only)</source>
-        <translation type="unfinished"></translation>
+        <translation>啟用本機 MCP 伺服器（僅限 stdio）</translation>
     </message>
     <message>
         <source>MCP access scope</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP 存取範圍</translation>
     </message>
     <message>
         <source>Allowlist only (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>僅限允許清單（建議）</translation>
     </message>
     <message>
         <source>Confirm every capture</source>
-        <translation type="unfinished"></translation>
+        <translation>每次擷取均需確認</translation>
     </message>
     <message>
         <source>Full session access</source>
-        <translation type="unfinished"></translation>
+        <translation>完整工作階段存取</translation>
     </message>
     <message>
         <source>Access scope:</source>
-        <translation type="unfinished"></translation>
+        <translation>存取範圍：</translation>
     </message>
     <message>
         <source>Only checked areas and groups can be listed or captured over MCP:</source>
-        <translation type="unfinished"></translation>
+        <translation>僅有勾選的區域與群組可透過 MCP 列出或擷取：</translation>
     </message>
     <message>
         <source>MCP allowed targets</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP 允許的目標</translation>
     </message>
     <message>
         <source>No areas or groups yet — add one to allow MCP captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>尚無區域或群組 — 請新增一個以允許 MCP 擷取。</translation>
     </message>
     <message>
         <source>Allowed targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>允許的目標：</translation>
     </message>
     <message>
         <source>Warning: Connected local MCP clients can capture any screen, region, or window without confirmation.</source>
-        <translation type="unfinished"></translation>
+        <translation>警告：已連線的本機 MCP 用戶端不需確認即可擷取任何螢幕、區域或視窗。</translation>
     </message>
     <message>
         <source>Show a passive notification on MCP captures</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP 擷取時顯示被動通知</translation>
     </message>
     <message>
         <source>Notifications:</source>
-        <translation type="unfinished"></translation>
+        <translation>通知：</translation>
     </message>
     <message>
         <source>MCP stdio launch command</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP stdio 啟動指令</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Add this command in a local MCP client (Claude Code, Codex, Cursor). Runs strictly on stdin/stdout with no network port.</source>
-        <translation type="unfinished"></translation>
+        <translation>將此指令新增至本機 MCP 用戶端（Claude Code、Codex、Cursor）。僅透過 stdin/stdout 執行，不開啟網路連接埠。</translation>
     </message>
     <message>
         <source>Running test hook…</source>
-        <translation type="unfinished"></translation>
+        <translation>正在執行測試 Hook…</translation>
     </message>
     <message>
         <source>Hook succeeded (exit 0, %1 ms).</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 成功（結束碼 0，%1 ms）。</translation>
     </message>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 在 %1 ms 後逾時。</translation>
     </message>
     <message>
         <source>Hook failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook 失敗：%1</translation>
     </message>
     <message>
         <source>Copied</source>
-        <translation type="unfinished"></translation>
+        <translation>已複製</translation>
     </message>
     <message>
         <source>%1 (area)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（區域）</translation>
     </message>
     <message>
         <source>%1 (group)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（群組）</translation>
     </message>
 </context>
 <context>
     <name>glimply::TrayController</name>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>就緒</translation>
     </message>
     <message>
         <source>glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply</translation>
     </message>
     <message>
         <source>Recent Captures</source>
-        <translation type="unfinished"></translation>
+        <translation>最近的擷取</translation>
     </message>
     <message>
         <source>No recent captures</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有最近的擷取</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>在視窗中編輯</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>在資料夾中顯示</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>釘選到螢幕</translation>
     </message>
     <message>
         <source>Move All to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>全部移至垃圾桶</translation>
     </message>
     <message>
         <source>Move to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>移至垃圾桶</translation>
     </message>
     <message>
         <source>%1 · %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 (%3)</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>清除紀錄</translation>
     </message>
     <message>
         <source>Clears the list; the image files stay where they are</source>
-        <translation type="unfinished"></translation>
+        <translation>清除清單；圖片檔案會保留在原處</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>將於 %1 秒後擷取…</translation>
     </message>
     <message>
         <source>%1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（%2 秒）</translation>
     </message>
     <message>
         <source>Intervals active: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>進行中的定時擷取：%1</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>取消倒數計時（%1 秒）</translation>
     </message>
     <message>
         <source>Stop Interval: %1 (%2 saved)</source>
-        <translation type="unfinished"></translation>
+        <translation>停止定時擷取：%1（已儲存 %2 個）</translation>
     </message>
     <message>
         <source>Stop All Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>停止所有定時擷取</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>No areas yet</source>
-        <translation type="unfinished"></translation>
+        <translation>尚無區域</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>重新命名螢幕</translation>
     </message>
     <message>
         <source>%1…</source>
-        <translation type="unfinished"></translation>
+        <translation>%1…</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>新增區域…</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>選取色彩</translation>
     </message>
     <message>
         <source>Delay (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲（%1 秒）</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>無延遲</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n 秒</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>自訂…</translation>
     </message>
     <message>
         <source>Capture Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取延遲</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>秒數：</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>保持延遲啟用</translation>
     </message>
     <message>
         <source>Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>定時擷取</translation>
     </message>
     <message>
         <source>Stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>停止 %1</translation>
     </message>
     <message>
         <source>Start %1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>啟動 %1（%2 秒）</translation>
     </message>
     <message>
         <source>Open Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟上次擷取</translation>
     </message>
     <message>
         <source>Edit Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>編輯上次擷取</translation>
     </message>
     <message>
         <source>Pins (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pins (%1)</translation>
     </message>
     <message>
         <source>Show Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示釘選</translation>
     </message>
     <message>
         <source>Remove All Pins…</source>
-        <translation type="unfinished"></translation>
+        <translation>移除所有釘選…</translation>
     </message>
     <message>
         <source>Open Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟擷取資料夾</translation>
     </message>
     <message>
         <source>Configure glimply…</source>
-        <translation type="unfinished"></translation>
+        <translation>設定 glimply…</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>結束</translation>
     </message>
 </context>
 <context>
     <name>glimply::cli</name>
     <message>
         <source>Could not connect to the D-Bus session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法連線至 D-Bus 工作階段匯流排。</translation>
     </message>
     <message>
         <source>Unexpected D-Bus reply calling %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>呼叫 %1 時收到非預期的 D-Bus 回覆。</translation>
     </message>
     <message>
         <source>Invalid JSON reply from glimply daemon: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>來自 glimply 背景程式的 JSON 回覆無效：%1</translation>
     </message>
     <message>
         <source>Missing value for --format.</source>
-        <translation type="unfinished"></translation>
+        <translation>--format 缺少數值。</translation>
     </message>
     <message>
         <source>Unsupported image format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不支援的圖片格式：%1</translation>
     </message>
     <message>
         <source>Missing value for --quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>--quality 缺少數值。</translation>
     </message>
     <message>
         <source>Quality must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <translation>品質必須是介於 1 到 100 之間的整數。</translation>
     </message>
     <message>
         <source>Missing value for --png-compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>--png-compression 缺少數值。</translation>
     </message>
     <message>
         <source>PNG compression must be between 0 and 9.</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG 壓縮必須介於 0 到 9 之間。</translation>
     </message>
     <message>
         <source>Missing value for --delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>--delay 缺少數值。</translation>
     </message>
     <message>
         <source>Delay must be between 0 and 60 seconds.</source>
-        <translation type="unfinished"></translation>
+        <translation>延遲必須介於 0 到 60 秒之間。</translation>
     </message>
     <message>
         <source>Missing path for --out.</source>
-        <translation type="unfinished"></translation>
+        <translation>--out 缺少路徑。</translation>
     </message>
     <message>
         <source>Unknown option: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的選項：%1</translation>
     </message>
     <message>
         <source>--stdout and --json cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout 與 --json 無法同時使用。</translation>
     </message>
     <message>
         <source>--stdout and --ocr cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout 與 --ocr 無法同時使用。</translation>
     </message>
     <message>
         <source>Expected exactly one capture target.</source>
-        <translation type="unfinished"></translation>
+        <translation>預期剛好一個擷取目標。</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>擷取失敗。</translation>
     </message>
     <message>
         <source>Could not read captured image bytes for --stdout.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法讀取 --stdout 的已擷取圖片位元組。</translation>
     </message>
     <message>
         <source>Failed reading image stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>讀取圖片串流失敗。</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 複製到剪貼簿。</translation>
     </message>
     <message>
         <source>Captured %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已擷取 %1。</translation>
     </message>
     <message>
         <source>Missing value for --kind.</source>
-        <translation type="unfinished"></translation>
+        <translation>--kind 缺少數值。</translation>
     </message>
     <message>
         <source>Invalid --kind value: %1 (expected targets, monitors, or windows).</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的 --kind 數值：%1（預期為 targets、monitors 或 windows）。</translation>
     </message>
     <message>
         <source>Missing value for --name.</source>
-        <translation type="unfinished"></translation>
+        <translation>--name 缺少數值。</translation>
     </message>
     <message>
         <source>Missing value for --monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>--monitor 缺少數值。</translation>
     </message>
     <message>
         <source>Missing value for --rect.</source>
-        <translation type="unfinished"></translation>
+        <translation>--rect 缺少數值。</translation>
     </message>
     <message>
         <source>Invalid rectangle %1 (expected X,Y,W,H with W&gt;0, H&gt;0).</source>
-        <translation type="unfinished"></translation>
+        <translation>無效的矩形 %1（預期為 X,Y,W,H 且 W&gt;0, H&gt;0）。</translation>
     </message>
     <message>
         <source>Opened interactive area selector.</source>
-        <translation type="unfinished"></translation>
+        <translation>已開啟互動式區域選取器。</translation>
     </message>
     <message>
         <source>Expected an area ID or name.</source>
-        <translation type="unfinished"></translation>
+        <translation>預期區域 ID 或名稱。</translation>
     </message>
     <message>
         <source>“%1” is not an area.</source>
-        <translation type="unfinished"></translation>
+        <translation>「%1」不是區域。</translation>
     </message>
     <message>
         <source>Opened editor for area %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已開啟區域 %1 的編輯器。</translation>
     </message>
     <message>
         <source>Usage: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>用法：glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Renamed %1 to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>已將 %1 重新命名為 %2。</translation>
     </message>
     <message>
         <source>Usage: glimply area remove &lt;id-or-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>用法：glimply area remove &lt;id-or-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Built-in targets cannot be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法移除內建目標。</translation>
     </message>
     <message>
         <source>Removed %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已移除 %1。</translation>
     </message>
     <message>
         <source>Unknown area subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的 area 子指令：%1</translation>
     </message>
     <message>
         <source>--seconds must be between 1 and 86400.</source>
-        <translation type="unfinished"></translation>
+        <translation>--seconds 必須介於 1 到 86400 之間。</translation>
     </message>
     <message>
         <source>--max-captures must be between 0 and 100000.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-captures 必須介於 0 到 100000 之間。</translation>
     </message>
     <message>
         <source>--max-minutes must be between 0 and 10080.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-minutes 必須介於 0 到 10080 之間。</translation>
     </message>
     <message>
         <source>Expected exactly one target to start an interval for.</source>
-        <translation type="unfinished"></translation>
+        <translation>預期剛好一個目標以啟動定時擷取。</translation>
     </message>
     <message>
         <source>Started interval capture for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已為 %1 啟動定時擷取。</translation>
     </message>
     <message>
         <source>Do not pass a target name together with --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>請勿將目標名稱與 --all 同時傳入。</translation>
     </message>
     <message>
         <source>Specify a target or --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>請指定目標或 --all。</translation>
     </message>
     <message>
         <source>Stopped all active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>已停止所有進行中的定時擷取。</translation>
     </message>
     <message>
         <source>Stopped interval for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>已停止 %1 的定時擷取。</translation>
     </message>
     <message>
         <source>No active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有進行中的定時擷取。</translation>
     </message>
     <message>
         <source>Unknown interval subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的 interval 子指令：%1</translation>
     </message>
     <message>
         <source>Missing value for --mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>--mode 缺少數值。</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode 必須為「frozen」或「live」。</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
-        <translation type="unfinished"></translation>
+        <translation>--delay 必須介於 0 到 60 之間。</translation>
     </message>
     <message>
         <source>--limit expects a positive number.</source>
-        <translation type="unfinished"></translation>
+        <translation>--limit 預期為正數。</translation>
     </message>
     <message>
         <source>No recent captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>沒有最近的擷取。</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
-        <translation type="unfinished"></translation>
+        <translation>缺少子指令。</translation>
     </message>
     <message>
         <source>Unknown subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的子指令：%1</translation>
     </message>
 </context>
 <context>
@@ -3548,19 +3561,27 @@ Scriptable CLI subcommands:
   interval           Start, stop, or inspect interval captures
   overlay            Open the interactive capture overlay
   mcp                Run the local stdio MCP server (disabled by default)</source>
-        <translation type="unfinished"></translation>
+        <translation>輕量級 KDE 螢幕擷取與標註工具
+
+可編寫指令稿的 CLI 子指令：
+  capture &lt;target&gt;   擷取區域、群組、螢幕、所有螢幕或視窗
+  list               列出已設定的目標、螢幕或開啟的視窗
+  area               新增、編輯、重新命名或移除已儲存的區域
+  interval           啟動、停止或檢查定時擷取
+  overlay            開啟互動式擷取覆疊層
+  mcp                執行本機 stdio MCP 伺服器（預設停用）</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>要在快速編輯器視窗中開啟的圖片檔案。</translation>
     </message>
     <message>
         <source>Open an image file in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>在快速編輯器視窗中開啟圖片檔案。</translation>
     </message>
     <message>
         <source>Release the Print key shortcut and exit.</source>
-        <translation type="unfinished"></translation>
+        <translation>釋放 Print 鍵快捷鍵並結束。</translation>
     </message>
 </context>
 </TS>
