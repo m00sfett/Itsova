@@ -21,6 +21,7 @@ namespace glimply
 
 class App;
 class AreaSelector;
+class ExportOptionsWidget;
 
 // The only window of glimply. Changes apply immediately; there is nothing to confirm.
 class SettingsWindow : public KPageDialog
@@ -85,6 +86,7 @@ private:
     QSpinBox *areaHeight_ = nullptr;
     QLabel *areaWarning_ = nullptr;
     QCheckBox *targetCursor_ = nullptr;
+    ExportOptionsWidget *targetExport_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
     QList<QWidget *> nameRow_; // areas and connected monitors
@@ -98,12 +100,14 @@ private:
     QLabel *groupNameError_ = nullptr;
     QListWidget *groupMembers_ = nullptr;
     QCheckBox *groupCursor_ = nullptr;
+    ExportOptionsWidget *groupExport_ = nullptr;
     KKeySequenceWidget *groupShortcut_ = nullptr;
 
     // Storage and general
     QLineEdit *directory_ = nullptr;
     QLineEdit *template_ = nullptr;
     QLabel *templatePreview_ = nullptr;
+    ExportOptionsWidget *storageExport_ = nullptr;
     QCheckBox *autostart_ = nullptr;
     QCheckBox *usePrintKey_ = nullptr;
     QCheckBox *printOpensOverlay_ = nullptr;

@@ -5,6 +5,7 @@
 #include "annotations/inlinetexteditor.h"
 #include "annotations/overlayexport.h"
 #include "app.h"
+#include "exportdialog.h"
 #include "imageoutput.h"
 #include "screens.h"
 #include "selectiongeometry.h"
@@ -269,7 +270,8 @@ void CaptureSession::savePrintImage()
         return;
     }
     QStringList errors;
-    const QStringList paths = write({{allMonitorsTargetId(), image}}, &errors);
+    const ExportOptions printOptions = store().effectiveExportOptions(allMonitorsTargetId());
+    const QStringList paths = write({{allMonitorsTargetId(), image}}, &errors, printOptions);
     if (paths.isEmpty()) {
         finish({}, {}, errors);
         return;
@@ -580,13 +582,37 @@ void CaptureSession::hideOverlays()
 
 QStringList CaptureSession::write(const QList<QPair<QString, QImage>> &images, QStringList *errors)
 {
-    const OutputWriter writer(store().effectiveCaptureDirectory(), store().effectiveFilenameTemplate());
+    return write(images, errors, store().exportOptions);
+}
+
+QStringList CaptureSession::write(const QList<QPair<QString, QImage>> &images, QStringList *errors,
+                                  const ExportOptions &options)
+{
+    const OutputWriter writer(store().effectiveCaptureDirectory(), store().effectiveFilenameTemplate(), options);
     const QDateTime timestamp = QDateTime::currentDateTime();
     QStringList paths;
     for (const auto &[token, image] : images) {
         QString path;
         QString error;
-        if (writer.writeImage(image, token, timestamp, &path, &error)) {
+        if (writer.writeImage(image, token, timestamp, options, &path, &error)) {
+            paths.append(path);
+        } else {
+            errors->append(error);
+        }
+    }
+    return paths;
+}
+
+QStringList CaptureSession::writeOutputs(const QList<RenderedOutput> &outputs, QStringList *errors)
+{
+    const OutputWriter writer(store().effectiveCaptureDirectory(), store().effectiveFilenameTemplate(),
+                              store().exportOptions);
+    const QDateTime timestamp = QDateTime::currentDateTime();
+    QStringList paths;
+    for (const RenderedOutput &output : outputs) {
+        QString path;
+        QString error;
+        if (writer.writeImage(output.image, output.token, timestamp, output.exportOptions, &path, &error)) {
             paths.append(path);
         } else {
             errors->append(error);
@@ -754,23 +780,9 @@ void CaptureSession::saveAs()
     const bool wasFrozen = frozen_;
     const auto ask = [this, wasFrozen] {
         hideOverlays();
-        const QString suggestion = QDir(store().effectiveCaptureDirectory())
-                                       .filePath(filenameFor(store().effectiveFilenameTemplate(),
-                                                             QStringLiteral("selection"), QDateTime::currentDateTime()));
-        const QString path = QFileDialog::getSaveFileName(nullptr, tr("Save Screenshot As"), suggestion,
-                                                          tr("PNG images (*.png)"));
-        if (path.isEmpty()) {
-            if (!wasFrozen) {
-                frames_.clear();
-            }
-            showOverlays();
-            return;
-        }
-        const QFileInfo info(path);
-        const QString stem = info.path() + QLatin1Char('/') + info.completeBaseName();
-        QStringList paths;
         QStringList errors;
-        QImage clipboard;
+        QList<QPair<int, QImage>> renderedSelections;
+        QImage preview;
         const QList<Selection> ordered = selections_.inDrawingOrder();
         for (const Selection &selection : ordered) {
             QString error;
@@ -779,21 +791,48 @@ void CaptureSession::saveAs()
                 errors.append(error);
                 continue;
             }
-            const int number = selections_.number(selection.id);
-            const QString target = number <= 1 ? stem + QStringLiteral(".png")
-                                               : QStringLiteral("%1-%2.png").arg(stem).arg(number);
-            QSaveFile file(target);
-            QImageWriter writer(&file, "png");
-            if (!file.open(QIODevice::WriteOnly) || !writer.write(image) || !file.commit()) {
-                errors.append(tr("Could not write %1.").arg(target));
+            renderedSelections.append({selections_.number(selection.id), image});
+            if (selection.id == selections_.activeId() || preview.isNull()) {
+                preview = image;
+            }
+        }
+        if (renderedSelections.isEmpty()) {
+            finish({}, {}, errors);
+            return;
+        }
+
+        const ExportOptions initialOptions = store().exportOptions;
+        const QString suggestion = QDir(store().effectiveCaptureDirectory())
+                                       .filePath(filenameFor(store().effectiveFilenameTemplate(),
+                                                             QStringLiteral("selection"), QDateTime::currentDateTime(),
+                                                             initialOptions.format));
+        ExportDialog dialog(preview, suggestion, initialOptions);
+        if (dialog.exec() != QDialog::Accepted) {
+            if (!wasFrozen) {
+                frames_.clear();
+            }
+            showOverlays();
+            return;
+        }
+
+        const QString chosenPath = dialog.filePath();
+        const ExportOptions chosenOptions = dialog.exportOptions();
+        const QFileInfo info(chosenPath);
+        const QString stem = info.dir().filePath(info.completeBaseName());
+        const QString extension = canonicalExtension(chosenOptions.format);
+        QStringList paths;
+        for (const auto &[number, image] : std::as_const(renderedSelections)) {
+            const QString target = number <= 1
+                                       ? stem + QLatin1Char('.') + extension
+                                       : QStringLiteral("%1-%2.%3").arg(stem).arg(number).arg(extension);
+            QString writeErr;
+            if (!writeImageToFile(target, image, chosenOptions, &writeErr)) {
+                errors.append(tr("Could not write %1: %2").arg(target, writeErr));
                 continue;
             }
             paths.append(target);
-            if (selection.id == selections_.activeId() || clipboard.isNull()) {
-                clipboard = image;
-            }
         }
-        finishWith(paths, clipboard, errors, tr("Selection"));
+        finishWith(paths, preview, errors, tr("Selection"));
     };
     if (frozen_) {
         ask();
@@ -995,7 +1034,8 @@ void CaptureSession::captureMonitor(const QString &connector)
         const QImage out = screen ? renderAnnotatedMonitor(*screen, frame, annotations_) : frame.image;
         QStringList errors;
         const QString name = monitorName(connector);
-        finishWith(write({{name, out}}, &errors), out, errors, name);
+        const ExportOptions opts = store().effectiveExportOptions(screenTargetId(connector));
+        finishWith(write({{name, out}}, &errors, opts), out, errors, name);
     });
 }
 
@@ -1021,7 +1061,8 @@ void CaptureSession::captureAllMonitors()
             return;
         }
         QStringList errors;
-        finishWith(write({{allMonitorsTargetId(), image}}, &errors), image, errors, tr("All monitors"));
+        const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
+        finishWith(write({{allMonitorsTargetId(), image}}, &errors, opts), image, errors, tr("All monitors"));
     });
 }
 
@@ -1033,17 +1074,17 @@ void CaptureSession::captureTarget(const QString &id)
         return;
     }
     withFrames(plan.connectors, [this, plan] {
-        QList<QPair<QString, QImage>> images;
+        QList<RenderedOutput> validOutputs;
         QStringList errors = plan.errors;
         for (const RenderedOutput &output : renderOutputs(plan, frames_)) {
             if (output.image.isNull()) {
                 errors.append(output.error);
             } else {
-                images.append({output.token, output.image});
+                validOutputs.append(output);
             }
         }
-        const QImage clipboard = images.isEmpty() ? QImage() : images.first().second;
-        finishWith(write(images, &errors), clipboard, errors, plan.displayName);
+        const QImage clipboard = validOutputs.isEmpty() ? QImage() : validOutputs.first().image;
+        finishWith(writeOutputs(validOutputs, &errors), clipboard, errors, plan.displayName);
     });
 }
 

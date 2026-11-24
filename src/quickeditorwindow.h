@@ -75,9 +75,11 @@ private:
     void updateCropStrip(const QRect &cropRect);
     void showTransientStatus(const QString &message);
     [[nodiscard]] QString displayName() const;
-    [[nodiscard]] bool writeExistingOrChosenPath(const QString &targetPath, QString *error);
+    [[nodiscard]] bool writeExistingOrChosenPath(const QString &targetPath, const ExportOptions &options,
+                                                   QString *error);
 
     TargetStore &store_;
+    ExportOptions exportOptions_;
     QString filePath_;
     QString baseNameToken_;
     QString loadError_;

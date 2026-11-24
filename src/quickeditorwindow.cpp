@@ -2,6 +2,7 @@
 
 #include "annotations/annotationcontroller.h"
 #include "annotations/annotationitem.h"
+#include "exportdialog.h"
 #include "imageoutput.h"
 
 #include <QAction>
@@ -52,10 +53,15 @@ constexpr qreal canvasScrollMargin = 24.0;
 QuickEditorWindow::QuickEditorWindow(TargetStore &store, const QString &filePath, QWidget *parent)
     : QMainWindow(parent)
     , store_(store)
+    , exportOptions_(store.exportOptions)
     , filePath_(QFileInfo(filePath).absoluteFilePath())
     , baseNameToken_(QFileInfo(filePath).completeBaseName())
     , ownedDoc_(std::make_unique<AnnotationDocument>())
 {
+    if (const std::optional<ImageFormat> fileFormat = imageFormatFromPath(filePath_);
+        fileFormat.has_value() && isImageFormatSupported(*fileFormat)) {
+        exportOptions_.format = *fileFormat;
+    }
     QImageReader reader(filePath_);
     reader.setAutoTransform(true);
     QImage loaded = reader.read();
@@ -85,6 +91,7 @@ QuickEditorWindow::QuickEditorWindow(TargetStore &store, const QImage &nativeIma
                                      QWidget *parent)
     : QMainWindow(parent)
     , store_(store)
+    , exportOptions_(store.exportOptions)
     , baseNameToken_(baseNameToken.trimmed().isEmpty() ? QStringLiteral("capture") : baseNameToken.trimmed())
     , ownedDoc_(annotations ? std::move(annotations) : std::make_unique<AnnotationDocument>())
 {
@@ -427,7 +434,8 @@ void QuickEditorWindow::showTransientStatus(const QString &message)
     statusClearTimer_->start();
 }
 
-bool QuickEditorWindow::writeExistingOrChosenPath(const QString &targetPath, QString *error)
+bool QuickEditorWindow::writeExistingOrChosenPath(const QString &targetPath, const ExportOptions &options,
+                                                  QString *error)
 {
     const QImage exported = canvas_->renderExport();
     if (exported.isNull()) {
@@ -436,26 +444,7 @@ bool QuickEditorWindow::writeExistingOrChosenPath(const QString &targetPath, QSt
         }
         return false;
     }
-    const bool existed = QFile::exists(targetPath);
-    QSaveFile file(targetPath);
-    if (!file.open(QIODevice::WriteOnly)) {
-        if (error) {
-            *error = file.errorString();
-        }
-        return false;
-    }
-    if (!existed) {
-        file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ReadGroup
-                            | QFileDevice::ReadOther);
-    }
-    QImageWriter writer(&file, "png");
-    if (!writer.write(exported) || !file.commit()) {
-        if (error) {
-            *error = writer.errorString().isEmpty() ? file.errorString() : writer.errorString();
-        }
-        return false;
-    }
-    return true;
+    return writeImageToFile(targetPath, exported, options, error);
 }
 
 bool QuickEditorWindow::save()
@@ -468,15 +457,16 @@ bool QuickEditorWindow::save()
     }
     QString error;
     if (!filePath_.isEmpty()) {
-        if (!writeExistingOrChosenPath(filePath_, &error)) {
+        if (!writeExistingOrChosenPath(filePath_, exportOptions_, &error)) {
             QMessageBox::warning(this, tr("Save Failed"), tr("Could not save %1:\n%2").arg(filePath_, error));
             return false;
         }
     } else {
-        const OutputWriter writer(store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
+        const OutputWriter writer(store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate(),
+                                  exportOptions_);
         QString written;
-        if (!writer.writeImage(canvas_->renderExport(), baseNameToken_, QDateTime::currentDateTime(), &written,
-                               &error)) {
+        if (!writer.writeImage(canvas_->renderExport(), baseNameToken_, QDateTime::currentDateTime(), exportOptions_,
+                               &written, &error)) {
             QMessageBox::warning(this, tr("Save Failed"), error);
             return false;
         }
@@ -506,10 +496,11 @@ bool QuickEditorWindow::saveCopy()
                              : sanitizeFilenameToken(baseNameToken_.isEmpty() ? QStringLiteral("capture")
                                                                               : baseNameToken_)
                                    + QStringLiteral("_edited");
+    const QString filename = stem + QLatin1Char('.') + canonicalExtension(exportOptions_.format);
 
     QString written;
     QString error;
-    if (!writeUniquePngFile(directory, stem + QStringLiteral(".png"), canvas_->renderExport(), &written, &error)) {
+    if (!writeUniqueImageFile(directory, filename, canvas_->renderExport(), exportOptions_, &written, &error)) {
         QMessageBox::warning(this, tr("Save Copy Failed"), error);
         return false;
     }
@@ -525,23 +516,28 @@ bool QuickEditorWindow::saveAs()
     if (canvas_->controller()->isEditingText()) {
         canvas_->controller()->requestCommitActiveText(false);
     }
-    const QString suggestion = !filePath_.isEmpty()
-                                   ? filePath_
-                                   : QDir(store_.effectiveCaptureDirectory())
-                                         .filePath(filenameFor(store_.effectiveFilenameTemplate(), baseNameToken_,
-                                                               QDateTime::currentDateTime()));
-    QString chosen = QFileDialog::getSaveFileName(this, tr("Save Image As"), suggestion, tr("PNG images (*.png)"));
-    if (chosen.isEmpty()) {
+    const QImage exported = canvas_->renderExport();
+    if (exported.isNull()) {
+        QMessageBox::warning(this, tr("Save Failed"), tr("Nothing to save."));
         return false;
     }
-    if (!chosen.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)) {
-        chosen.append(QStringLiteral(".png"));
+    const QString suggestion = !filePath_.isEmpty()
+                                   ? replaceImageExtension(filePath_, exportOptions_.format)
+                                   : QDir(store_.effectiveCaptureDirectory())
+                                         .filePath(filenameFor(store_.effectiveFilenameTemplate(), baseNameToken_,
+                                                               QDateTime::currentDateTime(), exportOptions_.format));
+    ExportDialog dialog(exported, suggestion, exportOptions_, this);
+    if (dialog.exec() != QDialog::Accepted) {
+        return false;
     }
+    const QString chosen = dialog.filePath();
+    const ExportOptions chosenOptions = dialog.exportOptions();
     QString error;
-    if (!writeExistingOrChosenPath(chosen, &error)) {
+    if (!writeImageToFile(chosen, exported, chosenOptions, &error)) {
         QMessageBox::warning(this, tr("Save Failed"), tr("Could not save %1:\n%2").arg(chosen, error));
         return false;
     }
+    exportOptions_ = chosenOptions;
     filePath_ = QFileInfo(chosen).absoluteFilePath();
     baseNameToken_ = QFileInfo(filePath_).completeBaseName();
     isUnsavedCapture_ = false;

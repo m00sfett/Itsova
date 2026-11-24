@@ -1,14 +1,21 @@
 #include "imageoutput.h"
 
+#include <QBuffer>
+#include <QColor>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QImageWriter>
+#include <QPainter>
+#include <QSaveFile>
 #include <QTemporaryFile>
 
 #include <fcntl.h>
 #include <stdio.h>
 
+#include <algorithm>
+#include <array>
 #include <cerrno>
 #include <cmath>
 #include <cstring>
@@ -24,6 +31,26 @@ class ImageOutputStrings
     Q_DECLARE_TR_FUNCTIONS(ImageOutput)
 };
 
+constexpr std::array<QLatin1StringView, 10> knownImageExtensions{
+    QLatin1StringView(".png"),
+    QLatin1StringView(".jpeg"),
+    QLatin1StringView(".jpg"),
+    QLatin1StringView(".webp"),
+    QLatin1StringView(".avif"),
+    QLatin1StringView(".jxl"),
+    QLatin1StringView(".tiff"),
+    QLatin1StringView(".tif"),
+    QLatin1StringView(".bmp"),
+    QLatin1StringView(".qoi"),
+};
+
+int qtPngCompressionFromZlibLevel(int level)
+{
+    // Qt's PNG handler scales QImageWriter::compression (0..100) back down to zlib levels 0..9.
+    constexpr std::array<int, 10> breakpoints{0, 16, 27, 38, 49, 60, 71, 80, 88, 100};
+    return breakpoints[static_cast<std::size_t>(std::clamp(level, 0, 9))];
+}
+
 bool scaledEdge(int logicalEdge, qreal scale, int *nativeEdge)
 {
     const qreal scaled = static_cast<qreal>(logicalEdge) * scale;
@@ -37,8 +64,9 @@ bool scaledEdge(int logicalEdge, qreal scale, int *nativeEdge)
 }
 
 QString makeFilenameImpl(const QString &filenameTemplate,
-                     const QString &areaToken,
-                     const QDateTime &timestamp)
+                         const QString &areaToken,
+                         const QDateTime &timestamp,
+                         ImageFormat format)
 {
     QString filename = filenameTemplate;
     filename.replace(QStringLiteral("{date}"), timestamp.toString(QStringLiteral("yyyy-MM-dd")));
@@ -46,6 +74,7 @@ QString makeFilenameImpl(const QString &filenameTemplate,
     filename.replace(QStringLiteral("{area}"), sanitizeFilenameToken(areaToken));
     // Templates written before regions were renamed to areas keep working.
     filename.replace(QStringLiteral("{region}"), sanitizeFilenameToken(areaToken));
+    filename.replace(QStringLiteral("{ext}"), canonicalExtension(format));
 
     // The template must still resolve to one flat filename, even if it contains
     // path separators or other characters that are invalid in common filesystems.
@@ -57,19 +86,308 @@ QString makeFilenameImpl(const QString &filenameTemplate,
             safeFilename.append(character);
         }
     }
-    filename = std::move(safeFilename);
-
-    if (!filename.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)) {
-        filename.append(QStringLiteral(".png"));
-    }
-    return filename;
+    return replaceImageExtension(std::move(safeFilename), format);
 }
 
 } // namespace
 
-QString filenameFor(const QString &filenameTemplate, const QString &areaToken, const QDateTime &timestamp)
+QList<ImageFormat> availableCuratedFormats()
 {
-    return makeFilenameImpl(filenameTemplate, areaToken, timestamp);
+    QList<ImageFormat> formats;
+    for (const ImageFormat format : {ImageFormat::Png, ImageFormat::Jpeg, ImageFormat::WebP,
+                                     ImageFormat::Avif, ImageFormat::Jxl}) {
+        if (format == ImageFormat::Png || isImageFormatSupported(format)) {
+            formats.append(format);
+        }
+    }
+    return formats;
+}
+
+bool isImageFormatSupported(ImageFormat format)
+{
+    const QList<QByteArray> supported = QImageWriter::supportedImageFormats();
+    const QByteArray name = qtFormatName(format);
+    for (const QByteArray &entry : supported) {
+        if (entry.toLower() == name) {
+            return true;
+        }
+    }
+    return format == ImageFormat::Png;
+}
+
+QByteArray qtFormatName(ImageFormat format)
+{
+    switch (format) {
+    case ImageFormat::Png:
+        return QByteArrayLiteral("png");
+    case ImageFormat::Jpeg:
+        return QByteArrayLiteral("jpeg");
+    case ImageFormat::WebP:
+        return QByteArrayLiteral("webp");
+    case ImageFormat::Avif:
+        return QByteArrayLiteral("avif");
+    case ImageFormat::Jxl:
+        return QByteArrayLiteral("jxl");
+    case ImageFormat::Tiff:
+        return QByteArrayLiteral("tiff");
+    case ImageFormat::Bmp:
+        return QByteArrayLiteral("bmp");
+    case ImageFormat::Qoi:
+        return QByteArrayLiteral("qoi");
+    }
+    return QByteArrayLiteral("png");
+}
+
+QString canonicalExtension(ImageFormat format)
+{
+    switch (format) {
+    case ImageFormat::Png:
+        return QStringLiteral("png");
+    case ImageFormat::Jpeg:
+        return QStringLiteral("jpg");
+    case ImageFormat::WebP:
+        return QStringLiteral("webp");
+    case ImageFormat::Avif:
+        return QStringLiteral("avif");
+    case ImageFormat::Jxl:
+        return QStringLiteral("jxl");
+    case ImageFormat::Tiff:
+        return QStringLiteral("tiff");
+    case ImageFormat::Bmp:
+        return QStringLiteral("bmp");
+    case ImageFormat::Qoi:
+        return QStringLiteral("qoi");
+    }
+    return QStringLiteral("png");
+}
+
+QString formatConfigKey(ImageFormat format)
+{
+    return QString::fromLatin1(qtFormatName(format));
+}
+
+std::optional<ImageFormat> imageFormatFromKey(const QString &key)
+{
+    const QString norm = key.trimmed().toLower();
+    if (norm == QLatin1String("png")) {
+        return ImageFormat::Png;
+    }
+    if (norm == QLatin1String("jpg") || norm == QLatin1String("jpeg")) {
+        return ImageFormat::Jpeg;
+    }
+    if (norm == QLatin1String("webp")) {
+        return ImageFormat::WebP;
+    }
+    if (norm == QLatin1String("avif")) {
+        return ImageFormat::Avif;
+    }
+    if (norm == QLatin1String("jxl")) {
+        return ImageFormat::Jxl;
+    }
+    if (norm == QLatin1String("tif") || norm == QLatin1String("tiff")) {
+        return ImageFormat::Tiff;
+    }
+    if (norm == QLatin1String("bmp")) {
+        return ImageFormat::Bmp;
+    }
+    if (norm == QLatin1String("qoi")) {
+        return ImageFormat::Qoi;
+    }
+    return std::nullopt;
+}
+
+std::optional<ImageFormat> imageFormatFromPath(const QString &filePath)
+{
+    const QString suffix = QFileInfo(filePath).suffix();
+    return suffix.isEmpty() ? std::nullopt : imageFormatFromKey(suffix);
+}
+
+QString formatDisplayName(ImageFormat format)
+{
+    switch (format) {
+    case ImageFormat::Png:
+        return ImageOutputStrings::tr("PNG (lossless)");
+    case ImageFormat::Jpeg:
+        return ImageOutputStrings::tr("JPEG");
+    case ImageFormat::WebP:
+        return ImageOutputStrings::tr("WebP");
+    case ImageFormat::Avif:
+        return ImageOutputStrings::tr("AVIF");
+    case ImageFormat::Jxl:
+        return ImageOutputStrings::tr("JPEG XL");
+    case ImageFormat::Tiff:
+        return ImageOutputStrings::tr("TIFF");
+    case ImageFormat::Bmp:
+        return ImageOutputStrings::tr("BMP");
+    case ImageFormat::Qoi:
+        return ImageOutputStrings::tr("QOI");
+    }
+    return ImageOutputStrings::tr("PNG (lossless)");
+}
+
+bool formatSupportsAlpha(ImageFormat format)
+{
+    return format != ImageFormat::Jpeg && format != ImageFormat::Bmp;
+}
+
+bool formatSupportsQuality(ImageFormat format)
+{
+    return format == ImageFormat::Jpeg || format == ImageFormat::WebP
+        || format == ImageFormat::Avif || format == ImageFormat::Jxl;
+}
+
+bool formatSupportsLosslessToggle(ImageFormat format)
+{
+    return format == ImageFormat::WebP;
+}
+
+QString replaceImageExtension(const QString &filename, ImageFormat format)
+{
+    QString out = filename;
+    for (const QLatin1StringView ext : knownImageExtensions) {
+        if (out.endsWith(ext, Qt::CaseInsensitive)) {
+            out.chop(ext.size());
+            break;
+        }
+    }
+    const QString suffix = QLatin1Char('.') + canonicalExtension(format);
+    if (!out.endsWith(suffix, Qt::CaseInsensitive)) {
+        out.append(suffix);
+    }
+    return out;
+}
+
+QString filenameFor(const QString &filenameTemplate, const QString &areaToken, const QDateTime &timestamp,
+                    ImageFormat format)
+{
+    return makeFilenameImpl(filenameTemplate, areaToken, timestamp, format);
+}
+
+QImage prepareImageForExport(const QImage &image, const ExportOptions &options)
+{
+    if (image.isNull()) {
+        return {};
+    }
+    if (!formatSupportsAlpha(options.format)) {
+        QImage flattened(image.size(), QImage::Format_RGB32);
+        flattened.setDevicePixelRatio(1.0);
+        flattened.fill(QColor(0, 0, 0));
+        QPainter painter(&flattened);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawImage(0, 0, image);
+        return flattened;
+    }
+    const QImage::Format targetFmt = image.hasAlphaChannel()
+                                         ? QImage::Format_ARGB32_Premultiplied
+                                         : QImage::Format_RGB32;
+    QImage clean(image.size(), targetFmt);
+    clean.setDevicePixelRatio(1.0);
+    QPainter painter(&clean);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.drawImage(0, 0, image);
+    return clean;
+}
+
+bool encodeImageToDevice(QIODevice *device, const QImage &image, const ExportOptions &options, QString *error)
+{
+    if (!device) {
+        if (error) {
+            *error = ImageOutputStrings::tr("No output device was provided.");
+        }
+        return false;
+    }
+    if (image.isNull()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Cannot save an empty image.");
+        }
+        return false;
+    }
+
+    const QImage prepared = prepareImageForExport(image, options);
+    QImageWriter writer(device, qtFormatName(options.format));
+    if (options.format == ImageFormat::Png) {
+        if (options.pngCompression >= 0) {
+            writer.setCompression(qtPngCompressionFromZlibLevel(options.pngCompression));
+        }
+    } else if (options.format == ImageFormat::WebP) {
+        writer.setQuality(options.lossless ? 100 : std::clamp(options.quality, 1, 99));
+    } else if (formatSupportsQuality(options.format)) {
+        writer.setQuality(std::clamp(options.quality, 1, 100));
+    }
+
+    if (!writer.write(prepared)) {
+        if (error) {
+            *error = writer.errorString().isEmpty()
+                         ? ImageOutputStrings::tr("Could not encode image.")
+                         : writer.errorString();
+        }
+        return false;
+    }
+    if (error) {
+        error->clear();
+    }
+    return true;
+}
+
+qint64 estimateEncodedSize(const QImage &image, const ExportOptions &options, QString *error)
+{
+    if (image.isNull()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Cannot estimate size of an empty image.");
+        }
+        return -1;
+    }
+    QBuffer buffer;
+    if (!buffer.open(QIODevice::WriteOnly)) {
+        if (error) {
+            *error = buffer.errorString();
+        }
+        return -1;
+    }
+    if (!encodeImageToDevice(&buffer, image, options, error)) {
+        return -1;
+    }
+    return buffer.size();
+}
+
+bool writeImageToFile(const QString &targetPath, const QImage &image, const ExportOptions &options, QString *error)
+{
+    if (image.isNull()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Cannot save an empty image.");
+        }
+        return false;
+    }
+    const QFileInfo info(targetPath);
+    if (!info.dir().exists() && !QDir().mkpath(info.absolutePath())) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Cannot create capture directory: %1").arg(info.absolutePath());
+        }
+        return false;
+    }
+    const bool existed = QFile::exists(targetPath);
+    QSaveFile file(targetPath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        if (error) {
+            *error = file.errorString();
+        }
+        return false;
+    }
+    if (!existed) {
+        file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ReadGroup
+                            | QFileDevice::ReadOther);
+    }
+    QString encodeErr;
+    if (!encodeImageToDevice(&file, image, options, &encodeErr) || !file.commit()) {
+        if (error) {
+            *error = !encodeErr.isEmpty() ? encodeErr : file.errorString();
+        }
+        return false;
+    }
+    if (error) {
+        error->clear();
+    }
+    return true;
 }
 
 QImage cropLogicalArea(const QImage &nativeFrame,
@@ -145,11 +463,12 @@ QString sanitizeFilenameToken(const QString &token)
     return sanitized;
 }
 
-bool writeUniquePngFile(const QString &directory,
-                        const QString &baseFilename,
-                        const QImage &image,
-                        QString *writtenPath,
-                        QString *error)
+bool writeUniqueImageFile(const QString &directory,
+                          const QString &baseFilename,
+                          const QImage &image,
+                          const ExportOptions &options,
+                          QString *writtenPath,
+                          QString *error)
 {
     if (writtenPath) {
         writtenPath->clear();
@@ -173,10 +492,7 @@ bool writeUniquePngFile(const QString &directory,
         return false;
     }
 
-    QString filename = baseFilename;
-    if (!filename.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)) {
-        filename.append(QStringLiteral(".png"));
-    }
+    const QString filename = replaceImageExtension(baseFilename, options.format);
     const qsizetype extensionPosition = filename.lastIndexOf(QLatin1Char('.'));
     const QString stem = filename.left(extensionPosition);
     const QString extension = filename.mid(extensionPosition);
@@ -191,12 +507,9 @@ bool writeUniquePngFile(const QString &directory,
         return false;
     }
 
-    QImageWriter writer(&temporary, "png");
-    if (!writer.write(image) || !temporary.flush()) {
-        QString writeError = writer.errorString();
-        if (writeError.isEmpty()) {
-            writeError = temporary.errorString();
-        }
+    QString encodeError;
+    if (!encodeImageToDevice(&temporary, image, options, &encodeError) || !temporary.flush()) {
+        const QString writeError = !encodeError.isEmpty() ? encodeError : temporary.errorString();
         if (error) {
             *error = ImageOutputStrings::tr("Cannot write temporary capture file: %1")
                          .arg(writeError);
@@ -256,17 +569,39 @@ bool writeUniquePngFile(const QString &directory,
     return false;
 }
 
-OutputWriter::OutputWriter(QString directory, QString filenameTemplate)
+bool writeUniquePngFile(const QString &directory,
+                        const QString &baseFilename,
+                        const QImage &image,
+                        QString *writtenPath,
+                        QString *error)
+{
+    ExportOptions png;
+    png.format = ImageFormat::Png;
+    return writeUniqueImageFile(directory, baseFilename, image, png, writtenPath, error);
+}
+
+OutputWriter::OutputWriter(QString directory, QString filenameTemplate, ExportOptions defaultOptions)
     : directory_(std::move(directory)),
       filenameTemplate_(filenameTemplate.isEmpty()
                             ? QStringLiteral("{date}_{time}_{area}.png")
-                            : std::move(filenameTemplate))
+                            : std::move(filenameTemplate)),
+      defaultOptions_(defaultOptions)
 {
 }
 
 bool OutputWriter::writeImage(const QImage &image,
                               const QString &areaToken,
                               const QDateTime &timestamp,
+                              QString *writtenPath,
+                              QString *error) const
+{
+    return writeImage(image, areaToken, timestamp, defaultOptions_, writtenPath, error);
+}
+
+bool OutputWriter::writeImage(const QImage &image,
+                              const QString &areaToken,
+                              const QDateTime &timestamp,
+                              const ExportOptions &options,
                               QString *writtenPath,
                               QString *error) const
 {
@@ -279,8 +614,8 @@ bool OutputWriter::writeImage(const QImage &image,
         }
         return false;
     }
-    return writeUniquePngFile(directory_, filenameFor(filenameTemplate_, areaToken, timestamp), image, writtenPath,
-                              error);
+    return writeUniqueImageFile(directory_, filenameFor(filenameTemplate_, areaToken, timestamp, options.format),
+                                image, options, writtenPath, error);
 }
 
 } // namespace glimply
