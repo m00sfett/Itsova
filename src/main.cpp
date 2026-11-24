@@ -1,5 +1,6 @@
 #include "app.h"
 #include "cli.h"
+#include "i18n.h"
 #include "mcpserver.h"
 #include "printkey.h"
 
@@ -15,6 +16,9 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
+#include <QLibraryInfo>
+#include <QLocale>
 #include <QTimer>
 #include <QTranslator>
 #include <QUrl>
@@ -89,10 +93,9 @@ QStringList extractEditPaths(const QStringList &arguments, const QString &workin
     return resolved;
 }
 
-// glimply ships no translations yet. Without this, KDE and Qt widgets (shortcut fields, dialog
-// buttons, search fields) would follow the system language while glimply's own text is English.
-// Remove once glimply installs its translations.
-class EnglishTranslator : public QTranslator
+// Returns every text untranslated. Used where output must stay English whatever the UI language
+// (MCP, CLI JSON), so that no translation catalog loaded by a library leaks in.
+class SourceTextTranslator : public QTranslator
 {
 public:
     using QTranslator::QTranslator;
@@ -108,15 +111,107 @@ public:
     }
 };
 
+// Applies the UI language (#51). KDE Frameworks load their own Qt catalogs from QLocale's UI
+// languages in startup hooks that run inside the application constructor, and QLocale reads
+// LANGUAGE once. So LANGUAGE is set before the application object exists and restored once it
+// does, so that programs glimply starts (hooks, viewers, tesseract) keep the user's environment.
+class UiLanguageScope
+{
+public:
+    explicit UiLanguageScope(const QString &language)
+        : language_(language)
+        , hadPrevious_(qEnvironmentVariableIsSet("LANGUAGE"))
+        , previous_(qgetenv("LANGUAGE"))
+    {
+        qputenv("LANGUAGE", language_.toLatin1());
+    }
+
+    ~UiLanguageScope()
+    {
+        restoreEnvironment();
+    }
+
+    UiLanguageScope(const UiLanguageScope &) = delete;
+    UiLanguageScope &operator=(const UiLanguageScope &) = delete;
+
+    // Call once the application object exists.
+    void install(QCoreApplication &app) const
+    {
+        const bool english = language_ == QLatin1String(glimply::sourceUiLanguage);
+        KLocalizedString::setLanguages({english ? QStringLiteral("en_US") : language_});
+        // English loads its catalog too: it carries the plural forms ("%n capture(s)").
+        auto *own = new QTranslator(&app);
+        const QString base = QStringLiteral("glimply_") + language_;
+        for (const QString &dir : glimply::translationDirectories()) {
+            if (own->load(base, dir)) {
+                QCoreApplication::installTranslator(own);
+                break;
+            }
+        }
+        if (english) {
+            return;
+        }
+        // Qt's own dialog and widget texts; the locale lookup also finds "pt_BR" for "pt".
+        auto *qt = new QTranslator(&app);
+        if (qt->load(QLocale(language_), QStringLiteral("qtbase"), QStringLiteral("_"),
+                     QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+            QCoreApplication::installTranslator(qt);
+        }
+    }
+
+    void restoreEnvironment()
+    {
+        if (restored_) {
+            return;
+        }
+        restored_ = true;
+        if (hadPrevious_) {
+            qputenv("LANGUAGE", previous_);
+        } else {
+            qunsetenv("LANGUAGE");
+        }
+    }
+
+    [[nodiscard]] const QString &language() const
+    {
+        return language_;
+    }
+
+private:
+    QString language_;
+    bool hadPrevious_ = false;
+    QByteArray previous_;
+    bool restored_ = false;
+};
+
+QString effectiveUiLanguage()
+{
+    return glimply::resolveUiLanguage(glimply::configuredUiLanguage(), glimply::systemUiLanguages());
+}
+
 } // namespace
 
 int main(int argc, char *argv[])
 {
     if (argc >= 2 && glimply::isCliSubcommand(QString::fromLocal8Bit(argv[1]))) {
         qInstallMessageHandler(routeQtLogsToStderr);
+        // JSON output stays English whatever the UI language (#51); human-readable text follows it.
+        bool jsonOutput = false;
+        for (int i = 2; i < argc; ++i) {
+            if (qstrcmp(argv[i], "--json") == 0) {
+                jsonOutput = true;
+            }
+        }
+        UiLanguageScope language(jsonOutput ? QString::fromLatin1(glimply::sourceUiLanguage) : effectiveUiLanguage());
         QCoreApplication cliApp(argc, argv);
         QCoreApplication::setApplicationName(QStringLiteral("glimply"));
         QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+        if (jsonOutput) {
+            QCoreApplication::installTranslator(new SourceTextTranslator(&cliApp));
+        } else {
+            language.install(cliApp);
+        }
+        language.restoreEnvironment();
         QFile outFile;
         QFile errFile;
         if (!outFile.open(stdout, QIODevice::WriteOnly) || !errFile.open(stderr, QIODevice::WriteOnly)) {
@@ -132,11 +227,14 @@ int main(int argc, char *argv[])
 
     if (argc >= 2 && QString::fromLocal8Bit(argv[1]).compare(QLatin1String("mcp"), Qt::CaseInsensitive) == 0) {
         qInstallMessageHandler(routeQtLogsToStderr);
+        // MCP texts stay English (#51).
+        UiLanguageScope language(QString::fromLatin1(glimply::sourceUiLanguage));
         QCoreApplication mcpApp(argc, argv);
         QCoreApplication::setApplicationName(QStringLiteral("glimply"));
         QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
         QCoreApplication::setOrganizationDomain(QStringLiteral("m00sfett.github.io"));
-        QCoreApplication::installTranslator(new EnglishTranslator(&mcpApp));
+        QCoreApplication::installTranslator(new SourceTextTranslator(&mcpApp));
+        language.restoreEnvironment();
         const QStringList args = QCoreApplication::arguments();
         if (args.contains(QStringLiteral("--help")) || args.contains(QStringLiteral("-h"))) {
             std::fputs("Usage: glimply mcp\n"
@@ -149,14 +247,18 @@ int main(int argc, char *argv[])
         return glimply::McpServer::runStdio(backend);
     }
 
+    UiLanguageScope language(effectiveUiLanguage());
     QApplication application(argc, argv);
     QApplication::setApplicationName(QStringLiteral("glimply"));
     QApplication::setApplicationDisplayName(QStringLiteral("glimply"));
     QApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
     QApplication::setOrganizationDomain(QStringLiteral("m00sfett.github.io"));
     QApplication::setDesktopFileName(QStringLiteral("io.github.m00sfett.glimply"));
-    KLocalizedString::setLanguages({QStringLiteral("en_US")});
-    QApplication::installTranslator(new EnglishTranslator(&application));
+    language.install(application);
+    language.restoreEnvironment();
+    // Qt derives the direction from the qtbase catalog; set it from the language as well, since
+    // not every UI language has a Qt catalog.
+    QGuiApplication::setLayoutDirection(QLocale(language.language()).textDirection());
     // A tray application keeps running when the settings window closes.
     QApplication::setQuitOnLastWindowClosed(false);
 

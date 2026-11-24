@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.7.1 LANGUAGES CXX)
+project(glimply VERSION 0.8.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 
 include(GNUInstallDirs)
 
-find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets Concurrent DBus Gui)
+find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets Concurrent DBus Gui LinguistTools)
 find_package(KF6Config REQUIRED)
 find_package(KF6GlobalAccel REQUIRED)
 find_package(KF6StatusNotifierItem REQUIRED)
@@ -69,6 +69,7 @@ add_library(glimply_capture STATIC
     src/cli.cpp
     src/colorformat.cpp
     src/historystore.cpp
+    src/i18n.cpp
     src/hookrunner.cpp
     src/imageoutput.cpp
     src/intervalcontroller.cpp
@@ -105,6 +106,22 @@ add_library(glimply_ui STATIC
 )
 target_include_directories(glimply_ui PUBLIC src)
 target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n PRIVATE Qt6::Concurrent)
+
+# Translations (#51). The application uses Qt catalogs (i18n/glimply_<lang>.ts, compiled to .qm);
+# the Plasma widget uses gettext catalogs (plasmoid/po). English is the source language;
+# i18n/glimply_en.ts only carries the English plural forms. Refresh the sources with
+# scripts/update-translations.sh.
+set(QT_I18N_SOURCE_LANGUAGE en)
+set(QT_I18N_TRANSLATED_LANGUAGES ar de es fr hi id it ja ko nl pl pt ru tr uk vi zh_CN zh_TW)
+qt_add_translations(glimply
+    SOURCE_TARGETS glimply glimply_ui glimply_capture
+    TS_FILE_BASE glimply
+    TS_FILE_DIR i18n
+    QM_FILES_OUTPUT_VARIABLE glimply_qm_files
+    LUPDATE_OPTIONS -no-obsolete -locations none
+)
+install(FILES ${glimply_qm_files} DESTINATION ${CMAKE_INSTALL_DATADIR}/glimply/translations)
+ki18n_install(plasmoid/po)
 
 # KWin grants access to org.kde.KWin.ScreenShot2 to the executable named in this desktop file, so
 # Exec must be the absolute installed path.
@@ -192,6 +209,16 @@ if(BUILD_TESTING)
     add_executable(pintest tests/pintest.cpp)
     target_link_libraries(pintest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME pin COMMAND pintest)
+    add_executable(i18ntest tests/i18ntest.cpp)
+    target_link_libraries(i18ntest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME i18n COMMAND i18ntest)
+    find_package(Python3 COMPONENTS Interpreter)
+    if(Python3_Interpreter_FOUND)
+        add_test(NAME translations
+            COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/scripts/check-translations.py"
+                    --allow-unfinished
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    endif()
     add_executable(ocrtest tests/ocrtest.cpp)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)

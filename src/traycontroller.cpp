@@ -351,9 +351,9 @@ void TrayController::rebuildMenu()
     };
     addDelayPreset(tr("No delay"), 0);
     delayMenu->addSeparator();
-    addDelayPreset(tr("3 seconds"), 3);
-    addDelayPreset(tr("5 seconds"), 5);
-    addDelayPreset(tr("10 seconds"), 10);
+    addDelayPreset(tr("%n seconds", nullptr, 3), 3);
+    addDelayPreset(tr("%n seconds", nullptr, 5), 5);
+    addDelayPreset(tr("%n seconds", nullptr, 10), 10);
     QAction *customDelay = delayMenu->addAction(tr("Custom…"));
     connect(customDelay, &QAction::triggered, this, [this] {
         bool ok = false;
