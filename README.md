@@ -91,27 +91,33 @@ save; Space switches between both, and the next overlay starts in the mode you
 used last (configurable). Escape keeps the full screenshot. Help (F1) lists all
 controls.
 
-Controls in the overlay; every modifier means the same with mouse and keys:
+Controls in the overlay (aligned with PhotoCraft and Photoshop):
 
 | | Mouse (draw, resize) | Arrow keys |
 |---|---|---|
 | — | free | move by 1 px |
-| Shift | — | steps of 10 |
-| Alt | grow from the centre | resize around the centre (both sides) |
-| Ctrl | perfect square | resize as a square from the top left corner |
-| Ctrl+Alt | square from the centre | square around the centre |
+| Shift | perfect square / circle (or 15° angle snap) | steps of 10 |
+| Alt | grow from the centre (or duplicate annotation) | resize around the centre (both sides) |
+| Shift+Alt | square / circle from the centre | centered resize ×10 |
+| Space *(mid-drag)* | reposition selection or shape live | — |
+| Ctrl | temporary Select / Move while in a markup tool | resize as a square |
 
-A right click on a rectangle deletes it; Delete removes the active one.
+Click **Annotate** (or press `A`, `R`, `E`, `B`, `M`, `T`, `N`, `X`, `S`) in the
+capture overlay to unfold markup and irreversible redaction tools directly on
+the frozen screen (`V` returns to Select / Move, `Ctrl+Z` / `Ctrl+Shift+Z` /
+`Ctrl+Y` undo and redo, `[` and `]` adjust tool size).
+
+A right click deletes the topmost annotation or rectangle under the pointer;
+Delete removes the active one.
 
 To set up areas without capturing:
 
 1. Open the glimply widget in the system tray and choose **Add Area**. Every
    monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
    want and adjust it: drag the round handles on corners and edges to resize,
-   drag inside to move, use the centre crosshair to aim. Hold **Alt** while
-   drawing or resizing to grow from the centre and **Ctrl** for a perfect
-   square; both combine (see the table above for the arrow keys). Choose
-   **Save as Area**.
+   drag inside to move, use the centre crosshair to aim. Hold **Shift** while
+   drawing or resizing for a perfect square, **Alt** to grow from the centre,
+   and **Space** mid-drag to reposition. Choose **Save as Area**.
 2. Enter a name and, optionally, record a shortcut right there.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.

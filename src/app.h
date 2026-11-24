@@ -46,6 +46,8 @@ public:
     void setUsePrintKey(bool on);
     // A capture was written: tray blink, status, "Open last capture".
     void recordCapture(const QStringList &paths, const QString &displayName);
+    // Removes a deleted path (for example a purged unredacted Print snapshot) from last-capture state.
+    void forgetCapturePath(const QString &path);
     // Notification after an overlay session, with Open and Show in Folder.
     void notifySaved(const QString &title, const QStringList &paths, const QStringList &errors);
     void openLastCapture();

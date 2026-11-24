@@ -65,9 +65,9 @@ private:
     enum class Drag { None, Create, Move, Resize };
 
     void setSelection(const QRect &rect);
-    // Updates the selection for the current drag; Ctrl draws from the centre, Alt keeps a square.
+    // Updates the selection for the current drag; Alt draws from the centre, Shift keeps a square.
     void applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers);
-    // Redraws the drag when Ctrl or Alt is pressed or released mid-drag. True if the key was one of them.
+    // Redraws the drag when Shift, Alt, or Ctrl is pressed or released mid-drag.
     bool reapplyModifiers(QKeyEvent *event);
     // Edges of the selection under pos: one edge near a side, two near a corner, none elsewhere.
     [[nodiscard]] Qt::Edges edgesAt(const QPoint &pos) const;
@@ -78,6 +78,7 @@ private:
     QImage background_;
     QRect selection_;
     Drag drag_ = Drag::None;
+    bool spaceHeld_ = false;
     QPoint anchor_;
     QPoint lastPosition_;
     QRect dragStartSelection_;

@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core markup tools (`Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Multiply Highlighter`, auto-numbering `Step Counter` with optional pointer and renumbering on delete, and unified `Spotlight / Focus` dim mask), `[Annotations]` settings persistence in `TargetStore`, and shared KDE/Breeze `AnnotationToolbar` with progressive disclosure (`#13`).
 - Rich text annotation tool (`Text`) with PhotoCraft/Photoshop inline editing (Point Text & Paragraph Text, `Escape` / `Ctrl+Enter` commit, exterior-margin drag move, double-click re-edit), HarfBuzz-safe `QTextLayout` rendering, and four legibility modes (`None`, `Shadow`, `Outline`, `Pill`) (`#14`).
 - Irreversible pixel redaction tool (`Redact`, shortcut `X`) with `Solid Block` (opaque `#000000` default), reconstruction-hardened `Pixelate` (12 px logical floor, global cell grid, 16-level RGB quantization + seeded luminance jitter), heavy `Blur` (14 px logical radius floor, 3-pass clamped box blur), outward HiDPI pixel rounding, and image metadata stripping (`#15`).
+- Progressive-disclosure markup toolbar (`Annotate`) in `CaptureOverlay` with automatic `Live` → `Frozen` transition, multi-monitor logical-to-native annotation rasterization across crop rectangles and full monitors, and Print-snapshot redaction leak protection on `Copy`, `All Monitors`, and `Escape` (`#16`).
+
+### Changed
+
+- Unified selection and markup modifiers across `CaptureOverlay`, `AreaSelector`, and all drawing tools to match PhotoCraft / Photoshop: `Shift` constrains to a square/circle or 15° angle snap, `Alt` draws/resizes around the centre (or duplicates annotations under `Select`), `Space` held mid-drag repositions in-progress selections/shapes live, and `Ctrl` temporarily switches markup tools to `Select / Move` (`#16`).
 
 ## [0.3.0] - Unreleased
 
