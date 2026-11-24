@@ -2,6 +2,7 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[uk]=Знімки екрана glimply
 Comment[tr]=glimply ekran görüntüleri
 Comment[vi]=Ảnh chụp màn hình glimply
 Comment[ru]=Снимки экрана glimply
@@ -20,6 +21,7 @@ Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[uk]=Не вдалося зробити знімок
 Name[tr]=Yakalama başarısız oldu
 Name[vi]=Chụp thất bại
 Name[ru]=Ошибка захвата
@@ -36,6 +38,7 @@ Name[ja]=キャプチャに失敗
 Name[fr]=Échec de la capture
 Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[uk]=Не вдалося зробити знімок або ціль було пропущено
 Comment[tr]=Bir yakalama başarısız oldu veya bir hedef atlandı
 Comment[vi]=Một lần chụp thất bại hoặc một đối tượng bị bỏ qua
 Comment[ru]=Не удалось выполнить захват или цель была пропущена
@@ -56,6 +59,7 @@ Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[uk]=Монітор змінено
 Name[tr]=Ekran değişti
 Name[vi]=Màn hình đã thay đổi
 Name[ru]=Экран изменён
@@ -72,6 +76,7 @@ Name[ja]=ディスプレイが変更されました
 Name[fr]=Écran modifié
 Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[uk]=Монітор області відрізняється від того, на якому її було визначено
 Comment[tr]=Bir bölgenin ekranı tanımlandığı ekrandan farklı
 Comment[vi]=Màn hình của vùng khác với màn hình nơi vùng được định nghĩa
 Comment[ru]=Экран области отличается от того, на котором она была создана
@@ -92,6 +97,7 @@ Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[uk]=Проблема параметрів
 Name[tr]=Ayarlar sorunu
 Name[vi]=Sự cố cài đặt
 Name[ru]=Проблема настроек
@@ -108,6 +114,7 @@ Name[ja]=設定の問題
 Name[fr]=Problème de paramètres
 Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[uk]=glimply не вдалося застосувати параметр, наприклад автозапуск
 Comment[tr]=glimply otomatik başlatma gibi bir ayarı uygulayamadı
 Comment[vi]=glimply không thể áp dụng một cài đặt, chẳng hạn như tự khởi động
 Comment[ru]=glimply не удалось применить настройку, например автозапуск
@@ -127,6 +134,7 @@ Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[uk]=Знімок збережено
 Name[tr]=Yakalama kaydedildi
 Name[vi]=Đã lưu ảnh chụp
 Name[ru]=Снимок сохранён
@@ -143,6 +151,7 @@ Name[ja]=キャプチャを保存しました
 Name[fr]=Capture enregistrée
 Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[uk]=Знімок із клавіші Print або накладення збережено
 Comment[tr]=Print tuşundan veya katmandan bir yakalama kaydedildi
 Comment[vi]=Ảnh chụp từ phím Print hoặc lớp phủ đã được lưu
 Comment[ru]=Снимок с клавиши Print или из оверлея сохранён
@@ -163,6 +172,7 @@ Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[uk]=Частковий знімок
 Name[tr]=Kısmi yakalama
 Name[vi]=Ảnh chụp một phần
 Name[ru]=Частичный захват
@@ -179,6 +189,7 @@ Name[ja]=一部のキャプチャ
 Name[fr]=Capture partielle
 Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[uk]=Міжмоніторну область захоплено частково або пропущено через відключений монітор
 Comment[tr]=Bir ekran bağlı olmadığı için ekranlar arası bir alan kısmen yakalandı veya atlandı
 Comment[vi]=Một vùng liên màn hình chỉ chụp được một phần hoặc bị bỏ qua vì có màn hình chưa kết nối
 Comment[ru]=Межэкранная область захвачена частично или пропущена, так как экран отключён
@@ -199,6 +210,7 @@ Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[uk]=Колір скопійовано
 Name[tr]=Renk kopyalandı
 Name[vi]=Đã sao chép màu
 Name[ru]=Цвет скопирован
@@ -215,6 +227,7 @@ Name[ja]=色をコピーしました
 Name[fr]=Couleur copiée
 Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[uk]=Вибраний колір екрана скопійовано до буфера обміну
 Comment[tr]=Örneklenen bir ekran rengi panoya kopyalandı
 Comment[vi]=Một màu lấy mẫu trên màn hình đã được sao chép vào bảng nhớ tạm
 Comment[ru]=Выбранный цвет экрана скопирован в буфер обмена
@@ -235,6 +248,7 @@ Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[uk]=Інтервальне захоплення зупинено
 Name[tr]=Aralıklı yakalama durduruldu
 Name[vi]=Đã dừng chụp theo khoảng thời gian
 Name[ru]=Интервальный захват остановлен
@@ -251,6 +265,7 @@ Name[ja]=インターバルキャプチャを停止しました
 Name[fr]=Capture à intervalles arrêtée
 Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[uk]=Заплановане інтервальне захоплення досягло налаштованого обмеження й завершилося
 Comment[tr]=Zamanlanmış bir aralıklı yakalama yapılandırılan sınırına ulaştı ve tamamlandı
 Comment[vi]=Một lượt chụp theo khoảng thời gian đã đạt giới hạn cấu hình và kết thúc
 Comment[ru]=Запланированный интервальный захват достиг заданного предела и завершился
@@ -271,6 +286,7 @@ Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[uk]=Помилка хука після знімка
 Name[tr]=Yakalama sonrası kanca başarısız oldu
 Name[vi]=Hook sau khi chụp thất bại
 Name[ru]=Ошибка хука после захвата
@@ -287,6 +303,7 @@ Name[ja]=キャプチャ後のフックに失敗しました
 Name[fr]=Échec du hook après capture
 Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[uk]=Налаштована команда після знімка завершилася з помилкою або перевищила час очікування
 Comment[tr]=Yapılandırılmış bir yakalama sonrası komut hatayla çıktı veya zaman aşımına uğradı
 Comment[vi]=Một lệnh sau khi chụp đã cấu hình thoát với lỗi hoặc hết thời gian chờ
 Comment[ru]=Настроенная команда после захвата завершилась с ошибкой или по тайм-ауту
@@ -307,6 +324,7 @@ Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[uk]=Виконано захоплення MCP
 Name[tr]=MCP yakalaması yürütüldü
 Name[vi]=Đã thực thi chụp qua MCP
 Name[ru]=Выполнен захват MCP
@@ -323,6 +341,7 @@ Name[ja]=MCP によるキャプチャを実行しました
 Name[fr]=Capture MCP exécutée
 Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[uk]=Зовнішній локальний клієнт MCP зробив знімок екрана
 Comment[tr]=Harici bir yerel MCP istemcisi ekran görüntüsü yakaladı
 Comment[vi]=Một ứng dụng khách MCP cục bộ bên ngoài đã chụp ảnh màn hình
 Comment[ru]=Внешний локальный клиент MCP сделал снимок экрана
@@ -343,6 +362,7 @@ Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[uk]=Дія з недавнім знімком
 Name[tr]=Son yakalama eylemi
 Name[vi]=Hành động ảnh chụp gần đây
 Name[ru]=Действие с недавним снимком
@@ -359,6 +379,7 @@ Name[ja]=最近のキャプチャの操作
 Name[fr]=Action sur une capture récente
 Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[uk]=Недавній знімок скопійовано або переміщено до смітника
 Comment[tr]=Son yakalama kopyalandı veya çöp kutusuna taşındı
 Comment[vi]=Một ảnh chụp gần đây đã được sao chép hoặc chuyển vào thùng rác
 Comment[ru]=Недавний снимок был скопирован или перемещён в корзину
@@ -379,6 +400,7 @@ Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[uk]=Закріплення видалено
 Name[tr]=Sabitleme kaldırıldı
 Name[vi]=Đã gỡ ghim
 Name[ru]=Закрепление удалено
@@ -395,6 +417,7 @@ Name[ja]=固定を削除しました
 Name[fr]=Épingle supprimée
 Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[uk]=Закріплений знімок екрана видалено, але його ще можна відновити протягом кількох секунд
 Comment[tr]=Sabitlenmiş bir ekran görüntüsü kaldırıldı ve birkaç saniye boyunca geri yüklenebilir
 Comment[vi]=Một ảnh chụp đã ghim vừa bị gỡ và vẫn có thể khôi phục trong vài giây
 Comment[ru]=Закреплённый снимок экрана удалён, но его ещё можно восстановить в течение нескольких секунд
@@ -415,6 +438,7 @@ Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[uk]=Текст скопійовано
 Name[tr]=Metin kopyalandı
 Name[vi]=Đã sao chép văn bản
 Name[ru]=Текст скопирован
@@ -431,6 +455,7 @@ Name[ja]=テキストをコピーしました
 Name[fr]=Texte copié
 Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[uk]=Розпізнаний текст скопійовано до буфера обміну або текст не знайдено
 Comment[tr]=Tanınan metin panoya kopyalandı veya metin bulunamadı
 Comment[vi]=Văn bản nhận dạng đã được sao chép vào bảng nhớ tạm, hoặc không tìm thấy văn bản
 Comment[ru]=Распознанный текст скопирован в буфер обмена, либо текст не найден
