@@ -18,6 +18,14 @@ namespace glimply {
 [[nodiscard]] QString filenameFor(const QString &filenameTemplate, const QString &areaToken,
                                   const QDateTime &timestamp);
 
+// Writes image atomically to directory/baseFilename (appending -2, -3, ... before the extension if
+// the file already exists). Never overwrites existing files.
+[[nodiscard]] bool writeUniquePngFile(const QString &directory,
+                                      const QString &baseFilename,
+                                      const QImage &image,
+                                      QString *writtenPath = nullptr,
+                                      QString *error = nullptr);
+
 class OutputWriter {
 public:
     explicit OutputWriter(

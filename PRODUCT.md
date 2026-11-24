@@ -28,11 +28,12 @@ Runs as a tray icon or Plasma widget. Triggered by the Print key, global shortcu
 - Monitors can be named; the name belongs to the physical monitor (manufacturer, model, serial), falls back to the connector, and is used for display, monitor capture file names and new area names.
 - Unified PhotoCraft / Photoshop modifiers across overlays and markup: with the mouse, `Shift` keeps a square/circle (or 15° angle snap), `Alt` grows from the centre (or duplicates an annotation), `Space` while dragging repositions in-progress shapes/selections live, and `Ctrl` in markup temporarily switches to `Select / Move`. With arrow keys, `Shift` steps by 10, `Alt` resizes around the centre, and `Ctrl` resizes as a square.
 - Optional progressive-disclosure markup in the capture overlay (`Annotate` or single-letter tool keys `A R E B M T N X S`): non-destructive vector callouts, rich text with legibility modes, step counter, spotlight dim mask, and irreversible pixel redactions (`Solid`, `Pixelate`, `Blur`) rendered directly at native monitor DPI, with automatic `Print`-snapshot leak protection when redacting.
+- Standalone native KDE/Breeze `QuickEditorWindow`: opened from the capture overlay (`Edit in Window` / `Ctrl+E`, transferring raw image + still-editable vector annotations), capture notification (`Edit`), Plasma widget / SNI tray (`Edit Last Capture`, D-Bus `EditLastCapture`), or CLI (`glimply <file>` / `glimply --edit <file>`). Includes undoable `Crop` (`C`), PhotoCraft zoom/pan (`Ctrl+Wheel` / `Alt+Wheel`, `Space`+drag / Middle-drag, `Ctrl+0` / `Ctrl+1`, crisp pixels `≥ 400 %`, pixel grid `≥ 800 %`), explicit `Save` (`Ctrl+S`), `Save Copy` (`Ctrl+Alt+S`), `Save As…` (`Ctrl+Shift+S`), and `Copy` (`Ctrl+C`) without unintended clipboard or disk writes.
 - No default shortcuts. Cursor off by default, per target and per group.
 - Storage: `~/Pictures/glimply/`, flat, `{date}_{time}_{area}.png`, PNG only.
-- Feedback: one short tray icon blink after success; a notification with Open and Show in Folder after Print and overlay captures; errors always notify.
+- Feedback: one short tray icon blink after success; a notification with Open, Edit, and Show in Folder after Print and overlay captures; errors always notify.
 - All UI text translatable; English by default, 18 more languages later.
-- Not yet: shaped selections (0.4.0), targets that follow a window, an editor window and markup, text recognition, delay timer, other formats, cross-monitor rectangles, interval captures, upload.
+- Not yet: shaped selections, targets that follow a window, text recognition, delay timer, other formats, cross-monitor rectangles, interval captures, upload.
 
 ## Brand Commitments
 

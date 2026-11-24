@@ -4,15 +4,22 @@
 
 #include <KSharedConfig>
 
+#include <QList>
 #include <QObject>
 #include <QPointer>
 #include <QStringList>
 
+#include <memory>
+
+class QImage;
+
 namespace glimply
 {
 
+class AnnotationDocument;
 class CaptureSession;
 class ControlService;
+class QuickEditorWindow;
 class ShortcutManager;
 class TrayController;
 class TriggerEngine;
@@ -51,6 +58,10 @@ public:
     // Notification after an overlay session, with Open and Show in Folder.
     void notifySaved(const QString &title, const QStringList &paths, const QStringList &errors);
     void openLastCapture();
+    void editLastCapture();
+    void openEditorForFile(const QString &path);
+    void openEditorFromCapture(const QImage &image, qreal scale, std::unique_ptr<AnnotationDocument> annotations,
+                               const QString &baseToken);
     void openCaptureFolder();
     // addArea starts the selection overlay; targetId selects that target or group in the window.
     void showSettings(bool addArea = false, const QString &targetId = QString());
@@ -79,6 +90,7 @@ private:
     void migrateLegacyIds();
     void claimPrintKey();
     void applyAutostart();
+    void attachEditorWindow(QuickEditorWindow *window);
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
 
@@ -91,6 +103,7 @@ private:
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;
+    QList<QPointer<QuickEditorWindow>> editors_;
     QStringList lastPaths_;
 };
 

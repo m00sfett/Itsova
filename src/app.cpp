@@ -1,8 +1,10 @@
 #include "app.h"
 
+#include "annotations/annotationdocument.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
 #include "printkey.h"
+#include "quickeditorwindow.h"
 #include "controlservice.h"
 #include "imageoutput.h"
 #include "screens.h"
@@ -48,6 +50,7 @@ App::App(QObject *parent)
     connect(engine_, &TriggerEngine::finished, this, &App::onTriggerFinished);
     connect(tray_, &TrayController::triggerRequested, this, &App::trigger);
     connect(tray_, &TrayController::openLastCaptureRequested, this, &App::openLastCapture);
+    connect(tray_, &TrayController::editLastCaptureRequested, this, &App::editLastCapture);
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
     connect(tray_, &TrayController::configureRequested, this, [this] { showSettings(); });
     connect(tray_, &TrayController::addAreaRequested, this, &App::addArea);
@@ -297,6 +300,13 @@ void App::notifySaved(const QString &title, const QStringList &paths, const QStr
         lastPaths_ = files;
         openLastCapture();
     });
+    if (!files.isEmpty()) {
+        KNotificationAction *edit = notification->addAction(tr("Edit"));
+        const QString targetFile = files.first();
+        connect(edit, &KNotificationAction::activated, this, [this, targetFile] {
+            openEditorForFile(targetFile);
+        });
+    }
     KNotificationAction *folder = notification->addAction(tr("Show in Folder"));
     connect(folder, &KNotificationAction::activated, this, [files] {
         QStringList uris;
@@ -383,6 +393,70 @@ void App::openLastCapture()
                                                        QStringLiteral("ShowItems"));
     call.setArguments({uris, QString()});
     QDBusConnection::sessionBus().asyncCall(call);
+}
+
+void App::editLastCapture()
+{
+    if (lastPaths_.isEmpty()) {
+        return;
+    }
+    for (const QString &path : std::as_const(lastPaths_)) {
+        if (!path.isEmpty() && QFileInfo::exists(path)) {
+            openEditorForFile(path);
+            return;
+        }
+    }
+    notifyError(tr("No capture to edit"), {tr("The most recent screenshot file is missing or was moved.")});
+}
+
+void App::openEditorForFile(const QString &path)
+{
+    const QString absPath = QFileInfo(path).absoluteFilePath();
+    if (absPath.isEmpty()) {
+        return;
+    }
+    editors_.removeIf([](const QPointer<QuickEditorWindow> &ptr) { return ptr.isNull(); });
+    for (const QPointer<QuickEditorWindow> &existing : std::as_const(editors_)) {
+        if (existing && existing->filePath() == absPath && existing->isValid()) {
+            existing->show();
+            existing->raise();
+            existing->activateWindow();
+            return;
+        }
+    }
+    auto *window = new QuickEditorWindow(store_, absPath);
+    if (!window->isValid()) {
+        notifyError(tr("Could not open image"), {window->loadError()});
+        delete window;
+        return;
+    }
+    attachEditorWindow(window);
+}
+
+void App::openEditorFromCapture(const QImage &image, qreal scale, std::unique_ptr<AnnotationDocument> annotations,
+                                const QString &baseToken)
+{
+    auto *window = new QuickEditorWindow(store_, image, scale, std::move(annotations), baseToken);
+    if (!window->isValid()) {
+        notifyError(tr("Could not open image"), {window->loadError()});
+        delete window;
+        return;
+    }
+    attachEditorWindow(window);
+}
+
+void App::attachEditorWindow(QuickEditorWindow *window)
+{
+    window->setAttribute(Qt::WA_DeleteOnClose);
+    connect(window, &QuickEditorWindow::savedToFile, this,
+            [this](const QString &savedPath, const QString &displayName) {
+                recordCapture({savedPath}, displayName);
+            });
+    connect(window, &QuickEditorWindow::settingsModified, this, &App::saveSettings);
+    editors_.append(window);
+    window->show();
+    window->raise();
+    window->activateWindow();
 }
 
 void App::openCaptureFolder()

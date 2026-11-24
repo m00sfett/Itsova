@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.4.0] - Unreleased
+
+Markup, irreversible redaction, and the standalone Quick Editor window.
 
 ### Added
 
@@ -14,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rich text annotation tool (`Text`) with PhotoCraft/Photoshop inline editing (Point Text & Paragraph Text, `Escape` / `Ctrl+Enter` commit, exterior-margin drag move, double-click re-edit), HarfBuzz-safe `QTextLayout` rendering, and four legibility modes (`None`, `Shadow`, `Outline`, `Pill`) (`#14`).
 - Irreversible pixel redaction tool (`Redact`, shortcut `X`) with `Solid Block` (opaque `#000000` default), reconstruction-hardened `Pixelate` (12 px logical floor, global cell grid, 16-level RGB quantization + seeded luminance jitter), heavy `Blur` (14 px logical radius floor, 3-pass clamped box blur), outward HiDPI pixel rounding, and image metadata stripping (`#15`).
 - Progressive-disclosure markup toolbar (`Annotate`) in `CaptureOverlay` with automatic `Live` → `Frozen` transition, multi-monitor logical-to-native annotation rasterization across crop rectangles and full monitors, and Print-snapshot redaction leak protection on `Copy`, `All Monitors`, and `Escape` (`#16`).
+- Standalone native KDE/Breeze `QuickEditorWindow` with all four entry points (`CaptureOverlay` *Edit in Window* / `Ctrl+E` preserving live editable vector annotations, capture notification *Edit*, Plasma widget & SNI tray *Edit Last Capture* + D-Bus `EditLastCapture`, and CLI / file-open forwarding via `glimply <file>` / `glimply --edit <file>`), undoable `Crop` (`C`) command, PhotoCraft cursor-anchored zoom (`Ctrl+Wheel` / `Alt+Wheel`, `10 %–1600 %`, crisp pixels at `≥ 400 %`, pixel grid at `≥ 800 %`) and hand pan (`Space+Drag` / `Middle-Drag`), explicit `Save` (`Ctrl+S`), `Save Copy` (`Ctrl+Alt+S` -> `_edited.png`), `Save As…` (`Ctrl+Shift+S`), and `Copy` (`Ctrl+C`) semantics without unintended clipboard or disk side effects, plus dirty-close confirmation (`#17`).
 
 ### Changed
 

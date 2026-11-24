@@ -859,6 +859,127 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
     return {};
 }
 
+void CaptureSession::editInWindow(const QString &preferredConnector)
+{
+    if (finished_ || purpose_ != Purpose::Print) {
+        return;
+    }
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+
+    const Selection *active = selections_.active();
+    if (!active && !selections_.isEmpty()) {
+        active = &selections_.stack().last();
+    }
+
+    QStringList connectors;
+    bool allMonitors = false;
+    QString targetConnector;
+    Selection chosenSelection;
+    const bool hasSelection = (active != nullptr);
+
+    if (hasSelection) {
+        chosenSelection = *active;
+        connectors.append(chosenSelection.connector);
+    } else {
+        if (screens_.isEmpty()) {
+            return;
+        }
+        const QList<QString> hit = annotatedConnectors(screens_, annotations_);
+        allMonitors = hit.size() > 1;
+        if (allMonitors) {
+            for (const ScreenInfo &screen : std::as_const(screens_)) {
+                connectors.append(screen.connector);
+            }
+        } else {
+            targetConnector = hit.size() == 1 ? hit.first()
+                                              : (!preferredConnector.isEmpty() ? preferredConnector
+                                                                               : screens_.first().connector);
+            connectors.append(targetConnector);
+        }
+    }
+
+    withFrames(connectors, [this, hasSelection, chosenSelection, allMonitors, targetConnector] {
+        if (finished_) {
+            return;
+        }
+        QString error;
+        QImage rawImage;
+        qreal scale = 1.0;
+        QPoint globalOrigin;
+        QRectF clipBounds;
+        QString baseToken;
+
+        if (hasSelection) {
+            const CaptureResult frame = frames_.value(chosenSelection.connector);
+            if (frame.image.isNull()) {
+                error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(chosenSelection.connector)
+                                              : frame.error;
+            } else {
+                rawImage = cropLogicalArea(frame.image, chosenSelection.rect, frame.scale, &error);
+                scale = frame.scale > 0.0 ? frame.scale : 1.0;
+                const ScreenInfo *screen = screenFor(chosenSelection.connector);
+                globalOrigin = screen ? (screen->geometry.topLeft() + chosenSelection.rect.topLeft())
+                                      : chosenSelection.rect.topLeft();
+                clipBounds = QRectF(globalOrigin, QSizeF(chosenSelection.rect.size()));
+                baseToken = QStringLiteral("selection");
+            }
+        } else if (allMonitors) {
+            rawImage = composeAllMonitors(screens_, frames_, &error);
+            if (!rawImage.isNull()) {
+                QRect bounds;
+                qreal maxScale = 0.0;
+                for (const ScreenInfo &screen : std::as_const(screens_)) {
+                    bounds = bounds.united(screen.geometry);
+                    maxScale = std::max(maxScale, frames_.value(screen.connector).scale);
+                }
+                scale = maxScale > 0.0 ? maxScale : 1.0;
+                globalOrigin = bounds.topLeft();
+                clipBounds = QRectF(bounds);
+                baseToken = allMonitorsTargetId();
+            }
+        } else {
+            const CaptureResult frame = frames_.value(targetConnector);
+            if (frame.image.isNull()) {
+                error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(targetConnector)
+                                              : frame.error;
+            } else {
+                rawImage = frame.image;
+                scale = frame.scale > 0.0 ? frame.scale : 1.0;
+                const ScreenInfo *screen = screenFor(targetConnector);
+                globalOrigin = screen ? screen->geometry.topLeft() : QPoint();
+                clipBounds = screen ? QRectF(screen->geometry) : QRectF();
+                baseToken = monitorName(targetConnector);
+            }
+        }
+
+        if (rawImage.isNull()) {
+            finish({}, {}, {error.isEmpty() ? tr("The screen could not be captured.") : error});
+            return;
+        }
+
+        auto handoffDoc = annotations_.cloneTranslated(-QPointF(globalOrigin), clipBounds);
+        if (!printPath_.isEmpty()) {
+            const QString oldPrint = printPath_;
+            purgeUnredactedPrintFile(oldPrint, annotations_.hasRedactions());
+            app_->forgetCapturePath(oldPrint);
+            printPath_.clear();
+        }
+
+        finished_ = true;
+        for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+            if (overlay) {
+                overlay->close();
+            }
+        }
+        overlays_.clear();
+
+        app_->openEditorFromCapture(rawImage, scale, std::move(handoffDoc), baseToken);
+        Q_EMIT finished();
+    });
+}
+
 void CaptureSession::captureMonitor(const QString &connector)
 {
     if (annotationController_.isEditingText()) {
@@ -1252,6 +1373,11 @@ void CaptureOverlay::buildTopBar()
         annotateButton_->setCheckable(true);
         connect(annotateButton_, &QToolButton::clicked, this, [this](bool on) { session_->setMarkupVisible(on); });
         row->addWidget(annotateButton_);
+
+        auto *editInWindow = barButton(panel, QStringLiteral("document-edit"), tr("Edit in Window"),
+                                       tr("Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)"));
+        connect(editInWindow, &QToolButton::clicked, this, [this] { session_->editInWindow(screen_.connector); });
+        row->addWidget(editInWindow);
     }
 
     separator();
@@ -1346,6 +1472,8 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
     if (!print) {
         keys.removeFirst();
         keys.removeFirst();
+    } else {
+        keys.insert(2, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
     }
     section(tr("Keys"), keys);
     return panel;
@@ -1504,6 +1632,10 @@ void CaptureOverlay::buildActionBar()
                                       tr("Open markup tools to draw or redact"));
         connect(annotate, &QPushButton::clicked, this, [this] { session_->setMarkupVisible(!session_->markupVisible()); });
         row->addWidget(annotate);
+        auto *editInWindow = actionButton(actionButtons_, QStringLiteral("document-edit"), tr("Edit in Window"),
+                                          tr("Open selection and annotations in the Quick Editor window (Ctrl+E)"));
+        connect(editInWindow, &QPushButton::clicked, this, [this] { session_->editInWindow(screen_.connector); });
+        row->addWidget(editInWindow);
     }
     auto *area = actionButton(actionButtons_, QStringLiteral("bookmark-new"), tr("Save as Area"),
                               tr("Remember this rectangle to capture it again with one click or shortcut"));
@@ -2357,6 +2489,12 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         default:
             break;
         }
+    }
+
+    if (session_->purpose() == CaptureSession::Purpose::Print && !event->isAutoRepeat()
+        && event->key() == Qt::Key_E && modifiers == Qt::ControlModifier) {
+        session_->editInWindow(screen_.connector);
+        return;
     }
 
     if (session_->purpose() == CaptureSession::Purpose::Print) {

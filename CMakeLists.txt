@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.3.0 LANGUAGES CXX)
+project(glimply VERSION 0.4.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -81,6 +81,7 @@ add_library(glimply_ui STATIC
     src/annotations/annotationtoolbar.cpp
     src/annotations/inlinetexteditor.cpp
     src/areaselector.cpp
+    src/quickeditorwindow.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
 target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n)
@@ -137,6 +138,9 @@ if(BUILD_TESTING)
     add_executable(overlaymarkuptest tests/overlaymarkuptest.cpp)
     target_link_libraries(overlaymarkuptest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME overlaymarkup COMMAND overlaymarkuptest)
+    add_executable(quickeditortest tests/quickeditortest.cpp)
+    target_link_libraries(quickeditortest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME quickeditor COMMAND quickeditortest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

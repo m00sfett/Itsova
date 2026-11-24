@@ -195,6 +195,15 @@ PlasmoidItem {
                     }
                 }
                 PlasmaComponents3.ToolButton {
+                    icon.name: "document-edit"
+                    text: i18n("Edit Last Capture")
+                    enabled: root.hasLastCapture
+                    onClicked: {
+                        root.expanded = false;
+                        root.call("EditLastCapture");
+                    }
+                }
+                PlasmaComponents3.ToolButton {
                     icon.name: "folder-pictures"
                     text: i18n("Open Capture Folder")
                     onClicked: {

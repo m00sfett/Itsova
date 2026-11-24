@@ -90,6 +90,7 @@ public:
     void save(const QString &preferredConnector = QString());
     void copy(const QString &preferredConnector = QString());
     void saveAs();
+    void editInWindow(const QString &preferredConnector = QString());
     // Returns an error message, or an empty string when the areas were saved.
     QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine);
     void captureMonitor(const QString &connector);

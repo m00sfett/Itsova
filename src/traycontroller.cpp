@@ -175,6 +175,9 @@ void TrayController::rebuildMenu()
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));
     openLast->setEnabled(lastCaptureAvailable_);
     connect(openLast, &QAction::triggered, this, &TrayController::openLastCaptureRequested);
+    auto *editLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-edit")), tr("Edit Last Capture"), menu_));
+    editLast->setEnabled(lastCaptureAvailable_);
+    connect(editLast, &QAction::triggered, this, &TrayController::editLastCaptureRequested);
     auto *openFolder = add(new QAction(QIcon::fromTheme(QStringLiteral("folder-pictures")), tr("Open Capture Folder"), menu_));
     connect(openFolder, &QAction::triggered, this, &TrayController::openFolderRequested);
     addSeparator();

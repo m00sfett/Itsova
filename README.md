@@ -5,8 +5,7 @@ all monitors instantly; an overlay then lets you cut the picture down to
 rectangles, one monitor or one window. Fixed areas, monitors and groups can be
 captured the moment a global shortcut is pressed, without any overlay.
 
-The project is in early development (0.2.x prototype) and targets KDE Plasma 6
-on Wayland.
+The project is in active development (0.4.x) and targets KDE Plasma 6 on Wayland.
 
 ## Features
 
@@ -107,6 +106,24 @@ capture overlay to unfold markup and irreversible redaction tools directly on
 the frozen screen (`V` returns to Select / Move, `Ctrl+Z` / `Ctrl+Shift+Z` /
 `Ctrl+Y` undo and redo, `[` and `]` adjust tool size).
 
+### Quick Editor window
+
+Open any screenshot or image in the standalone Quick Editor window from:
+
+- Capture overlay: **Edit in Window** (`Ctrl+E`), keeping drawn annotations
+  editable as vector items
+- Capture notification: **Edit**
+- Plasma widget or tray menu: **Edit Last Capture**
+- Command line or file manager: `glimply <file>` or `glimply --edit <file>`
+  (forwarded to the running glimply instance)
+
+Inside the Quick Editor: **Crop** (`C` + `Enter` to apply, undoable with
+`Ctrl+Z`), **Ctrl+Wheel** / **Alt+Wheel** for cursor-anchored zoom
+(`Ctrl+0` fit, `Ctrl+1` 100%, crisp pixels `≥ 400 %`, pixel grid `≥ 800 %`),
+**Space+Drag** or middle-mouse drag to pan, **Save** (`Ctrl+S`), **Save Copy**
+(`Ctrl+Alt+S` as `_edited.png` without altering the original or clipboard),
+**Save As…** (`Ctrl+Shift+S`), and **Copy** (`Ctrl+C`).
+
 A right click deletes the topmost annotation or rectangle under the pointer;
 Delete removes the active one.
 
@@ -128,8 +145,8 @@ Groups are created under *Configure glimply… → Groups*.
 
 The widget uses `io.github.m00sfett.glimply` at `/Control`
 (`io.github.m00sfett.glimply.Control`): `Targets` (JSON), `Trigger`, `AddArea`,
-`EditArea`, `Rename`, `Remove`, `OpenLastCapture`, `OpenCaptureFolder`,
-`Configure`, and the signals `Changed` and `Captured`. Scripts can use it too,
+`EditArea`, `Rename`, `Remove`, `OpenLastCapture`, `EditLastCapture`,
+`OpenCaptureFolder`, `Configure`, and the signals `Changed` and `Captured`. Scripts can use it too,
 for example `busctl --user call io.github.m00sfett.glimply /Control
 io.github.m00sfett.glimply.Control Trigger s all`.
 
