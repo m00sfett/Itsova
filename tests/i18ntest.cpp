@@ -81,6 +81,23 @@ private Q_SLOTS:
         QVERIFY(uiLanguagesFromEnvironment({}, {}, {}, {}).isEmpty());
     }
 
+    void choices()
+    {
+        const QList<UiLanguageChoice> &list = uiLanguageChoices();
+        QCOMPARE(list.size(), translatedUiLanguages().size() + 1);
+        for (int i = 1; i < list.size(); ++i) {
+            QVERIFY2(list.at(i - 1).englishName < list.at(i).englishName, qPrintable(list.at(i).englishName));
+        }
+        for (const QString &code : translatedUiLanguages()) {
+            QVERIFY2(uiLanguageNativeName(code) != code, qPrintable(code));
+        }
+        QCOMPARE(uiLanguageNativeName(QStringLiteral("en")), QStringLiteral("English"));
+        QCOMPARE(uiLanguageNativeName(QStringLiteral("xx")), QStringLiteral("xx"));
+        QCOMPARE(activeUiLanguage(), QStringLiteral("en"));
+        setActiveUiLanguage(QStringLiteral("de"));
+        QCOMPARE(activeUiLanguage(), QStringLiteral("de"));
+    }
+
     void configured()
     {
         QTemporaryDir dir;

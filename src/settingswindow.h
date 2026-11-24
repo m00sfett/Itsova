@@ -5,6 +5,7 @@
 #include <QPointer>
 
 class KKeySequenceWidget;
+class KMessageWidget;
 class KPageWidgetItem;
 class QCheckBox;
 class QComboBox;
@@ -146,6 +147,8 @@ private:
     QComboBox *mcpAccessMode_ = nullptr;
     QWidget *mcpAllowlistBox_ = nullptr;
     QListWidget *mcpAllowlistList_ = nullptr;
+    QComboBox *language_ = nullptr;
+    KMessageWidget *languageRestart_ = nullptr;
     QLabel *ocrStatus_ = nullptr;
     QListWidget *ocrLanguages_ = nullptr;
     QLabel *ocrHint_ = nullptr;

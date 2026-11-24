@@ -149,6 +149,9 @@ public:
     [[nodiscard]] TesseractOcrEngine &ocrEngine();
     [[nodiscard]] QStringList ocrLanguages() const;
     void clearHistory();
+    // Quits and starts a fresh instance once this one has exited (language change, #53).
+    // Returns false when the new instance could not be scheduled; glimply keeps running then.
+    bool restart();
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
 

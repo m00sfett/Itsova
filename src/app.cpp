@@ -39,6 +39,7 @@
 #include <QBuffer>
 #include <QClipboard>
 #include <QCoreApplication>
+#include <QProcess>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
@@ -1057,6 +1058,22 @@ void App::savePinImageAs(const QImage &image)
         return;
     }
     recordCapture({path}, tr("Pin"), QString(), QStringLiteral("editor"));
+}
+
+bool App::restart()
+{
+    // A second instance would only forward to this one (KDBusService::Unique), so a small
+    // shell waits until this process is gone and then starts the same executable again.
+    // PID and path are passed as arguments, never pasted into the script.
+    const QString script = QStringLiteral("while kill -0 \"$1\" 2>/dev/null; do sleep 0.1; done; exec \"$2\"");
+    const bool started = QProcess::startDetached(
+        QStringLiteral("/bin/sh"), {QStringLiteral("-c"), script, QStringLiteral("glimply-restart"),
+                                    QString::number(QCoreApplication::applicationPid()),
+                                    QCoreApplication::applicationFilePath()});
+    if (started) {
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+    }
+    return started;
 }
 
 void App::clearHistory()
