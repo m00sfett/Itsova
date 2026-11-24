@@ -93,13 +93,17 @@ public:
     void saveAs();
     void editInWindow(const QString &preferredConnector = QString());
     // Returns an error message, or an empty string when the areas were saved.
-    QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine);
+    QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds = 0);
     void captureMonitor(const QString &connector);
     void captureAllMonitors();
     void captureTarget(const QString &id);
     void addTarget(const QString &id);
     void captureWindow(const WindowInfo &window);
     void setFrozen(bool frozen);
+    void retakeWithDelay(int seconds);
+    [[nodiscard]] int captureDelaySeconds() const;
+    [[nodiscard]] bool keepDelayActive() const;
+    void setCaptureDelay(int seconds, bool keepActive);
     [[nodiscard]] bool helpExpanded() const;
     void toggleHelp();
     void openSettings();
@@ -190,6 +194,7 @@ private:
     void placeActionBar();
     void fillAreasMenu();
     void fillWindowsMenu();
+    void fillDelayMenu();
     void applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
     void updateCursor(const QPoint &pos);
@@ -220,6 +225,7 @@ private:
     InlineTextEditor *textEditor_ = nullptr;
     QLabel *hint_ = nullptr;
     QToolButton *annotateButton_ = nullptr;
+    QToolButton *delayButton_ = nullptr;
     QToolButton *helpButton_ = nullptr;
     QWidget *helpPanel_ = nullptr;
     QToolButton *frozenButton_ = nullptr;

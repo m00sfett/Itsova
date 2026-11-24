@@ -9,6 +9,7 @@
 #include <QEvent>
 #include <QApplication>
 #include <QIcon>
+#include <QInputDialog>
 #include <QMenu>
 #include <QPalette>
 #include <QTimer>
@@ -69,6 +70,21 @@ void TrayController::setLastCaptureAvailable(bool available)
     lastCaptureAvailable_ = available;
 }
 
+void TrayController::setDelayState(int seconds, bool keepActive)
+{
+    delaySeconds_ = seconds;
+    keepDelayActive_ = keepActive;
+}
+
+void TrayController::setCountdownState(bool active, int remainingSeconds)
+{
+    countdownActive_ = active;
+    countdownRemaining_ = remainingSeconds;
+    if (active) {
+        item_->setToolTipSubTitle(tr("Capturing in %1 s…").arg(remainingSeconds));
+    }
+}
+
 void TrayController::setStatusText(const QString &text)
 {
     item_->setToolTipSubTitle(text);
@@ -116,6 +132,13 @@ void TrayController::rebuildMenu()
         }
         first = false;
     };
+
+    if (countdownActive_) {
+        auto *cancelCountdown = add(new QAction(QIcon::fromTheme(QStringLiteral("dialog-cancel")),
+                                                tr("Cancel Countdown (%1 s)").arg(countdownRemaining_), menu_));
+        connect(cancelCountdown, &QAction::triggered, this, &TrayController::cancelCountdownRequested);
+        first = false;
+    }
 
     const QList<MenuTarget> targets = provider_();
     bool hasArea = false;
@@ -172,6 +195,45 @@ void TrayController::rebuildMenu()
     add(rename->menuAction());
     auto *addArea = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), menu_));
     connect(addArea, &QAction::triggered, this, &TrayController::addAreaRequested);
+
+    const QString delayTitle = delaySeconds_ > 0 ? tr("Delay (%1 s)").arg(delaySeconds_) : tr("Delay");
+    auto *delayMenu = new QMenu(delayTitle, menu_);
+    delayMenu->setIcon(QIcon::fromTheme(QStringLiteral("chronometer")));
+    const auto addDelayPreset = [&](const QString &label, int secs) {
+        QAction *preset = delayMenu->addAction(label);
+        preset->setCheckable(true);
+        preset->setChecked(delaySeconds_ == secs);
+        connect(preset, &QAction::triggered, this, [this, secs] {
+            Q_EMIT delayChangedRequested(secs, secs > 0 ? keepDelayActive_ : false);
+        });
+    };
+    addDelayPreset(tr("No delay"), 0);
+    delayMenu->addSeparator();
+    addDelayPreset(tr("3 seconds"), 3);
+    addDelayPreset(tr("5 seconds"), 5);
+    addDelayPreset(tr("10 seconds"), 10);
+    QAction *customDelay = delayMenu->addAction(tr("Custom…"));
+    connect(customDelay, &QAction::triggered, this, [this] {
+        bool ok = false;
+        const int chosen = QInputDialog::getInt(nullptr, tr("Capture Delay"), tr("Seconds:"),
+                                              delaySeconds_ > 0 ? delaySeconds_ : 3, 1, 60, 1, &ok);
+        if (ok) {
+            Q_EMIT delayChangedRequested(chosen, keepDelayActive_);
+        }
+    });
+    delayMenu->addSeparator();
+    QAction *keepDelay = delayMenu->addAction(tr("Keep delay active"));
+    keepDelay->setCheckable(true);
+    keepDelay->setChecked(keepDelayActive_);
+    connect(keepDelay, &QAction::toggled, this, [this](bool on) {
+        if (on) {
+            Q_EMIT delayChangedRequested(delaySeconds_ > 0 ? delaySeconds_ : 3, true);
+        } else {
+            Q_EMIT delayChangedRequested(0, false);
+        }
+    });
+    add(delayMenu->menuAction());
+
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));
     openLast->setEnabled(lastCaptureAvailable_);
     connect(openLast, &QAction::triggered, this, &TrayController::openLastCaptureRequested);

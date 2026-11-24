@@ -29,6 +29,7 @@ QString migrateId(const QString &id)
 }
 constexpr auto groupGroupPrefix = "Group ";
 constexpr auto exportOverrideGroupPrefix = "ExportOverride ";
+constexpr auto builtInDelaysGroup = "BuiltInDelays";
 
 ExportOptions readExportOptions(const KConfigGroup &group, const QString &prefix, const ExportOptions &fallback = {})
 {
@@ -152,9 +153,12 @@ void TargetStore::load(const KConfig &config)
     migratedIds.clear();
     groups.clear();
     builtInExportOverrides.clear();
+    builtInDelays.clear();
 
     const KConfigGroup general = config.group(QStringLiteral("General"));
     exportOptions = readExportOptions(config.group(QStringLiteral("Export")), QString());
+    keepDelayActive = general.readEntry("KeepDelayActive", false);
+    captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
     autostartInitialized = general.hasKey("Autostart");
@@ -187,6 +191,13 @@ void TargetStore::load(const KConfig &config)
     const KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     cursorScreens = builtIn.readEntry("CursorScreens", QStringList());
     allMonitorsCursor = builtIn.readEntry("AllMonitorsCursor", false);
+    const KConfigGroup builtInDelayCfg = config.group(QLatin1String(builtInDelaysGroup));
+    for (const QString &key : builtInDelayCfg.keyList()) {
+        const int secs = std::clamp(builtInDelayCfg.readEntry(key, 0), 0, 60);
+        if (secs > 0) {
+            builtInDelays.insert(migrateId(key), secs);
+        }
+    }
 
     QStringList groupNames = config.groupList();
     std::sort(groupNames.begin(), groupNames.end());
@@ -205,6 +216,7 @@ void TargetStore::load(const KConfig &config)
             area.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
             area.rect = entry.readEntry("Rect", QRect());
             area.includeCursor = entry.readEntry("IncludeCursor", false);
+            area.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             area.exportOverride = readExportOverride(entry);
             if (!area.id.isEmpty() && !area.name.isEmpty() && !area.connector.isEmpty()) {
                 areas.append(area);
@@ -217,6 +229,7 @@ void TargetStore::load(const KConfig &config)
                 group.targetIds.append(migrateId(target));
             }
             group.includeCursor = entry.readEntry("IncludeCursor", false);
+            group.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             group.exportOverride = readExportOverride(entry);
             if (!group.id.isEmpty() && !group.name.isEmpty()) {
                 groups.append(group);
@@ -280,6 +293,8 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("LastOverlayFrozen", lastOverlayFrozen);
     general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
+    general.writeEntry("KeepDelayActive", keepDelayActive);
+    general.writeEntry("CaptureDelaySeconds", keepDelayActive ? std::clamp(captureDelaySeconds, 0, 60) : 0);
 
     config.deleteGroup(QStringLiteral("MonitorNames"));
     if (!monitorNames.isEmpty()) {
@@ -293,6 +308,16 @@ void TargetStore::save(KConfig &config) const
     builtIn.writeEntry("CursorScreens", cursorScreens);
     builtIn.writeEntry("AllMonitorsCursor", allMonitorsCursor);
 
+    config.deleteGroup(QLatin1String(builtInDelaysGroup));
+    if (!builtInDelays.isEmpty()) {
+        KConfigGroup builtInDelayCfg = config.group(QLatin1String(builtInDelaysGroup));
+        for (auto it = builtInDelays.cbegin(); it != builtInDelays.cend(); ++it) {
+            if (it.value() > 0) {
+                builtInDelayCfg.writeEntry(it.key(), std::clamp(it.value(), 0, 60));
+            }
+        }
+    }
+
     QStringList areaOrder;
     for (const Area &area : areas) {
         KConfigGroup entry = config.group(QLatin1String(areaGroupPrefix) + area.id);
@@ -301,6 +326,9 @@ void TargetStore::save(KConfig &config) const
         entry.writeEntry("MonitorIdentity", area.monitorIdentity);
         entry.writeEntry("Rect", area.rect);
         entry.writeEntry("IncludeCursor", area.includeCursor);
+        if (area.delaySeconds > 0) {
+            entry.writeEntry("DelaySeconds", std::clamp(area.delaySeconds, 0, 60));
+        }
         writeExportOverride(entry, area.exportOverride);
         areaOrder.append(area.id);
     }
@@ -310,6 +338,9 @@ void TargetStore::save(KConfig &config) const
         entry.writeEntry("Name", group.name);
         entry.writeEntry("Targets", group.targetIds);
         entry.writeEntry("IncludeCursor", group.includeCursor);
+        if (group.delaySeconds > 0) {
+            entry.writeEntry("DelaySeconds", std::clamp(group.delaySeconds, 0, 60));
+        }
         writeExportOverride(entry, group.exportOverride);
         groupOrder.append(group.id);
     }
@@ -432,9 +463,56 @@ void TargetStore::remove(const QString &id)
     areas.removeIf([&](const Area &r) { return r.id == id; });
     groups.removeIf([&](const Group &g) { return g.id == id; });
     builtInExportOverrides.remove(id);
+    builtInDelays.remove(id);
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
     }
+}
+
+int TargetStore::targetDelaySeconds(const QString &targetId) const
+{
+    if (const Area *r = area(targetId)) {
+        return std::clamp(r->delaySeconds, 0, 60);
+    }
+    if (const Group *g = group(targetId)) {
+        return std::clamp(g->delaySeconds, 0, 60);
+    }
+    return std::clamp(builtInDelays.value(targetId, 0), 0, 60);
+}
+
+void TargetStore::setTargetDelaySeconds(const QString &targetId, int seconds)
+{
+    const int clamped = std::clamp(seconds, 0, 60);
+    if (Area *r = area(targetId)) {
+        r->delaySeconds = clamped;
+        return;
+    }
+    if (Group *g = group(targetId)) {
+        g->delaySeconds = clamped;
+        return;
+    }
+    if (clamped > 0) {
+        builtInDelays.insert(targetId, clamped);
+    } else {
+        builtInDelays.remove(targetId);
+    }
+}
+
+int TargetStore::effectiveDelaySeconds(const QString &targetId) const
+{
+    if (captureDelaySeconds > 0) {
+        return std::clamp(captureDelaySeconds, 0, 60);
+    }
+    return targetId.isEmpty() ? 0 : targetDelaySeconds(targetId);
+}
+
+bool TargetStore::consumeOneShotDelay()
+{
+    if (!keepDelayActive && captureDelaySeconds > 0) {
+        captureDelaySeconds = 0;
+        return true;
+    }
+    return false;
 }
 
 ExportOverride TargetStore::targetExportOverride(const QString &targetId) const

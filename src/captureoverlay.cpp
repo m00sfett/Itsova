@@ -17,6 +17,7 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
+#include <QComboBox>
 #include <QCursor>
 #include <QDir>
 #include <QFile>
@@ -27,6 +28,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QImageWriter>
+#include <QInputDialog>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLineEdit>
@@ -845,7 +847,7 @@ void CaptureSession::saveAs()
     });
 }
 
-QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine)
+QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds)
 {
     const QList<Selection> ordered = selections_.inDrawingOrder();
     if (ordered.isEmpty()) {
@@ -867,6 +869,7 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
         }
     }
 
+    const int clampedDelay = std::clamp(delaySeconds, 0, 60);
     QStringList areaIds;
     for (const Selection &selection : ordered) {
         const auto screen = std::find_if(screens_.cbegin(), screens_.cend(),
@@ -877,6 +880,9 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
         Area &area = targets.addArea(*screen, selection.rect);
         if (ordered.size() == 1) {
             area.name = trimmed;
+            area.delaySeconds = clampedDelay;
+        } else if (!combine) {
+            area.delaySeconds = clampedDelay;
         }
         areaIds.append(area.id);
     }
@@ -884,6 +890,7 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
     if (ordered.size() > 1 && combine) {
         Group &group = targets.addGroup(trimmed);
         group.targetIds = areaIds;
+        group.delaySeconds = clampedDelay;
         shortcutOwner = group.id;
     }
     app_->storeChanged();
@@ -1156,6 +1163,75 @@ bool CaptureSession::helpExpanded() const
     return store().overlayHelpExpanded;
 }
 
+void CaptureSession::retakeWithDelay(int seconds)
+{
+    if (finished_ || switching_ || seconds <= 0 || purpose_ != Purpose::Print) {
+        return;
+    }
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+    switching_ = true;
+    hideOverlays();
+    QStringList connectors;
+    for (const ScreenInfo &screen : std::as_const(screens_)) {
+        connectors.append(screen.connector);
+    }
+    QPointer<CaptureSession> self(this);
+    app_->runWithDelay(
+        seconds, tr("Retake"),
+        [self, connectors] {
+            if (!self || self->finished_) {
+                return;
+            }
+            self->switching_ = false;
+            self->frozen_ = true;
+            self->store().lastOverlayFrozen = true;
+            self->app_->saveSettings();
+            self->frames_.clear();
+            if (self->annotations_.isEmpty() && self->selections_.isEmpty()) {
+                self->savePrintImage();
+                if (!self->finished_) {
+                    self->changed();
+                    self->showOverlays();
+                }
+                return;
+            }
+            if (!self->printPath_.isEmpty()) {
+                const QString oldPath = self->printPath_;
+                QFile::remove(oldPath);
+                self->app_->forgetCapturePath(oldPath);
+                self->printPath_.clear();
+            }
+            self->captureFrames(connectors);
+            self->changed();
+            self->showOverlays();
+        },
+        [self] {
+            if (!self || self->finished_) {
+                return;
+            }
+            self->switching_ = false;
+            self->showOverlays();
+        });
+}
+
+int CaptureSession::captureDelaySeconds() const
+{
+    return app_->captureDelaySeconds();
+}
+
+bool CaptureSession::keepDelayActive() const
+{
+    return app_->keepDelayActive();
+}
+
+void CaptureSession::setCaptureDelay(int seconds, bool keepActive)
+{
+    app_->setCaptureDelay(seconds, keepActive);
+    changed();
+}
+
 void CaptureSession::toggleHelp()
 {
     store().overlayHelpExpanded = !store().overlayHelpExpanded;
@@ -1409,6 +1485,14 @@ void CaptureOverlay::buildTopBar()
     row->addWidget(areas);
 
     if (print) {
+        delayButton_ = barButton(panel, QStringLiteral("chronometer"), tr("Delay"),
+                                 tr("Retake the screenshot after a countdown so menus stay open"));
+        delayButton_->setPopupMode(QToolButton::InstantPopup);
+        auto *delayMenu = new QMenu(delayButton_);
+        delayButton_->setMenu(delayMenu);
+        connect(delayMenu, &QMenu::aboutToShow, this, &CaptureOverlay::fillDelayMenu);
+        row->addWidget(delayButton_);
+
         annotateButton_ = barButton(panel, QStringLiteral("draw-freehand"), tr("Annotate"),
                                     tr("Show or hide markup tools (A, R, E, B, M, T, N, X, S)"));
         annotateButton_->setCheckable(true);
@@ -1547,6 +1631,51 @@ void CaptureOverlay::fillWindowsMenu()
         });
         connect(action, &QAction::triggered, this, [this, window] { session_->captureWindow(window); });
     }
+}
+
+void CaptureOverlay::fillDelayMenu()
+{
+    QMenu *menu = delayButton_->menu();
+    menu->clear();
+
+    const int currentDelay = session_->captureDelaySeconds();
+    const bool keepActive = session_->keepDelayActive();
+
+    QAction *noDelay = menu->addAction(tr("No delay"));
+    noDelay->setCheckable(true);
+    noDelay->setChecked(currentDelay == 0 && !keepActive);
+    connect(noDelay, &QAction::triggered, this, [this] { session_->setCaptureDelay(0, false); });
+
+    menu->addSeparator();
+    const auto triggerRetake = [this, keepActive](int secs) {
+        if (keepActive) {
+            session_->setCaptureDelay(secs, true);
+        }
+        session_->retakeWithDelay(secs);
+    };
+    for (const int preset : {3, 5, 10}) {
+        QAction *action = menu->addAction(tr("Retake in %1 s").arg(preset));
+        action->setCheckable(true);
+        action->setChecked(currentDelay == preset);
+        connect(action, &QAction::triggered, this, [triggerRetake, preset] { triggerRetake(preset); });
+    }
+    QAction *custom = menu->addAction(tr("Retake in custom…"));
+    connect(custom, &QAction::triggered, this, [this, currentDelay, triggerRetake] {
+        bool ok = false;
+        const int chosen = QInputDialog::getInt(this, tr("Retake Delay"), tr("Seconds:"),
+                                              currentDelay > 0 ? currentDelay : 3, 1, 60, 1, &ok);
+        if (ok) {
+            triggerRetake(chosen);
+        }
+    });
+
+    menu->addSeparator();
+    QAction *keep = menu->addAction(tr("Keep delay active"));
+    keep->setCheckable(true);
+    keep->setChecked(keepActive);
+    connect(keep, &QAction::toggled, this, [this, currentDelay](bool on) {
+        session_->setCaptureDelay(on ? (currentDelay > 0 ? currentDelay : 3) : 0, on);
+    });
 }
 
 void CaptureOverlay::fillAreasMenu()
@@ -1755,6 +1884,46 @@ void CaptureOverlay::showAreaPanel()
     shortcut->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts | KKeySequenceWidget::StandardShortcuts);
     form->addRow(tr("Shortcut:"), shortcut);
 
+    auto *delayCombo = new QComboBox(areaPanel_);
+    delayCombo->setAccessibleName(tr("Area capture delay"));
+    delayCombo->addItem(tr("None"), 0);
+    delayCombo->addItem(tr("3 seconds"), 3);
+    delayCombo->addItem(tr("5 seconds"), 5);
+    delayCombo->addItem(tr("10 seconds"), 10);
+    delayCombo->addItem(tr("Custom…"), -1);
+    form->addRow(tr("Delay:"), delayCombo);
+    auto lastDelayIdx = std::make_shared<int>(0);
+    connect(delayCombo, &QComboBox::currentIndexChanged, areaPanel_, [this, delayCombo, lastDelayIdx](int idx) {
+        if (idx < 0) {
+            return;
+        }
+        const int data = delayCombo->itemData(idx).toInt();
+        if (data >= 0) {
+            *lastDelayIdx = idx;
+            return;
+        }
+        bool ok = false;
+        const int prev = std::max(1, delayCombo->itemData(*lastDelayIdx).toInt());
+        const int chosen = QInputDialog::getInt(areaPanel_, tr("Area Delay"), tr("Seconds:"), prev, 1, 60, 1, &ok);
+        if (!ok) {
+            const QSignalBlocker block(delayCombo);
+            delayCombo->setCurrentIndex(*lastDelayIdx);
+            return;
+        }
+        const int existing = delayCombo->findData(chosen);
+        if (existing >= 0) {
+            const QSignalBlocker block(delayCombo);
+            delayCombo->setCurrentIndex(existing);
+            *lastDelayIdx = existing;
+            return;
+        }
+        const QSignalBlocker block(delayCombo);
+        const int insertAt = delayCombo->count() - 1;
+        delayCombo->insertItem(insertAt, tr("%1 seconds").arg(chosen), chosen);
+        delayCombo->setCurrentIndex(insertAt);
+        *lastDelayIdx = insertAt;
+    });
+
     auto *explain = new QLabel(areaPanel_);
     explain->setWordWrap(true);
     explain->setMaximumWidth(380);
@@ -1800,8 +1969,10 @@ void CaptureOverlay::showAreaPanel()
     update();
     connect(combine, &QCheckBox::toggled, areaPanel_, update);
 
-    const auto submit = [this, name, shortcut, combine, error] {
-        const QString problem = session_->saveAsAreas(name->text(), shortcut->keySequence(), combine->isChecked());
+    const auto submit = [this, name, shortcut, delayCombo, combine, error] {
+        const int chosenDelay = std::max(0, delayCombo->currentData().toInt());
+        const QString problem =
+            session_->saveAsAreas(name->text(), shortcut->keySequence(), combine->isChecked(), chosenDelay);
         if (!problem.isEmpty()) {
             error->setText(problem);
             error->show();
@@ -1837,6 +2008,10 @@ void CaptureOverlay::refresh()
                 : tr("Clear or undo annotations to return to Live mode"));
         if (annotateButton_) {
             annotateButton_->setChecked(session_->markupVisible());
+        }
+        if (delayButton_) {
+            const int delay = session_->captureDelaySeconds();
+            delayButton_->setText(delay > 0 ? tr("Delay: %1 s").arg(delay) : tr("Delay"));
         }
         hint_->setText(session_->hint());
         helpButton_->setChecked(session_->helpExpanded());

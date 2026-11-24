@@ -9,6 +9,7 @@
 #include <QPointer>
 #include <QStringList>
 
+#include <functional>
 #include <memory>
 
 class QImage;
@@ -19,6 +20,8 @@ namespace glimply
 class AnnotationDocument;
 class CaptureSession;
 class ControlService;
+class CountdownBanner;
+class CountdownController;
 class QuickEditorWindow;
 class ShortcutManager;
 class TrayController;
@@ -49,6 +52,15 @@ public:
     void startPrint();
     // Opens the capture overlay to draw and save new areas, without capturing.
     void addArea();
+    [[nodiscard]] bool isCountdownActive() const;
+    [[nodiscard]] int captureDelaySeconds() const;
+    [[nodiscard]] bool keepDelayActive() const;
+    void setCaptureDelay(int seconds, bool keepActive);
+    void cancelCountdown();
+    void runWithDelay(int seconds,
+                      const QString &label,
+                      std::function<void()> onReady,
+                      std::function<void()> onCancelled = {});
     // Takes the Print key (on) or hands it back to its previous owner (off).
     void setUsePrintKey(bool on);
     // A capture was written: tray blink, status, "Open last capture".
@@ -85,6 +97,8 @@ Q_SIGNALS:
     void captured(bool success);
 
 private:
+    void executeTriggerNow(const QString &id);
+    void startPrintNow();
     void onTriggerFinished(const TriggerResult &result);
     void syncShortcuts(const QStringList &deletedIds = {});
     void migrateLegacyIds();
@@ -100,6 +114,8 @@ private:
     TriggerEngine *engine_;
     TrayController *tray_;
     ControlService *control_;
+    CountdownController *countdown_;
+    CountdownBanner *countdownBanner_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;

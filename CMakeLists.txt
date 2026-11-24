@@ -81,6 +81,7 @@ add_library(glimply_ui STATIC
     src/annotations/annotationtoolbar.cpp
     src/annotations/inlinetexteditor.cpp
     src/areaselector.cpp
+    src/countdowntimer.cpp
     src/exportdialog.cpp
     src/quickeditorwindow.cpp
 )
@@ -145,6 +146,9 @@ if(BUILD_TESTING)
     add_executable(exporttest tests/exporttest.cpp)
     target_link_libraries(exporttest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME export COMMAND exporttest)
+    add_executable(delaytest tests/delaytest.cpp)
+    target_link_libraries(delaytest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME delay COMMAND delaytest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)
