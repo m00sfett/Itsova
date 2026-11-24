@@ -66,7 +66,9 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     });
     connect(menu_, &QMenu::aboutToShow, this, &TrayController::rebuildMenu);
     updateIcon();
-    rebuildMenu();
+    // The providers call back into the owner, which may still be under construction (App creates
+    // the tray before its interval controller). Build the first menu once the event loop runs.
+    QTimer::singleShot(0, this, &TrayController::rebuildMenu);
 }
 
 void TrayController::setHistoryProvider(HistoryProvider provider)
