@@ -1,8 +1,9 @@
 #include "settingswindow.h"
 
 #include "app.h"
-#include "imageoutput.h"
 #include "areaselector.h"
+#include "hookrunner.h"
+#include "imageoutput.h"
 #include "screens.h"
 #include "selectiongeometry.h"
 #include "shortcutmanager.h"
@@ -353,6 +354,94 @@ private:
     std::function<void()> onChanged_;
 };
 
+class HookOverrideWidget : public QWidget
+{
+public:
+    explicit HookOverrideWidget(QWidget *parent = nullptr)
+        : QWidget(parent)
+    {
+        auto *layout = new QVBoxLayout(this);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(4);
+
+        modeCombo_ = new QComboBox(this);
+        modeCombo_->setAccessibleName(SettingsWindow::tr("Post-capture hook mode"));
+        modeCombo_->addItem(SettingsWindow::tr("Use global hook setting"), int(HookOverrideMode::UseGlobal));
+        modeCombo_->addItem(SettingsWindow::tr("Custom command"), int(HookOverrideMode::Custom));
+        modeCombo_->addItem(SettingsWindow::tr("Disable hook"), int(HookOverrideMode::Disabled));
+        layout->addWidget(modeCombo_);
+
+        customRow_ = new QWidget(this);
+        auto *customLayout = new QHBoxLayout(customRow_);
+        customLayout->setContentsMargins(0, 0, 0, 0);
+        customLayout->setSpacing(6);
+
+        commandEdit_ = new QLineEdit(customRow_);
+        commandEdit_->setPlaceholderText(SettingsWindow::tr("/path/to/script %f"));
+        commandEdit_->setAccessibleName(SettingsWindow::tr("Custom hook command"));
+        customLayout->addWidget(commandEdit_, 1);
+
+        timeoutSpin_ = new QSpinBox(customRow_);
+        timeoutSpin_->setRange(5, 300);
+        timeoutSpin_->setSuffix(SettingsWindow::tr(" s"));
+        timeoutSpin_->setKeyboardTracking(false);
+        timeoutSpin_->setAccessibleName(SettingsWindow::tr("Custom hook timeout"));
+        customLayout->addWidget(timeoutSpin_);
+
+        customRow_->hide();
+        layout->addWidget(customRow_);
+
+        connect(modeCombo_, &QComboBox::currentIndexChanged, this, [this] {
+            customRow_->setVisible(HookOverrideMode(modeCombo_->currentData().toInt()) == HookOverrideMode::Custom);
+            if (!updating_ && onChanged_) {
+                onChanged_();
+            }
+        });
+        connect(commandEdit_, &QLineEdit::editingFinished, this, [this] {
+            if (!updating_ && onChanged_) {
+                onChanged_();
+            }
+        });
+        connect(timeoutSpin_, &QSpinBox::valueChanged, this, [this] {
+            if (!updating_ && onChanged_) {
+                onChanged_();
+            }
+        });
+    }
+
+    void setOnChanged(std::function<void()> callback)
+    {
+        onChanged_ = std::move(callback);
+    }
+
+    void setOverride(const HookOverride &ov)
+    {
+        updating_ = true;
+        const int idx = modeCombo_->findData(int(ov.mode));
+        modeCombo_->setCurrentIndex(idx >= 0 ? idx : 0);
+        if (!commandEdit_->hasFocus()) {
+            commandEdit_->setText(ov.command);
+        }
+        timeoutSpin_->setValue(std::clamp(ov.timeoutSeconds, 5, 300));
+        customRow_->setVisible(ov.mode == HookOverrideMode::Custom);
+        updating_ = false;
+    }
+
+    [[nodiscard]] HookOverride overrideValue() const
+    {
+        return {HookOverrideMode(modeCombo_->currentData().toInt()), commandEdit_->text().trimmed(),
+                timeoutSpin_->value()};
+    }
+
+private:
+    bool updating_ = false;
+    QComboBox *modeCombo_ = nullptr;
+    QWidget *customRow_ = nullptr;
+    QLineEdit *commandEdit_ = nullptr;
+    QSpinBox *timeoutSpin_ = nullptr;
+    std::function<void()> onChanged_;
+};
+
 SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     : KPageDialog(parent)
     , app_(app)
@@ -378,6 +467,9 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     auto *general = addPage(createGeneralPage(), tr("General"));
     general->setHeader(tr("General"));
     general->setIcon(QIcon::fromTheme(QStringLiteral("configure")));
+    auto *automation = addPage(createAutomationPage(), tr("Automation"));
+    automation->setHeader(tr("Post-capture hooks and external automation"));
+    automation->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
 
     connect(app_, &App::targetsChanged, this, &SettingsWindow::refresh);
     connect(app_->shortcuts(), &ShortcutManager::shortcutChanged, this, [this] {
@@ -548,6 +640,9 @@ QWidget *SettingsWindow::createTargetsPage()
     targetInterval_ = new IntervalConfigWidget(targetDetails_);
     form->addRow(tr("Interval:"), targetInterval_);
 
+    targetHook_ = new HookOverrideWidget(targetDetails_);
+    form->addRow(tr("Hook:"), targetHook_);
+
     targetShortcut_ = new KKeySequenceWidget(targetDetails_);
     targetShortcut_->setAccessibleName(tr("Shortcut"));
     targetShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -628,6 +723,16 @@ QWidget *SettingsWindow::createTargetsPage()
         const QString id = selectedTargetId();
         if (!id.isEmpty()) {
             app_->store().setTargetIntervalConfig(id, targetInterval_->config());
+            app_->storeChanged();
+        }
+    });
+    targetHook_->setOnChanged([this] {
+        if (updating_) {
+            return;
+        }
+        const QString id = selectedTargetId();
+        if (!id.isEmpty()) {
+            app_->store().setTargetHookOverride(id, targetHook_->overrideValue());
             app_->storeChanged();
         }
     });
@@ -880,6 +985,8 @@ void SettingsWindow::refreshTargetDetails()
     targetDelay_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetInterval_->setConfig(store.targetIntervalConfig(id));
     targetInterval_->setEnabled(isArea || screen || id == allMonitorsTargetId());
+    targetHook_->setOverride(store.targetHookOverride(id));
+    targetHook_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetShortcut_->setKeySequence(app_->shortcuts()->shortcut(id));
     targetShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetIntervalShortcut_->setKeySequence(app_->shortcuts()->shortcut(intervalShortcutId(id)));
@@ -1208,6 +1315,9 @@ QWidget *SettingsWindow::createGroupsPage()
     groupInterval_ = new IntervalConfigWidget(groupDetails_);
     form->addRow(tr("Interval:"), groupInterval_);
 
+    groupHook_ = new HookOverrideWidget(groupDetails_);
+    form->addRow(tr("Hook:"), groupHook_);
+
     groupShortcut_ = new KKeySequenceWidget(groupDetails_);
     groupShortcut_->setAccessibleName(tr("Group shortcut"));
     groupShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -1297,6 +1407,12 @@ QWidget *SettingsWindow::createGroupsPage()
             app_->storeChanged();
         }
     });
+    groupHook_->setOnChanged([this] {
+        if (Group *group = app_->store().group(selectedGroupId()); group && !updating_) {
+            group->hookOverride = groupHook_->overrideValue();
+            app_->storeChanged();
+        }
+    });
     connect(groupShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &sequence) {
         if (!updating_) {
             assignShortcut(selectedGroupId(), sequence, groupShortcut_);
@@ -1382,6 +1498,7 @@ void SettingsWindow::refreshGroupDetails()
     groupExport_->setOverride(group ? group->exportOverride : ExportOverride{}, app_->store().exportOptions.format);
     groupDelay_->setValue(group ? group->delaySeconds : 0);
     groupInterval_->setConfig(group ? group->interval : IntervalConfig{});
+    groupHook_->setOverride(group ? group->hookOverride : HookOverride{});
     groupShortcut_->setKeySequence(group ? app_->shortcuts()->shortcut(group->id) : QKeySequence());
     groupIntervalShortcut_->setKeySequence(
         group ? app_->shortcuts()->shortcut(intervalShortcutId(group->id)) : QKeySequence());
@@ -1610,6 +1727,132 @@ QWidget *SettingsWindow::createGeneralPage()
     return page;
 }
 
+QWidget *SettingsWindow::createAutomationPage()
+{
+    auto *page = new QWidget;
+    auto *outer = new QHBoxLayout(page);
+    outer->setContentsMargins(0, 0, 0, 0);
+    auto *content = new QWidget(page);
+    content->setMaximumWidth(680);
+    outer->addWidget(content);
+    auto *rootLayout = new QVBoxLayout(content);
+    rootLayout->setContentsMargins(0, 0, 0, 0);
+    rootLayout->setSpacing(10);
+
+    auto *hookHeading = new QLabel(tr("Post-Capture Command Hook"), content);
+    QFont sectionFont = hookHeading->font();
+    sectionFont.setBold(true);
+    sectionFont.setPointSizeF(sectionFont.pointSizeF() * 1.08);
+    hookHeading->setFont(sectionFont);
+    rootLayout->addWidget(hookHeading);
+
+    hookEnabled_ = new QCheckBox(tr("Run a command after saving captures"), content);
+    rootLayout->addWidget(hookEnabled_);
+
+    hookDetails_ = new QWidget(content);
+    auto *hookForm = new QFormLayout(hookDetails_);
+    hookForm->setContentsMargins(20, 4, 0, 0);
+    hookForm->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+
+    hookCommand_ = new QLineEdit(hookDetails_);
+    hookCommand_->setPlaceholderText(QStringLiteral("/usr/local/bin/post-capture.sh %f"));
+    hookCommand_->setAccessibleName(tr("Post-capture command"));
+    hookForm->addRow(tr("Command:"), hookCommand_);
+    hookForm->addRow(QString(), makeHint(
+        tr("Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, "
+           "GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell "
+           "features."),
+        hookDetails_));
+
+    hookTimeout_ = new QSpinBox(hookDetails_);
+    hookTimeout_->setRange(5, 300);
+    hookTimeout_->setSuffix(tr(" s"));
+    hookTimeout_->setKeyboardTracking(false);
+    hookTimeout_->setAccessibleName(tr("Hook timeout in seconds"));
+    hookForm->addRow(tr("Timeout:"), hookTimeout_);
+
+    hookOnInterval_ = new QCheckBox(tr("Run hooks on interval captures"), hookDetails_);
+    hookForm->addRow(tr("Intervals:"), hookOnInterval_);
+
+    auto *testRow = new QHBoxLayout;
+    testRow->setContentsMargins(0, 0, 0, 0);
+    testHookButton_ = new QPushButton(QIcon::fromTheme(QStringLiteral("system-run")), tr("Test Hook"), hookDetails_);
+    testRow->addWidget(testHookButton_);
+    testRow->addStretch(1);
+    hookForm->addRow(QString(), testRow);
+
+    hookTestStatus_ = new QLabel(hookDetails_);
+    hookTestStatus_->setWordWrap(true);
+    hookTestStatus_->hide();
+    hookForm->addRow(QString(), hookTestStatus_);
+
+    rootLayout->addWidget(hookDetails_);
+    rootLayout->addStretch(1);
+
+    connect(hookEnabled_, &QCheckBox::toggled, this, [this](bool on) {
+        hookDetails_->setVisible(on);
+        if (!updating_) {
+            app_->store().hook.enabled = on;
+            app_->storeChanged();
+        }
+    });
+    connect(hookCommand_, &QLineEdit::textChanged, this, [this](const QString &text) {
+        testHookButton_->setEnabled(!text.trimmed().isEmpty());
+    });
+    connect(hookCommand_, &QLineEdit::editingFinished, this, [this] {
+        if (!updating_) {
+            app_->store().hook.command = hookCommand_->text().trimmed();
+            app_->storeChanged();
+        }
+    });
+    connect(hookTimeout_, &QSpinBox::valueChanged, this, [this](int secs) {
+        if (!updating_) {
+            app_->store().hook.timeoutSeconds = secs;
+            app_->storeChanged();
+        }
+    });
+    connect(hookOnInterval_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().hook.runOnInterval = on;
+            app_->storeChanged();
+        }
+    });
+    connect(testHookButton_, &QPushButton::clicked, this, [this] {
+        const QString cmd = hookCommand_->text().trimmed();
+        if (cmd.isEmpty()) {
+            return;
+        }
+        testHookButton_->setEnabled(false);
+        hookTestStatus_->setPalette(palette());
+        hookTestStatus_->setText(tr("Running test hook…"));
+        hookTestStatus_->show();
+        QPointer<SettingsWindow> safeThis(this);
+        app_->testPostCaptureHook(cmd, hookTimeout_->value(), [safeThis](const HookResult &res) {
+            if (!safeThis) {
+                return;
+            }
+            safeThis->testHookButton_->setEnabled(!safeThis->hookCommand_->text().trimmed().isEmpty());
+            const bool ok = res.started && !res.timedOut && res.exitCode == 0;
+            QPalette pal = safeThis->palette();
+            if (!ok) {
+                pal.setColor(QPalette::WindowText, QColor(0xda, 0x44, 0x53));
+            }
+            safeThis->hookTestStatus_->setPalette(pal);
+            QString summary = ok ? tr("Hook succeeded (exit 0, %1 ms).").arg(res.elapsedMs)
+                                 : (res.timedOut ? tr("Hook timed out after %1 ms.").arg(res.elapsedMs)
+                                                 : tr("Hook failed: %1").arg(res.errorString));
+            const QString outSample = !res.stdErr.trimmed().isEmpty() ? res.stdErr.trimmed() : res.stdOut.trimmed();
+            if (!outSample.isEmpty()) {
+                summary += QStringLiteral("\n") + outSample.left(240);
+            }
+            safeThis->hookTestStatus_->setText(summary);
+            safeThis->hookTestStatus_->show();
+        });
+    });
+
+    return page;
+}
+
 void SettingsWindow::refreshStorage()
 {
     updating_ = true;
@@ -1630,11 +1873,27 @@ void SettingsWindow::refreshStorage()
     updating_ = false;
 }
 
+void SettingsWindow::refreshAutomation()
+{
+    updating_ = true;
+    const TargetStore &store = app_->store();
+    hookEnabled_->setChecked(store.hook.enabled);
+    hookDetails_->setVisible(store.hook.enabled);
+    if (!hookCommand_->hasFocus()) {
+        hookCommand_->setText(store.hook.command);
+    }
+    hookTimeout_->setValue(std::clamp(store.hook.timeoutSeconds, 5, 300));
+    hookOnInterval_->setChecked(store.hook.runOnInterval);
+    testHookButton_->setEnabled(!hookCommand_->text().trimmed().isEmpty());
+    updating_ = false;
+}
+
 void SettingsWindow::refresh()
 {
     refreshTargets();
     refreshGroups();
     refreshStorage();
+    refreshAutomation();
 }
 
 } // namespace glimply

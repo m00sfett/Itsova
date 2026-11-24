@@ -6,6 +6,7 @@
 #include "cli.h"
 #include "colorpicker.h"
 #include "countdowntimer.h"
+#include "hookrunner.h"
 #include "intervalcontroller.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
@@ -73,9 +74,27 @@ App::App(QObject *parent)
               engine_->runIntervalTick(std::move(plan), dir, tmpl, std::move(prev), std::move(done));
           },
           this))
+    , hooks_(new HookRunner(this))
 {
     store_.load(*config_);
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+
+    connect(hooks_, &HookRunner::hookFailed, this, [this](const HookResult &res) {
+        QString detail = res.timedOut ? tr("Hook timed out after %1 ms.").arg(res.elapsedMs)
+                                      : (!res.errorString.isEmpty() ? res.errorString
+                                                                    : tr("Hook failed with exit code %1.").arg(res.exitCode));
+        const QString errTrim = res.stdErr.trimmed();
+        if (!errTrim.isEmpty()) {
+            const QString firstLine = errTrim.section(QLatin1Char('\n'), 0, 0).trimmed();
+            if (!firstLine.isEmpty()) {
+                detail += QStringLiteral("\n") + firstLine.left(180);
+            }
+        }
+        notify(QStringLiteral("hookFailed"),
+               res.targetName.isEmpty() ? tr("Post-capture hook failed")
+                                        : tr("Post-capture hook failed (%1)").arg(res.targetName),
+               {detail});
+    });
 
     connect(intervals_, &IntervalController::changed, this, [this] {
         tray_->setActiveIntervals(intervals_->activeIntervals());
@@ -84,6 +103,11 @@ App::App(QObject *parent)
     });
     connect(intervals_, &IntervalController::captureSaved, this, [this](const QString &targetId, const TriggerResult &result) {
         recordCapture(result.writtenPaths, result.displayName, targetId);
+        const QString fmt = result.outputInfos.isEmpty() ? formatConfigKey(store_.effectiveExportOptions(targetId).format)
+                                                         : result.outputInfos.first().format;
+        const QString groupId = store_.group(targetId) ? targetId : QString();
+        runPostCaptureHook(targetId, result.displayName, result.writtenPaths, result.timestamp, fmt,
+                           QStringLiteral("interval"), true, groupId);
     });
     connect(intervals_, &IntervalController::intervalFinished, this,
             [this](const QString &, const QString &displayName, int captureCount) {
@@ -615,6 +639,12 @@ void App::onTriggerFinished(const TriggerResult &result)
         Q_EMIT captured(false);
     } else {
         recordCapture(result.writtenPaths, result.displayName, result.triggerId);
+        const QString fmt =
+            result.outputInfos.isEmpty() ? formatConfigKey(store_.effectiveExportOptions(result.triggerId).format)
+                                         : result.outputInfos.first().format;
+        const QString groupId = store_.group(result.triggerId) ? result.triggerId : QString();
+        runPostCaptureHook(result.triggerId, result.displayName, result.writtenPaths, result.timestamp, fmt,
+                           QStringLiteral("trigger"), false, groupId);
     }
     if (!result.errors.isEmpty()) {
         notifyError(result.writtenPaths.isEmpty() ? tr("Capture failed") : tr("Capture incomplete"), result.errors);
@@ -738,6 +768,9 @@ void App::attachEditorWindow(QuickEditorWindow *window)
     connect(window, &QuickEditorWindow::savedToFile, this,
             [this](const QString &savedPath, const QString &displayName) {
                 recordCapture({savedPath}, displayName);
+                const std::optional<ImageFormat> fmt = imageFormatFromPath(savedPath);
+                runPostCaptureHook({}, displayName, {savedPath}, QDateTime::currentDateTime(),
+                                   fmt ? formatConfigKey(*fmt) : QStringLiteral("png"), QStringLiteral("editor"));
             });
     connect(window, &QuickEditorWindow::settingsModified, this, &App::saveSettings);
     editors_.append(window);
@@ -1258,6 +1291,12 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                         }
                         if (!out.writtenPaths.isEmpty()) {
                             recordCapture(out.writtenPaths, out.cliResult.displayName, resolvedTargetId);
+                            const QString fmt = out.cliResult.files.isEmpty()
+                                                    ? formatConfigKey(store_.effectiveExportOptions(resolvedTargetId).format)
+                                                    : out.cliResult.files.first().format;
+                            const QString groupId = store_.group(resolvedTargetId) ? resolvedTargetId : QString();
+                            runPostCaptureHook(resolvedTargetId, out.cliResult.displayName, out.writtenPaths,
+                                               QDateTime::currentDateTime(), fmt, QStringLiteral("cli"), false, groupId);
                         } else {
                             tray_->blink();
                             Q_EMIT captured(true);
@@ -1387,6 +1426,38 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
     }
 
     executeCapture();
+}
+
+void App::runPostCaptureHook(const QString &targetId, const QString &displayName, const QStringList &files,
+                             const QDateTime &timestamp, const QString &format, const QString &triggerKind,
+                             bool isInterval, const QString &groupId)
+{
+    if (files.isEmpty() || !hooks_) {
+        return;
+    }
+    const HookConfig cfg = store_.effectiveHookConfig(targetId, groupId, isInterval);
+    if (!cfg.enabled || cfg.command.trimmed().isEmpty()) {
+        return;
+    }
+    HookInvocation inv;
+    inv.command = cfg.command;
+    inv.timeoutSeconds = cfg.timeoutSeconds;
+    inv.files = files;
+    inv.targetId = targetId;
+    inv.targetName = displayName;
+    inv.triggerKind = triggerKind;
+    inv.timestamp = timestamp;
+    inv.format = format;
+    hooks_->run(inv);
+}
+
+void App::testPostCaptureHook(const QString &command, int timeoutSeconds,
+                              std::function<void(const HookResult &)> onDone)
+{
+    if (!hooks_) {
+        return;
+    }
+    hooks_->runTest(command, timeoutSeconds, std::move(onDone));
 }
 
 void App::editArea(const QString &areaId)
