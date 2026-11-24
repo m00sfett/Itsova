@@ -5,6 +5,7 @@
 #include <QDBusError>
 #include <QDBusMessage>
 #include <QDBusReply>
+#include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -174,6 +175,14 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  start <id-or-name> [--seconds N] [--max-captures N] [--max-minutes N] [--only-changed] [--json]\n"
                                  "  stop [<id-or-name> | --all] [--json]\n"
                                  "  status [--json]"));
+    } else if (subcommand == QLatin1String("history")) {
+        writeLine(out,
+                  QStringLiteral("Usage: glimply history [--limit N] [--json]\n\n"
+                                 "Lists recent captures, newest first (interval captures are not recorded).\n\n"
+                                 "Options:\n"
+                                 "  --limit <N>                         Show at most N captures\n"
+                                 "  --json                              Output JSON\n"
+                                 "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("overlay")) {
         writeLine(out,
                   QStringLiteral("Usage: glimply overlay [--mode frozen|live] [--delay N]\n\n"
@@ -1160,10 +1169,81 @@ CliSimpleResult DBusCliBackend::openOverlay(const QString &mode, int delaySecond
     return {msg.isEmpty(), msg.isEmpty() ? 0 : 1, {}, msg};
 }
 
+static int handleHistory(const QStringList &args, CliBackend &backend, QIODevice &out, QIODevice &err)
+{
+    bool jsonMode = args.contains(QStringLiteral("--json"));
+    int limit = -1;
+    for (int i = 0; i < args.size(); ++i) {
+        const QString &arg = args.at(i);
+        if (arg == QLatin1String("-h") || arg == QLatin1String("--help")) {
+            printSubcommandHelp(QStringLiteral("history"), out);
+            return 0;
+        }
+        if (arg == QLatin1String("--json")) {
+            continue;
+        }
+        if (arg == QLatin1String("--limit")) {
+            bool ok = false;
+            limit = i + 1 < args.size() ? args.at(i + 1).toInt(&ok) : 0;
+            ++i;
+            if (!ok || limit < 1) {
+                return emitError(jsonMode, 2, CliText::tr("--limit expects a positive number."), {}, out, err);
+            }
+            continue;
+        }
+        return emitError(jsonMode, 2, CliText::tr("Unknown option: %1").arg(arg), {}, out, err);
+    }
+    QJsonArray items;
+    const CliSimpleResult res = backend.history(&items);
+    if (!res.ok) {
+        return emitError(jsonMode, res.exitCode, res.error, {}, out, err);
+    }
+    if (limit > 0) {
+        while (items.size() > limit) {
+            items.removeLast();
+        }
+    }
+    if (jsonMode) {
+        writeJson(out, items);
+        return 0;
+    }
+    if (items.isEmpty()) {
+        writeLine(out, CliText::tr("No recent captures."));
+        return 0;
+    }
+    for (const QJsonValue &v : std::as_const(items)) {
+        const QJsonObject obj = v.toObject();
+        const QDateTime time = QDateTime::fromString(obj.value(QStringLiteral("timestamp")).toString(), Qt::ISODateWithMs);
+        const QString when = time.isValid() ? time.toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"))
+                                            : obj.value(QStringLiteral("timestamp")).toString();
+        for (const QJsonValue &file : obj.value(QStringLiteral("files")).toArray()) {
+            writeLine(out, QStringLiteral("%1\t%2\t%3")
+                               .arg(when, obj.value(QStringLiteral("targetName")).toString(),
+                                    file.toObject().value(QStringLiteral("path")).toString()));
+        }
+    }
+    return 0;
+}
+
+CliSimpleResult DBusCliBackend::history(QJsonArray *outArray)
+{
+    QString err;
+    const QDBusMessage reply = callControl(QStringLiteral("History"), {}, 10'000, &err);
+    if (!err.isEmpty()) {
+        return {false, 1, {}, err};
+    }
+    QJsonDocument doc;
+    if (!parseJsonDoc(reply.arguments().value(0).toString().toUtf8(), &doc, &err)) {
+        return {false, 1, {}, err};
+    }
+    *outArray = doc.array();
+    return {true, 0, {}, {}};
+}
+
 bool isCliSubcommand(const QString &arg)
 {
     return arg == QLatin1String("capture") || arg == QLatin1String("list") || arg == QLatin1String("area")
-        || arg == QLatin1String("interval") || arg == QLatin1String("overlay");
+        || arg == QLatin1String("interval") || arg == QLatin1String("overlay") || arg == QLatin1String("history");
 }
 
 int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QIODevice &err)
@@ -1189,6 +1269,9 @@ int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QI
     }
     if (subcommand == QLatin1String("overlay")) {
         return handleOverlay(subArgs, backend, out, err);
+    }
+    if (subcommand == QLatin1String("history")) {
+        return handleHistory(subArgs, backend, out, err);
     }
 
     writeLine(err, CliText::tr("Unknown subcommand: %1").arg(subcommand));
