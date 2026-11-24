@@ -1,5 +1,6 @@
 #include "traycontroller.h"
 
+#include "targets.h"
 #include "trayicon.h"
 
 #include <KStatusNotifierItem>
@@ -59,7 +60,6 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
         updateIcon();
     });
     connect(menu_, &QMenu::aboutToShow, this, &TrayController::rebuildMenu);
-    qApp->installEventFilter(this);
     updateIcon();
     rebuildMenu();
 }
@@ -88,10 +88,8 @@ void TrayController::blink()
 
 void TrayController::updateIcon()
 {
-    const QColor color = QApplication::palette().color(QPalette::WindowText);
-    const QIcon icon = trayIcon(color, flashing_);
-    item_->setIconByPixmap(icon);
-    item_->setToolTipIconByPixmap(trayIcon(color));
+    item_->setIconByPixmap(trayIcon(flashing_));
+    item_->setToolTipIconByPixmap(trayIcon());
 }
 
 void TrayController::rebuildMenu()
@@ -158,6 +156,20 @@ void TrayController::rebuildMenu()
     }
 
     addSeparator();
+    // DBusMenu cannot edit text inline, so renaming a monitor opens a small dialog.
+    auto *rename = new QMenu(tr("Rename Monitor"), menu_);
+    rename->setIcon(QIcon::fromTheme(QStringLiteral("edit-rename")));
+    for (const MenuTarget &target : targets) {
+        if (target.section == MenuTarget::Section::Monitor && isScreenTargetId(target.id)) {
+            auto *action = rename->addAction(QIcon::fromTheme(QStringLiteral("video-display")),
+                                             tr("%1…").arg(target.name));
+            connect(action, &QAction::triggered, this, [this, id = target.id] {
+                QTimer::singleShot(menuCloseDelayMs, this, [this, id] { Q_EMIT renameMonitorRequested(id); });
+            });
+        }
+    }
+    rename->setEnabled(!rename->isEmpty());
+    add(rename->menuAction());
     auto *addArea = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), menu_));
     connect(addArea, &QAction::triggered, this, &TrayController::addAreaRequested);
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));
@@ -170,14 +182,6 @@ void TrayController::rebuildMenu()
     connect(configure, &QAction::triggered, this, &TrayController::configureRequested);
     auto *quit = add(new QAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("Quit"), menu_));
     connect(quit, &QAction::triggered, qApp, &QCoreApplication::quit);
-}
-
-bool TrayController::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched == qApp && event->type() == QEvent::ApplicationPaletteChange) {
-        updateIcon();
-    }
-    return QObject::eventFilter(watched, event);
 }
 
 } // namespace glimply

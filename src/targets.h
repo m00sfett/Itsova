@@ -55,6 +55,9 @@ public:
     QList<Area> areas;
     QList<Group> groups;
     QStringList cursorScreens; // connectors whose built-in full-screen target includes the cursor
+    // Names the user gave monitors, keyed by monitorKey(). A monitor without one is called by its
+    // connector.
+    QHash<QString, QString> monitorNames;
     bool allMonitorsCursor = false;
 
     // Ids renamed while loading an older configuration (old id -> new id), so callers can move
@@ -69,7 +72,11 @@ public:
     // Print key and capture overlay.
     bool usePrintKey = true; // glimply owns the Print key (handed back to its previous owner when off)
     bool printOpensOverlay = true; // false: Print only saves the full screenshot
-    bool overlayStartsFrozen = true;
+    enum class OverlayStart { LastUsed, Frozen, Live };
+    OverlayStart overlayStart = OverlayStart::LastUsed;
+    bool lastOverlayFrozen = true; // the mode the overlay was in when it was last used
+    bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
+    [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
 
     [[nodiscard]] static QString defaultCaptureDirectory();
@@ -85,10 +92,19 @@ public:
     [[nodiscard]] const Group *group(const QString &id) const;
     [[nodiscard]] Group *group(const QString &id);
 
-    // Next free automatic name "<connector>-<n>".
-    [[nodiscard]] QString nextAreaName(const QString &connector) const;
-    // True if no area or group other than exceptId uses name (case-insensitive) and it is not a
-    // built-in token ("all" or a connector name in reservedTokens).
+    // The physical monitor (manufacturer, model, serial), or its connector when KWin reports none.
+    [[nodiscard]] static QString monitorKey(const ScreenInfo &screen);
+    // The user's name for the monitor, or its connector. Shown in the UI and used as the file
+    // name token and as the prefix of new automatic area names.
+    [[nodiscard]] QString monitorName(const ScreenInfo &screen) const;
+    // An empty name, or the connector itself, removes the user's name.
+    void setMonitorName(const ScreenInfo &screen, const QString &name);
+
+    // Next free automatic name "<prefix>-<n>" (the prefix is the monitor name).
+    [[nodiscard]] QString nextAreaName(const QString &prefix) const;
+    // True if no area, group or named monitor other than exceptId (an area or group id, or a
+    // monitorKey) uses name (case-insensitive) and it is not a built-in token ("all" or a
+    // connector name in reservedTokens).
     [[nodiscard]] bool isNameAvailable(const QString &name, const QString &exceptId = QString(),
                                        const QStringList &reservedTokens = {}) const;
 

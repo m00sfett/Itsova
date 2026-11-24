@@ -14,14 +14,19 @@ on Wayland.
   to the clipboard, then opens the capture overlay. glimply takes the key over
   from Spectacle on first start and gives it back exactly when you turn the
   option off or uninstall.
-- **Capture overlay** with labelled buttons: Frozen or Live, This Monitor, All
-  Monitors, Window, Areas. Draw several rectangles (they may overlap), save
-  them all at once as numbered files, copy one, or save them as areas or as a
-  group with one shortcut. Escape keeps the full screenshot.
+- **Capture overlay** with labelled buttons on every monitor: Frozen or Live,
+  This Monitor, All Monitors, Window, Areas, Help. Draw several rectangles
+  (they may overlap), save them all at once as numbered files, copy one, or
+  save them as areas or as a group with one shortcut. Escape keeps the full
+  screenshot. **Space** switches between Frozen and Live, **F1** shows all
+  controls, a right click deletes a rectangle.
 - **Windows** captured on their own, also when covered or minimized.
 - **Areas** bound to one monitor, stored in logical coordinates and captured
-  at the monitor's native resolution. glimply names them `<connector>-<n>`
+  at the monitor's native resolution. glimply names them `<monitor>-<n>`
   (for example `DP-1-1`); you can rename them.
+- **Monitor names**: give a monitor a name such as `Left` in the widget, the
+  settings or the tray menu. The name sticks to the physical monitor, appears
+  in file names of monitor captures and starts the names of new areas.
 - **Monitors and All monitors** are always available. *All monitors* is one
   image in the current arrangement at the highest monitor scale; gaps between
   monitors are transparent.
@@ -82,17 +87,31 @@ overlay, drag a rectangle and press **Enter** (or *Save*) to keep only that
 part, or click a monitor to keep only that monitor. Draw more rectangles to
 save several parts at once. *Save as Area* remembers the rectangles for later.
 In **Live** mode the screen keeps moving and the capture happens when you
-save. Escape or a right click keeps the full screenshot.
+save; Space switches between both, and the next overlay starts in the mode you
+used last (configurable). Escape keeps the full screenshot. Help (F1) lists all
+controls.
+
+Controls in the overlay; every modifier means the same with mouse and keys:
+
+| | Mouse (draw, resize) | Arrow keys |
+|---|---|---|
+| — | free | move by 1 px |
+| Shift | — | steps of 10 |
+| Alt | grow from the centre | resize around the centre (both sides) |
+| Ctrl | perfect square | resize as a square from the top left corner |
+| Ctrl+Alt | square from the centre | square around the centre |
+
+A right click on a rectangle deletes it; Delete removes the active one.
 
 To set up areas without capturing:
 
 1. Open the glimply widget in the system tray and choose **Add Area**. Every
    monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
    want and adjust it: drag the round handles on corners and edges to resize,
-   drag inside to move, use the centre crosshair to aim. Hold **Ctrl** while
-   drawing or resizing to grow from the centre and **Alt** for a perfect
-   square; both combine. Arrow keys move by a pixel, Shift+arrow keys resize,
-   Ctrl gives steps of ten. Choose **Save as Area**.
+   drag inside to move, use the centre crosshair to aim. Hold **Alt** while
+   drawing or resizing to grow from the centre and **Ctrl** for a perfect
+   square; both combine (see the table above for the arrow keys). Choose
+   **Save as Area**.
 2. Enter a name and, optionally, record a shortcut right there.
 3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
    folder.

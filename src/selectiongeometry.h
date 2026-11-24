@@ -9,9 +9,9 @@ namespace glimply
 
 // Modifiers that shape a selection while it is drawn or resized.
 struct SelectionConstraints {
-    // The rectangle grows symmetrically around its centre (Ctrl).
+    // The rectangle grows symmetrically around its centre (Alt).
     bool fromCentre = false;
-    // Width and height stay equal (Alt).
+    // Width and height stay equal (Ctrl).
     bool square = false;
 };
 
@@ -27,5 +27,15 @@ struct SelectionConstraints {
 // edge flips the rectangle.
 [[nodiscard]] QRect resizedSelection(const QRect &start, Qt::Edges edges, const QPoint &delta,
                                      SelectionConstraints constraints, const QSize &bounds);
+
+// rect changed by one arrow key press; step is the signed distance on one axis (the other is 0).
+// Without constraints the rectangle moves. With fromCentre it grows (right, down) or shrinks
+// (left, up) by step on both sides of that axis, so its centre stays exactly where it is. With
+// square it becomes a square of its width that grows or shrinks by step, from the top left corner,
+// or by step on every side around its centre with fromCentre. The size never drops below minimum
+// and the rectangle never leaves bounds; at the border a centred rectangle stops growing instead of
+// moving its centre.
+[[nodiscard]] QRect steppedSelection(const QRect &rect, const QPoint &step, SelectionConstraints constraints,
+                                     int minimum, const QSize &bounds);
 
 } // namespace glimply

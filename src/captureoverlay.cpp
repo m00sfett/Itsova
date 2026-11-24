@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QImageWriter>
 #include <QKeyEvent>
@@ -187,7 +188,7 @@ void CaptureSession::start()
         finish({}, {}, {tr("No monitor is connected.")});
         return;
     }
-    frozen_ = store().overlayStartsFrozen;
+    frozen_ = store().overlayStartsFrozen();
     if (purpose_ == Purpose::Print) {
         savePrintImage();
         if (finished_) {
@@ -205,15 +206,9 @@ void CaptureSession::start()
         captureFrames(connectors);
     }
 
-    const QPoint cursor = QCursor::pos();
-    QString cursorConnector = screens_.first().connector;
+    // Every monitor gets its own top bar, so "This Monitor" always means the one you look at.
     for (const ScreenInfo &screen : std::as_const(screens_)) {
-        if (screen.geometry.contains(cursor)) {
-            cursorConnector = screen.connector;
-        }
-    }
-    for (const ScreenInfo &screen : std::as_const(screens_)) {
-        auto *overlay = new CaptureOverlay(this, screen, screen.connector == cursorConnector);
+        auto *overlay = new CaptureOverlay(this, screen);
         overlays_.append(overlay);
         overlay->setAttribute(Qt::WA_DeleteOnClose);
         overlay->winId();
@@ -313,7 +308,7 @@ void CaptureSession::setDragging(bool dragging)
 QString CaptureSession::hint() const
 {
     if (dragging_) {
-        return tr("Hold Ctrl to grow from the centre, Alt for a square.");
+        return tr("Hold Alt to grow from the centre, Ctrl for a square.");
     }
     if (forceNew_) {
         return tr("Drag the next rectangle anywhere, also over another one.");
@@ -355,6 +350,13 @@ QKeySequence CaptureSession::shortcut(const QString &id) const
 bool CaptureSession::isConnected(const QString &connector) const
 {
     return std::any_of(screens_.cbegin(), screens_.cend(), [&](const ScreenInfo &s) { return s.connector == connector; });
+}
+
+QString CaptureSession::monitorName(const QString &connector) const
+{
+    const auto screen = std::find_if(screens_.cbegin(), screens_.cend(),
+                                     [&](const ScreenInfo &s) { return s.connector == connector; });
+    return screen == screens_.cend() ? connector : store().monitorName(*screen);
 }
 
 void CaptureSession::changed()
@@ -633,7 +635,8 @@ void CaptureSession::captureMonitor(const QString &connector)
             return;
         }
         QStringList errors;
-        finishWith(write({{connector, frame.image}}, &errors), frame.image, errors, connector);
+        const QString name = monitorName(connector);
+        finishWith(write({{name, frame.image}}, &errors), frame.image, errors, name);
     });
 }
 
@@ -713,17 +716,25 @@ void CaptureSession::captureWindow(const WindowInfo &window)
 
 void CaptureSession::setFrozen(bool frozen)
 {
-    if (frozen == frozen_) {
+    if (frozen == frozen_ || switching_ || finished_) {
         return;
     }
+    // The next overlay starts in this mode when the setting says "Last used".
+    store().lastOverlayFrozen = frozen;
+    app_->saveSettings();
     if (!frozen) {
         frozen_ = false;
         frames_.clear();
         changed();
         return;
     }
+    switching_ = true;
     hideOverlays();
     QTimer::singleShot(liveHideDelayMs, this, [this] {
+        switching_ = false;
+        if (finished_) {
+            return;
+        }
         QStringList connectors;
         for (const ScreenInfo &screen : std::as_const(screens_)) {
             connectors.append(screen.connector);
@@ -732,6 +743,18 @@ void CaptureSession::setFrozen(bool frozen)
         frozen_ = true;
         showOverlays();
     });
+}
+
+bool CaptureSession::helpExpanded() const
+{
+    return store().overlayHelpExpanded;
+}
+
+void CaptureSession::toggleHelp()
+{
+    store().overlayHelpExpanded = !store().overlayHelpExpanded;
+    app_->saveSettings();
+    changed();
 }
 
 void CaptureSession::openSettings()
@@ -793,21 +816,18 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
 
 // ------------------------------------------------------------------------------------------ Overlay
 
-CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen, bool withTopBar)
+CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen)
     : session_(session)
     , screen_(screen)
-    , withTopBar_(withTopBar)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-    setWindowTitle(tr("glimply capture on %1").arg(screen.connector));
+    setWindowTitle(tr("glimply capture on %1").arg(session->monitorName(screen.connector)));
     // Always translucent, so the same window can show the frozen picture or the live screen.
     setAttribute(Qt::WA_TranslucentBackground);
     setCursor(Qt::CrossCursor);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
-    if (withTopBar_) {
-        buildTopBar();
-    }
+    buildTopBar();
     buildActionBar();
 }
 
@@ -828,9 +848,10 @@ void CaptureOverlay::buildTopBar()
     column->addLayout(row);
 
     frozenButton_ = barButton(panel, QStringLiteral("media-playback-pause"), tr("Frozen"),
-                              tr("Show the moment you pressed the key. Captures cut from this picture."));
+                              tr("Show the moment you pressed the key. Captures cut from this picture. (Space)"));
     liveButton_ = barButton(panel, QStringLiteral("media-playback-start"), tr("Live"),
-                            tr("See the screen move on, for example a video. Captures are taken when you save."));
+                            tr("See the screen move on, for example a video. Captures are taken when you save. "
+                               "(Space)"));
     frozenButton_->setCheckable(true);
     liveButton_->setCheckable(true);
     connect(frozenButton_, &QToolButton::clicked, this, [this] { session_->setFrozen(true); });
@@ -850,7 +871,7 @@ void CaptureOverlay::buildTopBar()
 
     if (print) {
         auto *monitor = barButton(panel, QStringLiteral("video-display"), tr("This Monitor"),
-                                  tr("Capture all of %1").arg(screen_.connector));
+                                  tr("Capture all of %1").arg(session_->monitorName(screen_.connector)));
         connect(monitor, &QToolButton::clicked, this, [this] { session_->captureMonitor(screen_.connector); });
         row->addWidget(monitor);
         auto *all = barButton(panel, QStringLiteral("view-fullscreen"), tr("All Monitors"),
@@ -879,6 +900,10 @@ void CaptureOverlay::buildTopBar()
     row->addWidget(areas);
 
     separator();
+    helpButton_ = barButton(panel, QStringLiteral("help-contextual"), tr("Help"), tr("Show or hide the controls (F1)"));
+    helpButton_->setCheckable(true);
+    connect(helpButton_, &QToolButton::clicked, this, [this] { session_->toggleHelp(); });
+    row->addWidget(helpButton_);
     if (print) {
         auto *settings = barButton(panel, QStringLiteral("configure"), tr("Settings"),
                                    tr("Keep the full screenshot and open the settings"));
@@ -899,6 +924,68 @@ void CaptureOverlay::buildTopBar()
     hintPalette.setColor(QPalette::WindowText, muted);
     hint_->setPalette(hintPalette);
     column->addWidget(hint_);
+
+    helpPanel_ = buildHelpPanel(panel);
+    column->addWidget(helpPanel_);
+}
+
+QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
+{
+    const bool print = session_->purpose() == CaptureSession::Purpose::Print;
+    auto *panel = new QWidget(parent);
+    auto *columns = new QHBoxLayout(panel);
+    columns->setContentsMargins(8, 6, 8, 4);
+    columns->setSpacing(28);
+
+    const auto section = [&](const QString &title, const QList<QPair<QString, QString>> &rows) {
+        auto *grid = new QGridLayout;
+        grid->setHorizontalSpacing(14);
+        grid->setVerticalSpacing(3);
+        auto *heading = new QLabel(title, panel);
+        QFont bold = heading->font();
+        bold.setBold(true);
+        heading->setFont(bold);
+        grid->addWidget(heading, 0, 0, 1, 2);
+        grid->setRowMinimumHeight(1, 2);
+        int line = 2;
+        for (const auto &[keys, meaning] : rows) {
+            auto *keyLabel = new QLabel(keys, panel);
+            keyLabel->setFont(bold);
+            keyLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+            auto *meaningLabel = new QLabel(meaning, panel);
+            meaningLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+            grid->addWidget(keyLabel, line, 0);
+            grid->addWidget(meaningLabel, line, 1);
+            ++line;
+        }
+        grid->setRowStretch(line, 1);
+        columns->addLayout(grid);
+    };
+
+    QList<QPair<QString, QString>> mouse{
+        {tr("Drag"), tr("Draw a rectangle")},
+        {tr("Drag inside / edge"), tr("Move / resize the active rectangle")},
+        {tr("Alt / Ctrl while dragging"), tr("Grow from the centre / keep a square")},
+        {tr("Click a rectangle"), tr("Make it active")},
+        {tr("Right-click a rectangle"), tr("Delete it")},
+        {tr("Double-click a rectangle"), print ? tr("Save it") : tr("Save it as an area")},
+    };
+    if (print) {
+        mouse.append({tr("Click, nothing drawn"), tr("Capture this monitor")});
+    }
+    section(tr("Mouse"), mouse);
+
+    section(tr("Keys"), {
+        {tr("Space"), tr("Switch between Frozen and Live")},
+        {tr("Arrows"), tr("Move by 1 px; with Shift by 10 px")},
+        {tr("Alt + arrows"), tr("Resize around the centre")},
+        {tr("Ctrl + arrows"), tr("Resize as a square; with Alt around the centre")},
+        {tr("Enter"), print ? tr("Save") : tr("Save as area")},
+        {tr("Delete"), tr("Delete the active rectangle")},
+        {tr("Escape"), print ? tr("Close and keep the full screenshot") : tr("Cancel")},
+        {tr("F1"), tr("Show or hide this help")},
+    });
+    return panel;
 }
 
 void CaptureOverlay::fillWindowsMenu()
@@ -1113,7 +1200,7 @@ void CaptureOverlay::showAreaPanel()
     auto *name = new QLineEdit(areaPanel_);
     name->setMinimumWidth(260);
     if (count == 1) {
-        name->setText(store.nextAreaName(model.inDrawingOrder().first().connector));
+        name->setText(store.nextAreaName(session_->monitorName(model.inDrawingOrder().first().connector)));
     } else {
         int n = 1;
         while (!store.isNameAvailable(tr("Group %1").arg(n))) {
@@ -1204,6 +1291,8 @@ void CaptureOverlay::refresh()
         frozenButton_->setChecked(session_->frozen());
         liveButton_->setChecked(!session_->frozen());
         hint_->setText(session_->hint());
+        helpButton_->setChecked(session_->helpExpanded());
+        helpPanel_->setVisible(session_->helpExpanded());
         topBar_->adjustSize();
         const QSize size = topBar_->sizeHint();
         topBar_->setGeometry((width() - size.width()) / 2, 16, size.width(), size.height());
@@ -1295,6 +1384,7 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
 
     const QPalette pal = palette();
     const QColor accent = pal.color(QPalette::Highlight);
+    const QColor negative(218, 68, 83); // Breeze "negative text"
 
     // Outlines of areas or windows hovered in a list.
     for (const CaptureSession::Highlight &highlight : session_->highlights()) {
@@ -1322,9 +1412,11 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             painter.setPen(QPen(accent, 2));
             painter.drawRect(frame.adjusted(1, 1, -1, -1));
         } else {
+            // A hovered rectangle shows in the theme's negative colour: a right click deletes it.
+            const bool hovered = selection.id == hoverId_ && drag_ == Drag::None;
             painter.setPen(QPen(QColor(0, 0, 0, 120), 3));
             painter.drawRect(frame.adjusted(0.5, 0.5, -0.5, -0.5));
-            painter.setPen(QPen(QColor(255, 255, 255, 200), 1));
+            painter.setPen(QPen(hovered ? negative : QColor(255, 255, 255, 200), hovered ? 2 : 1));
             painter.drawRect(frame.adjusted(0.5, 0.5, -0.5, -0.5));
         }
 
@@ -1474,7 +1566,17 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
 void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
-        session_->close();
+        // Right click deletes the rectangle under the pointer; elsewhere it does nothing, so a
+        // missed rectangle never throws the whole selection away.
+        if (drag_ == Drag::None) {
+            const QPoint pos = event->position().toPoint();
+            if (const int id = session_->selections().topmostAt(screen_.connector, pos)) {
+                session_->selections().remove(id);
+                hoverId_ = 0;
+                session_->changed();
+                updateCursor(pos);
+            }
+        }
         return;
     }
     if (event->button() != Qt::LeftButton) {
@@ -1545,8 +1647,8 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
 
 void CaptureOverlay::applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers)
 {
-    const SelectionConstraints constraints{modifiers.testFlag(Qt::ControlModifier),
-                                           modifiers.testFlag(Qt::AltModifier)};
+    const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
+                                           modifiers.testFlag(Qt::ControlModifier)};
     SelectionModel &model = session_->selections();
     const QSize bounds = size();
     if (drag_ == Drag::Create) {
@@ -1648,10 +1750,22 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         return;
     }
     SelectionModel &model = session_->selections();
-    const int step = event->modifiers().testFlag(Qt::ControlModifier) ? 10 : 1;
-    const bool resize = event->modifiers().testFlag(Qt::ShiftModifier);
+    // One meaning per modifier, as with the mouse: Shift = steps of 10, Alt = around the centre,
+    // Ctrl = square. Alt or Ctrl turn the arrow keys from moving into resizing.
+    const Qt::KeyboardModifiers modifiers = event->modifiers();
+    const int step = modifiers.testFlag(Qt::ShiftModifier) ? 10 : 1;
+    const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
+                                           modifiers.testFlag(Qt::ControlModifier)};
     QPoint delta;
     switch (event->key()) {
+    case Qt::Key_F1:
+        session_->toggleHelp();
+        return;
+    case Qt::Key_Space:
+        if (!event->isAutoRepeat() && drag_ == Drag::None) {
+            session_->setFrozen(!session_->frozen());
+        }
+        return;
     case Qt::Key_Escape:
         if (areaPanel_) {
             showActionButtons();
@@ -1699,14 +1813,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     if (!active) {
         return;
     }
-    QRect rect = active->rect;
-    if (resize) {
-        rect.setWidth(std::max(minimumAreaSize, rect.width() + delta.x()));
-        rect.setHeight(std::max(minimumAreaSize, rect.height() + delta.y()));
-    } else {
-        rect.translate(delta);
-    }
-    model.setRect(active->id, clampToArea(rect, size()));
+    model.setRect(active->id, steppedSelection(active->rect, delta, constraints, minimumAreaSize, size()));
     session_->changed();
 }
 

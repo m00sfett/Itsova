@@ -7,6 +7,7 @@
 class KKeySequenceWidget;
 class KPageWidgetItem;
 class QCheckBox;
+class QComboBox;
 class QLabel;
 class QLineEdit;
 class QListWidget;
@@ -36,6 +37,8 @@ public:
 
 private:
     QWidget *createTargetsPage();
+    // Version, licence and links in a line at the bottom.
+    void addFooter();
     QWidget *createGroupsPage();
     QWidget *createStoragePage();
     QWidget *createGeneralPage();
@@ -84,6 +87,8 @@ private:
     QCheckBox *targetCursor_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
+    QList<QWidget *> nameRow_; // areas and connected monitors
+    QLabel *nameHint_ = nullptr;
 
     // Groups page
     QListWidget *groupList_ = nullptr;
@@ -102,7 +107,7 @@ private:
     QCheckBox *autostart_ = nullptr;
     QCheckBox *usePrintKey_ = nullptr;
     QCheckBox *printOpensOverlay_ = nullptr;
-    QCheckBox *overlayStartsFrozen_ = nullptr;
+    QComboBox *overlayStart_ = nullptr;
     QCheckBox *captureOnRelease_ = nullptr;
 };
 

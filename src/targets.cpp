@@ -77,6 +77,19 @@ QString TargetStore::defaultFilenameTemplate()
     return QStringLiteral("{date}_{time}_{area}.png");
 }
 
+bool TargetStore::overlayStartsFrozen() const
+{
+    switch (overlayStart) {
+    case OverlayStart::Frozen:
+        return true;
+    case OverlayStart::Live:
+        return false;
+    case OverlayStart::LastUsed:
+        break;
+    }
+    return lastOverlayFrozen;
+}
+
 QString TargetStore::effectiveCaptureDirectory() const
 {
     return captureDirectory.isEmpty() ? defaultCaptureDirectory() : captureDirectory;
@@ -100,8 +113,28 @@ void TargetStore::load(const KConfig &config)
     autostart = general.readEntry("Autostart", true);
     usePrintKey = general.readEntry("UsePrintKey", true);
     printOpensOverlay = general.readEntry("PrintOpensOverlay", true);
-    overlayStartsFrozen = general.readEntry("OverlayStartsFrozen", true);
+    const QString start = general.readEntry("OverlayStart", QString());
+    if (start == QLatin1String("frozen")) {
+        overlayStart = OverlayStart::Frozen;
+    } else if (start == QLatin1String("live")) {
+        overlayStart = OverlayStart::Live;
+    } else if (start.isEmpty() && !general.readEntry("OverlayStartsFrozen", true)) {
+        overlayStart = OverlayStart::Live; // before 0.3.0: "Start frozen" was switched off
+    } else {
+        overlayStart = OverlayStart::LastUsed;
+    }
+    lastOverlayFrozen = general.readEntry("LastOverlayFrozen", true);
+    overlayHelpExpanded = general.readEntry("OverlayHelpExpanded", true);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
+
+    monitorNames.clear();
+    const KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
+    for (const QString &key : monitors.keyList()) {
+        const QString name = monitors.readEntry(key, QString()).trimmed();
+        if (!name.isEmpty()) {
+            monitorNames.insert(key, name);
+        }
+    }
 
     const KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     cursorScreens = builtIn.readEntry("CursorScreens", QStringList());
@@ -169,8 +202,29 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("Autostart", autostart);
     general.writeEntry("UsePrintKey", usePrintKey);
     general.writeEntry("PrintOpensOverlay", printOpensOverlay);
-    general.writeEntry("OverlayStartsFrozen", overlayStartsFrozen);
+    switch (overlayStart) {
+    case OverlayStart::LastUsed:
+        general.writeEntry("OverlayStart", QStringLiteral("last"));
+        break;
+    case OverlayStart::Frozen:
+        general.writeEntry("OverlayStart", QStringLiteral("frozen"));
+        break;
+    case OverlayStart::Live:
+        general.writeEntry("OverlayStart", QStringLiteral("live"));
+        break;
+    }
+    general.deleteEntry("OverlayStartsFrozen");
+    general.writeEntry("LastOverlayFrozen", lastOverlayFrozen);
+    general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
+
+    config.deleteGroup(QStringLiteral("MonitorNames"));
+    if (!monitorNames.isEmpty()) {
+        KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
+        for (auto it = monitorNames.cbegin(); it != monitorNames.cend(); ++it) {
+            monitors.writeEntry(it.key(), it.value());
+        }
+    }
 
     KConfigGroup builtIn = config.group(QStringLiteral("BuiltIn"));
     builtIn.writeEntry("CursorScreens", cursorScreens);
@@ -222,10 +276,31 @@ Group *TargetStore::group(const QString &id)
     return const_cast<Group *>(std::as_const(*this).group(id));
 }
 
-QString TargetStore::nextAreaName(const QString &connector) const
+QString TargetStore::monitorKey(const ScreenInfo &screen)
+{
+    const QString identity = screen.identity();
+    return identity.isEmpty() ? QStringLiteral("connector:") + screen.connector : identity;
+}
+
+QString TargetStore::monitorName(const ScreenInfo &screen) const
+{
+    return monitorNames.value(monitorKey(screen), screen.connector);
+}
+
+void TargetStore::setMonitorName(const ScreenInfo &screen, const QString &name)
+{
+    const QString trimmed = name.trimmed();
+    if (trimmed.isEmpty() || trimmed == screen.connector) {
+        monitorNames.remove(monitorKey(screen));
+    } else {
+        monitorNames.insert(monitorKey(screen), trimmed);
+    }
+}
+
+QString TargetStore::nextAreaName(const QString &prefix) const
 {
     for (int n = 1;; ++n) {
-        const QString candidate = connector + QLatin1Char('-') + QString::number(n);
+        const QString candidate = prefix + QLatin1Char('-') + QString::number(n);
         if (isNameAvailable(candidate)) {
             return candidate;
         }
@@ -251,6 +326,11 @@ bool TargetStore::isNameAvailable(const QString &name, const QString &exceptId, 
             return false;
         }
     }
+    for (auto it = monitorNames.cbegin(); it != monitorNames.cend(); ++it) {
+        if (it.key() != exceptId && it.value().compare(trimmed, Qt::CaseInsensitive) == 0) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -258,7 +338,7 @@ Area &TargetStore::addArea(const ScreenInfo &screen, const QRect &rect)
 {
     Area area;
     area.id = newId(areaIdPrefix);
-    area.name = nextAreaName(screen.connector);
+    area.name = nextAreaName(monitorName(screen));
     area.connector = screen.connector;
     area.monitorIdentity = screen.identity();
     area.rect = rect;

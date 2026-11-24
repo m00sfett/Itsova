@@ -26,7 +26,7 @@ PlasmoidItem {
     // The popup must be gone before a capture or the frozen selection picture is taken.
     readonly property int closeDelay: 300
 
-    Plasmoid.icon: flashing ? "io.github.m00sfett.glimply-flash-symbolic" : "io.github.m00sfett.glimply-symbolic"
+    Plasmoid.icon: flashing ? "io.github.m00sfett.glimply-tray-flash" : "io.github.m00sfett.glimply-tray"
     Plasmoid.status: running ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
     toolTipMainText: "glimply"
     toolTipSubText: running ? i18n("Capture fixed areas and monitors") : i18n("glimply is not running")

@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - Unreleased
+
+Faster control of the overlay, named monitors and the roteson.de icon.
+
+### Added
+
+- Space switches between Frozen and Live in every overlay (except while typing a name).
+- A right click on a rectangle deletes it; a hovered rectangle is outlined in red. A right click elsewhere does nothing.
+- Help in the overlay's top bar (also F1): every mouse and key control at a glance. It is open on first use and remembers whether you closed it.
+- Monitor names: rename a monitor inline in the widget, in the settings, or from the tray menu without the widget. The name belongs to the physical monitor, is used in the file names of monitor captures and as the start of new automatic area names. Existing areas keep their names; an empty name gives the connector name back.
+- Footer in the settings window with version, licence, links to roteson.de and GitHub, and the roteson.de and R²W² brand marks.
+
+### Changed
+
+- The overlay starts in the mode you used last. The setting *Overlay starts* offers Last used, Frozen or Live; a switched-off *Start frozen* becomes Live.
+- Every monitor gets its own top bar, so *This Monitor* always means the monitor you click on.
+- Modifiers mean the same with mouse and arrow keys: Shift steps by 10, Alt works around the centre, Ctrl keeps a square. With the mouse, Alt now grows from the centre and Ctrl makes a square (swapped). Arrow keys with Alt resize around the centre, with Ctrl as a square; Shift+arrow no longer resizes one edge.
+- New icons in the roteson.de colours: app icon with the dark-red ring, tray and widget icon as a red tile with yellow corners that flashes yellow after a capture.
+
 ## [0.2.0] - Unreleased
 
 glimply becomes the Print key tool: one key press saves the screen, an optional overlay narrows it down.

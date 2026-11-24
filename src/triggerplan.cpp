@@ -54,7 +54,8 @@ void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const
             return;
         }
         addConnector(plan, connector);
-        plan.outputs.append({OutputSpec::Kind::Screen, targetId, connector, connector, {}});
+        plan.outputs.append({OutputSpec::Kind::Screen, targetId, store.monitorName(*findScreen(screens, connector)),
+                             connector, {}});
         return;
     }
 
@@ -113,7 +114,9 @@ TriggerPlan planTrigger(const TargetStore &store, const QString &triggerId, cons
     } else if (triggerId == allMonitorsTargetId()) {
         plan.displayName = PlanText::tr("All monitors");
     } else {
-        plan.displayName = connectorFromScreenTargetId(triggerId);
+        const QString connector = connectorFromScreenTargetId(triggerId);
+        const ScreenInfo *screen = findScreen(screens, connector);
+        plan.displayName = screen ? store.monitorName(*screen) : connector;
     }
     addTarget(store, screens, triggerId, plan);
     return plan;

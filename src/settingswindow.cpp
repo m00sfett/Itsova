@@ -10,7 +10,9 @@
 #include <KPageWidgetItem>
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QDialogButtonBox>
+#include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
 #include <QFormLayout>
@@ -25,7 +27,9 @@
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTimer>
+#include <QToolButton>
 #include <QTreeWidget>
+#include <QUrl>
 #include <QVBoxLayout>
 
 namespace glimply
@@ -36,6 +40,17 @@ namespace
 constexpr int idRole = Qt::UserRole;
 // The settings window must be gone before the frozen screen picture is taken.
 constexpr int hideBeforeSelectDelayMs = 300;
+
+QString websiteUrl()
+{
+    return QStringLiteral("https://roteson.de");
+}
+
+// The repository; private until the name is cleared, then public under the same address.
+QString projectUrl()
+{
+    return QStringLiteral("https://github.com/m00sfett/glimply");
+}
 
 QLabel *makeHint(const QString &text, QWidget *parent)
 {
@@ -91,8 +106,49 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
             refresh();
         }
     });
+    addFooter();
     resize(860, 600);
     refresh();
+}
+
+void SettingsWindow::addFooter()
+{
+    auto *footer = new QWidget(this);
+    auto *row = new QHBoxLayout(footer);
+    row->setContentsMargins(10, 0, 6, 4);
+    row->setSpacing(4);
+
+    // Link text: plain, readable label with the links in the theme's link colour.
+    auto *about = new QLabel(footer);
+    about->setTextFormat(Qt::RichText);
+    about->setOpenExternalLinks(true);
+    about->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    about->setText(tr("glimply v%1 · AGPL-3.0 · <a href=\"%2\">roteson.de</a> · <a href=\"%3\">GitHub</a>")
+                       .arg(QCoreApplication::applicationVersion(), websiteUrl(), projectUrl()));
+    QFont small = about->font();
+    small.setPointSizeF(small.pointSizeF() * 0.9);
+    about->setFont(small);
+    row->addWidget(about);
+    row->addStretch();
+
+    const auto addMark = [&](const QString &resource, const QString &tooltip, const QString &url) {
+        auto *mark = new QToolButton(footer);
+        mark->setIcon(QIcon(resource));
+        mark->setIconSize(QSize(28, 28));
+        mark->setAutoRaise(true);
+        mark->setToolTip(tooltip);
+        mark->setAccessibleName(tooltip);
+        mark->setCursor(Qt::PointingHandCursor);
+        connect(mark, &QToolButton::clicked, this, [url] { QDesktopServices::openUrl(QUrl(url)); });
+        row->addWidget(mark);
+    };
+    addMark(QStringLiteral(":/brand/brand-roteson.png"), tr("roteson.de"), websiteUrl());
+    addMark(QStringLiteral(":/brand/brand-r2w2.png"), tr("R²W² Development · glimply on GitHub"), projectUrl());
+
+    // A full-width line under the pages and the Close button.
+    if (auto *top = qobject_cast<QBoxLayout *>(layout())) {
+        top->addWidget(footer);
+    }
 }
 
 // ---------------------------------------------------------------- Targets
@@ -137,16 +193,17 @@ QWidget *SettingsWindow::createTargetsPage()
     form->addRow(targetTitle_);
 
     areaName_ = new QLineEdit(targetDetails_);
-    areaName_->setAccessibleName(tr("Area name"));
+    areaName_->setAccessibleName(tr("Name"));
     areaNameError_ = makeError(targetDetails_);
     auto *nameBox = new QWidget(targetDetails_);
     auto *nameLayout = new QVBoxLayout(nameBox);
     nameLayout->setContentsMargins(0, 0, 0, 0);
     nameLayout->addWidget(areaName_);
     nameLayout->addWidget(areaNameError_);
-    nameLayout->addWidget(makeHint(tr("Also used in the file name."), nameBox));
+    nameHint_ = makeHint(tr("Also used in the file name."), nameBox);
+    nameLayout->addWidget(nameHint_);
     form->addRow(tr("Name:"), nameBox);
-    areaOnly_ = {nameBox, form->labelForField(nameBox)};
+    nameRow_ = {nameBox, form->labelForField(nameBox)};
 
     monitorLabel_ = new QLabel(targetDetails_);
     monitorLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -267,7 +324,7 @@ void SettingsWindow::refreshTargets()
     const auto addMonitor = [&](const QString &connector, bool connected) {
         const QString id = screenTargetId(connector);
         auto *item = new QTreeWidgetItem(targetTree_);
-        item->setText(0, connected ? connector : tr("%1 (not connected)").arg(connector));
+        item->setText(0, connected ? monitorName(store, connector) : tr("%1 (not connected)").arg(connector));
         item->setIcon(0, QIcon::fromTheme(QStringLiteral("video-display")));
         item->setText(1, shortcuts->shortcut(id).toString(QKeySequence::NativeText));
         item->setData(0, idRole, id);
@@ -322,6 +379,17 @@ void SettingsWindow::refreshTargetDetails()
 
     const QString connector = isArea ? area->connector : connectorFromScreenTargetId(id);
     const QScreen *screen = connector.isEmpty() ? nullptr : findScreen(connector);
+    const bool isMonitor = !isArea && screen && isScreenTargetId(id);
+    for (QWidget *widget : std::as_const(nameRow_)) {
+        if (widget) {
+            widget->setVisible(isArea || isMonitor);
+        }
+    }
+    areaName_->setPlaceholderText(isMonitor ? connector : QString());
+    nameHint_->setText(isMonitor ? tr("Also used in file names and for new areas on this monitor. Leave empty "
+                                      "for %1.")
+                                       .arg(connector)
+                                 : tr("Also used in the file name."));
     if (id == allMonitorsTargetId()) {
         targetTitle_->setText(tr("All monitors"));
         monitorLabel_->setText(tr("One image of all monitors in their current arrangement, at the highest scale. "
@@ -364,7 +432,9 @@ void SettingsWindow::refreshTargetDetails()
             areaWarning_->show();
         }
     } else if (screen) {
-        targetTitle_->setText(tr("Monitor %1").arg(connector));
+        const QString name = store.monitorName(screenInfo(screen));
+        targetTitle_->setText(tr("Monitor %1").arg(name));
+        areaName_->setText(name == connector ? QString() : name);
     } else if (id != allMonitorsTargetId()) {
         targetTitle_->setText(tr("Monitor %1").arg(connector));
     }
@@ -484,7 +554,14 @@ void SettingsWindow::renameArea()
     if (updating_) {
         return;
     }
-    Area *area = app_->store().area(selectedTargetId());
+    const QString id = selectedTargetId();
+    if (isScreenTargetId(id)) {
+        const QString error = app_->renameTarget(id, areaName_->text());
+        areaNameError_->setText(error);
+        areaNameError_->setVisible(!error.isEmpty());
+        return;
+    }
+    Area *area = app_->store().area(id);
     if (!area) {
         return;
     }
@@ -736,7 +813,7 @@ void SettingsWindow::refreshGroupDetails()
             item->setCheckState(group->targetIds.contains(id) ? Qt::Checked : Qt::Unchecked);
         };
         for (const Area &area : store.areas) {
-            addMember(area.id, tr("%1 (area on %2)").arg(area.name, area.connector),
+            addMember(area.id, tr("%1 (area on %2)").arg(area.name, monitorName(store, area.connector)),
                       QStringLiteral("transform-crop"));
         }
         QStringList connectors;
@@ -749,7 +826,8 @@ void SettingsWindow::refreshGroupDetails()
             }
         }
         for (const QString &connector : std::as_const(connectors)) {
-            addMember(screenTargetId(connector), tr("Monitor %1").arg(connector), QStringLiteral("video-display"));
+            addMember(screenTargetId(connector), tr("Monitor %1").arg(monitorName(store, connector)),
+                      QStringLiteral("video-display"));
         }
         addMember(allMonitorsTargetId(), tr("All monitors"), QStringLiteral("video-display"));
     }
@@ -918,14 +996,17 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
-    overlayStartsFrozen_ = new QCheckBox(tr("Start frozen"), page);
-    form->addRow(tr("Overlay:"), overlayStartsFrozen_);
+    overlayStart_ = new QComboBox(page);
+    overlayStart_->addItem(tr("Last used"), int(TargetStore::OverlayStart::LastUsed));
+    overlayStart_->addItem(tr("Frozen"), int(TargetStore::OverlayStart::Frozen));
+    overlayStart_->addItem(tr("Live"), int(TargetStore::OverlayStart::Live));
+    form->addRow(tr("Overlay starts:"), overlayStart_);
     form->addRow(QString(), makeHint(tr("Frozen shows the moment you pressed Print. Live lets videos keep playing and "
-                                        "captures when you save. You can switch in the overlay at any time."),
+                                        "captures when you save. Space switches in the overlay at any time."),
                                      page));
-    connect(overlayStartsFrozen_, &QCheckBox::toggled, this, [this](bool on) {
+    connect(overlayStart_, &QComboBox::currentIndexChanged, this, [this] {
         if (!updating_) {
-            app_->store().overlayStartsFrozen = on;
+            app_->store().overlayStart = TargetStore::OverlayStart(overlayStart_->currentData().toInt());
             app_->storeChanged();
         }
     });
@@ -953,7 +1034,7 @@ void SettingsWindow::refreshStorage()
     autostart_->setChecked(store.autostart);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
-    overlayStartsFrozen_->setChecked(store.overlayStartsFrozen);
+    overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));
     captureOnRelease_->setChecked(store.captureOnRelease);
     updating_ = false;
 }

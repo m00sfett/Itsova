@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect x="4" y="4" width="56" height="56" rx="12" fill="#232629"/>
-  <g fill="none" stroke="#fcfcfc" stroke-width="4" stroke-linecap="square">
-    <path d="M14 26V14h12"/>
-    <path d="M38 14h12v12"/>
-    <path d="M50 38v12H38"/>
-    <path d="M26 50H14V38"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Same frame and colours as the other roteson.de tools: dark tile, red ring, red field. -->
+  <rect x="4" y="4" width="120" height="120" rx="22" fill="#080604" stroke="#B11218" stroke-width="6"/>
+  <rect x="14" y="14" width="100" height="100" rx="16" fill="#B11218"/>
+  <!-- Viewfinder corners around a small point, drawn on the 22 px tray grid. -->
+  <g transform="translate(14 14) scale(4.545)" fill="#FFD21F">
+    <path d="M3 3h6v2H5v4H3zM13 3h6v6h-2V5h-4zM19 13v6h-6v-2h4v-4zM3 13h2v4h4v2H3z"/>
+    <rect x="9" y="9" width="4" height="4" rx="1"/>
   </g>
-  <rect x="25" y="25" width="14" height="14" rx="3" fill="#3daee9"/>
 </svg>
