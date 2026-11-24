@@ -1,0 +1,44 @@
+# Maintainer: m00sfett <https://github.com/m00sfett>
+pkgname=glimply-git
+pkgver=0.8.0.r0.g0000000
+pkgrel=1
+pkgdesc='Screenshot tool for KDE Plasma: fixed areas, monitors and windows on global shortcuts (development version)'
+arch=('x86_64')
+url='https://github.com/m00sfett/glimply'
+license=('AGPL-3.0-or-later')
+depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
+         'knotifications' 'kstatusnotifieritem' 'kwidgetsaddons' 'kwin' 'kxmlgui' 'qt6-base')
+makedepends=('cmake' 'git' 'ninja' 'qt6-tools')
+checkdepends=('python' 'qt6-imageformats')
+optdepends=('tesseract: text recognition (Copy Text, glimply capture --ocr)'
+            'tesseract-data-eng: English text recognition'
+            'qt6-imageformats: WebP and additional export image formats'
+            'plasma-workspace: the glimply Plasma widget')
+provides=('glimply')
+conflicts=('glimply')
+source=('git+https://github.com/m00sfett/glimply.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd glimply
+  # No release tags before 1.0.0: version from CMakeLists.txt, commit count and hash.
+  local version
+  version=$(sed -n 's/^project(glimply VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
+  printf '%s.r%s.g%s' "$version" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+  cmake -B build -S glimply -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=ON
+  cmake --build build
+}
+
+check() {
+  QT_QPA_PLATFORM=offscreen ctest --test-dir build --output-on-failure
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

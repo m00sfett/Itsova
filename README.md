@@ -1,232 +1,136 @@
 # glimply
 
-glimply is a KDE Plasma tray application for screenshots. The Print key saves
-all monitors instantly; an overlay then lets you cut the picture down to
-rectangles, one monitor or one window. Fixed areas, monitors and groups can be
-captured the moment a global shortcut is pressed, without any overlay.
+> **Note:** `glimply` is currently a working name while in pre-release development (`0.8.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
 
-The project is in active development (0.5.x) and targets KDE Plasma 6 on Wayland.
+**glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
+
+---
 
 ## Features
 
-- **Print key** replacement: Print saves all monitors immediately and copies the
-  picture to the clipboard, then opens the capture overlay. glimply takes the
-  key over from Spectacle on first start and gives it back exactly when you turn
-  the option off or uninstall.
-- **Capture overlay** with labelled buttons on every monitor: Frozen or Live,
-  This Monitor, All Monitors, Window, Areas, Delay, Annotate, Pick Color, Help.
-  Draw several rectangles across one or multiple monitors (`8 px` magnetic edge
-  snapping), save them all at once as numbered files, copy one, or save them as
-  areas or as a group with one shortcut. Escape keeps the full screenshot.
-  **Space** switches between Frozen and Live, **F1** shows all controls, a right
-  click deletes a rectangle.
-- **Multi-format export & live size estimate**: PNG by default plus JPEG (transparent
-  regions flatten cleanly to `#000000`), WebP (lossless or lossy), and
-  runtime-detected AVIF / JPEG XL. *Configure glimply…* supports Target > Group >
-  Global overrides; **Save As…** opens a compact Breeze dialog with live async
-  file-size preview.
-- **Capture delay timer**: non-blocking countdown banner (`Off`, `3 s`, `5 s`,
-  `10 s`, or custom `1–60 s`) usable pre-capture from the widget, tray, or
-  per-area/group delays, or inside the overlay via **Delay** retake. One-Shot by
-  default unless **Keep delay active** is toggled on.
-- **Windows** captured on their own, also when covered or minimized.
-- **Areas** on one monitor (`<monitor>-<n>`) or spanning multiple monitors
-  (mixed-DPI composition at highest involved scale, byte-identical fast path
-  for single-monitor areas, and graceful partial-visibility capture + passive
-  notice if an involved monitor is disconnected).
-- **Pixel loupe & color picker**: an `11 × 11` nearest-neighbor magnifier while
-  dragging or resizing frozen selections (toggleable under *General*), plus a
-  `15 × 15` eyedropper (`I` / **Pick Color** in overlay & Quick Editor, or
-  standalone from the widget, tray, global shortcut, and D-Bus `PickColor`).
-  **Tab** cycles `#RRGGBB` / `rgb()` / `hsl()` / `hsv()`; **Alt+Click** sets the
-  active annotation tool color.
-- **Monitor names**: give a monitor a name such as `Left` in the widget, the
-  settings or the tray menu. The name sticks to the physical monitor, appears
-  in file names of monitor captures and starts the names of new areas.
-- **Monitors and All monitors** are always available. *All monitors* is one
-  image in the current arrangement at the highest monitor scale; gaps between
-  monitors are transparent.
-- **Groups** capture several targets with one shortcut. Each monitor is
-  captured once per trigger, so all files show the same moment and share one
-  timestamp.
-- **Global shortcuts** for every target and group, registered with KDE's global
-  shortcut service (also editable in System Settings). There are no default
-  shortcuts.
-- **Plasma widget** in the system tray: every area, group and monitor in one
-  list with its shortcut and buttons to capture, edit the area on screen,
-  rename and delete (inline, without dialogs), plus *Delay*, *Pick Color*,
-  *Add Area*, *Open Last Capture*, *Edit Last Capture*, and *Open Capture Folder*.
-  Without the widget, glimply shows a classic tray icon with a menu instead.
-- **Feedback** without interruptions: the tray icon blinks once after a
-  capture. Errors, such as a missing monitor, raise a notification.
-- Captures are saved in `~/Pictures/glimply/` (your XDG pictures folder) as
-  `{date}_{time}_{area}.{ext}` (PNG by default). Existing files are never
-  overwritten.
+- **Fixed areas, groups, monitors, and windows:** Save named rectangular screen areas (single-monitor or spanning multiple monitors), group multiple targets, or capture an individual monitor, all monitors, or an open window via global KDE shortcuts (`KGlobalAccel`).
+- **Interactive capture overlay (`Print`):** Capture in frozen or live mode, adjust selections with a pixel loupe and color picker, trigger saved areas directly, or annotate before saving/copying.
+- **Non-destructive annotations & Quick Editor:** Annotate inside the capture overlay or open images standalone via `glimply -e <file>` (`glimply <files...>`). Available tools: `Select`, `Crop`, `Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Highlighter`, `Text`, numbered `Step` counters, `Redact` (*Solid*, *Pixelate*, *Blur*), and `Spotlight` (*Rectangle*, *Ellipse*).
+- **Pinned floating captures:** Keep screenshots floating always-on-top on your desktop. Pinned windows stay hidden from subsequent KWin captures via a KWin window script and can be restored across restarts.
+- **Countdowns, intervals, history, and hooks:** Pre-capture countdown timers, timed interval captures (`--seconds`, `--max-captures`, `--max-minutes`, `--only-changed`), recent capture history (`glimply history`), desktop notifications, tray controls, and optional post-capture hooks.
+- **Plasma widget (`plasmoid`):** Displays recent captures and triggers configured areas, groups, and monitors directly from KDE Plasma (follows your Plasma UI language).
+- **Local OCR (`tesseract`):** Extract text from screenshots via *Copy Text* or `glimply capture --ocr`.
+- **Export formats:** PNG, JPEG, WebP, AVIF, and JXL (WebP/AVIF/JXL require the corresponding Qt image-format plugins).
+- **CLI & local stdio MCP server:** Scriptable JSON/stdout CLI (`capture`, `list`, `area`, `interval`, `overlay`, `history`, `mcp`) and an opt-in local JSON-RPC 2.0 stdio MCP server (`glimply mcp`).
+- **19 UI languages:** English (base/fallback), Arabic, Chinese (Simplified & Traditional), Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, and Vietnamese (*Settings -> General -> Language*).
 
-## Build requirements
+---
 
-- CMake 3.25 or later and a C++20 compiler
-- Qt 6.12 or later: Widgets, DBus, Concurrent (and Test for the tests)
-- KDE Frameworks 6: Config, DBusAddons, GlobalAccel, I18n, Notifications,
-  StatusNotifierItem, WidgetsAddons, XmlGui
+## Privacy & Local Processing
 
-## Install
+glimply runs strictly locally on your machine:
 
-```sh
-scripts/install.sh
-```
+- **No network communication:** Qt's network stack is not linked, and glimply makes no network requests (no telemetry, no crash uploads, no update checks).
+- **Local storage & processing:** Screenshots, annotations, capture history, and configuration (`glimplyrc`) are stored locally. OCR runs locally using the installed `tesseract` binary.
 
-The script builds a Release version, runs the tests and installs into
-`~/.local` (binary, desktop entry, icon, notification events). Use
-`--prefix DIR` for another prefix and `--uninstall` to remove the installed
-files again; settings and captures are kept.
+---
 
-The script also installs the Plasma widget and a D-Bus activation file, starts
-glimply, and reloads the Plasma shell once when the widget is new or changed,
-so the widget shows up in the system tray right away. Nothing needs to be
-configured by hand.
+## Permissions & KDE Plasma Integration
 
-On first start glimply adds itself to autostart. You can turn that off under
-*Configure glimply… → General*.
+- **Screen capture (`org.kde.KWin.ScreenShot2`):** KWin only permits `ScreenShot2` requests from binaries launched via an installed `.desktop` file declaring `X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` whose `Exec=` matches the running executable. Install glimply with a matching prefix (or use `scripts/install.sh` for `~/.local`) and run the installed binary rather than running straight from a temporary build directory. When Autostart is enabled in settings, glimply keeps the autostart `.desktop` entry pointing at the active binary.
+- **Global `Print` key shortcut:** glimply can register `Print` through KDE GlobalAccel to launch its capture overlay. To release the `Print` binding cleanly (for example before switching back to Spectacle or uninstalling), run:
+  ```bash
+  glimply --release-print-key
+  ```
+- **Local MCP server (disabled by default):** `glimply mcp` exposes 10 local stdio tools (`list_targets`, `list_monitors`, `list_windows`, `capture_target`, `capture_region`, `capture_window`, `get_last_capture`, `start_interval`, `stop_interval`, `annotate_image`) and denies all calls until explicitly enabled under **Settings -> Automation -> Local MCP Server**. Access scopes:
+  - `Allowlist` — only pre-approved saved targets (`list_windows`, `capture_region`, and `capture_window` are blocked).
+  - `ConfirmPerCapture` — asks the user via dialog before captures, interval starts, and annotations.
+  - `FullSession` — allows all MCP tools without per-call confirmation for the configured session scope.
+- **Optional OCR (`tesseract`):** Only executed locally when *Copy Text* or `glimply capture --ocr` is invoked; requires `tesseract` and the matching language data (such as `tesseract-data-eng`).
 
-### Screen capture permission
+---
 
-glimply uses KWin's `org.kde.KWin.ScreenShot2` interface. KWin grants access to
-applications whose desktop entry declares
-`X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` and whose `Exec`
-points to the running executable. The installed desktop entry does this. If
-captures fail with a permission error, reinstall with `scripts/install.sh`.
+## Requirements
 
-## Usage
+Minimum supported toolchain (verified in Debian 13 `trixie` via [`scripts/check-debian13.sh`](scripts/check-debian13.sh)):
 
-Press **Print**. The full screenshot is saved and in the clipboard. In the
-overlay, drag a rectangle and press **Enter** (or *Save*) to keep only that
-part, or click a monitor to keep only that monitor. Draw more rectangles to
-save several parts at once. *Save as Area* remembers the rectangles for later.
-In **Live** mode the screen keeps moving and the capture happens when you
-save; Space switches between both, and the next overlay starts in the mode you
-used last (configurable). Escape keeps the full screenshot. Help (F1) lists all
-controls.
+- **CMake** >= `3.25` (verified on Debian 13 `trixie` with CMake `3.31`, Qt `6.8`, KF6 `6.13`), **Ninja**, C++ compiler
+- **Qt 6** >= `6.8` (`qt6-base`, `qt6-tools` / `linguist` tools)
+- **KDE Frameworks 6** >= `6.13` (`KConfig`, `KDBusAddons`, `KGlobalAccel`, `KI18n`, `KNotifications`, `KStatusNotifierItem`, `KWidgetsAddons`, `KXmlGui`)
+- **Python 3** (build/test translation validation) & **gettext** (`msgfmt` for Plasma widget catalogs)
+- **Runtime:** KDE Plasma Wayland (`kwin` with `ScreenShot2`), `hicolor-icon-theme`
+- **Optional runtime:**
+  - `qt6-imageformats` (Arch) / `qt6-image-formats-plugins` (Debian) for WebP and extra export formats
+  - `tesseract` + traineddata packs (e.g. `tesseract-data-eng`) for OCR
+  - `plasma-workspace` for the Plasma widget
 
-Controls in the overlay (aligned with PhotoCraft and Photoshop):
+---
 
-| | Mouse (draw, resize) | Arrow keys |
-|---|---|---|
-| — | free | move by 1 px |
-| Shift | perfect square / circle (or 15° angle snap) | steps of 10 |
-| Alt | grow from the centre (or duplicate annotation) | resize around the centre (both sides) |
-| Shift+Alt | square / circle from the centre | centered resize ×10 |
-| Space *(mid-drag)* | reposition selection or shape live | — |
-| Ctrl | temporary Select / Move while in a markup tool | resize as a square |
+## Installation
 
-Click **Annotate** (or press `A`, `R`, `E`, `B`, `M`, `T`, `N`, `X`, `S`) in the
-capture overlay to unfold markup and irreversible redaction tools directly on
-the frozen screen (`V` returns to Select / Move, `Ctrl+Z` / `Ctrl+Shift+Z` /
-`Ctrl+Y` undo and redo, `[` and `]` adjust tool size).
+### Arch Linux (`PKGBUILD`)
 
-### Quick Editor window
+Packaging files are provided in [`packaging/arch/`](packaging/arch/):
 
-Open any screenshot or image in the standalone Quick Editor window from:
+- **Development package (current `main`):** [`packaging/arch/glimply-git/PKGBUILD`](packaging/arch/glimply-git/PKGBUILD)
+  ```bash
+  cd packaging/arch/glimply-git
+  makepkg -si
+  ```
+- **Release template (`1.0.0`+ once tagged):** [`packaging/arch/glimply/PKGBUILD`](packaging/arch/glimply/PKGBUILD) (no release tags exist prior to `1.0.0`).
 
-- Capture overlay: **Edit in Window** (`Ctrl+E`), keeping drawn annotations
-  editable as vector items
-- Capture notification: **Edit**
-- Plasma widget or tray menu: **Edit Last Capture**
-- Command line or file manager: `glimply <file>` or `glimply --edit <file>`
-  (forwarded to the running glimply instance)
+### Build from Source
 
-Inside the Quick Editor: **Crop** (`C` + `Enter` to apply, undoable with
-`Ctrl+Z`), **Ctrl+Wheel** / **Alt+Wheel** for cursor-anchored zoom
-(`Ctrl+0` fit, `Ctrl+1` 100%, crisp pixels `≥ 400 %`, pixel grid `≥ 800 %`),
-**Space+Drag** or middle-mouse drag to pan, **Save** (`Ctrl+S`), **Save Copy**
-(`Ctrl+Alt+S` as `_edited.png` without altering the original or clipboard),
-**Save As…** (`Ctrl+Shift+S`), and **Copy** (`Ctrl+C`).
-
-A right click deletes the topmost annotation or rectangle under the pointer;
-Delete removes the active one.
-
-To set up areas without capturing:
-
-1. Open the glimply widget in the system tray and choose **Add Area**. Every
-   monitor shows a frozen, dimmed picture. Drag a rectangle on the monitor you
-   want and adjust it: drag the round handles on corners and edges to resize,
-   drag inside to move, use the centre crosshair to aim. Hold **Shift** while
-   drawing or resizing for a perfect square, **Alt** to grow from the centre,
-   and **Space** mid-drag to reposition. Choose **Save as Area**.
-2. Enter a name and, optionally, record a shortcut right there.
-3. Press the shortcut. The tray icon blinks once and the PNG is in the capture
-   folder.
-
-Groups are created under *Configure glimply… → Groups*.
-
-### Post-capture command hooks
-
-Under *Configure glimply… → Automation*, you can configure a command to run asynchronously whenever a capture is saved (off by default, with optional overrides per target or group). Commands execute directly without a shell (`/bin/sh -c` is never used), pass `%f` safely as discrete arguments, and receive `GLIMPLY_FILE`, `GLIMPLY_FILES`, `GLIMPLY_FILE_COUNT`, `GLIMPLY_TARGET_ID`, `GLIMPLY_TARGET_NAME`, `GLIMPLY_TRIGGER_KIND`, `GLIMPLY_TIMESTAMP`, and `GLIMPLY_FORMAT` in the environment. If you need pipes or shell redirection, invoke your own script file.
-
-### Scriptable CLI & D-Bus interface
-
-glimply provides subcommands that talk cleanly to the running daemon (auto-activating it over D-Bus when needed):
-
-```sh
-glimply capture DP-1-1 --format webp --quality 85 --json
-glimply capture window:konsole --stdout --no-save > konsole.png
-glimply list --kind windows --json
-glimply area add --name Header --monitor DP-1 --rect 0,0,1920,120 --json
-glimply interval start DP-1-1 --seconds 10 --only-changed
-glimply overlay --mode live --delay 3
-```
-
-Exit codes: `0` success, `1` capture/runtime error, `2` invalid arguments or group conflict, `3` target not found or unavailable.
-
-The session bus interface (`io.github.m00sfett.glimply`, `/Control`, `io.github.m00sfett.glimply.Control`) exposes `Targets`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `CaptureSync`, `McpDispatch`, `Trigger`, `AddArea`, `AddAreaRect`, `EditArea`, `Rename`, `Remove`, `Intervals`, `StartInterval`, `StopInterval`, `StopAllIntervals`, `OpenOverlay`, `PickColor`, and signals `Changed`, `IntervalsChanged`, and `Captured`. Example:
-
-```sh
-busctl --user call io.github.m00sfett.glimply /Control io.github.m00sfett.glimply.Control Trigger s all
-```
-
-### Local MCP server (opt-in, stdio only)
-
-Under *Configure glimply… → Automation → Local MCP Server*, you can expose glimply to local MCP clients (Claude Code, Codex, Cursor) over JSON-RPC 2.0 on `stdin`/`stdout` with zero open network ports. MCP access is **disabled by default** and supports three scopes:
-
-- **Allowlist only (recommended):** Only checked areas and groups can be listed or captured; arbitrary windows/regions are blocked, and `annotate_image` is confined to glimply's capture folder.
-- **Confirm every capture:** Shows a topmost Breeze confirmation dialog (`Deny` default, 30 s auto-deny countdown) before capturing, reading the last image, starting an interval, or annotating.
-- **Full session access:** Unprompted capture access for trusted local automation sessions.
-
-Example client configuration (`mcpServers`):
-
-```json
-{
-  "glimply": {
-    "command": "glimply",
-    "args": ["mcp"]
-  }
-}
-```
-
-## Development
-
-```sh
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+```bash
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 cmake --build build
-ctest --test-dir build --output-on-failure
+QT_QPA_PLATFORM=offscreen ctest --test-dir build --output-on-failure
+sudo cmake --install build
 ```
 
-An optional live check, `glimply-capture-smoke`, captures a monitor-local
-rectangle twice on each connected screen and compares both PNGs. Build the
-target, set `GLIMPLY_CAPTURE_SMOKE=1` and run it on a Plasma Wayland session.
-The rectangle defaults to (8, 64) with 400 × 300 logical pixels and can be set
-in `~/.config/glimply/capture-smoke.ini`:
+For a rootless user installation under `~/.local` (also refreshes KDE desktop/icon caches and reloads the Plasma shell if needed), run:
 
-```ini
-[General]
-screen=DP-1
-area=@Rect(8 64 400 300)
+```bash
+./scripts/install.sh
 ```
 
-The interface is English. Translations are planned; until they ship, KDE and
-Qt widgets inside glimply are kept in English too.
+`./scripts/install.sh` also accepts `--prefix DIR` and `--uninstall` (stops `glimply`, releases the `Print` shortcut via `--release-print-key`, and removes installed files while keeping `~/.config/glimplyrc` and captures).
+
+To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain in a `debian:trixie` container (requires Docker):
+
+```bash
+./scripts/check-debian13.sh
+```
+
+---
+
+## CLI Quick Reference
+
+```bash
+glimply overlay [--mode frozen|live] [--delay N]
+glimply capture <target|all|monitor:...|window:...> [--format png|jpeg|webp|avif|jxl] [--ocr] [--clipboard] [--stdout] [--no-save] [--json]
+glimply list [--kind targets|monitors|windows] [--json]
+glimply area add|edit|rename|remove ...
+glimply interval start|stop|status ...
+glimply history [--limit N] [--json]
+glimply -e <file>
+glimply mcp
+glimply --release-print-key
+```
+
+Run `glimply <subcommand> --help` for full options.
+
+---
+
+## Translations
+
+English is the source language (`i18n/glimply_en.ts` provides English plural rules).
+
+> **Note on translations:** The 18 non-English UI translations were generated via machine/AI translation and may contain awkward phrasing or terminology issues. Corrections and native-speaker pull requests are very welcome!
+
+Developer helpers for catalogs:
+
+- Terminology and non-translatable technical terms: [`i18n/glossary.md`](i18n/glossary.md)
+- Refresh `.ts`/`.po` catalogs from source: [`scripts/update-translations.sh`](scripts/update-translations.sh) (`<build-dir>`)
+- Validate placeholders, accelerators, plural forms, and completeness: [`scripts/check-translations.py`](scripts/check-translations.py)
+
+---
 
 ## License
 
-glimply is licensed under the GNU Affero General Public License, version 3 or
-later. See [LICENSE](LICENSE) for the complete license text.
+`glimply` is licensed under the **GNU Affero General Public License v3.0 or later** (`AGPL-3.0-or-later`) — see [`LICENSE`](LICENSE). Clean-room implementation: no source code is copied from Spectacle or other screenshot tools.
