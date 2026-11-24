@@ -66,6 +66,7 @@ add_library(glimply_capture STATIC
     src/captureservice.cpp
     src/cli.cpp
     src/colorformat.cpp
+    src/hookrunner.cpp
     src/imageoutput.cpp
     src/intervalcontroller.cpp
     src/screens.cpp
@@ -167,6 +168,9 @@ if(BUILD_TESTING)
     add_executable(clitest tests/clitest.cpp)
     target_link_libraries(clitest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME cli COMMAND clitest)
+    add_executable(hooktest tests/hooktest.cpp)
+    target_link_libraries(hooktest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME hook COMMAND hooktest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

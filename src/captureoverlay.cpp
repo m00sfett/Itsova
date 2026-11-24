@@ -233,6 +233,10 @@ void CaptureSession::start()
             return;
         }
         if (!forceShowOverlay_ && !store().printOpensOverlay) {
+            const ExportOptions printOpts = store().effectiveExportOptions(allMonitorsTargetId());
+            app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+                                     QDateTime::currentDateTime(), formatConfigKey(printOpts.format),
+                                     QStringLiteral("print"));
             finish({}, {printPath_});
             return;
         }
@@ -1329,7 +1333,7 @@ void CaptureSession::captureMonitor(const QString &connector)
         QStringList errors;
         const QString name = monitorName(connector);
         const ExportOptions opts = store().effectiveExportOptions(screenTargetId(connector));
-        finishWith(write({{name, out}}, &errors, opts), out, errors, name);
+        finishWith(write({{name, out}}, &errors, opts), out, errors, name, screenTargetId(connector));
     });
 }
 
@@ -1340,6 +1344,10 @@ void CaptureSession::captureAllMonitors()
     }
     if (shouldBypassRawPrintFastPath(frozen_, printPath_, annotations_)) {
         // The full screenshot of this moment is already saved without edits.
+        const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
+        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+                                 QDateTime::currentDateTime(), formatConfigKey(opts.format),
+                                 QStringLiteral("overlay"));
         finish({}, {printPath_});
         return;
     }
@@ -1356,7 +1364,8 @@ void CaptureSession::captureAllMonitors()
         }
         QStringList errors;
         const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
-        finishWith(write({{allMonitorsTargetId(), image}}, &errors, opts), image, errors, tr("All monitors"));
+        finishWith(write({{allMonitorsTargetId(), image}}, &errors, opts), image, errors, tr("All monitors"),
+                   allMonitorsTargetId());
     });
 }
 
@@ -1385,7 +1394,7 @@ void CaptureSession::captureTarget(const QString &id)
                                        plan.partialNotifications);
         }
         const QImage clipboard = validOutputs.isEmpty() ? QImage() : validOutputs.first().image;
-        finishWith(writeOutputs(validOutputs, &errors), clipboard, errors, plan.displayName);
+        finishWith(writeOutputs(validOutputs, &errors), clipboard, errors, plan.displayName, plan.triggerId);
     });
 }
 
@@ -1592,11 +1601,17 @@ void CaptureSession::close()
         }
         Q_UNUSED(keepBtn);
     }
+    if (!printPath_.isEmpty()) {
+        const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
+        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+                                 QDateTime::currentDateTime(), formatConfigKey(opts.format),
+                                 QStringLiteral("print"));
+    }
     finish({}, printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
 }
 
 void CaptureSession::finishWith(const QStringList &paths, const QImage &clipboardImage, const QStringList &errors,
-                                const QString &displayName)
+                                const QString &displayName, const QString &targetId)
 {
     if (paths.isEmpty()) {
         finish({}, {}, errors);
@@ -1619,7 +1634,12 @@ void CaptureSession::finishWith(const QStringList &paths, const QImage &clipboar
         mime->setUrls(urls);
     }
     QGuiApplication::clipboard()->setMimeData(mime);
-    app_->recordCapture(paths, displayName);
+    app_->recordCapture(paths, displayName, targetId);
+    const std::optional<ImageFormat> fmt = imageFormatFromPath(paths.first());
+    const QString groupId = store().group(targetId) ? targetId : QString();
+    app_->runPostCaptureHook(targetId, displayName, paths, QDateTime::currentDateTime(),
+                             fmt ? formatConfigKey(*fmt) : QStringLiteral("png"), QStringLiteral("overlay"), false,
+                             groupId);
     finish({}, paths, errors);
 }
 

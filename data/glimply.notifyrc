@@ -43,3 +43,9 @@ Name=Interval capture stopped
 Comment=A scheduled interval capture reached its configured limit and finished
 Action=Popup
 Urgency=Low
+
+[Event/hookFailed]
+Name=Post-capture hook failed
+Comment=A configured post-capture command exited with an error or timed out
+Action=Popup
+Urgency=Normal

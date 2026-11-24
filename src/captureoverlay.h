@@ -157,7 +157,7 @@ private:
     QStringList writeOutputs(const QList<RenderedOutput> &outputs, QStringList *errors);
     // Ends the session with these files; they replace the full screenshot.
     void finishWith(const QStringList &paths, const QImage &clipboardImage, const QStringList &errors,
-                    const QString &displayName);
+                    const QString &displayName, const QString &targetId = QString());
     void finish(const QString &title, const QStringList &paths, const QStringList &errors = {});
     [[nodiscard]] QImage cropSelectionImage(const Selection &selection, bool includeAnnotations, qreal *outScale,
                                           QString *error) const;

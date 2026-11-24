@@ -45,6 +45,31 @@ struct IntervalConfig
     bool operator==(const IntervalConfig &) const = default;
 };
 
+enum class HookOverrideMode {
+    UseGlobal,
+    Custom,
+    Disabled,
+};
+
+struct HookConfig
+{
+    bool enabled = false;
+    QString command;
+    int timeoutSeconds = 30;
+    bool runOnInterval = false;
+
+    bool operator==(const HookConfig &) const = default;
+};
+
+struct HookOverride
+{
+    HookOverrideMode mode = HookOverrideMode::UseGlobal;
+    QString command;
+    int timeoutSeconds = 30;
+
+    bool operator==(const HookOverride &) const = default;
+};
+
 struct AreaMonitorBinding
 {
     QString connector;
@@ -68,6 +93,7 @@ struct Area
     int delaySeconds = 0;
     ExportOverride exportOverride;
     IntervalConfig interval;
+    HookOverride hookOverride;
 
     [[nodiscard]] bool isCrossMonitor() const { return !monitors.isEmpty(); }
     [[nodiscard]] QStringList involvedConnectors() const;
@@ -82,6 +108,7 @@ struct Group
     int delaySeconds = 0;
     ExportOverride exportOverride;
     IntervalConfig interval;
+    HookOverride hookOverride;
 };
 
 // Ids of built-in targets and interval shortcuts.
@@ -132,6 +159,8 @@ public:
     QHash<QString, ExportOverride> builtInExportOverrides;
     QHash<QString, int> builtInDelays;
     QHash<QString, IntervalConfig> builtInIntervals;
+    HookConfig hook;
+    QHash<QString, HookOverride> builtInHookOverrides;
     int captureDelaySeconds = 0;
     bool keepDelayActive = false;
 
@@ -149,6 +178,11 @@ public:
     bool consumeOneShotDelay();
     [[nodiscard]] IntervalConfig targetIntervalConfig(const QString &targetId) const;
     void setTargetIntervalConfig(const QString &targetId, const IntervalConfig &cfg);
+    [[nodiscard]] HookOverride targetHookOverride(const QString &targetId) const;
+    void setTargetHookOverride(const QString &targetId, const HookOverride &overrideValue);
+    [[nodiscard]] HookConfig effectiveHookConfig(const QString &targetId = QString(),
+                                                 const QString &groupId = QString(),
+                                                 bool isInterval = false) const;
 
     void load(const KConfig &config);
     void save(KConfig &config) const;

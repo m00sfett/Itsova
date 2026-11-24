@@ -30,8 +30,56 @@ QString migrateId(const QString &id)
 constexpr auto groupGroupPrefix = "Group ";
 constexpr auto exportOverrideGroupPrefix = "ExportOverride ";
 constexpr auto builtInIntervalGroupPrefix = "BuiltInInterval ";
+constexpr auto builtInHookGroupPrefix = "BuiltInHook ";
 constexpr auto builtInDelaysGroup = "BuiltInDelays";
 constexpr auto intervalShortcutPrefix = "interval:";
+
+HookOverrideMode hookOverrideModeFromKey(const QString &key)
+{
+    const QString norm = key.trimmed().toLower();
+    if (norm == QLatin1String("custom")) {
+        return HookOverrideMode::Custom;
+    }
+    if (norm == QLatin1String("disabled")) {
+        return HookOverrideMode::Disabled;
+    }
+    return HookOverrideMode::UseGlobal;
+}
+
+QString hookOverrideModeKey(HookOverrideMode mode)
+{
+    switch (mode) {
+    case HookOverrideMode::UseGlobal:
+        return QStringLiteral("default");
+    case HookOverrideMode::Custom:
+        return QStringLiteral("custom");
+    case HookOverrideMode::Disabled:
+        return QStringLiteral("disabled");
+    }
+    return QStringLiteral("default");
+}
+
+HookOverride readHookOverride(const KConfigGroup &group)
+{
+    HookOverride ov;
+    ov.mode = hookOverrideModeFromKey(group.readEntry("HookMode", QStringLiteral("default")));
+    ov.command = group.readEntry("HookCommand", QString());
+    ov.timeoutSeconds = std::clamp(group.readEntry("HookTimeoutSeconds", 30), 5, 300);
+    return ov;
+}
+
+void writeHookOverride(KConfigGroup &group, const HookOverride &ov)
+{
+    if (ov.mode == HookOverrideMode::UseGlobal && ov.command.trimmed().isEmpty()) {
+        group.deleteEntry("HookMode");
+        group.deleteEntry("HookCommand");
+        group.deleteEntry("HookTimeoutSeconds");
+        return;
+    }
+    group.writeEntry("HookMode", hookOverrideModeKey(ov.mode));
+    group.writeEntry("HookCommand", ov.command.trimmed());
+    group.writeEntry("HookTimeoutSeconds", std::clamp(ov.timeoutSeconds, 5, 300));
+}
 
 IntervalConfig clampedIntervalConfig(IntervalConfig cfg)
 {
@@ -226,9 +274,17 @@ void TargetStore::load(const KConfig &config)
     builtInExportOverrides.clear();
     builtInDelays.clear();
     builtInIntervals.clear();
+    builtInHookOverrides.clear();
 
     const KConfigGroup general = config.group(QStringLiteral("General"));
     exportOptions = readExportOptions(config.group(QStringLiteral("Export")), QString());
+    {
+        const KConfigGroup hookCfg = config.group(QStringLiteral("Hook"));
+        hook.enabled = hookCfg.readEntry("Enabled", false);
+        hook.command = hookCfg.readEntry("Command", QString());
+        hook.timeoutSeconds = std::clamp(hookCfg.readEntry("TimeoutSeconds", 30), 5, 300);
+        hook.runOnInterval = hookCfg.readEntry("RunOnInterval", false);
+    }
     keepDelayActive = general.readEntry("KeepDelayActive", false);
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
@@ -304,6 +360,7 @@ void TargetStore::load(const KConfig &config)
             area.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             area.exportOverride = readExportOverride(entry);
             area.interval = readIntervalConfig(entry);
+            area.hookOverride = readHookOverride(entry);
             const bool validSingle = !area.isCrossMonitor() && !area.connector.isEmpty();
             const bool validCross = area.isCrossMonitor() && !area.monitors.isEmpty() && area.rect.isValid();
             if (!area.id.isEmpty() && !area.name.isEmpty() && (validSingle || validCross)) {
@@ -320,6 +377,7 @@ void TargetStore::load(const KConfig &config)
             group.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             group.exportOverride = readExportOverride(entry);
             group.interval = readIntervalConfig(entry);
+            group.hookOverride = readHookOverride(entry);
             if (!group.id.isEmpty() && !group.name.isEmpty()) {
                 groups.append(group);
             }
@@ -336,6 +394,12 @@ void TargetStore::load(const KConfig &config)
             const IntervalConfig cfg = readIntervalConfig(entry);
             if (!id.isEmpty() && cfg != IntervalConfig{}) {
                 builtInIntervals.insert(id, cfg);
+            }
+        } else if (name.startsWith(QLatin1String(builtInHookGroupPrefix))) {
+            const QString id = migrateId(name.mid(int(qstrlen(builtInHookGroupPrefix))));
+            const HookOverride ov = readHookOverride(entry);
+            if (!id.isEmpty() && ov.mode != HookOverrideMode::UseGlobal) {
+                builtInHookOverrides.insert(id, ov);
             }
         }
     }
@@ -360,13 +424,22 @@ void TargetStore::save(KConfig &config) const
         if (name.startsWith(QLatin1String(areaGroupPrefix)) || name.startsWith(QLatin1String(legacyAreaGroupPrefix))
             || name.startsWith(QLatin1String(groupGroupPrefix))
             || name.startsWith(QLatin1String(exportOverrideGroupPrefix))
-            || name.startsWith(QLatin1String(builtInIntervalGroupPrefix))) {
+            || name.startsWith(QLatin1String(builtInIntervalGroupPrefix))
+            || name.startsWith(QLatin1String(builtInHookGroupPrefix))) {
             config.deleteGroup(name);
         }
     }
 
     KConfigGroup exportGroup = config.group(QStringLiteral("Export"));
     writeExportOptions(exportGroup, QString(), exportOptions);
+
+    {
+        KConfigGroup hookCfg = config.group(QStringLiteral("Hook"));
+        hookCfg.writeEntry("Enabled", hook.enabled);
+        hookCfg.writeEntry("Command", hook.command.trimmed());
+        hookCfg.writeEntry("TimeoutSeconds", std::clamp(hook.timeoutSeconds, 5, 300));
+        hookCfg.writeEntry("RunOnInterval", hook.runOnInterval);
+    }
 
     KConfigGroup general = config.group(QStringLiteral("General"));
     general.writeEntry("CaptureDirectory", captureDirectory);
@@ -438,6 +511,7 @@ void TargetStore::save(KConfig &config) const
         }
         writeExportOverride(entry, area.exportOverride);
         writeIntervalConfig(entry, area.interval);
+        writeHookOverride(entry, area.hookOverride);
         areaOrder.append(area.id);
     }
     QStringList groupOrder;
@@ -451,6 +525,7 @@ void TargetStore::save(KConfig &config) const
         }
         writeExportOverride(entry, group.exportOverride);
         writeIntervalConfig(entry, group.interval);
+        writeHookOverride(entry, group.hookOverride);
         groupOrder.append(group.id);
     }
     for (auto it = builtInExportOverrides.cbegin(); it != builtInExportOverrides.cend(); ++it) {
@@ -464,6 +539,12 @@ void TargetStore::save(KConfig &config) const
         if (cfg != IntervalConfig{}) {
             KConfigGroup entry = config.group(QLatin1String(builtInIntervalGroupPrefix) + it.key());
             writeIntervalConfig(entry, cfg);
+        }
+    }
+    for (auto it = builtInHookOverrides.cbegin(); it != builtInHookOverrides.cend(); ++it) {
+        if (it.value().mode != HookOverrideMode::UseGlobal) {
+            KConfigGroup entry = config.group(QLatin1String(builtInHookGroupPrefix) + it.key());
+            writeHookOverride(entry, it.value());
         }
     }
     general.writeEntry("AreaOrder", areaOrder);
@@ -618,6 +699,7 @@ void TargetStore::remove(const QString &id)
     builtInExportOverrides.remove(id);
     builtInDelays.remove(id);
     builtInIntervals.remove(id);
+    builtInHookOverrides.remove(id);
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
     }
@@ -696,6 +778,72 @@ void TargetStore::setTargetIntervalConfig(const QString &targetId, const Interva
     } else {
         builtInIntervals.remove(targetId);
     }
+}
+
+HookOverride TargetStore::targetHookOverride(const QString &targetId) const
+{
+    if (const Area *r = area(targetId)) {
+        return r->hookOverride;
+    }
+    if (const Group *g = group(targetId)) {
+        return g->hookOverride;
+    }
+    return builtInHookOverrides.value(targetId);
+}
+
+void TargetStore::setTargetHookOverride(const QString &targetId, const HookOverride &overrideValue)
+{
+    HookOverride cleaned = overrideValue;
+    cleaned.command = cleaned.command.trimmed();
+    cleaned.timeoutSeconds = std::clamp(cleaned.timeoutSeconds, 5, 300);
+    if (Area *r = area(targetId)) {
+        r->hookOverride = cleaned;
+        return;
+    }
+    if (Group *g = group(targetId)) {
+        g->hookOverride = cleaned;
+        return;
+    }
+    if (cleaned.mode != HookOverrideMode::UseGlobal || !cleaned.command.isEmpty()) {
+        builtInHookOverrides.insert(targetId, cleaned);
+    } else {
+        builtInHookOverrides.remove(targetId);
+    }
+}
+
+HookConfig TargetStore::effectiveHookConfig(const QString &targetId, const QString &groupId, bool isInterval) const
+{
+    if (isInterval && !hook.runOnInterval) {
+        return {false, {}, std::clamp(hook.timeoutSeconds, 5, 300), false};
+    }
+
+    const auto fromOverride = [&](const HookOverride &ov) -> std::optional<HookConfig> {
+        if (ov.mode == HookOverrideMode::Disabled) {
+            return HookConfig{false, {}, std::clamp(ov.timeoutSeconds, 5, 300), hook.runOnInterval};
+        }
+        if (ov.mode == HookOverrideMode::Custom) {
+            const QString cmd = ov.command.trimmed();
+            return HookConfig{!cmd.isEmpty(), cmd, std::clamp(ov.timeoutSeconds, 5, 300), hook.runOnInterval};
+        }
+        return std::nullopt;
+    };
+
+    if (!targetId.isEmpty()) {
+        if (const std::optional<HookConfig> ov = fromOverride(targetHookOverride(targetId))) {
+            return *ov;
+        }
+    }
+    if (!groupId.isEmpty()) {
+        if (const Group *g = group(groupId)) {
+            if (const std::optional<HookConfig> ov = fromOverride(g->hookOverride)) {
+                return *ov;
+            }
+        }
+    }
+
+    const QString globalCmd = hook.command.trimmed();
+    return {hook.enabled && !globalCmd.isEmpty(), globalCmd, std::clamp(hook.timeoutSeconds, 5, 300),
+            hook.runOnInterval};
 }
 
 ExportOverride TargetStore::targetExportOverride(const QString &targetId) const

@@ -159,6 +159,10 @@ To set up areas without capturing:
 
 Groups are created under *Configure glimply… → Groups*.
 
+### Post-capture command hooks
+
+Under *Configure glimply… → Automation*, you can configure a command to run asynchronously whenever a capture is saved (off by default, with optional overrides per target or group). Commands execute directly without a shell (`/bin/sh -c` is never used), pass `%f` safely as discrete arguments, and receive `GLIMPLY_FILE`, `GLIMPLY_FILES`, `GLIMPLY_FILE_COUNT`, `GLIMPLY_TARGET_ID`, `GLIMPLY_TARGET_NAME`, `GLIMPLY_TRIGGER_KIND`, `GLIMPLY_TIMESTAMP`, and `GLIMPLY_FORMAT` in the environment. If you need pipes or shell redirection, invoke your own script file.
+
 ### Scriptable CLI & D-Bus interface
 
 glimply provides subcommands that talk cleanly to the running daemon (auto-activating it over D-Bus when needed):

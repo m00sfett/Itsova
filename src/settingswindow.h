@@ -22,6 +22,7 @@ namespace glimply
 class App;
 class AreaSelector;
 class ExportOptionsWidget;
+class HookOverrideWidget;
 class IntervalConfigWidget;
 
 // The only window of glimply. Changes apply immediately; there is nothing to confirm.
@@ -44,6 +45,7 @@ private:
     QWidget *createGroupsPage();
     QWidget *createStoragePage();
     QWidget *createGeneralPage();
+    QWidget *createAutomationPage();
 
     void refresh();
     void refreshTargets();
@@ -51,6 +53,7 @@ private:
     void refreshGroups();
     void refreshGroupDetails();
     void refreshStorage();
+    void refreshAutomation();
 
     [[nodiscard]] QString selectedTargetId() const;
     [[nodiscard]] QString selectedGroupId() const;
@@ -91,6 +94,7 @@ private:
     ExportOptionsWidget *targetExport_ = nullptr;
     QSpinBox *targetDelay_ = nullptr;
     IntervalConfigWidget *targetInterval_ = nullptr;
+    HookOverrideWidget *targetHook_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
     KKeySequenceWidget *targetIntervalShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
@@ -108,6 +112,7 @@ private:
     ExportOptionsWidget *groupExport_ = nullptr;
     QSpinBox *groupDelay_ = nullptr;
     IntervalConfigWidget *groupInterval_ = nullptr;
+    HookOverrideWidget *groupHook_ = nullptr;
     KKeySequenceWidget *groupShortcut_ = nullptr;
     KKeySequenceWidget *groupIntervalShortcut_ = nullptr;
 
@@ -123,6 +128,15 @@ private:
     QCheckBox *captureOnRelease_ = nullptr;
     QCheckBox *showSelectionLoupe_ = nullptr;
     KKeySequenceWidget *colorPickerShortcut_ = nullptr;
+
+    // Automation page (#24 hooks, #25 MCP added next)
+    QCheckBox *hookEnabled_ = nullptr;
+    QWidget *hookDetails_ = nullptr;
+    QLineEdit *hookCommand_ = nullptr;
+    QSpinBox *hookTimeout_ = nullptr;
+    QCheckBox *hookOnInterval_ = nullptr;
+    QPushButton *testHookButton_ = nullptr;
+    QLabel *hookTestStatus_ = nullptr;
 };
 
 } // namespace glimply

@@ -30,6 +30,8 @@ class ColorPickerSession;
 class ControlService;
 class CountdownBanner;
 class CountdownController;
+class HookRunner;
+struct HookResult;
 class IntervalController;
 class QuickEditorWindow;
 class ShortcutManager;
@@ -111,6 +113,11 @@ public:
     // Removes an area or group (built-in targets cannot be removed).
     void removeTarget(const QString &id);
     [[nodiscard]] bool hasLastCapture() const;
+    void runPostCaptureHook(const QString &targetId, const QString &displayName, const QStringList &files,
+                            const QDateTime &timestamp, const QString &format, const QString &triggerKind,
+                            bool isInterval = false, const QString &groupId = QString());
+    void testPostCaptureHook(const QString &command, int timeoutSeconds,
+                             std::function<void(const HookResult &)> onDone);
     [[nodiscard]] QList<MenuTarget> menuTargets() const;
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
@@ -141,6 +148,7 @@ private:
     CountdownController *countdown_;
     CountdownBanner *countdownBanner_;
     IntervalController *intervals_;
+    HookRunner *hooks_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;
