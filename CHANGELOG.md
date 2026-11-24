@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Multi-format image export (`PNG`, `JPEG`, `WebP`, and runtime-detected `AVIF` / `JPEG XL`) with configurable compression/quality, `#000000` alpha flattening for non-alpha formats, `{ext}` / extension-aligned filename templates, Target > Group > Global format overrides in Settings, and a compact KDE/Breeze `Save As…` export dialog with async live file-size estimation (`#18`).
+- Non-blocking capture delay timer (`Off`, `3 s`, `5 s`, `10 s`, `Custom…`) with unobtrusive KDE/Breeze `CountdownBanner` hidden cleanly before capture, One-Shot default reset + checkable `Keep delay active` toggle directly in the overlay, tray, and Plasma widget, overlay `Retake` with countdown, and per-area / per-group `Delay:` selectors inside `Save as Area` and Settings (`#19`).
 
 ## [0.4.0] - Unreleased
 

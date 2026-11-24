@@ -21,6 +21,9 @@ PlasmoidItem {
     readonly property bool running: serviceWatcher.registered
     property bool hasLastCapture: false
     property bool flashing: false
+    property int delaySeconds: 0
+    property bool keepDelayActive: false
+    property bool countdownActive: false
     property string lastError: ""
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
@@ -75,6 +78,15 @@ PlasmoidItem {
         });
         call("HasLastCapture", [], function (value) {
             root.hasLastCapture = value === true;
+        });
+        call("DelaySeconds", [], function (value) {
+            root.delaySeconds = typeof value === "number" ? value : 0;
+        });
+        call("KeepDelayActive", [], function (value) {
+            root.keepDelayActive = value === true;
+        });
+        call("CountdownActive", [], function (value) {
+            root.countdownActive = value === true;
         });
     }
 
@@ -160,6 +172,60 @@ PlasmoidItem {
                     Layout.leftMargin: Kirigami.Units.smallSpacing
                     level: 1
                     text: "glimply"
+                }
+                PlasmaComponents3.ToolButton {
+                    id: delayButton
+                    icon.name: root.countdownActive ? "dialog-cancel" : "chronometer"
+                    text: root.countdownActive ? i18n("Cancel")
+                        : root.delaySeconds > 0 ? i18n("%1 s", root.delaySeconds)
+                        : i18n("Delay")
+                    checkable: !root.countdownActive
+                    checked: !root.countdownActive && root.delaySeconds > 0
+                    onClicked: {
+                        if (root.countdownActive) {
+                            root.call("CancelCountdown");
+                        } else if (delayMenu.visible) {
+                            delayMenu.close();
+                        } else {
+                            delayMenu.popup(0, delayButton.height);
+                        }
+                    }
+
+                    PlasmaComponents3.Menu {
+                        id: delayMenu
+                        PlasmaComponents3.MenuItem {
+                            text: i18n("No delay")
+                            checkable: true
+                            checked: root.delaySeconds === 0
+                            onTriggered: root.call("SetDelay", [0, false])
+                        }
+                        PlasmaComponents3.MenuSeparator {}
+                        PlasmaComponents3.MenuItem {
+                            text: i18n("3 seconds")
+                            checkable: true
+                            checked: root.delaySeconds === 3
+                            onTriggered: root.call("SetDelay", [3, root.keepDelayActive])
+                        }
+                        PlasmaComponents3.MenuItem {
+                            text: i18n("5 seconds")
+                            checkable: true
+                            checked: root.delaySeconds === 5
+                            onTriggered: root.call("SetDelay", [5, root.keepDelayActive])
+                        }
+                        PlasmaComponents3.MenuItem {
+                            text: i18n("10 seconds")
+                            checkable: true
+                            checked: root.delaySeconds === 10
+                            onTriggered: root.call("SetDelay", [10, root.keepDelayActive])
+                        }
+                        PlasmaComponents3.MenuSeparator {}
+                        PlasmaComponents3.MenuItem {
+                            text: i18n("Keep delay active")
+                            checkable: true
+                            checked: root.keepDelayActive
+                            onTriggered: root.call("SetDelay", [checked ? (root.delaySeconds > 0 ? root.delaySeconds : 3) : 0, checked])
+                        }
+                    }
                 }
                 PlasmaComponents3.ToolButton {
                     icon.name: "list-add"

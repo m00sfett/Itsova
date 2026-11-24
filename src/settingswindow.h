@@ -87,6 +87,7 @@ private:
     QLabel *areaWarning_ = nullptr;
     QCheckBox *targetCursor_ = nullptr;
     ExportOptionsWidget *targetExport_ = nullptr;
+    QSpinBox *targetDelay_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
     QList<QWidget *> nameRow_; // areas and connected monitors
@@ -101,6 +102,7 @@ private:
     QListWidget *groupMembers_ = nullptr;
     QCheckBox *groupCursor_ = nullptr;
     ExportOptionsWidget *groupExport_ = nullptr;
+    QSpinBox *groupDelay_ = nullptr;
     KKeySequenceWidget *groupShortcut_ = nullptr;
 
     // Storage and general

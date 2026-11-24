@@ -3,9 +3,13 @@
 #include "annotations/annotationdocument.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
+#include "countdowntimer.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
 #include "controlservice.h"
+
+#include <algorithm>
+#include <utility>
 #include "imageoutput.h"
 #include "screens.h"
 #include "settingswindow.h"
@@ -43,12 +47,28 @@ App::App(QObject *parent)
     , shortcuts_(new ShortcutManager(this))
     , engine_(new TriggerEngine(this))
     , tray_(new TrayController([this] { return menuTargets(); }, this))
+    , countdown_(new CountdownController(this))
+    , countdownBanner_(new CountdownBanner(countdown_))
 {
     store_.load(*config_);
+    tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+
+    const auto syncCountdownUi = [this] {
+        tray_->setCountdownState(countdown_->isActive(), countdown_->remainingSeconds());
+        Q_EMIT targetsChanged();
+    };
+    connect(countdown_, &CountdownController::started, this, syncCountdownUi);
+    connect(countdown_, &CountdownController::tick, this, [this](int secs) {
+        tray_->setCountdownState(countdown_->isActive(), secs);
+    });
+    connect(countdown_, &CountdownController::completed, this, syncCountdownUi);
+    connect(countdown_, &CountdownController::cancelled, this, syncCountdownUi);
 
     connect(shortcuts_, &ShortcutManager::triggered, this, &App::trigger);
     connect(engine_, &TriggerEngine::finished, this, &App::onTriggerFinished);
     connect(tray_, &TrayController::triggerRequested, this, &App::trigger);
+    connect(tray_, &TrayController::delayChangedRequested, this, &App::setCaptureDelay);
+    connect(tray_, &TrayController::cancelCountdownRequested, this, &App::cancelCountdown);
     connect(tray_, &TrayController::openLastCaptureRequested, this, &App::openLastCapture);
     connect(tray_, &TrayController::editLastCaptureRequested, this, &App::editLastCapture);
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
@@ -120,7 +140,10 @@ void App::migrateLegacyIds()
     store_.save(*config_);
 }
 
-App::~App() = default;
+App::~App()
+{
+    delete countdownBanner_;
+}
 
 TargetStore &App::store()
 {
@@ -210,6 +233,23 @@ QList<MenuTarget> App::menuTargets() const
 
 void App::startPrint()
 {
+    if (countdown_->isActive()) {
+        cancelCountdown();
+        return;
+    }
+    if (auto *session = session_.data()) {
+        session->printPressed();
+        return;
+    }
+    if (store_.captureDelaySeconds > 0) {
+        runWithDelay(store_.captureDelaySeconds, tr("Screen"), [this] { startPrintNow(); });
+        return;
+    }
+    startPrintNow();
+}
+
+void App::startPrintNow()
+{
     if (auto *session = session_.data()) {
         session->printPressed();
         return;
@@ -218,6 +258,59 @@ void App::startPrint()
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
     session->start();
+}
+
+bool App::isCountdownActive() const
+{
+    return countdown_->isActive();
+}
+
+int App::captureDelaySeconds() const
+{
+    return store_.captureDelaySeconds;
+}
+
+bool App::keepDelayActive() const
+{
+    return store_.keepDelayActive;
+}
+
+void App::setCaptureDelay(int seconds, bool keepActive)
+{
+    store_.captureDelaySeconds = std::clamp(seconds, 0, 60);
+    store_.keepDelayActive = keepActive && store_.captureDelaySeconds > 0;
+    saveSettings();
+    tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+    Q_EMIT targetsChanged();
+}
+
+void App::cancelCountdown()
+{
+    countdown_->cancel();
+}
+
+void App::runWithDelay(int seconds, const QString &label, std::function<void()> onReady,
+                       std::function<void()> onCancelled)
+{
+    if (seconds <= 0) {
+        if (onReady) {
+            onReady();
+        }
+        return;
+    }
+    countdown_->start(
+        seconds, label,
+        [this, ready = std::move(onReady)] {
+            if (store_.consumeOneShotDelay()) {
+                saveSettings();
+                tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+                Q_EMIT targetsChanged();
+            }
+            if (ready) {
+                ready();
+            }
+        },
+        std::move(onCancelled));
 }
 
 void App::addArea()
@@ -325,10 +418,24 @@ void App::notifySaved(const QString &title, const QStringList &paths, const QStr
 
 void App::trigger(const QString &id)
 {
+    if (countdown_->isActive()) {
+        cancelCountdown();
+        return;
+    }
     if (id == PrintKey::actionId()) {
         startPrint();
         return;
     }
+    const int delay = store_.effectiveDelaySeconds(id);
+    if (delay > 0) {
+        runWithDelay(delay, targetLabel(store_, id), [this, id] { executeTriggerNow(id); });
+        return;
+    }
+    executeTriggerNow(id);
+}
+
+void App::executeTriggerNow(const QString &id)
+{
     TriggerPlan plan = planTrigger(store_, id, currentScreens());
     if (plan.outputs.isEmpty()) {
         notifyError(tr("Nothing captured"), plan.errors);

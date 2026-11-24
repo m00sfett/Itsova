@@ -443,6 +443,14 @@ QWidget *SettingsWindow::createTargetsPage()
     targetExport_ = new ExportOptionsWidget(true, targetDetails_);
     form->addRow(tr("Format:"), targetExport_);
 
+    targetDelay_ = new QSpinBox(targetDetails_);
+    targetDelay_->setRange(0, 60);
+    targetDelay_->setSpecialValueText(tr("None"));
+    targetDelay_->setSuffix(tr(" s"));
+    targetDelay_->setKeyboardTracking(false);
+    targetDelay_->setAccessibleName(tr("Capture delay"));
+    form->addRow(tr("Delay:"), targetDelay_);
+
     targetShortcut_ = new KKeySequenceWidget(targetDetails_);
     targetShortcut_->setAccessibleName(tr("Shortcut"));
     targetShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -490,6 +498,16 @@ QWidget *SettingsWindow::createTargetsPage()
         const QString id = selectedTargetId();
         if (!id.isEmpty()) {
             app_->store().setTargetExportOverride(id, targetExport_->overrideValue());
+            app_->storeChanged();
+        }
+    });
+    connect(targetDelay_, &QSpinBox::valueChanged, this, [this](int secs) {
+        if (updating_) {
+            return;
+        }
+        const QString id = selectedTargetId();
+        if (!id.isEmpty()) {
+            app_->store().setTargetDelaySeconds(id, secs);
             app_->storeChanged();
         }
     });
@@ -642,6 +660,8 @@ void SettingsWindow::refreshTargetDetails()
     targetCursor_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetExport_->setOverride(store.targetExportOverride(id), store.exportOptions.format);
     targetExport_->setEnabled(isArea || screen || id == allMonitorsTargetId());
+    targetDelay_->setValue(store.targetDelaySeconds(id));
+    targetDelay_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetShortcut_->setKeySequence(app_->shortcuts()->shortcut(id));
     targetShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     updating_ = false;
@@ -909,6 +929,14 @@ QWidget *SettingsWindow::createGroupsPage()
                                         "format."),
                                      groupDetails_));
 
+    groupDelay_ = new QSpinBox(groupDetails_);
+    groupDelay_->setRange(0, 60);
+    groupDelay_->setSpecialValueText(tr("None"));
+    groupDelay_->setSuffix(tr(" s"));
+    groupDelay_->setKeyboardTracking(false);
+    groupDelay_->setAccessibleName(tr("Group capture delay"));
+    form->addRow(tr("Delay:"), groupDelay_);
+
     groupShortcut_ = new KKeySequenceWidget(groupDetails_);
     groupShortcut_->setAccessibleName(tr("Group shortcut"));
     groupShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -980,6 +1008,12 @@ QWidget *SettingsWindow::createGroupsPage()
             app_->storeChanged();
         }
     });
+    connect(groupDelay_, &QSpinBox::valueChanged, this, [this](int secs) {
+        if (Group *group = app_->store().group(selectedGroupId()); group && !updating_) {
+            group->delaySeconds = secs;
+            app_->storeChanged();
+        }
+    });
     connect(groupShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &sequence) {
         if (!updating_) {
             assignShortcut(selectedGroupId(), sequence, groupShortcut_);
@@ -1047,6 +1081,7 @@ void SettingsWindow::refreshGroupDetails()
     }
     groupCursor_->setChecked(group && group->includeCursor);
     groupExport_->setOverride(group ? group->exportOverride : ExportOverride{}, app_->store().exportOptions.format);
+    groupDelay_->setValue(group ? group->delaySeconds : 0);
     groupShortcut_->setKeySequence(group ? app_->shortcuts()->shortcut(group->id) : QKeySequence());
     updating_ = false;
 }

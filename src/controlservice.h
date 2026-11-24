@@ -37,6 +37,11 @@ public Q_SLOTS:
     Q_SCRIPTABLE void EditLastCapture();
     Q_SCRIPTABLE void OpenCaptureFolder();
     Q_SCRIPTABLE void Configure(const QString &targetId);
+    Q_SCRIPTABLE int DelaySeconds() const;
+    Q_SCRIPTABLE bool KeepDelayActive() const;
+    Q_SCRIPTABLE bool CountdownActive() const;
+    Q_SCRIPTABLE void SetDelay(int seconds, bool keepActive);
+    Q_SCRIPTABLE void CancelCountdown();
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 

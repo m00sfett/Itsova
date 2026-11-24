@@ -43,6 +43,7 @@ struct Area
     QString monitorIdentity; // ScreenInfo::identity() when the area was defined
     QRect rect;
     bool includeCursor = false;
+    int delaySeconds = 0;
     ExportOverride exportOverride;
 };
 
@@ -52,6 +53,7 @@ struct Group
     QString name;
     QStringList targetIds;
     bool includeCursor = false;
+    int delaySeconds = 0;
     ExportOverride exportOverride;
 };
 
@@ -95,6 +97,9 @@ public:
     AnnotationSettings annotations;
     ExportOptions exportOptions;
     QHash<QString, ExportOverride> builtInExportOverrides;
+    QHash<QString, int> builtInDelays;
+    int captureDelaySeconds = 0;
+    bool keepDelayActive = false;
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();
@@ -104,6 +109,10 @@ public:
     void setTargetExportOverride(const QString &targetId, const ExportOverride &overrideValue);
     [[nodiscard]] ExportOptions effectiveExportOptions(const QString &targetId = QString(),
                                                        const QString &groupId = QString()) const;
+    [[nodiscard]] int targetDelaySeconds(const QString &targetId) const;
+    void setTargetDelaySeconds(const QString &targetId, int seconds);
+    [[nodiscard]] int effectiveDelaySeconds(const QString &targetId = QString()) const;
+    bool consumeOneShotDelay();
 
     void load(const KConfig &config);
     void save(KConfig &config) const;

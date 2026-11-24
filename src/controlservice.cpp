@@ -148,6 +148,31 @@ void ControlService::Configure(const QString &targetId)
     app_->showSettings(false, targetId);
 }
 
+int ControlService::DelaySeconds() const
+{
+    return app_->captureDelaySeconds();
+}
+
+bool ControlService::KeepDelayActive() const
+{
+    return app_->keepDelayActive();
+}
+
+bool ControlService::CountdownActive() const
+{
+    return app_->isCountdownActive();
+}
+
+void ControlService::SetDelay(int seconds, bool keepActive)
+{
+    app_->setCaptureDelay(seconds, keepActive);
+}
+
+void ControlService::CancelCountdown()
+{
+    app_->cancelCountdown();
+}
+
 void ControlService::RegisterWidget()
 {
     if (!calledFromDBus()) {

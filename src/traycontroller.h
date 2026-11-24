@@ -36,6 +36,8 @@ public:
     explicit TrayController(TargetProvider provider, QObject *parent = nullptr);
 
     void setLastCaptureAvailable(bool available);
+    void setDelayState(int seconds, bool keepActive);
+    void setCountdownState(bool active, int remainingSeconds);
     void setStatusText(const QString &text);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
@@ -44,6 +46,8 @@ public:
 
 Q_SIGNALS:
     void triggerRequested(const QString &id);
+    void delayChangedRequested(int seconds, bool keepActive);
+    void cancelCountdownRequested();
     void openLastCaptureRequested();
     void editLastCaptureRequested();
     void openFolderRequested();
@@ -61,6 +65,10 @@ private:
     QTimer *blinkTimer_;
     bool flashing_ = false;
     bool lastCaptureAvailable_ = false;
+    int delaySeconds_ = 0;
+    bool keepDelayActive_ = false;
+    bool countdownActive_ = false;
+    int countdownRemaining_ = 0;
 };
 
 } // namespace glimply
