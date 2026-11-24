@@ -116,6 +116,8 @@ public:
     void copy(const QString &preferredConnector = QString());
     void saveAs();
     void editInWindow(const QString &preferredConnector = QString());
+    // Pins every rectangle (with annotations) to the screen and closes the overlay.
+    void pin();
     // Returns an error message, or an empty string when the areas were saved.
     QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds = 0);
     void captureMonitor(const QString &connector);

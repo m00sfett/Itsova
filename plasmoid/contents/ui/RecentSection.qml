@@ -232,6 +232,11 @@ ColumnLayout {
             text: i18n("Show in Folder")
             onTriggered: section.action("folder", fileMenu.entryId, fileMenu.path)
         }
+        PlasmaComponents3.MenuItem {
+            icon.name: "window-pin"
+            text: i18n("Pin to Screen")
+            onTriggered: section.action("pin", fileMenu.entryId, fileMenu.path)
+        }
         PlasmaComponents3.MenuSeparator {}
         PlasmaComponents3.MenuItem {
             icon.name: "user-trash"
