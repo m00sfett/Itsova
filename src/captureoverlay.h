@@ -56,6 +56,9 @@ public:
     void start();
     // Print pressed again while the overlay is open: a fresh full screenshot, rectangles stay.
     void printPressed();
+    // GLIMPLY_LATENCY_BENCH set: closes a Print session once its latency trace is complete, as if
+    // Escape kept the full screenshot. Used by scripts/measure-latency.sh in a nested KWin (#67).
+    void finishLatencyBenchIfDone();
     void setForcedFrozen(std::optional<bool> frozen);
     void setForceShowOverlay(bool force);
 

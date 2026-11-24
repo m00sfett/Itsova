@@ -3,6 +3,7 @@
 #include "app.h"
 #include "cli.h"
 #include "intervalcontroller.h"
+#include "latencytrace.h"
 #include "mcpserver.h"
 #include "screens.h"
 #include "shortcutmanager.h"
@@ -161,6 +162,11 @@ QString ControlService::History()
 QString ControlService::HistoryAction(const QString &action, const QString &entryId, const QString &path)
 {
     return app_->historyAction(action, entryId, path);
+}
+
+QString ControlService::LatencyReport() const
+{
+    return QString::fromUtf8(QJsonDocument(LatencyTrace::report()).toJson(QJsonDocument::Compact));
 }
 
 void ControlService::ClearHistory()

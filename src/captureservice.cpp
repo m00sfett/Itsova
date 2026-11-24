@@ -1,5 +1,7 @@
 #include "captureservice.h"
 
+#include "latencytrace.h"
+
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QDBusConnection>
@@ -232,6 +234,7 @@ CaptureResult capture(const QString &method, const QVariantList &leading, bool i
         QVariantList arguments = leading;
         arguments << options << QVariant::fromValue(writer);
         request.setArguments(arguments);
+        LatencyTrace::mark(LatencyTrace::Stage::Request);
         return bus.asyncCall(request, captureTimeoutMs);
     }();
     writer = QDBusUnixFileDescriptor();

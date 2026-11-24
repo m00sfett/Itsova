@@ -117,6 +117,12 @@ public:
         Q_UNUSED(outArray);
         return {false, 1, {}, QStringLiteral("history is not supported by this backend")};
     }
+    // Latency of the last Print captures, oldest first (JSON as returned by D-Bus LatencyReport()).
+    virtual CliSimpleResult latencyReport(QJsonArray *outArray)
+    {
+        Q_UNUSED(outArray);
+        return {false, 1, {}, QStringLiteral("latency is not supported by this backend")};
+    }
 };
 
 class DBusCliBackend final : public CliBackend
@@ -139,6 +145,7 @@ public:
     CliSimpleResult intervalStatus(QJsonArray *outArray) override;
     CliSimpleResult openOverlay(const QString &mode, int delaySeconds) override;
     CliSimpleResult history(QJsonArray *outArray) override;
+    CliSimpleResult latencyReport(QJsonArray *outArray) override;
 };
 
 [[nodiscard]] bool isCliSubcommand(const QString &arg);

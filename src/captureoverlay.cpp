@@ -8,6 +8,7 @@
 #include "colorformat.h"
 #include "exportdialog.h"
 #include "imageoutput.h"
+#include "latencytrace.h"
 #include "ocrengine.h"
 #include "pixelloupe.h"
 #include "screens.h"
@@ -278,6 +279,7 @@ void CaptureSession::savePrintImage()
         connectors.append(screen.connector);
     }
     captureFrames(connectors);
+    LatencyTrace::mark(LatencyTrace::Stage::Pixels);
     QString error;
     const QImage image = composeAllMonitors(screens_, frames_, &error);
     if (image.isNull()) {
@@ -295,6 +297,7 @@ void CaptureSession::savePrintImage()
         QFile::remove(printPath_);
     }
     printPath_ = paths.first();
+    LatencyTrace::mark(LatencyTrace::Stage::File);
     QGuiApplication::clipboard()->setImage(image);
     app_->recordCapture(paths, tr("All monitors"));
 }
@@ -311,6 +314,16 @@ void CaptureSession::printPressed()
             showOverlays();
         }
     });
+}
+
+void CaptureSession::finishLatencyBenchIfDone()
+{
+    if (finished_ || purpose_ != Purpose::Print || !qEnvironmentVariableIsSet("GLIMPLY_LATENCY_BENCH")) {
+        return;
+    }
+    if (LatencyTrace::reached(LatencyTrace::Stage::Overlay) && LatencyTrace::reached(LatencyTrace::Stage::File)) {
+        QTimer::singleShot(0, this, [this] { finish({}, printPath_.isEmpty() ? QStringList() : QStringList{printPath_}); });
+    }
 }
 
 void CaptureSession::setForcedFrozen(std::optional<bool> frozen)
@@ -2592,6 +2605,18 @@ int CaptureOverlay::closeButtonAt(const QPoint &globalPos) const
 
 void CaptureOverlay::paintEvent(QPaintEvent *)
 {
+    // Marks the first overlay frame once it is fully painted (#67).
+    struct FirstFrameMark {
+        CaptureSession *session;
+        ~FirstFrameMark()
+        {
+            if (session->purpose() == CaptureSession::Purpose::Print
+                && !LatencyTrace::reached(LatencyTrace::Stage::Overlay)) {
+                LatencyTrace::mark(LatencyTrace::Stage::Overlay);
+                QTimer::singleShot(0, session, &CaptureSession::finishLatencyBenchIfDone);
+            }
+        }
+    } firstFrameMark{session_};
     QPainter painter(this);
     const QRect area = rect();
     const QImage background = session_->frame(screen_.connector);
