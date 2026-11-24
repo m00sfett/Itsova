@@ -9,6 +9,7 @@
 #include "windowlist.h"
 
 #include <QDateTime>
+#include <QFuture>
 #include <QHash>
 #include <QImage>
 #include <QKeySequence>
@@ -159,6 +160,17 @@ private:
     void showOverlays();
     void hideOverlays();
     void savePrintImage();
+    // The background write of the full Print screenshot (#67).
+    struct PrintWrite
+    {
+        QImage image;
+        QStringList paths;
+        QStringList errors;
+    };
+    void waitForPrintWrite();
+    void applyPrintWrite();
+    // The full screenshot's path; waits for a pending background write first.
+    QString &printPath();
     [[nodiscard]] const ScreenInfo *screenFor(const QString &connector) const;
     void handleInlineTextRequested(const AnnotationItem &item, bool isExisting);
     void removePrintSnapshotIfRedacted();
@@ -201,6 +213,8 @@ private:
     QList<Highlight> highlights_;
     QList<QPointer<CaptureOverlay>> overlays_;
     QString printPath_;
+    QFuture<PrintWrite> printWrite_;
+    bool printWritePending_ = false;
 };
 
 // The overlay on one monitor: shows the picture (or the live screen), annotations, rectangles, and
