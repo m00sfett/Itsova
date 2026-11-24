@@ -223,13 +223,17 @@ void IntervalController::performTick(const QString &targetId, std::uint64_t gene
     }
 
     it->inFlight = true;
+    // Plan errors describe members that were skipped on purpose (e.g. a disconnected monitor);
+    // they must not count as a failed tick when every remaining output was merely unchanged.
+    const QStringList planErrors = plan.errors;
     std::optional<TriggerEngine::FrameMap> prevFrames;
     if (it->config.onlyWhenChanged) {
         prevFrames = it->lastFrames;
     }
 
     captureRunner_(std::move(plan), directory, filenameTemplate, std::move(prevFrames),
-                   [this, targetId, generation](TriggerResult result, TriggerEngine::FrameMap updatedFrames) {
+                   [this, targetId, generation, planErrors](TriggerResult result,
+                                                            TriggerEngine::FrameMap updatedFrames) {
                        auto activeIt = runs_.find(targetId);
                        if (activeIt == runs_.end() || activeIt->generation != generation) {
                            return;
@@ -248,10 +252,14 @@ void IntervalController::performTick(const QString &targetId, std::uint64_t gene
                            Q_EMIT captureSaved(targetId, result);
                        }
 
-                       if (!result.errors.isEmpty() && result.writtenPaths.isEmpty()) {
+                       QStringList tickErrors = result.errors;
+                       for (const QString &planError : planErrors) {
+                           tickErrors.removeAll(planError);
+                       }
+                       if (!tickErrors.isEmpty() && result.writtenPaths.isEmpty()) {
                            finishRun(targetId, false,
                                      tr("Stopped interval capture for “%1”: %2")
-                                         .arg(activeIt->displayName, result.errors.join(QStringLiteral("; "))));
+                                         .arg(activeIt->displayName, tickErrors.join(QStringLiteral("; "))));
                            return;
                        }
 

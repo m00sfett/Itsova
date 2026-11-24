@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-11-24
+
+### Fixed
+
+- `glimply capture --out` with a relative path now saves next to the caller instead of in the tray daemon's working directory; the CLI resolves the path before sending it over D-Bus.
+- Interval captures with *Only save when changed* on a group no longer stop with an error while a member is skipped (e.g. its monitor is unplugged) and the remaining members are unchanged.
+- CLI and MCP captures of a group that fail on a later member still record the files already saved: they appear in the JSON `files` list (and as paths on stdout in text mode), become the last capture, and run the post-capture hook.
+- Saving captures to filesystems without `RENAME_NOREPLACE` support (many FUSE mounts such as rclone or sshfs, older NFS/CIFS) no longer fails; glimply falls back to an exclusive name reservation before moving the file into place.
+
 ## [0.6.0] - 2026-11-24
 
 Automation milestone: interval captures, scriptable CLI & async D-Bus API, post-capture hooks, and an opt-in local MCP server.

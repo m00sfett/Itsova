@@ -1,6 +1,7 @@
 #include "cli.h"
 
 #include <QBuffer>
+#include <QDir>
 #include <QFile>
 #include <QImage>
 #include <QJsonArray>
@@ -196,6 +197,8 @@ private Q_SLOTS:
     void captureJsonAndOptions();
     void captureStdoutBinaryAndCleanup();
     void captureErrorsAndExitCodes();
+    void captureRelativeOutIsAbsolute();
+    void capturePartialFailureReportsFiles();
     void listSubcommands();
     void areaSubcommands();
     void intervalAndOverlaySubcommands();
@@ -308,6 +311,57 @@ void CliTest::captureErrorsAndExitCodes()
     backend.nextCaptureResult.error = QStringLiteral("Not found");
     QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("missing")}, backend, out, err),
              3);
+}
+
+void CliTest::captureRelativeOutIsAbsolute()
+{
+    MockCliBackend backend;
+    backend.nextCaptureResult.ok = true;
+    QBuffer out;
+    QBuffer err;
+    out.open(QIODevice::ReadWrite);
+    err.open(QIODevice::ReadWrite);
+
+    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
+                           QStringLiteral("--out"), QStringLiteral("sub/shot.png")},
+                          backend, out, err);
+    QCOMPARE(rc, 0);
+    // The daemon runs in another working directory; the CLI must send an absolute path.
+    QCOMPARE(backend.lastCaptureReq.outPath, QDir::current().absoluteFilePath(QStringLiteral("sub/shot.png")));
+}
+
+void CliTest::capturePartialFailureReportsFiles()
+{
+    MockCliBackend backend;
+    backend.nextCaptureResult.ok = false;
+    backend.nextCaptureResult.exitCode = 1;
+    backend.nextCaptureResult.error = QStringLiteral("Area B: monitor capture failed.");
+    backend.nextCaptureResult.files.append(
+        {QStringLiteral("area:111"), QStringLiteral("/tmp/a.png"), 10, 10, QStringLiteral("png"), 123});
+
+    QBuffer out;
+    QBuffer err;
+    out.open(QIODevice::ReadWrite);
+    err.open(QIODevice::ReadWrite);
+    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Dual"),
+                           QStringLiteral("--json")},
+                          backend, out, err);
+    QCOMPARE(rc, 1);
+    const QJsonObject obj = QJsonDocument::fromJson(out.data()).object();
+    QVERIFY(!obj.value(QStringLiteral("ok")).toBool());
+    const QJsonArray files = obj.value(QStringLiteral("files")).toArray();
+    QCOMPARE(files.size(), 1);
+    QCOMPARE(files.first().toObject().value(QStringLiteral("path")).toString(), QStringLiteral("/tmp/a.png"));
+
+    QBuffer textOut;
+    QBuffer textErr;
+    textOut.open(QIODevice::ReadWrite);
+    textErr.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Dual")}, backend,
+                    textOut, textErr),
+             1);
+    QVERIFY(textOut.data().contains("/tmp/a.png"));
+    QVERIFY(textErr.data().contains("monitor capture failed"));
 }
 
 void CliTest::listSubcommands()
