@@ -17,6 +17,7 @@ Public release readiness: translations, packaging and documentation. The reposit
 
 - Language setting (#53): *Settings → General → Language* offers *System default* and the 19 languages by their own names. After a change, an inline message offers *Restart now*; glimply quits and starts again in the new language. The Plasma widget follows the Plasma language.
 - Arch Linux packaging (#56): `packaging/arch/glimply-git/PKGBUILD` (development package) and `packaging/arch/glimply/PKGBUILD` (for tagged releases from `1.0.0`), installing the binary, desktop entry (`ScreenShot2` restricted interface), D-Bus service, notification config, icons, translations, and Plasma widget.
+- Documentation (#57): rewrote `README.md` in English covering current features, local-only privacy, `ScreenShot2` / `Print` / MCP / OCR permissions, Qt 6.8 / KF 6.13 requirements, Arch PKGBUILD and source build instructions, CLI usage, and translation notes (no screenshots before `1.0.0`).
 
 ### Changed
 
