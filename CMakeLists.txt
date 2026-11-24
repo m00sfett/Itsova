@@ -75,6 +75,7 @@ add_library(glimply_capture STATIC
     src/kwinpinscript.cpp
     src/mcppolicy.cpp
     src/mcpserver.cpp
+    src/ocrengine.cpp
     src/pinstore.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
@@ -191,6 +192,9 @@ if(BUILD_TESTING)
     add_executable(pintest tests/pintest.cpp)
     target_link_libraries(pintest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME pin COMMAND pintest)
+    add_executable(ocrtest tests/ocrtest.cpp)
+    target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME ocr COMMAND ocrtest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)
