@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Scheduled concurrent interval captures per area, monitor, all monitors, or group (`#22`) with per-target interval configuration (`Every N s`, optional `Only save when changed` raw pixel comparison preserving group frame simultaneity, optional `maxCaptures` and `maxMinutes` stop limits), dedicated global toggle shortcuts, active tray/Plasma-widget interval indicator (`io.github.m00sfett.glimply-tray-interval`) with `Start` / `Stop` / `Stop All` controls, and automatic low-disk (`< 100 MB`) / disconnect stop protection.
+- Scriptable CLI subcommands (`capture`, `list`, `area`, `interval`, `overlay`) with `--format`, `--quality`, `--png-compression`, `--lossless`, `--delay`, `--cursor`/`--no-cursor`, `--out`, `--stdout` (raw binary stream), `--clipboard`, `--no-save`, `--json`, and structured exit codes (`0`/`1`/`2`/`3`) backed by an expanded async `io.github.m00sfett.glimply.Control` D-Bus API (`CaptureSync`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `AddAreaRect`, `OpenOverlay`) (`#23`).
 
 ## [0.5.0] - 2026-11-24
 

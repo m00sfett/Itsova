@@ -4,6 +4,7 @@
 
 #include <KSharedConfig>
 
+#include <QDateTime>
 #include <QList>
 #include <QObject>
 #include <QPointer>
@@ -14,6 +15,7 @@
 #include <optional>
 
 class QImage;
+class QJsonObject;
 
 namespace glimply
 {
@@ -21,6 +23,9 @@ namespace glimply
 struct ActiveIntervalStatus;
 class AnnotationDocument;
 class CaptureSession;
+struct CliCaptureRequest;
+struct CliCaptureResult;
+struct CliResolveResult;
 class ColorPickerSession;
 class ControlService;
 class CountdownBanner;
@@ -76,9 +81,14 @@ public:
     // Takes the Print key (on) or hands it back to its previous owner (off).
     void setUsePrintKey(bool on);
     // A capture was written: tray blink, status, "Open last capture".
-    void recordCapture(const QStringList &paths, const QString &displayName);
+    void recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId = QString());
     // Removes a deleted path (for example a purged unredacted Print snapshot) from last-capture state.
     void forgetCapturePath(const QString &path);
+    [[nodiscard]] CliResolveResult resolveTarget(const QString &query) const;
+    void captureAsync(const CliCaptureRequest &request, std::function<void(const CliCaptureResult &)> callback);
+    [[nodiscard]] QJsonObject addAreaRect(const QString &name, const QString &connector, const QRect &rect);
+    [[nodiscard]] QString openOverlay(const QString &mode, int delaySeconds);
+    [[nodiscard]] QJsonObject lastCaptureInfo() const;
     // Notification after an overlay session, with Open and Show in Folder.
     void notifySaved(const QString &title, const QStringList &paths, const QStringList &errors);
     void notifyPartialCapture(const QString &title, const QStringList &messages);
@@ -112,7 +122,7 @@ Q_SIGNALS:
 
 private:
     void executeTriggerNow(const QString &id);
-    void startPrintNow();
+    void startPrintNow(std::optional<bool> forcedFrozen = std::nullopt, bool forceOverlay = false);
     void onTriggerFinished(const TriggerResult &result);
     void syncShortcuts(const QStringList &deletedIds = {});
     void migrateLegacyIds();
@@ -137,6 +147,9 @@ private:
     QPointer<ColorPickerSession> colorPicker_;
     QList<QPointer<QuickEditorWindow>> editors_;
     QStringList lastPaths_;
+    QString lastCaptureTargetId_;
+    QString lastCaptureDisplayName_;
+    QDateTime lastCaptureTimestamp_;
 };
 
 } // namespace glimply

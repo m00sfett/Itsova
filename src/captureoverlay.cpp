@@ -226,13 +226,13 @@ void CaptureSession::start()
     connect(&annotationController_, &AnnotationController::textEditStarted, this,
             &CaptureSession::handleInlineTextRequested);
 
-    frozen_ = store().overlayStartsFrozen();
+    frozen_ = forcedFrozen_.has_value() ? *forcedFrozen_ : store().overlayStartsFrozen();
     if (purpose_ == Purpose::Print) {
         savePrintImage();
         if (finished_) {
             return;
         }
-        if (!store().printOpensOverlay) {
+        if (!forceShowOverlay_ && !store().printOpensOverlay) {
             finish({}, {printPath_});
             return;
         }
@@ -298,6 +298,16 @@ void CaptureSession::printPressed()
             showOverlays();
         }
     });
+}
+
+void CaptureSession::setForcedFrozen(std::optional<bool> frozen)
+{
+    forcedFrozen_ = frozen;
+}
+
+void CaptureSession::setForceShowOverlay(bool force)
+{
+    forceShowOverlay_ = force;
 }
 
 CaptureSession::Purpose CaptureSession::purpose() const

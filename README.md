@@ -159,16 +159,26 @@ To set up areas without capturing:
 
 Groups are created under *Configure glimply… → Groups*.
 
-### D-Bus interface
+### Scriptable CLI & D-Bus interface
 
-The widget uses `io.github.m00sfett.glimply` at `/Control`
-(`io.github.m00sfett.glimply.Control`): `Targets` (JSON), `HasLastCapture`,
-`Trigger`, `AddArea`, `EditArea`, `Rename`, `Remove`, `OpenLastCapture`,
-`EditLastCapture`, `OpenCaptureFolder`, `Configure`, `DelaySeconds`,
-`KeepDelayActive`, `CountdownActive`, `SetDelay`, `CancelCountdown`,
-`PickColor`, and the signals `Changed` and `Captured`. Scripts can use it too,
-for example `busctl --user call io.github.m00sfett.glimply /Control
-io.github.m00sfett.glimply.Control Trigger s all`.
+glimply provides subcommands that talk cleanly to the running daemon (auto-activating it over D-Bus when needed):
+
+```sh
+glimply capture DP-1-1 --format webp --quality 85 --json
+glimply capture window:konsole --stdout --no-save > konsole.png
+glimply list --kind windows --json
+glimply area add --name Header --monitor DP-1 --rect 0,0,1920,120 --json
+glimply interval start DP-1-1 --seconds 10 --only-changed
+glimply overlay --mode live --delay 3
+```
+
+Exit codes: `0` success, `1` capture/runtime error, `2` invalid arguments or group conflict, `3` target not found or unavailable.
+
+The session bus interface (`io.github.m00sfett.glimply`, `/Control`, `io.github.m00sfett.glimply.Control`) exposes `Targets`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `CaptureSync`, `Trigger`, `AddArea`, `AddAreaRect`, `EditArea`, `Rename`, `Remove`, `Intervals`, `StartInterval`, `StopInterval`, `StopAllIntervals`, `OpenOverlay`, `PickColor`, and signals `Changed`, `IntervalsChanged`, and `Captured`. Example:
+
+```sh
+busctl --user call io.github.m00sfett.glimply /Control io.github.m00sfett.glimply.Control Trigger s all
+```
 
 ## Development
 

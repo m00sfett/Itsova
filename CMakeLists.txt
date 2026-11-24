@@ -64,6 +64,7 @@ add_library(glimply_capture STATIC
     src/annotations/overlayexport.cpp
     src/annotations/redactionprocessor.cpp
     src/captureservice.cpp
+    src/cli.cpp
     src/colorformat.cpp
     src/imageoutput.cpp
     src/intervalcontroller.cpp
@@ -163,6 +164,9 @@ if(BUILD_TESTING)
     add_executable(intervaltest tests/intervaltest.cpp)
     target_link_libraries(intervaltest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME interval COMMAND intervaltest)
+    add_executable(clitest tests/clitest.cpp)
+    target_link_libraries(clitest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME cli COMMAND clitest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

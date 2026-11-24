@@ -20,6 +20,7 @@
 #include <QWidget>
 
 #include <functional>
+#include <optional>
 
 class QLabel;
 class QPushButton;
@@ -55,6 +56,8 @@ public:
     void start();
     // Print pressed again while the overlay is open: a fresh full screenshot, rectangles stay.
     void printPressed();
+    void setForcedFrozen(std::optional<bool> frozen);
+    void setForceShowOverlay(bool force);
 
     // State for the overlays.
     [[nodiscard]] Purpose purpose() const;
@@ -162,6 +165,8 @@ private:
 
     App *app_;
     Purpose purpose_;
+    std::optional<bool> forcedFrozen_;
+    bool forceShowOverlay_ = false;
     bool frozen_ = true;
     bool markupVisible_ = false;
     bool forceNew_ = false;

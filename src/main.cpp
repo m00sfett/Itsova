@@ -1,4 +1,5 @@
 #include "app.h"
+#include "cli.h"
 #include "printkey.h"
 
 #include <KConfig>
@@ -9,19 +10,38 @@
 #include <QApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QCoreApplication>
 #include <QDir>
+#include <QFile>
 #include <QFileInfo>
 #include <QTimer>
 #include <QTranslator>
 #include <QUrl>
 
+#include <cstdio>
+
 namespace
 {
+
+void routeQtLogsToStderr(QtMsgType, const QMessageLogContext &, const QString &message)
+{
+    const QByteArray bytes = message.toUtf8();
+    std::fwrite(bytes.constData(), 1, static_cast<std::size_t>(bytes.size()), stderr);
+    std::fputc('\n', stderr);
+}
 
 void configureParser(QCommandLineParser &parser, const QCommandLineOption &editOption,
                      const QCommandLineOption &releaseOption)
 {
-    parser.setApplicationDescription(QApplication::translate("main", "Lightweight KDE screenshot and annotation tool"));
+    parser.setApplicationDescription(QApplication::translate(
+        "main",
+        "Lightweight KDE screenshot and annotation tool\n\n"
+        "Scriptable CLI subcommands:\n"
+        "  capture <target>   Capture an area, group, monitor, all monitors, or window\n"
+        "  list               List configured targets, monitors, or open windows\n"
+        "  area               Add, edit, rename, or remove saved areas\n"
+        "  interval           Start, stop, or inspect interval captures\n"
+        "  overlay            Open the interactive capture overlay"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption(editOption);
@@ -90,6 +110,24 @@ public:
 
 int main(int argc, char *argv[])
 {
+    if (argc >= 2 && glimply::isCliSubcommand(QString::fromLocal8Bit(argv[1]))) {
+        qInstallMessageHandler(routeQtLogsToStderr);
+        QCoreApplication cliApp(argc, argv);
+        QCoreApplication::setApplicationName(QStringLiteral("glimply"));
+        QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+        QFile outFile;
+        QFile errFile;
+        if (!outFile.open(stdout, QIODevice::WriteOnly) || !errFile.open(stderr, QIODevice::WriteOnly)) {
+            std::fputs("glimply: failed to open standard streams.\n", stderr);
+            return 1;
+        }
+        glimply::DBusCliBackend backend;
+        const int code = glimply::runCli(QCoreApplication::arguments(), backend, outFile, errFile);
+        outFile.flush();
+        errFile.flush();
+        return code;
+    }
+
     QApplication application(argc, argv);
     QApplication::setApplicationName(QStringLiteral("glimply"));
     QApplication::setApplicationDisplayName(QStringLiteral("glimply"));
