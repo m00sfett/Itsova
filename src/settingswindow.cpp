@@ -1678,12 +1678,19 @@ QWidget *SettingsWindow::createStoragePage()
 
 QWidget *SettingsWindow::createGeneralPage()
 {
-    auto *page = new QWidget;
+    auto *scroll = new QScrollArea;
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setWidgetResizable(true);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    auto *page = new QWidget(scroll);
+    scroll->setWidget(page);
     auto *outer = new QHBoxLayout(page);
-    outer->setContentsMargins(0, 0, 0, 0);
+    outer->setContentsMargins(4, 0, 4, 0);
     auto *content = new QWidget(page);
     content->setMaximumWidth(680);
     outer->addWidget(content);
+    outer->addStretch(1);
     auto *form = new QFormLayout(content);
     form->setContentsMargins(0, 0, 0, 0);
     form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
@@ -1837,7 +1844,7 @@ QWidget *SettingsWindow::createGeneralPage()
         app_->store().ocrLanguages = chosen;
         app_->storeChanged();
     });
-    return page;
+    return scroll;
 }
 
 void SettingsWindow::refreshTextRecognition()
@@ -1892,7 +1899,7 @@ QWidget *SettingsWindow::createAutomationPage()
     auto *page = new QWidget(scroll);
     scroll->setWidget(page);
     auto *outer = new QHBoxLayout(page);
-    outer->setContentsMargins(0, 0, 8, 0);
+    outer->setContentsMargins(4, 0, 4, 0);
     auto *content = new QWidget(page);
     content->setMaximumWidth(680);
     outer->addWidget(content);

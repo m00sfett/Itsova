@@ -2009,12 +2009,13 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         grid->addWidget(heading, 0, 0, 1, 2);
         grid->setRowMinimumHeight(1, 2);
         int line = 2;
+        const bool rtl = panel->layoutDirection() == Qt::RightToLeft;
         for (const auto &[keys, meaning] : rows) {
             auto *keyLabel = new QLabel(keys, panel);
             keyLabel->setFont(bold);
-            keyLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+            keyLabel->setAlignment((rtl ? Qt::AlignLeft : Qt::AlignRight) | Qt::AlignAbsolute | Qt::AlignTop);
             auto *meaningLabel = new QLabel(meaning, panel);
-            meaningLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+            meaningLabel->setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignAbsolute | Qt::AlignTop);
             grid->addWidget(keyLabel, line, 0);
             grid->addWidget(meaningLabel, line, 1);
             ++line;
