@@ -2,16 +2,25 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[pt]=Capturas de tela do glimply
+Comment[it]=Schermate di glimply
+Comment[es]=Capturas de pantalla de glimply
 Comment[ja]=glimply のスクリーンショット
 Comment[fr]=Captures d'écran glimply
 Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[pt]=Falha na captura
+Name[it]=Acquisizione non riuscita
+Name[es]=Error al capturar
 Name[ja]=キャプチャに失敗
 Name[fr]=Échec de la capture
 Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[pt]=Uma captura falhou ou um alvo foi ignorado
+Comment[it]=Un'acquisizione non è riuscita o un obiettivo è stato saltato
+Comment[es]=Falló una captura o se omitió un objetivo
 Comment[ja]=キャプチャに失敗したか、対象がスキップされました
 Comment[fr]=Une capture a échoué ou une cible a été ignorée
 Comment[de]=Ein Bildschirmfoto ist fehlgeschlagen oder ein Ziel wurde übersprungen
@@ -20,10 +29,16 @@ Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[pt]=Monitor alterado
+Name[it]=Schermo cambiato
+Name[es]=Pantalla cambiada
 Name[ja]=ディスプレイが変更されました
 Name[fr]=Écran modifié
 Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[pt]=O monitor de uma região difere daquele em que ela foi definida
+Comment[it]=Lo schermo di un'area è diverso da quello su cui è stata definita
+Comment[es]=La pantalla de una región difiere de aquella en la que se definió
 Comment[ja]=範囲のディスプレイが、定義時のディスプレイと異なります
 Comment[fr]=L'écran d'une zone diffère de celui sur lequel elle a été définie
 Comment[de]=Der Bildschirm eines Bereichs unterscheidet sich von dem, auf dem er festgelegt wurde
@@ -32,10 +47,16 @@ Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[pt]=Problema nas configurações
+Name[it]=Problema nelle impostazioni
+Name[es]=Problema de configuración
 Name[ja]=設定の問題
 Name[fr]=Problème de paramètres
 Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[pt]=O glimply não pôde aplicar uma configuração, como a inicialização automática
+Comment[it]=glimply non è riuscito ad applicare un'impostazione, come l'avvio automatico
+Comment[es]=glimply no pudo aplicar un ajuste, como el inicio automático
 Comment[ja]=glimply は自動起動などの設定を適用できませんでした
 Comment[fr]=glimply n'a pas pu appliquer un paramètre, comme le lancement automatique
 Comment[de]=glimply konnte eine Einstellung wie den Autostart nicht anwenden
@@ -43,10 +64,16 @@ Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[pt]=Captura salva
+Name[it]=Acquisizione salvata
+Name[es]=Captura guardada
 Name[ja]=キャプチャを保存しました
 Name[fr]=Capture enregistrée
 Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[pt]=Uma captura da tecla Print ou da sobreposição foi salva
+Comment[it]=Un'acquisizione dal tasto Print o dalla sovrimpressione è stata salvata
+Comment[es]=Se guardó una captura desde la tecla Print o el Overlay
 Comment[ja]=Print キーまたはオーバーレイからのキャプチャを保存しました
 Comment[fr]=Une capture lancée par la touche Print ou depuis la superposition a été enregistrée
 Comment[de]=Ein Bildschirmfoto über die Taste Print oder das Overlay wurde gespeichert
@@ -55,10 +82,16 @@ Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[pt]=Captura parcial
+Name[it]=Acquisizione parziale
+Name[es]=Captura parcial
 Name[ja]=一部のキャプチャ
 Name[fr]=Capture partielle
 Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[pt]=Uma área entre monitores foi capturada parcialmente ou ignorada porque um monitor está desconectado
+Comment[it]=Un'area multi-schermo è stata acquisita parzialmente o saltata perché uno schermo è scollegato
+Comment[es]=Un área multipantalla se capturó parcialmente o se omitió porque una pantalla está desconectada
 Comment[ja]=ディスプレイが切断されているため、複数ディスプレイにまたがる範囲が一部だけキャプチャされたか、スキップされました
 Comment[fr]=Une zone multi-écrans a été partiellement capturée ou ignorée car un écran est déconnecté
 Comment[de]=Ein über mehrere Bildschirme reichender Bereich wurde nur teilweise aufgenommen oder übersprungen, weil ein Bildschirm nicht angeschlossen ist
@@ -67,10 +100,16 @@ Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[pt]=Cor copiada
+Name[it]=Colore copiato
+Name[es]=Color copiado
 Name[ja]=色をコピーしました
 Name[fr]=Couleur copiée
 Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[pt]=Uma cor amostrada da tela foi copiada para a área de transferência
+Comment[it]=Un colore campionato dallo schermo è stato copiato negli appunti
+Comment[es]=Se copió al portapapeles un color de pantalla muestreado
 Comment[ja]=取得した画面の色をクリップボードにコピーしました
 Comment[fr]=Une couleur d'écran prélevée a été copiée dans le presse-papiers
 Comment[de]=Eine aufgenommene Bildschirmfarbe wurde in die Zwischenablage kopiert
@@ -79,10 +118,16 @@ Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[pt]=Captura por intervalo parada
+Name[it]=Acquisizione a intervalli fermata
+Name[es]=Captura por intervalo detenida
 Name[ja]=インターバルキャプチャを停止しました
 Name[fr]=Capture à intervalles arrêtée
 Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[pt]=Uma captura por intervalo agendada atingiu o limite configurado e terminou
+Comment[it]=Un'acquisizione a intervalli pianificata ha raggiunto il limite configurato ed è terminata
+Comment[es]=Una captura por intervalo programada alcanzó su límite configurado y finalizó
 Comment[ja]=設定された上限に達したため、インターバルキャプチャが終了しました
 Comment[fr]=Une capture à intervalles planifiée a atteint sa limite configurée et s'est terminée
 Comment[de]=Eine Intervallaufnahme hat ihr eingestelltes Limit erreicht und ist beendet
@@ -91,10 +136,16 @@ Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[pt]=Falha no hook pós-captura
+Name[it]=Hook post-acquisizione non riuscito
+Name[es]=Error en hook tras captura
 Name[ja]=キャプチャ後のフックに失敗しました
 Name[fr]=Échec du hook après capture
 Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[pt]=Um comando pós-captura configurado terminou com erro ou excedeu o tempo limite
+Comment[it]=Un comando post-acquisizione configurato è terminato con un errore o è scaduto
+Comment[es]=Una orden tras captura configurada salió con error o superó el tiempo de espera
 Comment[ja]=設定されたキャプチャ後のコマンドがエラーで終了したか、タイムアウトしました
 Comment[fr]=Une commande configurée après capture s'est terminée avec une erreur ou a dépassé le délai
 Comment[de]=Ein konfigurierter Befehl nach dem Bildschirmfoto wurde mit einem Fehler beendet oder hat das Zeitlimit überschritten
@@ -103,10 +154,16 @@ Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[pt]=Captura via MCP executada
+Name[it]=Acquisizione MCP eseguita
+Name[es]=Captura MCP ejecutada
 Name[ja]=MCP によるキャプチャを実行しました
 Name[fr]=Capture MCP exécutée
 Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[pt]=Um cliente MCP local externo capturou uma imagem da tela
+Comment[it]=Un client MCP locale esterno ha acquisito una schermata
+Comment[es]=Un cliente MCP local externo realizó una captura de pantalla
 Comment[ja]=外部のローカル MCP クライアントがスクリーンショットをキャプチャしました
 Comment[fr]=Un client MCP local externe a capturé une capture d'écran
 Comment[de]=Ein externer lokaler MCP-Client hat ein Bildschirmfoto aufgenommen
@@ -115,10 +172,16 @@ Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[pt]=Ação de captura recente
+Name[it]=Azione acquisizione recente
+Name[es]=Acción de captura reciente
 Name[ja]=最近のキャプチャの操作
 Name[fr]=Action sur une capture récente
 Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[pt]=Uma captura recente foi copiada ou movida para a lixeira
+Comment[it]=Un'acquisizione recente è stata copiata o spostata nel cestino
+Comment[es]=Se copió o movió a la papelera una captura reciente
 Comment[ja]=最近のキャプチャがコピーされたか、ゴミ箱に移動されました
 Comment[fr]=Une capture récente a été copiée ou déplacée dans la corbeille
 Comment[de]=Ein letztes Bildschirmfoto wurde kopiert oder in den Papierkorb verschoben
@@ -127,10 +190,16 @@ Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[pt]=Fixação removida
+Name[it]=Schermata fissata rimossa
+Name[es]=Pin eliminado
 Name[ja]=固定を削除しました
 Name[fr]=Épingle supprimée
 Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[pt]=Uma captura fixada foi removida e ainda pode ser restaurada por alguns segundos
+Comment[it]=Una schermata fissata è stata rimossa e può ancora essere ripristinata per alcuni secondi
+Comment[es]=Se eliminó una captura fijada y aún puede restaurarse durante unos segundos
 Comment[ja]=固定したスクリーンショットを削除しました。数秒間は復元できます
 Comment[fr]=Une capture épinglée a été supprimée et peut encore être restaurée pendant quelques secondes
 Comment[de]=Ein angeheftetes Bildschirmfoto wurde entfernt und kann noch einige Sekunden wiederhergestellt werden
@@ -139,10 +208,16 @@ Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[pt]=Texto copiado
+Name[it]=Testo copiato
+Name[es]=Texto copiado
 Name[ja]=テキストをコピーしました
 Name[fr]=Texte copié
 Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[pt]=O texto reconhecido foi copiado para a área de transferência, ou nenhum texto foi encontrado
+Comment[it]=Il testo riconosciuto è stato copiato negli appunti oppure non è stato trovato alcun testo
+Comment[es]=Se copió al portapapeles el texto reconocido, o no se encontró texto
 Comment[ja]=認識したテキストをクリップボードにコピーしたか、テキストが見つかりませんでした
 Comment[fr]=Le texte reconnu a été copié dans le presse-papiers, ou aucun texte n'a été trouvé
 Comment[de]=Erkannter Text wurde in die Zwischenablage kopiert oder es wurde kein Text gefunden

@@ -1,3550 +1,3528 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="it" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
     <message>
         <source>Crop image</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritaglia immagine</translation>
     </message>
 </context>
 <context>
     <name>AnnotationCommands</name>
     <message>
         <source>Add Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi annotazione</translation>
     </message>
     <message>
         <source>Delete Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina annotazione</translation>
     </message>
     <message>
         <source>Modify Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica annotazione</translation>
     </message>
     <message>
         <source>Reorder Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Riordina annotazione</translation>
     </message>
 </context>
 <context>
     <name>CaptureService</name>
     <message>
         <source>KWin denied permission to capture the screen. Install glimply with its desktop entry to grant access to the KDE screenshot service.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin ha negato l'autorizzazione ad acquisire lo schermo. Installa glimply con la sua voce del desktop per concedere l'accesso al servizio di schermate KDE.</translation>
     </message>
     <message>
         <source>KWin timed out while capturing %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo scaduto per KWin durante l'acquisizione di %1.</translation>
     </message>
     <message>
         <source>The window is no longer open.</source>
-        <translation type="unfinished"></translation>
+        <translation>La finestra non è più aperta.</translation>
     </message>
     <message>
         <source>KWin could not capture %1 (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin non è riuscito ad acquisire %1 (%2).</translation>
     </message>
     <message>
         <source>KWin returned invalid image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin ha restituito dati immagine non validi per %1.</translation>
     </message>
     <message>
         <source>Could not read the screenshot from KWin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere la schermata da KWin.</translation>
     </message>
     <message>
         <source>KWin returned incomplete image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin ha restituito dati immagine incompleti per %1.</translation>
     </message>
     <message>
         <source>Could not create the screenshot image for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare l'immagine della schermata per %1.</translation>
     </message>
     <message>
         <source>The KDE screenshot service is unavailable on the session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il servizio di schermate KDE non è disponibile sul bus di sessione.</translation>
     </message>
     <message>
         <source>Could not create the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare la connessione per i dati della schermata.</translation>
     </message>
     <message>
         <source>Could not prepare the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile preparare la connessione per i dati della schermata.</translation>
     </message>
     <message>
         <source>There is not enough memory to capture %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Memoria insufficiente per acquisire %1.</translation>
     </message>
     <message>
         <source>Choose a monitor to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli uno schermo da acquisire.</translation>
     </message>
     <message>
         <source>monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>schermo %1</translation>
     </message>
     <message>
         <source>Choose a window to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli una finestra da acquisire.</translation>
     </message>
     <message>
         <source>the window</source>
-        <translation type="unfinished"></translation>
+        <translation>la finestra</translation>
     </message>
 </context>
 <context>
     <name>ColorFormat</name>
     <message>
         <source>HEX</source>
-        <translation type="unfinished"></translation>
+        <translation>HEX</translation>
     </message>
     <message>
         <source>RGB</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB</translation>
     </message>
     <message>
         <source>HSL</source>
-        <translation type="unfinished"></translation>
+        <translation>HSL</translation>
     </message>
     <message>
         <source>HSV</source>
-        <translation type="unfinished"></translation>
+        <translation>HSV</translation>
     </message>
 </context>
 <context>
     <name>HookRunner</name>
     <message>
         <source>Hook command is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il comando hook è vuoto.</translation>
     </message>
     <message>
         <source>Could not parse hook command.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile analizzare il comando hook.</translation>
     </message>
     <message>
         <source>Command timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo scaduto per il comando.</translation>
     </message>
     <message>
         <source>Exited with status %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminato con stato %1.</translation>
     </message>
 </context>
 <context>
     <name>ImageOutput</name>
     <message>
         <source>PNG (lossless)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG (senza perdita)</translation>
     </message>
     <message>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <source>WebP</source>
-        <translation type="unfinished"></translation>
+        <translation>WebP</translation>
     </message>
     <message>
         <source>AVIF</source>
-        <translation type="unfinished"></translation>
+        <translation>AVIF</translation>
     </message>
     <message>
         <source>JPEG XL</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG XL</translation>
     </message>
     <message>
         <source>TIFF</source>
-        <translation type="unfinished"></translation>
+        <translation>TIFF</translation>
     </message>
     <message>
         <source>BMP</source>
-        <translation type="unfinished"></translation>
+        <translation>BMP</translation>
     </message>
     <message>
         <source>QOI</source>
-        <translation type="unfinished"></translation>
+        <translation>QOI</translation>
     </message>
     <message>
         <source>No output device was provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non è stato fornito alcun dispositivo di output.</translation>
     </message>
     <message>
         <source>Cannot save an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile salvare un'immagine vuota.</translation>
     </message>
     <message>
         <source>Could not encode image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile codificare l'immagine.</translation>
     </message>
     <message>
         <source>Cannot estimate size of an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile stimare le dimensioni di un'immagine vuota.</translation>
     </message>
     <message>
         <source>Cannot create capture directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare la cartella delle schermate: %1</translation>
     </message>
     <message>
         <source>The monitor capture is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>La schermata dello schermo è vuota.</translation>
     </message>
     <message>
         <source>The capture area or monitor scale is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area di acquisizione o la scala dello schermo non è valida.</translation>
     </message>
     <message>
         <source>The capture area is outside the monitor image.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area di acquisizione è fuori dall'immagine dello schermo.</translation>
     </message>
     <message>
         <source>Could not allocate the cropped image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile allocare l'immagine ritagliata.</translation>
     </message>
     <message>
         <source>The capture directory is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>La cartella delle schermate è vuota.</translation>
     </message>
     <message>
         <source>Cannot create a temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare un file temporaneo della schermata: %1</translation>
     </message>
     <message>
         <source>Cannot write temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile scrivere il file temporaneo della schermata: %1</translation>
     </message>
     <message>
         <source>Cannot finish temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile completare il file temporaneo della schermata: %1</translation>
     </message>
     <message>
         <source>Cannot set permissions of temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile impostare i permessi del file temporaneo della schermata: %1</translation>
     </message>
     <message>
         <source>Cannot publish capture file %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile pubblicare il file della schermata %1: %2</translation>
     </message>
     <message>
         <source>No available filename remains for this capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non rimane alcun nome file disponibile per questa schermata.</translation>
     </message>
     <message>
         <source>The capture timestamp is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>La data e ora della schermata non è valida.</translation>
     </message>
 </context>
 <context>
     <name>PixelLoupe</name>
     <message>
         <source>%1, %2 · %3 × %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic: copia · Alt+clic: usa · Tab: formato</translation>
     </message>
     <message>
         <source>Click: Copy · Tab: Format · Esc: Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic: copia · Tab: formato · Esc: annulla</translation>
     </message>
 </context>
 <context>
     <name>ProgrammaticAnnotator</name>
     <message>
         <source>Input image path is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il percorso dell'immagine di input è obbligatorio.</translation>
     </message>
     <message>
         <source>Input file does not exist: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Il file di input non esiste: %1</translation>
     </message>
     <message>
         <source>Could not read input image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere l'immagine di input: %1</translation>
     </message>
     <message>
         <source>Requested export image format is not supported on this system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il formato di esportazione richiesto non è supportato su questo sistema.</translation>
     </message>
     <message>
         <source>Operation #%1 must be a JSON object.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione #%1 deve essere un oggetto JSON.</translation>
     </message>
     <message>
         <source>Arrow operation #%1 requires x1, y1, x2, and y2.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione freccia #%1 richiede x1, y1, x2 e y2.</translation>
     </message>
     <message>
         <source>Shape operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione forma #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
         <source>Stroke operation #%1 requires at least 2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione tratto #%1 richiede almeno 2 punti.</translation>
     </message>
     <message>
         <source>Text operation #%1 requires x, y, and non-empty text.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione testo #%1 richiede x, y e un testo non vuoto.</translation>
     </message>
     <message>
         <source>Step operation #%1 requires x and y.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione passaggio #%1 richiede x e y.</translation>
     </message>
     <message>
         <source>Spotlight operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione riflettore #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
         <source>Redact operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'operazione oscura #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Tipo di annotazione «%1» non supportato all'operazione #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile generare l'immagine annotata.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation type="unfinished"></translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Rifiuto di sovrascrivere il file di input «%1» senza overwrite=true.</translation>
     </message>
 </context>
 <context>
     <name>TriggerPlan</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno schermo è collegato.</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lo schermo %1 non è collegato.</translation>
     </message>
     <message>
         <source>The capture target no longer exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'obiettivo dell'acquisizione non esiste più.</translation>
     </message>
     <message>
         <source>Area %1: a different monitor is connected to %2 than when the area was defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Area %1: sul connettore %2 è collegato un altro schermo rispetto a quando l'area è stata definita.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer overlaps any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area %1 è stata saltata: non si sovrappone più a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: none of its monitors (%2) are connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area %1 non è stata acquisita: nessuno dei suoi schermi (%2) è collegato.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: it does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area %1 non è stata acquisita: non si sovrappone a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>%1 not connected — saved visible part of %2 on %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 non collegato — salvata la parte visibile di %2 su %3.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: monitor %2 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area %1 è stata saltata: lo schermo %2 non è collegato.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer fits on monitor %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area %1 è stata saltata: non rientra più nello schermo %2.</translation>
     </message>
     <message>
         <source>Group %1 contains no targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il gruppo %1 non contiene obiettivi.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli schermi</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>La selezione non si sovrappone a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile acquisire lo schermo %1 per l'immagine combinata.</translation>
     </message>
     <message>
         <source>Invalid monitor scale for combined capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scala dello schermo non valida per l'acquisizione combinata.</translation>
     </message>
     <message>
         <source>Selection size is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>La selezione non ha dimensioni.</translation>
     </message>
     <message>
         <source>There is not enough memory for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Memoria insufficiente per l'immagine combinata.</translation>
     </message>
     <message>
         <source>Area %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Area %1: %2</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile acquisire lo schermo %1.</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationCanvas</name>
     <message>
         <source>Bring to Front</source>
-        <translation type="unfinished"></translation>
+        <translation>Porta in primo piano</translation>
     </message>
     <message>
         <source>Send to Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Porta sullo sfondo</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplica</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationToolbar</name>
     <message>
         <source>Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona / Sposta</translation>
     </message>
     <message>
         <source>Select, move, or resize annotations (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona, sposta o ridimensiona le annotazioni (V)</translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritaglia</translation>
     </message>
     <message>
         <source>Crop image (C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritaglia immagine (C)</translation>
     </message>
     <message>
         <source>Arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>Freccia</translation>
     </message>
     <message>
         <source>Draw arrow; hold Shift to snap angle (A)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna una freccia; tieni premuto Shift per bloccare l'angolo (A)</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Rettangolo</translation>
     </message>
     <message>
         <source>Draw rectangle; Shift for square, Alt from center (R)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna un rettangolo; Shift per un quadrato, Alt dal centro (R)</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation>Ellisse</translation>
     </message>
     <message>
         <source>Draw ellipse; Shift for circle, Alt from center (E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna un'ellisse; Shift per un cerchio, Alt dal centro (E)</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Penna</translation>
     </message>
     <message>
         <source>Freehand pen (B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Penna a mano libera (B)</translation>
     </message>
     <message>
         <source>Highlighter</source>
-        <translation type="unfinished"></translation>
+        <translation>Evidenziatore</translation>
     </message>
     <message>
         <source>Multiply highlighter (M)</source>
-        <translation type="unfinished"></translation>
+        <translation>Evidenziatore a moltiplicazione (M)</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Testo</translation>
     </message>
     <message>
         <source>Add text annotation; click or drag box (T)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi annotazione di testo; clic o trascina il riquadro (T)</translation>
     </message>
     <message>
         <source>Step Counter</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatore passaggi</translation>
     </message>
     <message>
         <source>Place numbered badge; drag to add pointer (N)</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un distintivo numerato; trascina per aggiungere un puntatore (N)</translation>
     </message>
     <message>
         <source>Redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscura</translation>
     </message>
     <message>
         <source>Irreversible redaction (X)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuramento irreversibile (X)</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Riflettore</translation>
     </message>
     <message>
         <source>Highlight region and dim surroundings (S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Evidenzia l'area e oscura il resto (S)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla (Ctrl+Z)</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Redo (Ctrl+Shift+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripeti (Ctrl+Shift+Z)</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripeti</translation>
     </message>
     <message>
         <source>Color %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore %1</translation>
     </message>
     <message>
         <source>Choose custom color…</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli colore personalizzato…</translation>
     </message>
     <message>
         <source>Custom color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore personalizzato</translation>
     </message>
     <message>
         <source>Select Annotation Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore dell'annotazione</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza:</translation>
     </message>
     <message>
         <source>Stroke width</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza tratto</translation>
     </message>
     <message>
         <source>Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Contorno</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>Riempimento</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacità:</translation>
     </message>
     <message>
         <source>Fill opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacità riempimento</translation>
     </message>
     <message>
         <source>Dim:</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuramento:</translation>
     </message>
     <message>
         <source>Spotlight dim opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacità oscuramento riflettore</translation>
     </message>
     <message>
         <source>Font family</source>
-        <translation type="unfinished"></translation>
+        <translation>Famiglia del carattere</translation>
     </message>
     <message>
         <source> pt</source>
-        <translation type="unfinished"></translation>
+        <translation> pt</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione del carattere</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Grassetto</translation>
     </message>
     <message>
         <source>Bold (Ctrl+B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Grassetto (Ctrl+B)</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Corsivo</translation>
     </message>
     <message>
         <source>Italic (Ctrl+I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Corsivo (Ctrl+I)</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Allinea a sinistra</translation>
     </message>
     <message>
         <source>Align Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Allinea al centro</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Allinea a destra</translation>
     </message>
     <message>
         <source>Plain</source>
-        <translation type="unfinished"></translation>
+        <translation>Semplice</translation>
     </message>
     <message>
         <source>Plain text without backing</source>
-        <translation type="unfinished"></translation>
+        <translation>Testo semplice senza sfondo</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombra</translation>
     </message>
     <message>
         <source>Soft drop shadow for contrast</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombra morbida per il contrasto</translation>
     </message>
     <message>
         <source>Contrasting glyph outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Contorno del carattere a contrasto</translation>
     </message>
     <message>
         <source>Pill</source>
-        <translation type="unfinished"></translation>
+        <translation>Capsula</translation>
     </message>
     <message>
         <source>Filled contrast pill behind text</source>
-        <translation type="unfinished"></translation>
+        <translation>Capsula di contrasto piena dietro il testo</translation>
     </message>
     <message>
         <source>Apply text (Esc or Ctrl+Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Applica testo (Esc o Ctrl+Enter)</translation>
     </message>
     <message>
         <source>Apply text</source>
-        <translation type="unfinished"></translation>
+        <translation>Applica testo</translation>
     </message>
     <message>
         <source>Discard active text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarta la modifica del testo attiva</translation>
     </message>
     <message>
         <source>Discard text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarta modifica del testo</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
+        <translation>Pieno</translation>
     </message>
     <message>
         <source>Solid Block — permanently replaces pixels (recommended for sensitive text).</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocco pieno — sostituisce i pixel in modo permanente (consigliato per il testo sensibile).</translation>
     </message>
     <message>
         <source>Solid redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuramento pieno</translation>
     </message>
     <message>
         <source>Pixelate</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelizza</translation>
     </message>
     <message>
         <source>Pixelate — coarse randomized blocks; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelizza — blocchi grossolani e casuali; usa Blocco pieno per una riservatezza rigorosa del testo.</translation>
     </message>
     <message>
         <source>Pixelate redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuramento a pixel</translation>
     </message>
     <message>
         <source>Blur</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfocatura</translation>
     </message>
     <message>
         <source>Blur — heavy visual obfuscation; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfocatura — forte offuscamento visivo; usa Blocco pieno per una riservatezza rigorosa del testo.</translation>
     </message>
     <message>
         <source>Blur redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuramento a sfocatura</translation>
     </message>
     <message>
         <source>Block:</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocco:</translation>
     </message>
     <message>
         <source>Redaction strength</source>
-        <translation type="unfinished"></translation>
+        <translation>Intensità dell'oscuramento</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggio:</translation>
     </message>
 </context>
 <context>
     <name>glimply::App</name>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout dell'hook dopo %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed with exit code %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'hook non è riuscito con codice di uscita %1.</translation>
     </message>
     <message>
         <source>Post-capture hook failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook post-acquisizione non riuscito</translation>
     </message>
     <message>
         <source>Post-capture hook failed (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook post-acquisizione non riuscito (%1)</translation>
     </message>
     <message>
         <source>Interval capture finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli terminata</translation>
     </message>
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Intervallo per %1 interrotto dopo %n schermata.</numerusform><numerusform>Intervallo per %1 interrotto dopo %n schermate.</numerusform></translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli interrotta</translation>
     </message>
     <message>
         <source>Recent capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata recente</translation>
     </message>
     <message>
         <source>Interval: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo: %1</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli schermi</translation>
     </message>
     <message>
         <source>Pick screen color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore dello schermo</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva lo schermo e seleziona (tasto Print)</translation>
     </message>
     <message>
         <source>Capture group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci gruppo %1</translation>
     </message>
     <message>
         <source>Toggle interval for group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva/disattiva intervallo per il gruppo %1</translation>
     </message>
     <message>
         <source>Capture area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci area %1</translation>
     </message>
     <message>
         <source>Toggle interval for area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva/disattiva intervallo per l'area %1</translation>
     </message>
     <message>
         <source>Capture monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci schermo %1</translation>
     </message>
     <message>
         <source>Toggle interval for monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva/disattiva intervallo per lo schermo %1</translation>
     </message>
     <message>
         <source>Capture all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci tutti gli schermi</translation>
     </message>
     <message>
         <source>Toggle interval for all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva/disattiva intervallo per tutti gli schermi</translation>
     </message>
     <message>
         <source>Pin last capture to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa l'ultima schermata sullo schermo</translation>
     </message>
     <message>
         <source>Show or hide pinned screenshots</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra o nascondi le schermate fissate</translation>
     </message>
     <message>
         <source>Copy text from a screen selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia testo da una selezione dello schermo</translation>
     </message>
     <message>
         <source>Monitors not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermi non collegati</translation>
     </message>
     <message>
         <source>Partial: %1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Parziale: %1 non collegato</translation>
     </message>
     <message>
         <source>%1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 non collegato</translation>
     </message>
     <message>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermo</translation>
     </message>
     <message>
         <source>Text recognition is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Riconoscimento del testo non disponibile</translation>
     </message>
     <message>
         <source>Install tesseract and a language package, for example tesseract-data-eng, then try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Installa tesseract e un pacchetto linguistico, ad esempio tesseract-data-eng, poi riprova.</translation>
     </message>
     <message>
         <source>Text recognition failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Riconoscimento del testo non riuscito</translation>
     </message>
     <message>
         <source>No text recognized</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun testo riconosciuto</translation>
     </message>
     <message>
         <source>The clipboard was left unchanged.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gli appunti non sono stati modificati.</translation>
     </message>
     <message>
         <source>Text copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Testo copiato</translation>
     </message>
     <message>
         <source>Could not start interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile avviare l'intervallo</translation>
     </message>
     <message>
         <source>Color copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore copiato</translation>
     </message>
     <message>
         <source>%1 copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 copiato negli appunti</translation>
     </message>
     <message>
         <source>Last capture: %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ultima schermata: %1 alle %2</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Pronto</translation>
     </message>
     <message>
         <source>Capture failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione non riuscita</translation>
     </message>
     <message numerus="yes">
         <source>and %n more</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>e %n altro</numerusform><numerusform>e altri %n</numerusform></translation>
     </message>
     <message>
         <source>Screenshot saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata salvata</translation>
     </message>
     <message numerus="yes">
         <source>%n screenshots saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n schermata salvata</numerusform><numerusform>%n schermate salvate</numerusform></translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri</translation>
     </message>
     <message>
         <source>Show Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra file</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra nella cartella</translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Area non acquisita</translation>
     </message>
     <message>
         <source>Nothing captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Nulla acquisito</translation>
     </message>
     <message>
         <source>Capture incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione incompleta</translation>
     </message>
     <message>
         <source>Check area monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Controlla schermo dell'area</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione parziale</translation>
     </message>
     <message>
         <source>This capture is no longer in the history.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa schermata non è più nella cronologia.</translation>
     </message>
     <message>
         <source>This file does not belong to the capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo file non appartiene alla schermata.</translation>
     </message>
     <message>
         <source>The file was moved or deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il file è stato spostato o eliminato.</translation>
     </message>
     <message>
         <source>Could not read %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere %1: %2</translation>
     </message>
     <message>
         <source>Image copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Immagine copiata</translation>
     </message>
     <message>
         <source>%1 copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 copiato negli appunti</translation>
     </message>
     <message>
         <source>Moved to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Spostato nel cestino</translation>
     </message>
     <message>
         <source>Could not move to the trash: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile spostare nel cestino: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown action "%1".</source>
+        <translation>Azione sconosciuta «%1».</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Niente da fissare</translation>
     </message>
     <message>
         <source>There is no recent capture file to pin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non c'è alcun file di schermata recente da fissare.</translation>
     </message>
     <message>
         <source>Save Pinned Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva schermata fissata</translation>
     </message>
     <message>
         <source>Could not save the pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile salvare la schermata fissata</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa</translation>
     </message>
     <message>
         <source>No capture to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna schermata da modificare</translation>
     </message>
     <message>
         <source>The most recent screenshot file is missing or was moved.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il file della schermata più recente manca o è stato spostato.</translation>
     </message>
     <message>
         <source>Could not open image</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aprire l'immagine</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lo schermo %1 non è collegato.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un nome utilizzabile in un nome di file.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» è già usato da un altro obiettivo o gruppo.</translation>
     </message>
     <message>
         <source>Only areas, groups and monitors can be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si possono rinominare solo aree, gruppi e schermi.</translation>
     </message>
     <message>
         <source>Name for monitor %1 (leave empty for %1):</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome per lo schermo %1 (lascia vuoto per %1):</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Rinomina schermo</translation>
     </message>
     <message>
         <source>Target query is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>La ricerca dell'obiettivo è vuota.</translation>
     </message>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno schermo è collegato.</translation>
     </message>
     <message>
         <source>Monitor “%1” was not found or is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermo «%1» non trovato o non collegato.</translation>
     </message>
     <message>
         <source>Target “%1” matches multiple targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'obiettivo «%1» corrisponde a più obiettivi.</translation>
     </message>
     <message>
         <source>Target “%1” was not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivo «%1» non trovato.</translation>
     </message>
     <message>
         <source>Area width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza e altezza dell'area devono essere positive.</translation>
     </message>
     <message>
         <source>Area name cannot be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il nome dell'area non può essere usato in un nome di file.</translation>
     </message>
     <message>
         <source>Monitor “%1” is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lo schermo «%1» non è collegato.</translation>
     </message>
     <message>
         <source>Rectangle lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Il rettangolo è fuori dallo schermo %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Global rectangle does not intersect any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il rettangolo globale non interseca nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>Invalid overlay mode: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalità di overlay non valida: %1</translation>
     </message>
     <message>
         <source>A capture countdown is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un conto alla rovescia per l'acquisizione è già in corso.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation type="unfinished"></translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Lo specificatore della finestra dopo «window:» non può essere vuoto.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna finestra aperta corrisponde a «%1».</translation>
     </message>
     <message>
         <source>Window query “%1” matches multiple open windows.</source>
-        <translation type="unfinished"></translation>
+        <translation>La ricerca di finestra «%1» corrisponde a più finestre aperte.</translation>
     </message>
     <message>
         <source>Invalid region specification (expected region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Specifica dell'area non valida (atteso region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region geometry (expected &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Geometria dell'area non valida (atteso &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region coordinate value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore delle coordinate dell'area non valido.</translation>
     </message>
     <message>
         <source>Region width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza e altezza dell'area devono essere positive.</translation>
     </message>
     <message>
         <source>Region lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area è fuori dallo schermo %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'obiettivo non è disponibile.</translation>
     </message>
     <message>
         <source>Groups produce multiple images and cannot be written to a single --out path, --stdout, or --clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>I gruppi producono più immagini e non possono essere scritti in un unico percorso --out, né su --stdout o --clipboard.</translation>
     </message>
     <message>
         <source>Window capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione della finestra non riuscita.</translation>
     </message>
     <message>
         <source>Text recognition needs tesseract. Install tesseract and a language package such as tesseract-data-eng.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il riconoscimento del testo richiede tesseract. Installa tesseract e un pacchetto linguistico come tesseract-data-eng.</translation>
     </message>
     <message>
         <source>Capture countdown was cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il conto alla rovescia dell'acquisizione è stato annullato.</translation>
     </message>
     <message>
         <source>Autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvio automatico</translation>
     </message>
     <message>
         <source>Could not remove %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile rimuovere %1.</translation>
     </message>
     <message>
         <source>Could not write %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile scrivere %1.</translation>
     </message>
     <message>
         <source>Could not read saved image for inline MCP output: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere l'immagine salvata per l'output MCP incorporato: %1</translation>
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Argomenti JSON dello strumento MCP non validi: %1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>La richiesta MCP è stata negata dall'utente o è scaduta.</translation>
     </message>
     <message>
         <source>glimply is shutting down.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply si sta chiudendo.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione non riuscita.</translation>
     </message>
     <message>
         <source>MCP captured %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP ha acquisito %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Formato immagine «%1» non supportato.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>«quality» deve essere un numero intero tra 1 e 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'target' is required.</source>
+        <translation>«target» è obbligatorio.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Un client MCP esterno vuole acquisire «%1» (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
-        <translation type="unfinished"></translation>
+        <translation>capture_region richiede monitor, x, y, width e height.</translation>
     </message>
     <message>
         <source>An external MCP client wants to capture region %1x%2 at (%3, %4) on %5.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un client MCP esterno vuole acquisire l'area %1x%2 in (%3, %4) su %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'window_id' is required.</source>
+        <translation>«window_id» è obbligatorio.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Un client MCP esterno vuole acquisire la finestra «%1».</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
-        <translation type="unfinished"></translation>
+        <translation>In questa sessione di glimply non è ancora stata registrata alcuna schermata.</translation>
     </message>
     <message>
         <source>An external MCP client wants to read the last capture (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Un client MCP esterno vuole leggere l'ultima schermata (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Un client MCP esterno vuole avviare acquisizioni a intervalli ogni %1 s per «%2».</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation type="unfinished"></translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Specifica «target» oppure imposta «all»: true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
-        <translation type="unfinished"></translation>
+        <translation>annotate_image richiede un input_path non vuoto e un array operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <translation>In modalità Elenco consentiti di MCP, input_path deve essere un file esistente nella cartella delle schermate di glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <translation>In modalità Elenco consentiti di MCP, output_path deve trovarsi nella cartella delle schermate di glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Un client MCP esterno vuole annotare «%1» (%2 operazioni).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Strumento MCP sconosciuto: %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
     <message>
         <source>Select an area on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona un'area su %1</translation>
     </message>
     <message>
         <source>Drag inside to move, edges or corners to resize. Shift: square, Alt: from centre, Space while dragging: reposition. Enter confirms, Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina all'interno per spostare, sui bordi o sugli angoli per ridimensionare. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Enter conferma, Escape annulla.</translation>
     </message>
     <message>
         <source>Drag to select an area across one or more monitors. Shift: square, Alt: from centre, Space while dragging: reposition. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina per selezionare un'area su uno o più schermi. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Escape annulla.</translation>
     </message>
     <message>
         <source>%1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 in %3, %4</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureOverlay</name>
     <message>
         <source>glimply capture on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione di glimply su %1</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermo</translation>
     </message>
     <message>
         <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra il momento in cui hai premuto il tasto. Le schermate vengono ritagliate da questa immagine. (Space)</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Dal vivo</translation>
     </message>
     <message>
         <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra lo schermo in movimento, ad esempio un video. Le schermate vengono acquisite quando salvi. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo schermo</translation>
     </message>
     <message>
         <source>Capture all of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci tutto %1</translation>
     </message>
     <message>
         <source>All Monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli schermi</translation>
     </message>
     <message>
         <source>Capture every monitor in one picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci ogni schermo in un'unica immagine</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Finestra</translation>
     </message>
     <message>
         <source>Capture one window, also when it is covered or minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci una finestra, anche quando è coperta o ridotta a icona</translation>
     </message>
     <message>
         <source>Areas</source>
-        <translation type="unfinished"></translation>
+        <translation>Aree</translation>
     </message>
     <message>
         <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci un'area o un gruppo salvato, oppure aggiungilo come rettangolo</translation>
     </message>
     <message>
         <source>Add a saved area or group as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi un'area o un gruppo salvato come rettangolo</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo</translation>
     </message>
     <message>
         <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci di nuovo la schermata dopo un conto alla rovescia, così i menu restano aperti</translation>
     </message>
     <message>
         <source>Annotate</source>
-        <translation type="unfinished"></translation>
+        <translation>Annota</translation>
     </message>
     <message>
         <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra o nascondi gli strumenti di annotazione (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore</translation>
     </message>
     <message>
         <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Campiona i colori dei pixel con una lente d'ingrandimento (I)</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica in finestra</translation>
     </message>
     <message>
         <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri nella finestra dell'Editor rapido per ritagliare, ingrandire e modificare nel dettaglio (Ctrl+E)</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aiuto</translation>
     </message>
     <message>
         <source>Show or hide the controls (F1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra o nascondi i comandi (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>Keep the full screenshot and open the settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni la schermata completa e apri le impostazioni</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <source>Keep the full screenshot and close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni la schermata completa e chiudi (Escape)</translation>
     </message>
     <message>
         <source>Cancel (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina</translation>
     </message>
     <message>
         <source>Draw a rectangle (or active markup tool)</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna un rettangolo (o lo strumento di annotazione attivo)</translation>
     </message>
     <message>
         <source>Drag inside / edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina all'interno / sul bordo</translation>
     </message>
     <message>
         <source>Move / resize the active rectangle or annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta / ridimensiona il rettangolo o l'annotazione attiva</translation>
     </message>
     <message>
         <source>Shift / Alt while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift / Alt durante il trascinamento</translation>
     </message>
     <message>
         <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni un quadrato o scatta a 15° / cresci dal centro o duplica</translation>
     </message>
     <message>
         <source>Space while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Space durante il trascinamento</translation>
     </message>
     <message>
         <source>Reposition shape or selection live</source>
-        <translation type="unfinished"></translation>
+        <translation>Riposiziona forma o selezione in tempo reale</translation>
     </message>
     <message>
         <source>Ctrl in markup tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl con lo strumento di annotazione</translation>
     </message>
     <message>
         <source>Temporarily switch to Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Passa temporaneamente a Seleziona / Sposta</translation>
     </message>
     <message>
         <source>Click / Right-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic / Clic destro</translation>
     </message>
     <message>
         <source>Activate / delete topmost annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Attiva / elimina l'annotazione o il rettangolo in primo piano</translation>
     </message>
     <message>
         <source>Double-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Doppio clic</translation>
     </message>
     <message>
         <source>Edit text annotation or save rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica l'annotazione di testo o salva il rettangolo</translation>
     </message>
     <message>
         <source>Save rectangle as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva il rettangolo come area</translation>
     </message>
     <message>
         <source>Click, nothing drawn</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic senza disegnare nulla</translation>
     </message>
     <message>
         <source>Capture this monitor (before annotating)</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci questo schermo (prima di annotare)</translation>
     </message>
     <message>
         <source>Mouse</source>
-        <translation type="unfinished"></translation>
+        <translation>Mouse</translation>
     </message>
     <message>
         <source>V / A R E B M T N X S</source>
-        <translation type="unfinished"></translation>
+        <translation>V / A R E B M T N X S</translation>
     </message>
     <message>
         <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona / Freccia Rettangolo Ellisse Penna Evidenziatore Testo Passaggio Oscura Riflettore</translation>
     </message>
     <message>
         <source>Selection modifiers work on all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>I modificatori di selezione funzionano su tutti gli schermi</translation>
     </message>
     <message>
         <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
     </message>
     <message>
         <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Pennello passaggio o dimensione carattere  ·  Annulla / Ripeti</translation>
     </message>
     <message>
         <source>Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Space</translation>
     </message>
     <message>
         <source>Switch between Frozen and Live (when idle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Passa tra Fermo e Dal vivo (quando inattivo)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Frecce / Shift+frecce</translation>
     </message>
     <message>
         <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta l'annotazione o il rettangolo attivo di 1 px / 10 px</translation>
     </message>
     <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+frecce / Ctrl+frecce</translation>
     </message>
     <message>
         <source>Resize from centre / resize square</source>
-        <translation type="unfinished"></translation>
+        <translation>Ridimensiona dal centro / ridimensiona a quadrato</translation>
     </message>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <source>Save selection or annotated screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva la selezione o lo schermo annotato</translation>
     </message>
     <message>
         <source>Save as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva come area</translation>
     </message>
     <message>
         <source>Delete / Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete / Backspace</translation>
     </message>
     <message>
         <source>Delete active annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina l'annotazione o il rettangolo attivo</translation>
     </message>
     <message>
         <source>Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape</translation>
     </message>
     <message>
         <source>Commit text, step back, or close</source>
-        <translation type="unfinished"></translation>
+        <translation>Conferma il testo, torna indietro o chiudi</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
         <source>Show or hide this help</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra o nascondi questa guida</translation>
     </message>
     <message>
         <source>I</source>
-        <translation type="unfinished"></translation>
+        <translation>I</translation>
     </message>
     <message>
         <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore del pixel (Tab cambia formato, Alt+clic applica all'annotazione)</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Open selection or screen in Quick Editor window</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri selezione o schermo nella finestra dell'Editor rapido</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>P</translation>
     </message>
     <message>
         <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa la selezione sullo schermo (una schermata fissata per rettangolo)</translation>
     </message>
     <message>
         <source>O</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <source>Copy the text of the selection (needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia il testo della selezione (richiede tesseract)</translation>
     </message>
     <message>
         <source>Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Tasti</translation>
     </message>
     <message>
         <source>No windows found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna finestra trovata</translation>
     </message>
     <message>
         <source>%1 (minimized)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (ridotta a icona)</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun ritardo</translation>
     </message>
     <message>
         <source>Retake in %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Riacquisisci tra %1 s</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Riacquisisci con ritardo personalizzato…</translation>
     </message>
     <message>
         <source>Retake Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo di riacquisizione</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Secondi:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni attivo il ritardo</translation>
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna area salvata. Disegna un rettangolo, poi scegli Salva come area.</translation>
     </message>
     <message>
         <source>%1    %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1    %2</translation>
     </message>
     <message>
         <source>Capture now</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci ora</translation>
     </message>
     <message>
         <source>Add as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi come rettangolo</translation>
     </message>
     <message>
         <source>Add as a rectangle to adjust it</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi come rettangolo per regolarla</translation>
     </message>
     <message>
         <source>Add %1 as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi %1 come rettangolo</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva</translation>
     </message>
     <message>
         <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva nella cartella delle schermate e copia negli appunti (Enter)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Copy to the clipboard only</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia solo negli appunti</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia testo</translation>
     </message>
     <message>
         <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation type="unfinished"></translation>
+        <translation>Riconosci il testo e copialo negli appunti (O)</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa</translation>
     </message>
     <message>
         <source>Keep the selection on screen above other windows (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni la selezione sullo schermo sopra le altre finestre (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva con nome…</translation>
     </message>
     <message>
         <source>Choose where to save</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli dove salvare</translation>
     </message>
     <message>
         <source>Open markup tools to draw or redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri gli strumenti di annotazione per disegnare od oscurare</translation>
     </message>
     <message>
         <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri selezione e annotazioni nella finestra dell'Editor rapido (Ctrl+E)</translation>
     </message>
     <message>
         <source>Save as Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva come area</translation>
     </message>
     <message>
         <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricorda questo rettangolo per acquisirlo di nuovo con un clic o una scorciatoia</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi rettangolo</translation>
     </message>
     <message>
         <source>Draw another rectangle, also over an existing one</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna un altro rettangolo, anche sopra uno esistente</translation>
     </message>
     <message>
         <source>Close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudi (Escape)</translation>
     </message>
     <message>
         <source>Combine into a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Unisci in un gruppo</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppo %1</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia:</translation>
     </message>
     <message>
         <source>Area capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo di acquisizione dell'area</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizzato…</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo:</translation>
     </message>
     <message>
         <source>Area Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo area</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Indietro</translation>
     </message>
     <message>
         <source>The shortcut is optional and works in every application. You can also capture the area from the glimply widget.</source>
-        <translation type="unfinished"></translation>
+        <translation>La scorciatoia è facoltativa e funziona in ogni applicazione. Puoi anche acquisire l'area dal widget di glimply.</translation>
     </message>
     <message>
         <source>Save Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva area</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas as a group</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Salva %n area come gruppo</numerusform><numerusform>Salva %n aree come gruppo</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Una scorciatoia acquisisce %n area nello stesso momento, ciascuna nel proprio file.</numerusform><numerusform>Una scorciatoia acquisisce tutte le %n aree nello stesso momento, ciascuna nel proprio file.</numerusform></translation>
     </message>
     <message>
         <source>Save Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva gruppo</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Salva %n area</numerusform><numerusform>Salva %n aree</numerusform></translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogni rettangolo diventa un'area con un nome automatico. Puoi rinominarle e assegnare loro scorciatoie in seguito nel widget o nelle impostazioni.</translation>
     </message>
     <message numerus="yes">
         <source>Save %n Areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Salva %n area</numerusform><numerusform>Salva %n aree</numerusform></translation>
     </message>
     <message>
         <source>Clear or undo annotations to return to Live mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella o annulla le annotazioni per tornare alla modalità Dal vivo</translation>
     </message>
     <message>
         <source>Delay: %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo: %1 s</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureSession</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno schermo è collegato.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli schermi</translation>
     </message>
     <message>
         <source>The screen could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile acquisire lo schermo.</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Applicato %1 e copiato negli appunti</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiato %1 negli appunti</translation>
     </message>
     <message>
         <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic per copiare il colore, Alt+clic per applicarlo allo strumento di annotazione attivo, Tab cambia formato, Escape esce.</translation>
     </message>
     <message>
         <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift mantiene un quadrato, Alt cresce dal centro, Space riposiziona durante il trascinamento.</translation>
     </message>
     <message>
         <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scrivi il testo, trascina il bordo esterno del riquadro per spostarlo; Escape o Ctrl+Enter conferma.</translation>
     </message>
     <message>
         <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina per disegnare (Ctrl seleziona temporaneamente; Shift aggancia, Alt centra, Space sposta; V torna alla selezione).</translation>
     </message>
     <message>
         <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina il rettangolo successivo ovunque, anche sopra un altro.</translation>
     </message>
     <message>
         <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter salva la schermata annotata, oppure disegna prima un rettangolo di ritaglio. Escape chiude.</translation>
     </message>
     <message>
         <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina un rettangolo, fai clic su uno schermo per acquisirlo, oppure apri Annota. Escape mantiene la schermata completa.</translation>
     </message>
     <message>
         <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina un rettangolo per la nuova area. Escape annulla.</translation>
     </message>
     <message>
         <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fai clic su un rettangolo per modificarlo, oppure trascinane uno nuovo.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina all'interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo. Enter salva.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina all'interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo.</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>La selezione non si sovrappone a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile acquisire lo schermo %1.</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezione</translation>
     </message>
     <message>
         <source>Copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiato negli appunti</translation>
     </message>
     <message>
         <source>Pinned to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissato sullo schermo</translation>
     </message>
     <message>
         <source>Could not write %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile scrivere %1: %2</translation>
     </message>
     <message>
         <source>Draw a rectangle first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna prima un rettangolo.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un nome utilizzabile in un nome di file.</translation>
     </message>
     <message>
         <source>“%1” is already used by another area or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» è già usato da un'altra area o gruppo.</translation>
     </message>
     <message>
         <source>Area “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Area «%1» salvata</translation>
     </message>
     <message>
         <source>Group “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppo «%1» salvato</translation>
     </message>
     <message numerus="yes">
         <source>%n areas saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n area salvata</numerusform><numerusform>%n aree salvate</numerusform></translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Area non acquisita</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione parziale</translation>
     </message>
     <message>
         <source>Retake</source>
-        <translation type="unfinished"></translation>
+        <translation>Riacquisisci</translation>
     </message>
     <message>
         <source>Unredacted Screenshot Exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Esiste una schermata non oscurata</translation>
     </message>
     <message>
         <source>The full screenshot saved when you pressed Print does not include your redactions.</source>
-        <translation type="unfinished"></translation>
+        <translation>La schermata completa salvata premendo Print non include gli oscuramenti.</translation>
     </message>
     <message>
         <source>Delete the unredacted file (%1) from disk, keep it, or return to editing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminare il file non oscurato (%1) dal disco, conservarlo o tornare alla modifica?</translation>
     </message>
     <message>
         <source>Delete Unredacted Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina schermata non oscurata</translation>
     </message>
     <message>
         <source>Keep Full Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni schermata completa</translation>
     </message>
     <message>
         <source>Back to Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Torna all'overlay</translation>
     </message>
     <message>
         <source>Unredacted screenshot deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata non oscurata eliminata</translation>
     </message>
 </context>
 <context>
     <name>glimply::ColorPickerOverlay</name>
     <message>
         <source>Pick color on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore su %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::ControlService</name>
     <message>
         <source>%1 · %2 × %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 at %4, %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 in %4, %5</translation>
     </message>
     <message>
         <source>No targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun obiettivo</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>One image of every monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Un'immagine per ogni schermo</translation>
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation type="unfinished"></translation>
+        <translation>Richiesta di acquisizione JSON non valida.</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nella richiesta di acquisizione manca un obiettivo o un formato valido.</translation>
     </message>
 </context>
 <context>
     <name>glimply::CountdownBanner</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione tra %1 s…</translation>
     </message>
     <message>
         <source>Capturing %1 in %2 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione di %1 tra %2 s…</translation>
     </message>
 </context>
 <context>
     <name>glimply::ExportDialog</name>
     <message>
         <source>Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Immagini (%1)</translation>
     </message>
     <message>
         <source>All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti i file (*)</translation>
     </message>
     <message>
         <source>Save Screenshot As</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva schermata con nome</translation>
     </message>
     <message>
         <source>Destination file path</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso del file di destinazione</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia…</translation>
     </message>
     <message>
         <source>File:</source>
-        <translation type="unfinished"></translation>
+        <translation>File:</translation>
     </message>
     <message>
         <source>Image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato immagine</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato:</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualità:</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Senza perdita</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello di compressione o qualità</translation>
     </message>
     <message>
         <source>Compression or quality value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore di compressione o qualità</translation>
     </message>
     <message>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Non disponibile</translation>
     </message>
     <message>
         <source>Calculating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Calcolo in corso…</translation>
     </message>
     <message>
         <source>Estimated size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione stimata:</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressione:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>≈ %1</source>
-        <translation type="unfinished"></translation>
+        <translation>≈ %1</translation>
     </message>
     <message>
         <source>Choose Destination File</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli file di destinazione</translation>
     </message>
 </context>
 <context>
     <name>glimply::HookRunner</name>
     <message>
         <source>Could not create a temporary directory for testing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile creare una cartella temporanea per il test.</translation>
     </message>
 </context>
 <context>
     <name>glimply::IntervalController</name>
     <message>
         <source>Invalid interval target.</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivo dell'intervallo non valido.</translation>
     </message>
     <message>
         <source>The capture target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'obiettivo dell'acquisizione non è disponibile.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli per «%1» interrotta: restano meno di 100 MB di spazio libero su disco.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli per «%1» interrotta: l'obiettivo non è più disponibile.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli per «%1» interrotta: %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::McpConfirmDialog</name>
     <message>
         <source>Allow MCP Capture?</source>
-        <translation type="unfinished"></translation>
+        <translation>Consentire l'acquisizione tramite MCP?</translation>
     </message>
     <message>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Nega</translation>
     </message>
     <message>
         <source>Allow Once</source>
-        <translation type="unfinished"></translation>
+        <translation>Consenti una volta</translation>
     </message>
     <message>
         <source>Auto-denying in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Rifiuto automatico tra %1 s…</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi tutte le schermate fissate</translation>
     </message>
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Rimuovere definitivamente %n schermata fissata?</numerusform><numerusform>Rimuovere definitivamente %n schermate fissate?</numerusform></translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le loro immagini vengono eliminate. Le schermate salvate nella cartella delle schermate non vengono modificate.</translation>
     </message>
     <message>
         <source>Remove Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi schermate fissate</translation>
     </message>
     <message>
         <source>Pin removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata fissata rimossa</translation>
     </message>
     <message>
         <source>The pinned screenshot was removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>La schermata fissata è stata rimossa.</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinWindow</name>
     <message>
         <source>Pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata fissata</translation>
     </message>
     <message>
         <source>Opacity %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacità %1</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica in finestra</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva con nome…</translation>
     </message>
     <message>
         <source>Zoom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom (%1)</translation>
     </message>
     <message>
         <source>Opacity (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacità (%1)</translation>
     </message>
     <message>
         <source>Remove Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi schermata fissata</translation>
     </message>
 </context>
 <context>
     <name>glimply::QuickEditorWindow</name>
     <message>
         <source>Could not open image file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aprire il file immagine.</translation>
     </message>
     <message>
         <source>The captured image is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'immagine acquisita è vuota.</translation>
     </message>
     <message>
         <source>Editor Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Azioni dell'editor</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva</translation>
     </message>
     <message>
         <source>Save changes cleanly to file without altering the clipboard (Ctrl+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva le modifiche nel file senza alterare gli appunti (Ctrl+S)</translation>
     </message>
     <message>
         <source>Save Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva copia</translation>
     </message>
     <message>
         <source>Save a new edited copy alongside the original without overwriting (Ctrl+Alt+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva una nuova copia modificata accanto all'originale senza sovrascriverlo (Ctrl+Alt+S)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva con nome…</translation>
     </message>
     <message>
         <source>Choose a new file path (Ctrl+Shift+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli un nuovo percorso file (Ctrl+Shift+S)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Copy flattened image to clipboard (Ctrl+C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia l'immagine appiattita negli appunti (Ctrl+C)</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia testo</translation>
     </message>
     <message>
         <source>Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Riconosci il testo dell'immagine e copialo (Ctrl+Alt+C, richiede tesseract)</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa sullo schermo</translation>
     </message>
     <message>
         <source>Keep the current image on screen above other windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni l'immagine corrente sullo schermo sopra le altre finestre</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore</translation>
     </message>
     <message>
         <source>Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color.</source>
-        <translation type="unfinished"></translation>
+        <translation>Campiona i colori dei pixel dell'immagine (I). Tab cambia formato, Alt+clic imposta il colore dell'annotazione.</translation>
     </message>
     <message>
         <source>Drag on canvas to select crop area</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina sulla tela per selezionare l'area di ritaglio</translation>
     </message>
     <message>
         <source>Apply Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Applica ritaglio</translation>
     </message>
     <message>
         <source>Crop image cleanly to selection (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritaglia l'immagine sulla selezione (Enter)</translation>
     </message>
     <message>
         <source>Cancel Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla ritaglio</translation>
     </message>
     <message>
         <source>Exit crop mode (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Esci dalla modalità di ritaglio (Escape)</translation>
     </message>
     <message>
         <source>Zoom out (Ctrl+-)</source>
-        <translation type="unfinished"></translation>
+        <translation>Riduci zoom (Ctrl+-)</translation>
     </message>
     <message>
         <source>Zoom out</source>
-        <translation type="unfinished"></translation>
+        <translation>Riduci zoom</translation>
     </message>
     <message>
         <source>Zoom preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom predefinito</translation>
     </message>
     <message>
         <source>Zoom level (Ctrl+0 Fit, Ctrl+1 100%, Ctrl/Alt+Wheel)</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello di zoom (Ctrl+0 Adatta, Ctrl+1 100%, Ctrl/Alt+rotella)</translation>
     </message>
     <message>
         <source>Fit in Window (Ctrl+0)</source>
-        <translation type="unfinished"></translation>
+        <translation>Adatta alla finestra (Ctrl+0)</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Zoom in (Ctrl++)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aumenta zoom (Ctrl++)</translation>
     </message>
     <message>
         <source>Zoom in</source>
-        <translation type="unfinished"></translation>
+        <translation>Aumenta zoom</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Applicato %1 e copiato negli appunti</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiato %1 negli appunti</translation>
     </message>
     <message>
         <source>Untitled capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermata senza titolo</translation>
     </message>
     <message>
         <source>%1[*] — glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*] — glimply</translation>
     </message>
     <message>
         <source>100%</source>
-        <translation type="unfinished"></translation>
+        <translation>100%</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 px</translation>
     </message>
     <message>
         <source>Crop: %1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritaglio: %1 × %2 in %3, %4</translation>
     </message>
     <message>
         <source>Nothing to save.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niente da salvare.</translation>
     </message>
     <message>
         <source>Save Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvataggio non riuscito</translation>
     </message>
     <message>
         <source>Could not save %1:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile salvare %1:
+%2</translation>
     </message>
     <message>
         <source>Saved %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvato %1</translation>
     </message>
     <message>
         <source>Save Copy Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvataggio della copia non riuscito</translation>
     </message>
     <message>
         <source>Saved copy as %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia salvata come %1</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiato negli appunti</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifiche non salvate</translation>
     </message>
     <message>
         <source>Save changes to “%1” before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare le modifiche a «%1» prima di chiudere?</translation>
     </message>
     <message>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarta</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
     <name>glimply::SettingsWindow</name>
     <message>
         <source>Export image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato di esportazione dell'immagine</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Senza perdita</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualità:</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello di compressione o qualità</translation>
     </message>
     <message>
         <source>Use default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa predefinito (%1)</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressione:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogni</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Interval duration in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Durata dell'intervallo in secondi</translation>
     </message>
     <message>
         <source>Only save when changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva solo quando cambia</translation>
     </message>
     <message>
         <source>Stop after:</source>
-        <translation type="unfinished"></translation>
+        <translation>Interrompi dopo:</translation>
     </message>
     <message>
         <source>No capture limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun limite di schermate</translation>
     </message>
     <message>
         <source> captures</source>
-        <translation type="unfinished"></translation>
+        <translation> schermate</translation>
     </message>
     <message>
         <source>Maximum captures per interval run</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero massimo di schermate per esecuzione dell'intervallo</translation>
     </message>
     <message>
         <source>No time limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun limite di tempo</translation>
     </message>
     <message>
         <source> min</source>
-        <translation type="unfinished"></translation>
+        <translation> min</translation>
     </message>
     <message>
         <source>Maximum interval duration in minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>Durata massima dell'intervallo in minuti</translation>
     </message>
     <message>
         <source>Post-capture hook mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalità hook post-acquisizione</translation>
     </message>
     <message>
         <source>Use global hook setting</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa impostazione globale dell'hook</translation>
     </message>
     <message>
         <source>Custom command</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando personalizzato</translation>
     </message>
     <message>
         <source>Disable hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Disattiva hook</translation>
     </message>
     <message>
         <source>/path/to/script %f</source>
-        <translation type="unfinished"></translation>
+        <translation>/path/to/script %f</translation>
     </message>
     <message>
         <source>Custom hook command</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando hook personalizzato</translation>
     </message>
     <message>
         <source>Custom hook timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout hook personalizzato</translation>
     </message>
     <message>
         <source>Configure glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>Configura glimply</translation>
     </message>
     <message>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivi</translation>
     </message>
     <message>
         <source>Areas and monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Aree e schermi</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppi</translation>
     </message>
     <message>
         <source>Capture several targets with one shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisisci più obiettivi con una sola scorciatoia</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Archiviazione</translation>
     </message>
     <message>
         <source>Where captures are saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Dove vengono salvate le schermate</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Generali</translation>
     </message>
     <message>
         <source>Automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Automazione</translation>
     </message>
     <message>
         <source>Post-capture hooks and external automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook post-acquisizione e automazione esterna</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
-        <translation type="unfinished"></translation>
+        <translation>roteson.de</translation>
     </message>
     <message>
         <source>R²W² Development · glimply on GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation>R²W² Development · glimply su GitHub</translation>
     </message>
     <message>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivo</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi area…</translation>
     </message>
     <message>
         <source>Drag a rectangle on any monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina un rettangolo su uno schermo qualsiasi</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Also used in the file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usato anche nel nome del file.</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome:</translation>
     </message>
     <message>
         <source>Monitor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermo:</translation>
     </message>
     <message>
         <source>X: </source>
-        <translation type="unfinished"></translation>
+        <translation>X: </translation>
     </message>
     <message>
         <source>Left edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Bordo sinistro</translation>
     </message>
     <message>
         <source>Y: </source>
-        <translation type="unfinished"></translation>
+        <translation>Y: </translation>
     </message>
     <message>
         <source>Top edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Bordo superiore</translation>
     </message>
     <message>
         <source>Width: </source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza: </translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza</translation>
     </message>
     <message>
         <source>Height: </source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza: </translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza</translation>
     </message>
     <message>
         <source>Select on Screen…</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona sullo schermo…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
-        <translation type="unfinished"></translation>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <translation>Pixel logici relativi all'angolo in alto a sinistra dello schermo. Le schermate usano la risoluzione nativa dello schermo.</translation>
     </message>
     <message>
         <source>Position and size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Posizione e dimensione:</translation>
     </message>
     <message>
         <source>Include the mouse pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Includi il puntatore del mouse</translation>
     </message>
     <message>
         <source>Pointer:</source>
-        <translation type="unfinished"></translation>
+        <translation>Puntatore:</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuno</translation>
     </message>
     <message>
         <source>Capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo di acquisizione</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo:</translation>
     </message>
     <message>
         <source>Interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo:</translation>
     </message>
     <message>
         <source>Hook:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia:</translation>
     </message>
     <message>
         <source>Interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia per attivare/disattivare l'intervallo</translation>
     </message>
     <message>
         <source>Interval shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia dell'intervallo:</translation>
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale: funziona in ogni applicazione. Modificabile anche nelle Impostazioni di sistema.</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (non collegato)</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli schermi</translation>
     </message>
     <message>
         <source>Also used in file names and for new areas on this monitor. Leave empty for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usato anche nei nomi dei file e per le nuove aree su questo schermo. Lascia vuoto per %1.</translation>
     </message>
     <message>
         <source>Cross-monitor (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tra più schermi (%1)</translation>
     </message>
     <message>
         <source>Global logical coordinates across monitors. Captures compose intersected monitors at the highest scale.</source>
-        <translation type="unfinished"></translation>
+        <translation>Coordinate logiche globali su più schermi. Le schermate combinano gli schermi intersecati alla scala più alta.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
-        <translation type="unfinished"></translation>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <translation>Nessuno degli schermi di quest'area è collegato. All'attivazione non viene salvato nulla.</translation>
     </message>
     <message>
         <source>This area no longer overlaps any connected monitor. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quest'area non si sovrappone più a nessuno schermo collegato. Regolala o selezionala di nuovo.</translation>
     </message>
     <message>
         <source>%1 not connected. Triggering saves the visible part on %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 non collegato. L'attivazione salva la parte visibile su %2.</translation>
     </message>
     <message>
         <source>A different monitor is connected to %1 than when this area was defined (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Sul connettore %1 è collegato un altro schermo rispetto a quando quest'area è stata definita (%2).</translation>
     </message>
     <message>
         <source>One image of all monitors in their current arrangement, at the highest scale. Gaps are transparent.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un'unica immagine di tutti gli schermi nella disposizione attuale, alla scala più alta. Gli spazi vuoti sono trasparenti.</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 (logical)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 (logico)</translation>
     </message>
     <message>
         <source>%1 · not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · non collegato</translation>
     </message>
     <message>
         <source>The monitor is not connected. This area is skipped when triggered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lo schermo non è collegato. Quest'area viene saltata all'attivazione.</translation>
     </message>
     <message>
         <source>The area no longer fits on this monitor and is skipped when triggered. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'area non rientra più in questo schermo e viene saltata all'attivazione. Regolala o selezionala di nuovo.</translation>
     </message>
     <message>
         <source>Monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermo %1</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un nome utilizzabile in un nome di file.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» è già usato da un altro obiettivo o gruppo.</translation>
     </message>
     <message>
         <source>Remove Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi area</translation>
     </message>
     <message>
         <source>Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are kept.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovere l'area «%1»? La sua scorciatoia viene cancellata e viene rimossa da tutti i gruppi. Le schermate salvate vengono conservate.</translation>
     </message>
     <message>
         <source>Shortcut Already in Use</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia già in uso</translation>
     </message>
     <message>
         <source>%1 is already assigned to “%2”. Move it to “%3”?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 è già assegnata a «%2». Spostarla a «%3»?</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi gruppo</translation>
     </message>
     <message>
         <source>Group name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome del gruppo</translation>
     </message>
     <message>
         <source>Targets in this group</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivi in questo gruppo</translation>
     </message>
     <message>
         <source>Targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivi:</translation>
     </message>
     <message>
         <source>Each monitor is captured once per trigger, so all files show the same moment and share one timestamp.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogni schermo viene acquisito una volta per attivazione, così tutti i file mostrano lo stesso istante e condividono la stessa marca temporale.</translation>
     </message>
     <message>
         <source>Applies to every target of this group, regardless of their own setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si applica a ogni obiettivo di questo gruppo, indipendentemente dalla sua impostazione.</translation>
     </message>
     <message>
         <source>Used when this group is triggered, unless a member target sets its own format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Usato quando viene attivato questo gruppo, a meno che un obiettivo membro non imposti il proprio formato.</translation>
     </message>
     <message>
         <source>Group capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo di acquisizione del gruppo</translation>
     </message>
     <message>
         <source>Group shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia del gruppo</translation>
     </message>
     <message>
         <source>Group interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia attiva/disattiva intervallo del gruppo</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppo %1</translation>
     </message>
     <message>
         <source>Remove Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi gruppo</translation>
     </message>
     <message>
         <source>Remove group “%1”? Its targets stay; only the group and its shortcut are removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovere il gruppo «%1»? I suoi obiettivi rimangono; vengono rimossi solo il gruppo e la sua scorciatoia.</translation>
     </message>
     <message>
         <source>%1 (cross-monitor: %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (multi-schermo: %2)</translation>
     </message>
     <message>
         <source>%1 (area on %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (area su %2)</translation>
     </message>
     <message>
         <source>Enter a name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un nome.</translation>
     </message>
     <message>
         <source>Capture folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Cartella delle acquisizioni</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia…</translation>
     </message>
     <message>
         <source>Folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cartella:</translation>
     </message>
     <message>
         <source>All captures go into this folder, without subfolders. Leave empty for the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutte le acquisizioni vengono salvate in questa cartella, senza sottocartelle. Lascia vuoto per il valore predefinito.</translation>
     </message>
     <message>
         <source>File name template</source>
-        <translation type="unfinished"></translation>
+        <translation>Modello di nome file</translation>
     </message>
     <message>
         <source>File name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome file:</translation>
     </message>
     <message>
         <source>Example:</source>
-        <translation type="unfinished"></translation>
+        <translation>Esempio:</translation>
     </message>
     <message>
         <source>Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target name). The file extension matches the chosen format. Existing files are never overwritten: a number is appended instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>Segnaposto: {date} (AAAA-MM-GG), {time} (HH-MM-SS), {area} (nome obiettivo). L'estensione del file corrisponde al formato scelto. I file esistenti non vengono mai sovrascritti: viene aggiunto un numero.</translation>
     </message>
     <message>
         <source>Number of recent captures to keep</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero di acquisizioni recenti da conservare</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella cronologia</translation>
     </message>
     <message>
         <source>Recent captures:</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizioni recenti:</translation>
     </message>
     <message>
         <source>Shown in the widget and the tray menu. Interval captures are not listed. Clearing the list never deletes image files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrate nel widget e nel menu del vassoio di sistema. Le acquisizioni a intervalli non vengono elencate. La cancellazione dell'elenco non elimina mai i file immagine.</translation>
     </message>
     <message>
         <source>History cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>Cronologia cancellata</translation>
     </message>
     <message>
         <source>Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Cartella delle acquisizioni</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvia glimply all'accesso</translation>
     </message>
     <message>
         <source>Startup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvio:</translation>
     </message>
     <message>
         <source>Shortcuts only work while glimply is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le scorciatoie funzionano solo mentre glimply è in esecuzione.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa il tasto Print per glimply</translation>
     </message>
     <message>
         <source>Print key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tasto Print:</translation>
     </message>
     <message>
         <source>Print saves all monitors right away. Turning this off gives the Print key back to the application that had it before, usually Spectacle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Print salva subito tutti gli schermi. Disattivando questa opzione, il tasto Print torna all'applicazione che lo usava prima, di solito Spectacle.</translation>
     </message>
     <message>
         <source>Open the selection overlay after saving</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri la sovrimpressione di selezione dopo il salvataggio</translation>
     </message>
     <message>
         <source>After Print:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dopo Print:</translation>
     </message>
     <message>
         <source>In the overlay you can cut the screenshot down to rectangles, a monitor or a window. Without it, Print only saves the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nella sovrimpressione puoi ritagliare la schermata in rettangoli, uno schermo o una finestra. Senza di essa, Print salva solo la schermata completa.</translation>
     </message>
     <message>
         <source>Last used</source>
-        <translation type="unfinished"></translation>
+        <translation>Ultimo usato</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermo</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Dal vivo</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>La sovrimpressione si avvia:</translation>
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermo mostra l'istante in cui hai premuto Print. Dal vivo lascia i video in riproduzione e acquisisce al salvataggio. Space cambia modalità nella sovrimpressione in qualsiasi momento.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva non appena si rilascia il mouse</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezione:</translation>
     </message>
     <message>
         <source>Skips the buttons: drawing one rectangle saves it right away.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salta i pulsanti: disegnare un rettangolo lo salva subito.</translation>
     </message>
     <message>
         <source>Show magnifier loupe while selecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra la lente d'ingrandimento durante la selezione</translation>
     </message>
     <message>
         <source>Loupe:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lente:</translation>
     </message>
     <message>
         <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra un'anteprima ingrandita di 11 × 11 pixel nativi durante il trascinamento o il ridimensionamento di una selezione ferma.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia selettore colore</translation>
     </message>
     <message>
         <source>Pick color shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia selettore colore:</translation>
     </message>
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scorciatoia globale per aprire ovunque il selettore colore dei pixel.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Riconoscimento del testo:</translation>
     </message>
     <message>
         <source>Text recognition languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Lingue per il riconoscimento del testo</translation>
     </message>
     <message>
         <source>Languages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lingue:</translation>
     </message>
     <message>
         <source>Not installed. Install the tesseract package and a language package, for example tesseract-data-eng, to copy text from captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non installato. Installa il pacchetto tesseract e un pacchetto lingua, ad esempio tesseract-data-eng, per copiare il testo dalle acquisizioni.</translation>
     </message>
     <message>
         <source>glimply works the same without it; Copy Text then explains what is missing.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply funziona allo stesso modo anche senza; Copia testo spiega poi cosa manca.</translation>
     </message>
     <message>
         <source>%1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 trovato</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Copy Text uses the checked languages; with none checked it uses all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia testo usa le lingue selezionate; se nessuna è selezionata, le usa tutte.</translation>
     </message>
     <message>
         <source>English is not installed (package tesseract-data-eng).</source>
-        <translation type="unfinished"></translation>
+        <translation>L'inglese non è installato (pacchetto tesseract-data-eng).</translation>
     </message>
     <message>
         <source>Post-Capture Command Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook di comando post-acquisizione</translation>
     </message>
     <message>
         <source>Run a command after saving captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Esegui un comando dopo il salvataggio delle acquisizioni</translation>
     </message>
     <message>
         <source>Post-capture command</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando post-acquisizione</translation>
     </message>
     <message>
         <source>Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando:</translation>
     </message>
     <message>
         <source>Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell features.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eseguito direttamente senza shell. Passa %f per i percorsi dei file oppure leggi GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT e GLIMPLY_TIMESTAMP. Usa un file script per pipe o funzionalità della shell.</translation>
     </message>
     <message>
         <source>Hook timeout in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout dell'hook in secondi</translation>
     </message>
     <message>
         <source>Timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout:</translation>
     </message>
     <message>
         <source>Run hooks on interval captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Esegui gli hook sulle acquisizioni a intervalli</translation>
     </message>
     <message>
         <source>Intervals:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalli:</translation>
     </message>
     <message>
         <source>Test Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Prova hook</translation>
     </message>
     <message>
         <source>Local MCP Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server MCP locale</translation>
     </message>
     <message>
         <source>Enable local MCP server (stdio only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Abilita il server MCP locale (solo stdio)</translation>
     </message>
     <message>
         <source>MCP access scope</source>
-        <translation type="unfinished"></translation>
+        <translation>Ambito di accesso MCP</translation>
     </message>
     <message>
         <source>Allowlist only (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo lista consentiti (consigliato)</translation>
     </message>
     <message>
         <source>Confirm every capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Conferma ogni acquisizione</translation>
     </message>
     <message>
         <source>Full session access</source>
-        <translation type="unfinished"></translation>
+        <translation>Accesso completo alla sessione</translation>
     </message>
     <message>
         <source>Access scope:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ambito di accesso:</translation>
     </message>
     <message>
         <source>Only checked areas and groups can be listed or captured over MCP:</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo le aree e i gruppi selezionati possono essere elencati o acquisiti tramite MCP:</translation>
     </message>
     <message>
         <source>MCP allowed targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivi consentiti per MCP</translation>
     </message>
     <message>
         <source>No areas or groups yet — add one to allow MCP captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna area o gruppo ancora — aggiungine uno per consentire le acquisizioni MCP.</translation>
     </message>
     <message>
         <source>Allowed targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiettivi consentiti:</translation>
     </message>
     <message>
         <source>Warning: Connected local MCP clients can capture any screen, region, or window without confirmation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avviso: i client MCP locali connessi possono acquisire qualsiasi schermo, area o finestra senza conferma.</translation>
     </message>
     <message>
         <source>Show a passive notification on MCP captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra una notifica passiva per le acquisizioni MCP</translation>
     </message>
     <message>
         <source>Notifications:</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifiche:</translation>
     </message>
     <message>
         <source>MCP stdio launch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Comando di avvio stdio MCP</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Add this command in a local MCP client (Claude Code, Codex, Cursor). Runs strictly on stdin/stdout with no network port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi questo comando in un client MCP locale (Claude Code, Codex, Cursor). Viene eseguito esclusivamente su stdin/stdout senza alcuna porta di rete.</translation>
     </message>
     <message>
         <source>Running test hook…</source>
-        <translation type="unfinished"></translation>
+        <translation>Esecuzione dell'hook di prova…</translation>
     </message>
     <message>
         <source>Hook succeeded (exit 0, %1 ms).</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook riuscito (uscita 0, %1 ms).</translation>
     </message>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout dell'hook dopo %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook non riuscito: %1</translation>
     </message>
     <message>
         <source>Copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiato</translation>
     </message>
     <message>
         <source>%1 (area)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (area)</translation>
     </message>
     <message>
         <source>%1 (group)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (gruppo)</translation>
     </message>
 </context>
 <context>
     <name>glimply::TrayController</name>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Pronto</translation>
     </message>
     <message>
         <source>glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply</translation>
     </message>
     <message>
         <source>Recent Captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizioni recenti</translation>
     </message>
     <message>
         <source>No recent captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna acquisizione recente</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica nella finestra</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra nella cartella</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Fissa sullo schermo</translation>
     </message>
     <message>
         <source>Move All to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta tutto nel cestino</translation>
     </message>
     <message>
         <source>Move to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta nel cestino</translation>
     </message>
     <message>
         <source>%1 · %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 (%3)</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella cronologia</translation>
     </message>
     <message>
         <source>Clears the list; the image files stay where they are</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella l'elenco; i file immagine restano dove sono</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione tra %1 s…</translation>
     </message>
     <message>
         <source>%1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2 s)</translation>
     </message>
     <message>
         <source>Intervals active: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalli attivi: %1</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla conto alla rovescia (%1 s)</translation>
     </message>
     <message>
         <source>Stop Interval: %1 (%2 saved)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferma intervallo: %1 (%2 salvati)</translation>
     </message>
     <message>
         <source>Stop All Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferma tutti gli intervalli</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>No areas yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna area ancora</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Rinomina schermo</translation>
     </message>
     <message>
         <source>%1…</source>
-        <translation type="unfinished"></translation>
+        <translation>%1…</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi area…</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona colore</translation>
     </message>
     <message>
         <source>Delay (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo (%1 s)</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun ritardo</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizzato…</translation>
     </message>
     <message>
         <source>Capture Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ritardo di acquisizione</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Secondi:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantieni attivo il ritardo</translation>
     </message>
     <message>
         <source>Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalli</translation>
     </message>
     <message>
         <source>Stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ferma %1</translation>
     </message>
     <message>
         <source>Start %1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvia %1 (%2 s)</translation>
     </message>
     <message>
         <source>Open Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri ultima acquisizione</translation>
     </message>
     <message>
         <source>Edit Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica ultima acquisizione</translation>
     </message>
     <message>
         <source>Pins (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pins (%1)</translation>
     </message>
     <message>
         <source>Show Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra schermate fissate</translation>
     </message>
     <message>
         <source>Remove All Pins…</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi tutte le schermate fissate…</translation>
     </message>
     <message>
         <source>Open Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri cartella delle acquisizioni</translation>
     </message>
     <message>
         <source>Configure glimply…</source>
-        <translation type="unfinished"></translation>
+        <translation>Configura glimply…</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Esci</translation>
     </message>
 </context>
 <context>
     <name>glimply::cli</name>
     <message>
         <source>Could not connect to the D-Bus session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile connettersi al bus di sessione D-Bus.</translation>
     </message>
     <message>
         <source>Unexpected D-Bus reply calling %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Risposta D-Bus inattesa chiamando %1.</translation>
     </message>
     <message>
         <source>Invalid JSON reply from glimply daemon: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Risposta JSON non valida dal demone glimply: %1</translation>
     </message>
     <message>
         <source>Missing value for --format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --format.</translation>
     </message>
     <message>
         <source>Unsupported image format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato immagine non supportato: %1</translation>
     </message>
     <message>
         <source>Missing value for --quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --quality.</translation>
     </message>
     <message>
         <source>Quality must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <translation>La qualità deve essere un numero intero tra 1 e 100.</translation>
     </message>
     <message>
         <source>Missing value for --png-compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --png-compression.</translation>
     </message>
     <message>
         <source>PNG compression must be between 0 and 9.</source>
-        <translation type="unfinished"></translation>
+        <translation>La compressione PNG deve essere compresa tra 0 e 9.</translation>
     </message>
     <message>
         <source>Missing value for --delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --delay.</translation>
     </message>
     <message>
         <source>Delay must be between 0 and 60 seconds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il ritardo deve essere compreso tra 0 e 60 secondi.</translation>
     </message>
     <message>
         <source>Missing path for --out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso mancante per --out.</translation>
     </message>
     <message>
         <source>Unknown option: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzione sconosciuta: %1</translation>
     </message>
     <message>
         <source>--stdout and --json cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout e --json non possono essere usati insieme.</translation>
     </message>
     <message>
         <source>--stdout and --ocr cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout e --ocr non possono essere usati insieme.</translation>
     </message>
     <message>
         <source>Expected exactly one capture target.</source>
-        <translation type="unfinished"></translation>
+        <translation>È richiesto esattamente un obiettivo di acquisizione.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione non riuscita.</translation>
     </message>
     <message>
         <source>Could not read captured image bytes for --stdout.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile leggere i byte dell'immagine acquisita per --stdout.</translation>
     </message>
     <message>
         <source>Failed reading image stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettura del flusso immagine non riuscita.</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 copiato negli appunti.</translation>
     </message>
     <message>
         <source>Captured %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 acquisito.</translation>
     </message>
     <message>
         <source>Missing value for --kind.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --kind.</translation>
     </message>
     <message>
         <source>Invalid --kind value: %1 (expected targets, monitors, or windows).</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore --kind non valido: %1 (attesi targets, monitors o windows).</translation>
     </message>
     <message>
         <source>Missing value for --name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --name.</translation>
     </message>
     <message>
         <source>Missing value for --monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --monitor.</translation>
     </message>
     <message>
         <source>Missing value for --rect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --rect.</translation>
     </message>
     <message>
         <source>Invalid rectangle %1 (expected X,Y,W,H with W&gt;0, H&gt;0).</source>
-        <translation type="unfinished"></translation>
+        <translation>Rettangolo %1 non valido (atteso X,Y,W,H con W&gt;0, H&gt;0).</translation>
     </message>
     <message>
         <source>Opened interactive area selector.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selettore interattivo di area aperto.</translation>
     </message>
     <message>
         <source>Expected an area ID or name.</source>
-        <translation type="unfinished"></translation>
+        <translation>È richiesto un ID o un nome di area.</translation>
     </message>
     <message>
         <source>“%1” is not an area.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» non è un'area.</translation>
     </message>
     <message>
         <source>Opened editor for area %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor aperto per l'area %1.</translation>
     </message>
     <message>
         <source>Usage: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Uso: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Renamed %1 to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rinominato in %2.</translation>
     </message>
     <message>
         <source>Usage: glimply area remove &lt;id-or-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Uso: glimply area remove &lt;id-or-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Built-in targets cannot be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gli obiettivi predefiniti non possono essere rimossi.</translation>
     </message>
     <message>
         <source>Removed %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rimosso.</translation>
     </message>
     <message>
         <source>Unknown area subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sottocomando area sconosciuto: %1</translation>
     </message>
     <message>
         <source>--seconds must be between 1 and 86400.</source>
-        <translation type="unfinished"></translation>
+        <translation>--seconds deve essere compreso tra 1 e 86400.</translation>
     </message>
     <message>
         <source>--max-captures must be between 0 and 100000.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-captures deve essere compreso tra 0 e 100000.</translation>
     </message>
     <message>
         <source>--max-minutes must be between 0 and 10080.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-minutes deve essere compreso tra 0 e 10080.</translation>
     </message>
     <message>
         <source>Expected exactly one target to start an interval for.</source>
-        <translation type="unfinished"></translation>
+        <translation>È richiesto esattamente un obiettivo per avviare un intervallo.</translation>
     </message>
     <message>
         <source>Started interval capture for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acquisizione a intervalli avviata per %1.</translation>
     </message>
     <message>
         <source>Do not pass a target name together with --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non passare un nome di obiettivo insieme a --all.</translation>
     </message>
     <message>
         <source>Specify a target or --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Specifica un obiettivo o --all.</translation>
     </message>
     <message>
         <source>Stopped all active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutti gli intervalli attivi fermati.</translation>
     </message>
     <message>
         <source>Stopped interval for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo fermato per %1.</translation>
     </message>
     <message>
         <source>No active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessun intervallo attivo.</translation>
     </message>
     <message>
         <source>Unknown interval subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sottocomando interval sconosciuto: %1</translation>
     </message>
     <message>
         <source>Missing value for --mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valore mancante per --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode deve essere 'frozen' o 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
-        <translation type="unfinished"></translation>
+        <translation>--delay deve essere compreso tra 0 e 60.</translation>
     </message>
     <message>
         <source>--limit expects a positive number.</source>
-        <translation type="unfinished"></translation>
+        <translation>--limit richiede un numero positivo.</translation>
     </message>
     <message>
         <source>No recent captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna acquisizione recente.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sottocomando mancante.</translation>
     </message>
     <message>
         <source>Unknown subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sottocomando sconosciuto: %1</translation>
     </message>
 </context>
 <context>
@@ -3559,19 +3537,27 @@ Scriptable CLI subcommands:
   interval           Start, stop, or inspect interval captures
   overlay            Open the interactive capture overlay
   mcp                Run the local stdio MCP server (disabled by default)</source>
-        <translation type="unfinished"></translation>
+        <translation>Strumento leggero per schermate e annotazioni di KDE
+
+Sottocomandi CLI programmabili:
+  capture &lt;target&gt;   Acquisisci un'area, un gruppo, uno schermo, tutti gli schermi o una finestra
+  list               Elenca obiettivi configurati, schermi o finestre aperte
+  area               Aggiungi, modifica, rinomina o rimuovi aree salvate
+  interval           Avvia, ferma o ispeziona acquisizioni a intervalli
+  overlay            Apri la sovrimpressione di acquisizione interattiva
+  mcp                Avvia il server MCP stdio locale (disabilitato per impostazione predefinita)</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>File immagine da aprire nella finestra dell'Editor rapido.</translation>
     </message>
     <message>
         <source>Open an image file in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri un file immagine nella finestra dell'Editor rapido.</translation>
     </message>
     <message>
         <source>Release the Print key shortcut and exit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rilascia la scorciatoia del tasto Print ed esci.</translation>
     </message>
 </context>
 </TS>
