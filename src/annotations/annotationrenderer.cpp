@@ -2,6 +2,7 @@
 
 #include "annotationgeometry.h"
 #include "annotationtextlayout.h"
+#include "redactionprocessor.h"
 
 #include <QFontMetricsF>
 #include <QPainterPath>
@@ -15,6 +16,13 @@ namespace glimply
 {
 namespace
 {
+
+struct RedactRenderContext {
+    const QImage *sourceImage = nullptr;
+    qreal sourceScale = 1.0;
+    QPointF logicalOrigin;
+    bool isExport = false;
+};
 
 void drawBarbedArrow(QPainter &painter, const QPointF &start, const QPointF &end, const QColor &color,
                      qreal strokeWidth)
@@ -132,24 +140,56 @@ void drawStepBadge(QPainter &painter, const AnnotationItem &item)
     painter.restore();
 }
 
-void drawRedactItem(QPainter &painter, const AnnotationItem &item)
+void drawRedactItem(QPainter &painter, const AnnotationItem &item, const RedactRenderContext &ctx)
 {
     const QRectF r = item.rect.normalized();
     if (r.isEmpty()) {
         return;
     }
-    QColor opaque = item.color;
+
+    if (ctx.sourceImage && !ctx.sourceImage->isNull() && ctx.sourceScale > 0.0) {
+        const QRect physRect = redactionPhysicalRect(r, ctx.logicalOrigin, ctx.sourceScale, ctx.sourceImage->size());
+        if (physRect.isEmpty()) {
+            return;
+        }
+        const QPoint docOrigin(int(std::lround(ctx.logicalOrigin.x() * ctx.sourceScale)) + physRect.left(),
+                               int(std::lround(ctx.logicalOrigin.y() * ctx.sourceScale)) + physRect.top());
+        const QImage patch = renderRedactedPatch(*ctx.sourceImage, physRect, docOrigin, item, ctx.sourceScale);
+        if (!patch.isNull()) {
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
+            if (ctx.isExport) {
+                painter.setWorldTransform(QTransform());
+                painter.setClipping(false);
+                painter.setCompositionMode(QPainter::CompositionMode_Source);
+                painter.drawImage(physRect.topLeft(), patch);
+            } else {
+                const QRectF destLogical(ctx.logicalOrigin.x() + physRect.left() / ctx.sourceScale,
+                                         ctx.logicalOrigin.y() + physRect.top() / ctx.sourceScale,
+                                         physRect.width() / ctx.sourceScale,
+                                         physRect.height() / ctx.sourceScale);
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                painter.drawImage(destLogical, patch);
+            }
+            painter.restore();
+            return;
+        }
+    }
+
+    QColor opaque = item.redactionMode == RedactionMode::Solid ? item.color : QColor(0, 0, 0);
     opaque.setAlpha(255);
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.setCompositionMode(ctx.isExport ? QPainter::CompositionMode_Source : QPainter::CompositionMode_SourceOver);
     painter.setPen(Qt::NoPen);
     painter.setBrush(opaque);
     painter.drawRect(r);
     painter.restore();
 }
 
-void drawNonSpotlightItem(QPainter &painter, const QRectF &logicalClipRect, const AnnotationItem &item)
+void drawNonSpotlightItem(QPainter &painter, const QRectF &logicalClipRect, const AnnotationItem &item,
+                          const RedactRenderContext &ctx)
 {
     switch (item.kind) {
     case ItemKind::Arrow:
@@ -196,7 +236,7 @@ void drawNonSpotlightItem(QPainter &painter, const QRectF &logicalClipRect, cons
         drawStepBadge(painter, item);
         break;
     case ItemKind::Redact:
-        drawRedactItem(painter, item);
+        drawRedactItem(painter, item, ctx);
         break;
     case ItemKind::Text:
         drawAnnotationText(painter, item);
@@ -240,7 +280,8 @@ void drawUnifiedSpotlights(QPainter &painter, const QRectF &logicalClipRect,
 }
 
 void renderFourStagePipeline(QPainter &painter, const QRectF &logicalClipRect,
-                             const QList<const AnnotationItem *> &items)
+                             const QList<const AnnotationItem *> &items,
+                             const RedactRenderContext &ctx)
 {
     qsizetype lastRedactIdx = -1;
     QList<const AnnotationItem *> spotlights;
@@ -262,7 +303,7 @@ void renderFourStagePipeline(QPainter &painter, const QRectF &logicalClipRect,
         if (item->kind == ItemKind::Spotlight || !item->intersectsLogicalRect(logicalClipRect)) {
             continue;
         }
-        drawNonSpotlightItem(painter, logicalClipRect, *item);
+        drawNonSpotlightItem(painter, logicalClipRect, *item, ctx);
     }
 
     // Stage 3: unified spotlight dim layer.
@@ -274,7 +315,7 @@ void renderFourStagePipeline(QPainter &painter, const QRectF &logicalClipRect,
         if (item->kind == ItemKind::Spotlight || !item->intersectsLogicalRect(logicalClipRect)) {
             continue;
         }
-        drawNonSpotlightItem(painter, logicalClipRect, *item);
+        drawNonSpotlightItem(painter, logicalClipRect, *item, ctx);
     }
 }
 
@@ -287,8 +328,14 @@ QImage renderAnnotatedCrop(const QImage &nativeCrop, const QRectF &logicalCropRe
         return nativeCrop;
     }
 
-    QImage result = nativeCrop.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    // Fresh image guarantees zero inherited text chunks, EXIF tags, or ICC/thumbnail metadata.
+    QImage result(nativeCrop.size(), QImage::Format_ARGB32_Premultiplied);
     result.setDevicePixelRatio(1.0);
+    {
+        QPainter copyPainter(&result);
+        copyPainter.setCompositionMode(QPainter::CompositionMode_Source);
+        copyPainter.drawImage(0, 0, nativeCrop);
+    }
     if (document.isEmpty()) {
         return result;
     }
@@ -305,13 +352,15 @@ QImage renderAnnotatedCrop(const QImage &nativeCrop, const QRectF &logicalCropRe
     painter.translate(-logicalCropRect.topLeft());
     painter.setClipRect(logicalCropRect);
 
-    renderFourStagePipeline(painter, logicalCropRect, refs);
+    const RedactRenderContext ctx{&result, nativeScale, logicalCropRect.topLeft(), true};
+    renderFourStagePipeline(painter, logicalCropRect, refs, ctx);
     return result;
 }
 
 void paintAnnotationOverlay(QPainter &painter, const QRectF &logicalViewportRect, const AnnotationDocument &document,
                             const QColor &accentColor, int hoveredId, const AnnotationItem *draftItem,
-                            const QImage *, qreal, const QPointF &, int hiddenItemId)
+                            const QImage *nativeBackdrop, qreal backdropScale, const QPointF &backdropLogicalOrigin,
+                            int hiddenItemId)
 {
     if (!logicalViewportRect.isValid()) {
         return;
@@ -342,7 +391,48 @@ void paintAnnotationOverlay(QPainter &painter, const QRectF &logicalViewportRect
             refs.append(draftItem);
         }
     }
-    renderFourStagePipeline(painter, logicalViewportRect, refs);
+    const RedactRenderContext ctx{nativeBackdrop, backdropScale, backdropLogicalOrigin, false};
+    renderFourStagePipeline(painter, logicalViewportRect, refs, ctx);
+
+    // Editor/overlay visual cue: subtle corner L-ticks on hovered or selected Redaction items,
+    // inset past the corner resize handles so they stay visible while selected.
+    for (const AnnotationItem *it : refs) {
+        if (it->kind == ItemKind::Redact && (it->id == hoveredId || it->id == document.selectedId())) {
+            const QRectF r = it->rect.normalized();
+            const qreal margin = (r.width() >= 24.0 && r.height() >= 24.0) ? 6.0 : 2.0;
+            const QRectF inset = r.adjusted(margin, margin, -margin, -margin);
+            const qreal tickLen = std::min({7.0, inset.width() * 0.35, inset.height() * 0.35});
+            if (tickLen >= 1.5 && inset.isValid() && !inset.isEmpty()) {
+                const QList<QLineF> ticks{
+                    QLineF(inset.left(), inset.top() + tickLen, inset.left(), inset.top()),
+                    QLineF(inset.left(), inset.top(), inset.left() + tickLen, inset.top()),
+                    QLineF(inset.right() - tickLen, inset.top(), inset.right(), inset.top()),
+                    QLineF(inset.right(), inset.top(), inset.right(), inset.top() + tickLen),
+                    QLineF(inset.left(), inset.bottom() - tickLen, inset.left(), inset.bottom()),
+                    QLineF(inset.left(), inset.bottom(), inset.left() + tickLen, inset.bottom()),
+                    QLineF(inset.right() - tickLen, inset.bottom(), inset.right(), inset.bottom()),
+                    QLineF(inset.right(), inset.bottom(), inset.right(), inset.bottom() - tickLen),
+                };
+                painter.save();
+                painter.setRenderHint(QPainter::Antialiasing, false);
+                painter.setBrush(Qt::NoBrush);
+                if (it->redactionMode != RedactionMode::Solid) {
+                    QPen halo(QColor(0, 0, 0, 145), 3.0, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+                    halo.setCosmetic(true);
+                    painter.setPen(halo);
+                    painter.drawLines(ticks);
+                }
+                QColor tickCol = it->redactionMode == RedactionMode::Solid ? contrastingTextColor(it->color)
+                                                                           : QColor(255, 255, 255);
+                tickCol.setAlpha(210);
+                QPen tickPen(tickCol, 1.0, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+                tickPen.setCosmetic(true);
+                painter.setPen(tickPen);
+                painter.drawLines(ticks);
+                painter.restore();
+            }
+        }
+    }
 
     if (hoveredId > 0 && hoveredId != document.selectedId()) {
         if (const AnnotationItem *hovered = document.findItem(hoveredId)) {

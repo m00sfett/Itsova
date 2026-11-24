@@ -213,6 +213,7 @@ AnnotationToolbar::AnnotationToolbar(AnnotationController *controller, QWidget *
         ToolKind::Highlighter,
         ToolKind::Text,
         ToolKind::Step,
+        ToolKind::Redact,
         ToolKind::Spotlight,
     });
 
@@ -358,8 +359,25 @@ void AnnotationToolbar::buildUi()
     customColorButton_->setAutoRaise(true);
     customColorButton_->setFocusPolicy(Qt::NoFocus);
     connect(customColorButton_, &QToolButton::clicked, this, [this] {
-        const QColor chosen = QColorDialog::getColor(
-            controller_ ? controller_->strokeColor() : Qt::red, this, tr("Select Annotation Color"));
+        QColor initial = Qt::red;
+        if (controller_) {
+            ItemKind kind = ItemKind::Rectangle;
+            if (activeTargetKind(&kind)) {
+                if (const AnnotationItem *sel = controller_->document() ? controller_->document()->selectedItem()
+                                                                        : nullptr) {
+                    initial = sel->color;
+                } else if (kind == ItemKind::Highlighter) {
+                    initial = controller_->highlighterColor();
+                } else if (kind == ItemKind::Redact) {
+                    initial = controller_->redactionColor();
+                } else if (kind == ItemKind::Text) {
+                    initial = controller_->textColor();
+                } else {
+                    initial = controller_->strokeColor();
+                }
+            }
+        }
+        const QColor chosen = QColorDialog::getColor(initial, this, tr("Select Annotation Color"));
         if (chosen.isValid()) {
             applyColorChoice(chosen);
         }
@@ -675,6 +693,87 @@ void AnnotationToolbar::buildUi()
     textLayout->addWidget(textActionBox_);
     row2->addWidget(textGroup_);
 
+    // Redaction mode + secrecy-floored strength controls (Solid / Pixelate / Blur).
+    redactGroup_ = new QWidget(propertyBar_);
+    auto *redactLayout = new QHBoxLayout(redactGroup_);
+    redactLayout->setContentsMargins(0, 0, 0, 0);
+    redactLayout->setSpacing(3);
+
+    auto *redactModeGroup = new QButtonGroup(redactGroup_);
+    redactModeGroup->setExclusive(true);
+
+    redactSolidButton_ = new QToolButton(redactGroup_);
+    redactSolidButton_->setIcon(toolGlyphIcon(ToolKind::Redact, ink));
+    redactSolidButton_->setText(tr("Solid"));
+    redactSolidButton_->setToolTip(tr("Solid Block — permanently replaces pixels (recommended for sensitive text)."));
+    redactSolidButton_->setAccessibleName(tr("Solid redaction"));
+    redactSolidButton_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    redactSolidButton_->setCheckable(true);
+    redactSolidButton_->setAutoRaise(true);
+    redactSolidButton_->setFocusPolicy(Qt::NoFocus);
+    redactModeGroup->addButton(redactSolidButton_);
+    redactLayout->addWidget(redactSolidButton_);
+    connect(redactSolidButton_, &QToolButton::clicked, this,
+            [this] { applyRedactionModeChoice(RedactionMode::Solid); });
+
+    redactPixelateButton_ = new QToolButton(redactGroup_);
+    redactPixelateButton_->setIcon(makeVectorIcon(ink, [](QPainter &p) {
+        p.drawRect(QRectF(3, 3, 5, 5));
+        p.drawRect(QRectF(10, 3, 5, 5));
+        p.drawRect(QRectF(3, 10, 5, 5));
+        p.drawRect(QRectF(10, 10, 5, 5));
+    }));
+    redactPixelateButton_->setText(tr("Pixelate"));
+    redactPixelateButton_->setToolTip(
+        tr("Pixelate — coarse randomized blocks; use Solid Block for strict text secrecy."));
+    redactPixelateButton_->setAccessibleName(tr("Pixelate redaction"));
+    redactPixelateButton_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    redactPixelateButton_->setCheckable(true);
+    redactPixelateButton_->setAutoRaise(true);
+    redactPixelateButton_->setFocusPolicy(Qt::NoFocus);
+    redactModeGroup->addButton(redactPixelateButton_);
+    redactLayout->addWidget(redactPixelateButton_);
+    connect(redactPixelateButton_, &QToolButton::clicked, this,
+            [this] { applyRedactionModeChoice(RedactionMode::Pixelate); });
+
+    redactBlurButton_ = new QToolButton(redactGroup_);
+    redactBlurButton_->setIcon(makeVectorIcon(ink, [](QPainter &p) {
+        p.drawEllipse(QRectF(4.0, 4.0, 10.0, 10.0));
+        p.drawEllipse(QRectF(2.0, 2.0, 14.0, 14.0));
+    }));
+    redactBlurButton_->setText(tr("Blur"));
+    redactBlurButton_->setToolTip(
+        tr("Blur — heavy visual obfuscation; use Solid Block for strict text secrecy."));
+    redactBlurButton_->setAccessibleName(tr("Blur redaction"));
+    redactBlurButton_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    redactBlurButton_->setCheckable(true);
+    redactBlurButton_->setAutoRaise(true);
+    redactBlurButton_->setFocusPolicy(Qt::NoFocus);
+    redactModeGroup->addButton(redactBlurButton_);
+    redactLayout->addWidget(redactBlurButton_);
+    connect(redactBlurButton_, &QToolButton::clicked, this,
+            [this] { applyRedactionModeChoice(RedactionMode::Blur); });
+
+    redactStrengthBox_ = new QWidget(redactGroup_);
+    auto *strLayout = new QHBoxLayout(redactStrengthBox_);
+    strLayout->setContentsMargins(4, 0, 0, 0);
+    strLayout->setSpacing(4);
+    redactStrengthTitleLabel_ = new QLabel(tr("Block:"), redactStrengthBox_);
+    redactStrengthSlider_ = new QSlider(Qt::Horizontal, redactStrengthBox_);
+    redactStrengthSlider_->setFixedWidth(84);
+    redactStrengthSlider_->setRange(12, 40);
+    redactStrengthSlider_->setAccessibleName(tr("Redaction strength"));
+    redactStrengthSlider_->setFocusPolicy(Qt::NoFocus);
+    redactStrengthValueLabel_ = new QLabel(redactStrengthBox_);
+    redactStrengthValueLabel_->setMinimumWidth(fontMetrics().horizontalAdvance(QStringLiteral("48 px")) + 4);
+    strLayout->addWidget(redactStrengthTitleLabel_);
+    strLayout->addWidget(redactStrengthSlider_);
+    strLayout->addWidget(redactStrengthValueLabel_);
+    connect(redactStrengthSlider_, &QSlider::valueChanged, this,
+            &AnnotationToolbar::applyRedactionStrengthChoice);
+    redactLayout->addWidget(redactStrengthBox_);
+    row2->addWidget(redactGroup_);
+
     row2->addStretch();
     root->addWidget(propertyBar_);
 }
@@ -725,6 +824,24 @@ QToolButton *AnnotationToolbar::legibilityButton(TextLegibility legibility) cons
     return nullptr;
 }
 
+QToolButton *AnnotationToolbar::redactionModeButton(RedactionMode mode) const
+{
+    switch (mode) {
+    case RedactionMode::Solid:
+        return redactSolidButton_;
+    case RedactionMode::Pixelate:
+        return redactPixelateButton_;
+    case RedactionMode::Blur:
+        return redactBlurButton_;
+    }
+    return nullptr;
+}
+
+QSlider *AnnotationToolbar::redactionStrengthSlider() const
+{
+    return redactStrengthSlider_;
+}
+
 bool AnnotationToolbar::isPropertyBarVisible() const { return !propertyBar_->isHidden(); }
 bool AnnotationToolbar::isColorGroupVisible() const { return !propertyBar_->isHidden() && !colorGroup_->isHidden(); }
 bool AnnotationToolbar::isSizeGroupVisible() const { return !propertyBar_->isHidden() && !sizeGroup_->isHidden(); }
@@ -733,6 +850,11 @@ bool AnnotationToolbar::isFillOpacityVisible() const { return isFillGroupVisible
 bool AnnotationToolbar::isSpotlightGroupVisible() const { return !propertyBar_->isHidden() && !spotlightGroup_->isHidden(); }
 bool AnnotationToolbar::isTextGroupVisible() const { return !propertyBar_->isHidden() && !textGroup_->isHidden(); }
 bool AnnotationToolbar::isTextActionBoxVisible() const { return isTextGroupVisible() && !textActionBox_->isHidden(); }
+bool AnnotationToolbar::isRedactGroupVisible() const { return !propertyBar_->isHidden() && !redactGroup_->isHidden(); }
+bool AnnotationToolbar::isRedactStrengthVisible() const
+{
+    return isRedactGroupVisible() && !redactStrengthBox_->isHidden();
+}
 
 bool AnnotationToolbar::activeTargetKind(ItemKind *outKind) const
 {
@@ -834,12 +956,14 @@ void AnnotationToolbar::syncFromState()
     const bool showFill = kind == ItemKind::Rectangle || kind == ItemKind::Ellipse;
     const bool showSpotlight = kind == ItemKind::Spotlight;
     const bool showText = kind == ItemKind::Text;
+    const bool showRedact = kind == ItemKind::Redact;
 
     colorGroup_->setVisible(showColor);
     sizeGroup_->setVisible(showSize);
     fillGroup_->setVisible(showFill);
     spotlightGroup_->setVisible(showSpotlight);
     textGroup_->setVisible(showText);
+    redactGroup_->setVisible(showRedact);
 
     if (showColor) {
         QColor activeColor = controller_->strokeColor();
@@ -912,6 +1036,26 @@ void AnnotationToolbar::syncFromState()
         legOutlineButton_->setChecked(leg == TextLegibility::Outline);
         legPillButton_->setChecked(leg == TextLegibility::Pill);
         textActionBox_->setVisible(controller_->isEditingText());
+    }
+
+    if (showRedact) {
+        const RedactionMode mode = sel ? sel->redactionMode : controller_->redactionMode();
+        redactSolidButton_->setChecked(mode == RedactionMode::Solid);
+        redactPixelateButton_->setChecked(mode == RedactionMode::Pixelate);
+        redactBlurButton_->setChecked(mode == RedactionMode::Blur);
+        const bool showStrength = mode != RedactionMode::Solid;
+        redactStrengthBox_->setVisible(showStrength);
+        if (showStrength) {
+            const int minV = mode == RedactionMode::Blur ? 14 : 12;
+            const int maxV = mode == RedactionMode::Blur ? 48 : 40;
+            const int fallback = mode == RedactionMode::Blur ? controller_->settings().blurRadius
+                                                             : controller_->settings().pixelateBlockSize;
+            const int cur = std::clamp(sel ? sel->redactionStrength : fallback, minV, maxV);
+            redactStrengthTitleLabel_->setText(mode == RedactionMode::Blur ? tr("Radius:") : tr("Block:"));
+            redactStrengthSlider_->setRange(minV, maxV);
+            redactStrengthSlider_->setValue(cur);
+            redactStrengthValueLabel_->setText(tr("%1 px").arg(cur));
+        }
     }
 
     updating_ = false;
@@ -1063,6 +1207,72 @@ void AnnotationToolbar::applySpotlightDimChoice(int percent)
             doc->commitModification(*sel, after, /*mergeKey=*/8);
         }
     }
+    if (settings_) {
+        controller_->writeSettings(*settings_);
+        Q_EMIT settingsModified();
+    }
+}
+
+void AnnotationToolbar::applyRedactionModeChoice(RedactionMode mode)
+{
+    if (!controller_ || updating_) {
+        return;
+    }
+    controller_->setRedactionMode(mode);
+    if (AnnotationDocument *doc = controller_->document()) {
+        if (const AnnotationItem *sel = doc->selectedItem(); sel && sel->kind == ItemKind::Redact) {
+            AnnotationItem after = *sel;
+            after.redactionMode = mode;
+            if (mode == RedactionMode::Solid) {
+                if (sel->redactionMode != RedactionMode::Solid) {
+                    after.color = controller_->redactionColor();
+                    after.color.setAlpha(255);
+                }
+            } else {
+                after.redactionStrength = mode == RedactionMode::Blur ? controller_->settings().blurRadius
+                                                                      : controller_->settings().pixelateBlockSize;
+            }
+            doc->commitModification(*sel, after, /*mergeKey=*/15);
+        }
+    }
+    if (settings_) {
+        controller_->writeSettings(*settings_);
+        Q_EMIT settingsModified();
+    }
+    syncFromState();
+}
+
+void AnnotationToolbar::applyRedactionStrengthChoice(int value)
+{
+    if (!controller_ || updating_) {
+        return;
+    }
+    const AnnotationItem *sel = controller_->document() ? controller_->document()->selectedItem() : nullptr;
+    const RedactionMode mode = (sel && sel->kind == ItemKind::Redact) ? sel->redactionMode
+                                                                      : controller_->redactionMode();
+    if (mode == RedactionMode::Solid) {
+        return;
+    }
+    const int minV = mode == RedactionMode::Blur ? 14 : 12;
+    const int maxV = mode == RedactionMode::Blur ? 48 : 40;
+    const int clamped = std::clamp(value, minV, maxV);
+    redactStrengthValueLabel_->setText(tr("%1 px").arg(clamped));
+
+    updating_ = true;
+    AnnotationSettings s = controller_->settings();
+    if (mode == RedactionMode::Blur) {
+        s.blurRadius = clamped;
+    } else {
+        s.pixelateBlockSize = clamped;
+    }
+    controller_->applySettings(s);
+
+    if (AnnotationDocument *doc = controller_->document(); doc && sel && sel->kind == ItemKind::Redact) {
+        AnnotationItem after = *sel;
+        after.redactionStrength = clamped;
+        doc->commitModification(*sel, after, /*mergeKey=*/16);
+    }
+    updating_ = false;
     if (settings_) {
         controller_->writeSettings(*settings_);
         Q_EMIT settingsModified();

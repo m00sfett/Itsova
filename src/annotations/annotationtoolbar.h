@@ -41,6 +41,8 @@ public:
     [[nodiscard]] QToolButton *applyTextButton() const;
     [[nodiscard]] QToolButton *cancelTextButton() const;
     [[nodiscard]] QToolButton *legibilityButton(TextLegibility legibility) const;
+    [[nodiscard]] QToolButton *redactionModeButton(RedactionMode mode) const;
+    [[nodiscard]] QSlider *redactionStrengthSlider() const;
 
     [[nodiscard]] bool isPropertyBarVisible() const;
     [[nodiscard]] bool isColorGroupVisible() const;
@@ -50,6 +52,8 @@ public:
     [[nodiscard]] bool isSpotlightGroupVisible() const;
     [[nodiscard]] bool isTextGroupVisible() const;
     [[nodiscard]] bool isTextActionBoxVisible() const;
+    [[nodiscard]] bool isRedactGroupVisible() const;
+    [[nodiscard]] bool isRedactStrengthVisible() const;
 
 Q_SIGNALS:
     void settingsModified();
@@ -64,6 +68,8 @@ private:
     void applyFillOpacityChoice(int percent);
     void applySpotlightShapeChoice(SpotlightShape shape);
     void applySpotlightDimChoice(int percent);
+    void applyRedactionModeChoice(RedactionMode mode);
+    void applyRedactionStrengthChoice(int value);
     void applyTextChange(const std::function<void(AnnotationItem &)> &mutateItem, int mergeKey);
     [[nodiscard]] bool activeTargetKind(ItemKind *outKind) const;
 
@@ -118,6 +124,15 @@ private:
     QWidget *textActionBox_ = nullptr;
     QToolButton *applyTextButton_ = nullptr;
     QToolButton *cancelTextButton_ = nullptr;
+
+    QWidget *redactGroup_ = nullptr;
+    QToolButton *redactSolidButton_ = nullptr;
+    QToolButton *redactPixelateButton_ = nullptr;
+    QToolButton *redactBlurButton_ = nullptr;
+    QWidget *redactStrengthBox_ = nullptr;
+    QLabel *redactStrengthTitleLabel_ = nullptr;
+    QSlider *redactStrengthSlider_ = nullptr;
+    QLabel *redactStrengthValueLabel_ = nullptr;
 };
 
 } // namespace glimply

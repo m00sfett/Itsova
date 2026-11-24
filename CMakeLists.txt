@@ -62,6 +62,7 @@ add_library(glimply_capture STATIC
     src/annotations/annotationrenderer.cpp
     src/annotations/annotationsettings.cpp
     src/annotations/annotationtextlayout.cpp
+    src/annotations/redactionprocessor.cpp
     src/captureservice.cpp
     src/imageoutput.cpp
     src/selectiongeometry.cpp
@@ -129,6 +130,9 @@ if(BUILD_TESTING)
     add_executable(textannotationtest tests/textannotationtest.cpp)
     target_link_libraries(textannotationtest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME textannotation COMMAND textannotationtest)
+    add_executable(redactiontest tests/redactiontest.cpp)
+    target_link_libraries(redactiontest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME redaction COMMAND redactiontest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)
