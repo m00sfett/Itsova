@@ -3,6 +3,7 @@
 #include "annotations/annotationdocument.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
+#include "colorpicker.h"
 #include "countdowntimer.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
@@ -75,6 +76,7 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
     connect(tray_, &TrayController::configureRequested, this, [this] { showSettings(); });
     connect(tray_, &TrayController::addAreaRequested, this, &App::addArea);
+    connect(tray_, &TrayController::pickColorRequested, this, &App::startColorPicker);
     connect(tray_, &TrayController::renameMonitorRequested, this, &App::renameMonitorWithDialog);
 
     // New or removed monitors change the built-in targets.
@@ -174,6 +176,9 @@ QString App::targetLabel(const TargetStore &store, const QString &id)
     if (id == allMonitorsTargetId()) {
         return tr("All monitors");
     }
+    if (id == colorPickerTargetId()) {
+        return tr("Pick screen color");
+    }
     if (isScreenTargetId(id)) {
         return monitorName(store, connectorFromScreenTargetId(id));
     }
@@ -200,6 +205,7 @@ void App::syncShortcuts(const QStringList &deletedIds)
         entries.append({screenTargetId(screen.connector), tr("Capture monitor %1").arg(store_.monitorName(screen))});
     }
     entries.append({allMonitorsTargetId(), tr("Capture all monitors")});
+    entries.append({colorPickerTargetId(), tr("Pick screen color")});
     shortcuts_->sync(entries, deletedIds);
 }
 
@@ -337,13 +343,27 @@ void App::runWithDelay(int seconds, const QString &label, std::function<void()> 
 
 void App::addArea()
 {
-    if (session_ || selector_) {
+    if (session_ || selector_ || colorPicker_) {
         return;
     }
     auto *session = new CaptureSession(this, CaptureSession::Purpose::DefineArea);
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
     session->start();
+}
+
+void App::startColorPicker()
+{
+    if (session_ || selector_ || colorPicker_) {
+        return;
+    }
+    auto *picker = new ColorPickerSession(this);
+    colorPicker_ = picker;
+    connect(picker, &ColorPickerSession::picked, this, [this](const QColor &, const QString &formatted) {
+        notify(QStringLiteral("colorPicked"), tr("Color copied"), {tr("%1 copied to clipboard").arg(formatted)});
+    });
+    connect(picker, &ColorPickerSession::finished, picker, &QObject::deleteLater);
+    picker->start();
 }
 
 void App::recordCapture(const QStringList &paths, const QString &displayName)
@@ -448,6 +468,10 @@ void App::trigger(const QString &id)
         startPrint();
         return;
     }
+    if (id == colorPickerTargetId()) {
+        startColorPicker();
+        return;
+    }
     const int delay = store_.effectiveDelaySeconds(id);
     if (delay > 0) {
         runWithDelay(delay, targetLabel(store_, id), [this, id] { executeTriggerNow(id); });
@@ -509,7 +533,8 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
         KNotification::StandardEvent fallback = KNotification::Error;
         if (eventId == QLatin1String("monitorChanged")) {
             fallback = KNotification::Warning;
-        } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")) {
+        } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")
+                   || eventId == QLatin1String("colorPicked")) {
             fallback = KNotification::Notification;
         }
         KNotification::event(fallback, title, text);
@@ -775,7 +800,7 @@ void App::editArea(const QString &areaId)
         storeChanged();
     });
     connect(selector, &AreaSelector::cancelled, selector, &QObject::deleteLater);
-    selector->start(initialGlobal);
+    selector->start(initialGlobal, store_.showSelectionLoupe);
 }
 
 void App::applyAutostart()

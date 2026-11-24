@@ -104,6 +104,7 @@ private:
     QAction *saveCopyAction_ = nullptr;
     QAction *saveAsAction_ = nullptr;
     QAction *copyAction_ = nullptr;
+    QAction *pickColorAction_ = nullptr;
 
     QLabel *dimensionsLabel_ = nullptr;
     QLabel *statusMessageLabel_ = nullptr;

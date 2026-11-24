@@ -5,13 +5,16 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.0] - Unreleased
+
+Multi-format image export, non-blocking capture delay timer, cross-monitor selections and areas, and a native pixel magnifier loupe + color picker.
 
 ### Added
 
 - Multi-format image export (`PNG`, `JPEG`, `WebP`, and runtime-detected `AVIF` / `JPEG XL`) with configurable compression/quality, `#000000` alpha flattening for non-alpha formats, `{ext}` / extension-aligned filename templates, Target > Group > Global format overrides in Settings, and a compact KDE/Breeze `Save As…` export dialog with async live file-size estimation (`#18`).
 - Non-blocking capture delay timer (`Off`, `3 s`, `5 s`, `10 s`, `Custom…`) with unobtrusive KDE/Breeze `CountdownBanner` hidden cleanly before capture, One-Shot default reset + checkable `Keep delay active` toggle directly in the overlay, tray, and Plasma widget, overlay `Retake` with countdown, and per-area / per-group `Delay:` selectors inside `Save as Area` and Settings (`#19`).
 - Cross-monitor selections and persistent cross-monitor areas across virtual desktop coordinates with `8 px` magnetic monitor-edge snapping, byte-identical single-monitor fast path, mixed-DPI composition across intersected monitors only, and graceful partial-visibility capture with brief passive notification when an involved monitor is disconnected (`#20`).
+- Precision native `PixelLoupe` with nearest-neighbor sampling across `1.0`–`2.0` DPI scales (`11 × 11` Frozen selection drag loupe toggleable in *Settings → General*; `15 × 15` eyedropper via `I` / *Pick Color* in `CaptureOverlay` and `QuickEditorWindow`, plus standalone `Pick Color` from the Plasma widget, tray menu, D-Bus `PickColor`, and optional global shortcut), `Tab` cycling of `#RRGGBB` / `rgb()` / `hsl()` / `hsv()`, and `Alt+Click` to apply sampled color to the active annotation tool (`#21`).
 
 ## [0.4.0] - Unreleased
 

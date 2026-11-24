@@ -2,6 +2,7 @@
 
 #include "annotationcontroller.h"
 #include "annotationdocument.h"
+#include "colorformat.h"
 
 #include <QImage>
 #include <QPoint>
@@ -65,12 +66,21 @@ public:
     [[nodiscard]] QImage renderExport() const;
     [[nodiscard]] InlineTextEditor *textEditor() const;
 
+    void setColorPickerActive(bool active);
+    [[nodiscard]] bool isColorPickerActive() const;
+    void setColorFormat(ColorFormat format);
+    [[nodiscard]] ColorFormat colorFormat() const;
+
 Q_SIGNALS:
     void viewChanged();
     void cropRectChanged(const QRect &logicalCropRect);
     void imageDimensionsChanged();
+    void colorPickerActiveChanged(bool active);
+    void colorFormatChanged(glimply::ColorFormat format);
+    void colorPicked(const QColor &color, const QString &formatted, bool applyToTool);
 
 protected:
+    bool focusNextPrevChild(bool next) override;
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
@@ -112,6 +122,8 @@ private:
     // Panning state (Space+drag idle or Middle-button drag in editor mode).
     bool spacePanKeyHeld_ = false;
     bool panning_ = false;
+    bool colorPickerActive_ = false;
+    ColorFormat colorFormat_ = ColorFormat::Hex;
     QPointF panDragStartWidget_;
     QPointF panDragStartOffset_;
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.4.0 LANGUAGES CXX)
+project(glimply VERSION 0.5.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,6 +22,7 @@ find_package(KF6I18n REQUIRED)
 add_executable(glimply
     src/main.cpp
     src/app.cpp
+    src/colorpicker.cpp
     src/controlservice.cpp
     src/captureoverlay.cpp
     src/printkey.cpp
@@ -63,6 +64,7 @@ add_library(glimply_capture STATIC
     src/annotations/overlayexport.cpp
     src/annotations/redactionprocessor.cpp
     src/captureservice.cpp
+    src/colorformat.cpp
     src/imageoutput.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
@@ -83,6 +85,7 @@ add_library(glimply_ui STATIC
     src/areaselector.cpp
     src/countdowntimer.cpp
     src/exportdialog.cpp
+    src/pixelloupe.cpp
     src/quickeditorwindow.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
@@ -152,6 +155,9 @@ if(BUILD_TESTING)
     add_executable(crossmonitortest tests/crossmonitortest.cpp)
     target_link_libraries(crossmonitortest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME crossmonitor COMMAND crossmonitortest)
+    add_executable(loupepickertest tests/loupepickertest.cpp)
+    target_link_libraries(loupepickertest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME loupepicker COMMAND loupepickertest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

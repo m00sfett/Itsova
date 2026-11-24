@@ -116,6 +116,8 @@ private:
     QCheckBox *printOpensOverlay_ = nullptr;
     QComboBox *overlayStart_ = nullptr;
     QCheckBox *captureOnRelease_ = nullptr;
+    QCheckBox *showSelectionLoupe_ = nullptr;
+    KKeySequenceWidget *colorPickerShortcut_ = nullptr;
 };
 
 } // namespace glimply

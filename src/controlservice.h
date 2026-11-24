@@ -42,6 +42,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE bool CountdownActive() const;
     Q_SCRIPTABLE void SetDelay(int seconds, bool keepActive);
     Q_SCRIPTABLE void CancelCountdown();
+    Q_SCRIPTABLE void PickColor();
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 

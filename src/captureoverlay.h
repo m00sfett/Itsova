@@ -23,6 +23,7 @@
 
 class QLabel;
 class QPushButton;
+class QTimer;
 class QToolButton;
 
 namespace glimply
@@ -60,6 +61,7 @@ public:
     [[nodiscard]] bool frozen() const;
     [[nodiscard]] bool canSwitchToLive() const;
     [[nodiscard]] QImage frame(const QString &connector) const;
+    [[nodiscard]] qreal frameScale(const QString &connector) const;
     [[nodiscard]] SelectionModel &selections();
     [[nodiscard]] TargetStore &store() const;
     [[nodiscard]] AnnotationDocument &annotations();
@@ -74,6 +76,15 @@ public:
     void setForceNew(bool on);
     void setDragging(bool dragging);
     [[nodiscard]] bool isDragging() const;
+    [[nodiscard]] bool dragLoupeActive() const;
+    [[nodiscard]] QPoint dragCursorGlobal() const;
+    void setDragLoupe(bool active, const QPoint &globalPos = {});
+    [[nodiscard]] bool colorPickerActive() const;
+    void setColorPickerActive(bool active);
+    [[nodiscard]] QPoint pickerCursorGlobal() const;
+    void setPickerCursorGlobal(const QPoint &globalPos);
+    void cycleColorFormat();
+    void pickColorAt(const QPoint &globalPos, bool applyToTool);
     [[nodiscard]] int hoveredSelectionId() const;
     void setHoveredSelectionId(int id);
     [[nodiscard]] QRect desktopBounds() const;
@@ -155,6 +166,11 @@ private:
     bool markupVisible_ = false;
     bool forceNew_ = false;
     bool dragging_ = false;
+    bool dragLoupeActive_ = false;
+    QPoint dragCursorGlobal_;
+    bool colorPickerActive_ = false;
+    QPoint pickerCursorGlobal_;
+    QString transientHint_;
     int hoveredSelectionId_ = 0;
     bool finished_ = false;
     bool switching_ = false; // Live to Frozen: overlays hidden while the frames are taken
@@ -164,6 +180,7 @@ private:
     SelectionModel selections_;
     AnnotationDocument annotations_;
     AnnotationController annotationController_;
+    QTimer *transientHintTimer_ = nullptr;
     QList<Highlight> highlights_;
     QList<QPointer<CaptureOverlay>> overlays_;
     QString printPath_;
@@ -188,6 +205,7 @@ public:
     void refresh();
 
 protected:
+    bool focusNextPrevChild(bool next) override;
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -241,6 +259,7 @@ private:
     InlineTextEditor *textEditor_ = nullptr;
     QLabel *hint_ = nullptr;
     QToolButton *annotateButton_ = nullptr;
+    QToolButton *pickColorButton_ = nullptr;
     QToolButton *delayButton_ = nullptr;
     QToolButton *helpButton_ = nullptr;
     QWidget *helpPanel_ = nullptr;

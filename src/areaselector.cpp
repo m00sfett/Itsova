@@ -1,6 +1,8 @@
 #include "areaselector.h"
 
 #include "captureservice.h"
+#include "colorformat.h"
+#include "pixelloupe.h"
 #include "screens.h"
 #include "selectiongeometry.h"
 #include "triggerplan.h"
@@ -51,8 +53,10 @@ AreaSelector::~AreaSelector()
     }
 }
 
-void AreaSelector::start(const QRect &initialGlobalRect)
+void AreaSelector::start(const QRect &initialGlobalRect, bool showLoupe)
 {
+    showLoupe_ = showLoupe;
+    dragLoupeActive_ = false;
     screens_ = currentScreens();
     if (screens_.isEmpty()) {
         Q_EMIT cancelled();
@@ -83,8 +87,9 @@ void AreaSelector::start(const QRect &initialGlobalRect)
     });
 
     for (const ScreenInfo &screen : std::as_const(screens_)) {
-        const QImage bg = frames.value(screen.connector).image;
-        auto *overlay = new AreaOverlay(this, screen, desktopBounds_, screenRects_, bg);
+        const CaptureResult frame = frames.value(screen.connector);
+        auto *overlay = new AreaOverlay(this, screen, desktopBounds_, screenRects_, frame.image,
+                                        frame.scale > 0.0 ? frame.scale : 1.0);
         overlays_.append(overlay);
         connect(overlay, &AreaOverlay::accepted, this, [this] { finish(true); });
         connect(overlay, &AreaOverlay::rejected, this, [this] { finish(false); });
@@ -129,6 +134,34 @@ void AreaSelector::setSelection(const QRect &globalRect)
 void AreaSelector::clearSelection()
 {
     setSelection(QRect());
+}
+
+bool AreaSelector::showLoupe() const
+{
+    return showLoupe_;
+}
+
+bool AreaSelector::dragLoupeActive() const
+{
+    return dragLoupeActive_;
+}
+
+QPoint AreaSelector::dragCursorGlobal() const
+{
+    return dragCursorGlobal_;
+}
+
+void AreaSelector::setDragLoupe(bool active, const QPoint &globalPos)
+{
+    dragLoupeActive_ = active;
+    if (active) {
+        dragCursorGlobal_ = globalPos;
+    }
+    for (const QPointer<AreaOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay) {
+            overlay->update();
+        }
+    }
 }
 
 QString AreaSelector::pillConnector() const
@@ -191,13 +224,14 @@ AreaOverlay::AreaOverlay(const QString &connector, const QSize &logicalSize, con
 }
 
 AreaOverlay::AreaOverlay(AreaSelector *selector, const ScreenInfo &screen, const QRect &desktopBounds,
-                         const QList<QRect> &screenRects, const QImage &background)
+                         const QList<QRect> &screenRects, const QImage &background, qreal backgroundScale)
     : selector_(selector)
     , connector_(screen.connector)
     , screenGeometry_(screen.geometry)
     , desktopBounds_(desktopBounds)
     , screenRects_(screenRects)
     , background_(background)
+    , backgroundScale_(backgroundScale > 0.0 ? backgroundScale : 1.0)
     , lastPosition_(screen.geometry.topLeft())
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
@@ -367,6 +401,21 @@ void AreaOverlay::paintEvent(QPaintEvent *)
                              : QPoint(anchor.center().x(), anchor.top() - 8),
              roomBelow);
     }
+
+    const bool loupeActive = selector_ ? selector_->dragLoupeActive() : localDragLoupeActive_;
+    const QPoint loupeGlobal = selector_ ? selector_->dragCursorGlobal() : lastPosition_;
+    if (loupeActive && sel.isValid() && screenGeometry_.contains(loupeGlobal)) {
+        const QPoint localCursor = loupeGlobal - screenGeometry_.topLeft();
+        const bool usePixelLoupe = !background_.isNull() && (selector_ ? selector_->showLoupe() : true);
+        if (usePixelLoupe) {
+            const QPoint nativePx =
+                logicalToNativePixel(QPointF(localCursor), QPointF(0.0, 0.0), backgroundScale_, background_.size());
+            PixelLoupe::paintSelectionLoupe(painter, localCursor, area, pal, background_, nativePx, loupeGlobal,
+                                            sel.size());
+        } else {
+            PixelLoupe::paintDimensionPill(painter, localCursor, area, pal, loupeGlobal, sel.size());
+        }
+    }
 }
 
 void AreaOverlay::mousePressEvent(QMouseEvent *event)
@@ -446,6 +495,13 @@ void AreaOverlay::applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modif
         }
         setSelection(resizedSelection(dragStartSelection_, dragEdges_, delta, constraints, desktopBounds_));
     }
+    const bool showDragLoupe = drag_ == Drag::Create || drag_ == Drag::Resize;
+    if (selector_) {
+        selector_->setDragLoupe(showDragLoupe, globalPos);
+    } else {
+        localDragLoupeActive_ = showDragLoupe;
+        update();
+    }
 }
 
 Qt::Edges AreaOverlay::edgesAt(const QPoint &globalPos) const
@@ -514,6 +570,11 @@ void AreaOverlay::mouseReleaseEvent(QMouseEvent *event)
         const bool resizing = drag_ == Drag::Resize;
         drag_ = Drag::None;
         spaceHeld_ = false;
+        if (selector_) {
+            selector_->setDragLoupe(false);
+        } else {
+            localDragLoupeActive_ = false;
+        }
         const QRect sel = selection();
         if (sel.width() < minimumAreaSize || sel.height() < minimumAreaSize) {
             if (resizing) {

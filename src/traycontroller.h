@@ -53,6 +53,7 @@ Q_SIGNALS:
     void openFolderRequested();
     void configureRequested();
     void addAreaRequested();
+    void pickColorRequested();
     void renameMonitorRequested(const QString &id);
 
 private:

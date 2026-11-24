@@ -863,8 +863,8 @@ void SettingsWindow::runSelector(const QRect &initialGlobalRect, const QString &
         activateWindow();
     });
     hide();
-    QTimer::singleShot(hideBeforeSelectDelayMs, selector_, [selector = selector_.data(), initialGlobalRect] {
-        selector->start(initialGlobalRect);
+    QTimer::singleShot(hideBeforeSelectDelayMs, selector_, [this, selector = selector_.data(), initialGlobalRect] {
+        selector->start(initialGlobalRect, app_->store().showSelectionLoupe);
     });
 }
 
@@ -990,6 +990,7 @@ void SettingsWindow::assignShortcut(const QString &id, const QKeySequence &seque
             owners.append(screenTargetId(screen.connector));
         }
         owners.append(allMonitorsTargetId());
+        owners.append(colorPickerTargetId());
         for (const QString &owner : std::as_const(owners)) {
             if (owner == id || shortcuts->shortcut(owner) != sequence) {
                 continue;
@@ -1432,6 +1433,31 @@ QWidget *SettingsWindow::createGeneralPage()
             app_->storeChanged();
         }
     });
+
+    showSelectionLoupe_ = new QCheckBox(tr("Show magnifier loupe while selecting"), page);
+    form->addRow(tr("Loupe:"), showSelectionLoupe_);
+    form->addRow(QString(), makeHint(tr("Shows a magnified 11 × 11 native pixel preview while dragging or resizing "
+                                        "a frozen selection."),
+                                     page));
+    connect(showSelectionLoupe_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().showSelectionLoupe = on;
+            app_->storeChanged();
+        }
+    });
+
+    colorPickerShortcut_ = new KKeySequenceWidget(page);
+    colorPickerShortcut_->setAccessibleName(tr("Pick color shortcut"));
+    colorPickerShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
+                                                      | KKeySequenceWidget::StandardShortcuts);
+    colorPickerShortcut_->setMultiKeyShortcutsAllowed(false);
+    form->addRow(tr("Pick color shortcut:"), colorPickerShortcut_);
+    form->addRow(QString(), makeHint(tr("Global shortcut to open the pixel color picker anywhere."), page));
+    connect(colorPickerShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &seq) {
+        if (!updating_) {
+            assignShortcut(colorPickerTargetId(), seq, colorPickerShortcut_);
+        }
+    });
     return page;
 }
 
@@ -1450,6 +1476,8 @@ void SettingsWindow::refreshStorage()
     printOpensOverlay_->setChecked(store.printOpensOverlay);
     overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));
     captureOnRelease_->setChecked(store.captureOnRelease);
+    showSelectionLoupe_->setChecked(store.showSelectionLoupe);
+    colorPickerShortcut_->setKeySequence(app_->shortcuts()->shortcut(colorPickerTargetId()));
     updating_ = false;
 }
 

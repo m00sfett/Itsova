@@ -195,6 +195,10 @@ void TrayController::rebuildMenu()
     add(rename->menuAction());
     auto *addArea = add(new QAction(QIcon::fromTheme(QStringLiteral("list-add")), tr("Add Area…"), menu_));
     connect(addArea, &QAction::triggered, this, &TrayController::addAreaRequested);
+    auto *pickColor = add(new QAction(QIcon::fromTheme(QStringLiteral("color-picker")), tr("Pick Color"), menu_));
+    connect(pickColor, &QAction::triggered, this, [this] {
+        QTimer::singleShot(menuCloseDelayMs, this, &TrayController::pickColorRequested);
+    });
 
     const QString delayTitle = delaySeconds_ > 0 ? tr("Delay (%1 s)").arg(delaySeconds_) : tr("Delay");
     auto *delayMenu = new QMenu(delayTitle, menu_);

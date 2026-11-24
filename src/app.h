@@ -19,6 +19,7 @@ namespace glimply
 
 class AnnotationDocument;
 class CaptureSession;
+class ColorPickerSession;
 class ControlService;
 class CountdownBanner;
 class CountdownController;
@@ -52,6 +53,8 @@ public:
     void startPrint();
     // Opens the capture overlay to draw and save new areas, without capturing.
     void addArea();
+    // Opens the standalone native color picker across all monitors.
+    void startColorPicker();
     [[nodiscard]] bool isCountdownActive() const;
     [[nodiscard]] int captureDelaySeconds() const;
     [[nodiscard]] bool keepDelayActive() const;
@@ -120,6 +123,7 @@ private:
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;
+    QPointer<ColorPickerSession> colorPicker_;
     QList<QPointer<QuickEditorWindow>> editors_;
     QStringList lastPaths_;
 };

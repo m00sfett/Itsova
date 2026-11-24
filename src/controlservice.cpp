@@ -185,6 +185,11 @@ void ControlService::CancelCountdown()
     app_->cancelCountdown();
 }
 
+void ControlService::PickColor()
+{
+    app_->startColorPicker();
+}
+
 void ControlService::RegisterWidget()
 {
     if (!calledFromDBus()) {
