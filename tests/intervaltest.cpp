@@ -40,6 +40,7 @@ private Q_SLOTS:
     void stopAfterMaxMinutes();
     void lowDiskAndDisconnectGuardrails();
     void concurrentIndependentIntervals();
+    void unchangedGroupWithSkippedMemberKeepsRunning();
 };
 
 void IntervalTest::configRoundTrip()
@@ -358,6 +359,47 @@ void IntervalTest::concurrentIndependentIntervals()
 
     ctrl.stopAll();
     QVERIFY(!ctrl.hasActive());
+}
+
+void IntervalTest::unchangedGroupWithSkippedMemberKeepsRunning()
+{
+    QTemporaryDir tempDir;
+    QVERIFY(tempDir.isValid());
+
+    const ScreenInfo dp1{QStringLiteral("DP-1"), QRect(0, 0, 64, 64), {}, {}, {}};
+    const ScreenInfo hdmi{QStringLiteral("HDMI-A-1"), QRect(64, 0, 64, 64), {}, {}, {}};
+    TargetStore store;
+    const QString areaDp = store.addArea(dp1, QRect(0, 0, 32, 32)).id;
+    const QString areaHdmi = store.addArea(hdmi, QRect(0, 0, 32, 32)).id;
+    Group &grp = store.addGroup(QStringLiteral("Dual"));
+    grp.targetIds = {areaDp, areaHdmi};
+    const QString groupId = grp.id;
+
+    int ticks = 0;
+    const QImage frame = solidImage(64, 64, Qt::white);
+    // HDMI-A-1 is unplugged: every plan carries a "skipped" error for that member.
+    IntervalController ctrl(
+        [&](const QString &id) { return planTrigger(store, id, {dp1}); },
+        [&] { return tempDir.path(); },
+        [] { return TargetStore::defaultFilenameTemplate(); },
+        [&](TriggerPlan plan, const QString &dir, const QString &tmpl, std::optional<TriggerEngine::FrameMap> prev,
+            std::function<void(TriggerResult, TriggerEngine::FrameMap)> done) {
+            ++ticks;
+            TriggerEngine::FrameMap updated;
+            const TriggerResult r = TriggerEngine::executeWithChangeFilter(
+                plan, [&](const QString &, bool) { return CaptureResult{frame, 1.0, {}}; }, dir, tmpl,
+                QDateTime::currentDateTime().addSecs(ticks), prev ? &*prev : nullptr, &updated);
+            done(r, updated);
+        });
+    ctrl.setDiskSpaceProvider([](const QString &) { return IntervalController::minFreeDiskBytes * 10; });
+    ctrl.setTickIntervalProvider([](int) { return 10; });
+
+    QSignalSpy errorSpy(&ctrl, &IntervalController::intervalStoppedWithError);
+    QCOMPARE(ctrl.start(groupId, QStringLiteral("Dual"), IntervalConfig{1, 0, 0, true}), QString());
+    QTRY_VERIFY_WITH_TIMEOUT(ticks >= 4, 2000);
+    QCOMPARE(errorSpy.count(), 0);
+    QVERIFY(ctrl.isActive(groupId));
+    ctrl.stopAll();
 }
 
 QTEST_MAIN(IntervalTest)
