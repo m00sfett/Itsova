@@ -19,7 +19,10 @@
         "Description[ja]": "固定の画面範囲とディスプレイをキャプチャして管理します",
         "Description[es]": "Capturar áreas fijas de pantalla y pantallas, y gestionarlas",
         "Description[it]": "Acquisisci aree fisse dello schermo e schermi, e gestiscili",
-        "Description[pt]": "Capture áreas fixas da tela e monitores, e gerencie-os"
+        "Description[pt]": "Capture áreas fixas da tela e monitores, e gerencie-os",
+        "Description[ar]": "التقاط مناطق شاشة ثابتة وشاشات، وإدارتها",
+        "Description[hi]": "निश्चित स्क्रीन क्षेत्र और मॉनिटर कैप्चर करें, और उन्हें प्रबंधित करें",
+        "Description[id]": "Tangkap area layar tetap dan monitor, lalu kelola semuanya"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",
