@@ -22,7 +22,8 @@
         "Description[pt]": "Capture áreas fixas da tela e monitores, e gerencie-os",
         "Description[ar]": "التقاط مناطق شاشة ثابتة وشاشات، وإدارتها",
         "Description[hi]": "निश्चित स्क्रीन क्षेत्र और मॉनिटर कैप्चर करें, और उन्हें प्रबंधित करें",
-        "Description[id]": "Tangkap area layar tetap dan monitor, lalu kelola semuanya"
+        "Description[id]": "Tangkap area layar tetap dan monitor, lalu kelola semuanya",
+        "Description[nl]": "Vaste schermgebieden en schermen vastleggen en beheren"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",

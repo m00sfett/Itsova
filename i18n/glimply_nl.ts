@@ -1,3574 +1,3552 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="nl" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
     <message>
         <source>Crop image</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeelding bijsnijden</translation>
     </message>
 </context>
 <context>
     <name>AnnotationCommands</name>
     <message>
         <source>Add Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekening toevoegen</translation>
     </message>
     <message>
         <source>Delete Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekening verwijderen</translation>
     </message>
     <message>
         <source>Modify Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekening wijzigen</translation>
     </message>
     <message>
         <source>Reorder Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekening herschikken</translation>
     </message>
 </context>
 <context>
     <name>CaptureService</name>
     <message>
         <source>KWin denied permission to capture the screen. Install glimply with its desktop entry to grant access to the KDE screenshot service.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin heeft toestemming geweigerd om het scherm vast te leggen. Installeer glimply met bijbehorend bureaubladbestand om toegang te krijgen tot de KDE-schermafbeeldingenservice.</translation>
     </message>
     <message>
         <source>KWin timed out while capturing %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-out van KWin bij het vastleggen van %1.</translation>
     </message>
     <message>
         <source>The window is no longer open.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het venster is niet meer geopend.</translation>
     </message>
     <message>
         <source>KWin could not capture %1 (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin kon %1 niet vastleggen (%2).</translation>
     </message>
     <message>
         <source>KWin returned invalid image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin heeft ongeldige afbeeldingsgegevens geretourneerd voor %1.</translation>
     </message>
     <message>
         <source>Could not read the screenshot from KWin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de schermafbeelding niet van KWin lezen.</translation>
     </message>
     <message>
         <source>KWin returned incomplete image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin heeft onvolledige afbeeldingsgegevens geretourneerd voor %1.</translation>
     </message>
     <message>
         <source>Could not create the screenshot image for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de schermafbeelding voor %1 niet aanmaken.</translation>
     </message>
     <message>
         <source>The KDE screenshot service is unavailable on the session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>De KDE-schermafbeeldingenservice is niet beschikbaar op de sessiebus.</translation>
     </message>
     <message>
         <source>Could not create the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen verbinding aanmaken voor schermafbeeldingsgegevens.</translation>
     </message>
     <message>
         <source>Could not prepare the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de verbinding voor schermafbeeldingsgegevens niet voorbereiden.</translation>
     </message>
     <message>
         <source>There is not enough memory to capture %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is onvoldoende geheugen om %1 vast te leggen.</translation>
     </message>
     <message>
         <source>Choose a monitor to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies een scherm om vast te leggen.</translation>
     </message>
     <message>
         <source>monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>scherm %1</translation>
     </message>
     <message>
         <source>Choose a window to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies een venster om vast te leggen.</translation>
     </message>
     <message>
         <source>the window</source>
-        <translation type="unfinished"></translation>
+        <translation>het venster</translation>
     </message>
 </context>
 <context>
     <name>ColorFormat</name>
     <message>
         <source>HEX</source>
-        <translation type="unfinished"></translation>
+        <translation>HEX</translation>
     </message>
     <message>
         <source>RGB</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB</translation>
     </message>
     <message>
         <source>HSL</source>
-        <translation type="unfinished"></translation>
+        <translation>HSL</translation>
     </message>
     <message>
         <source>HSV</source>
-        <translation type="unfinished"></translation>
+        <translation>HSV</translation>
     </message>
 </context>
 <context>
     <name>HookRunner</name>
     <message>
         <source>Hook command is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook-opdracht is leeg.</translation>
     </message>
     <message>
         <source>Could not parse hook command.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan hook-opdracht niet ontleden.</translation>
     </message>
     <message>
         <source>Command timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-out van opdracht.</translation>
     </message>
     <message>
         <source>Exited with status %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Afgesloten met status %1.</translation>
     </message>
 </context>
 <context>
     <name>ImageOutput</name>
     <message>
         <source>PNG (lossless)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG (verliesvrij)</translation>
     </message>
     <message>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <source>WebP</source>
-        <translation type="unfinished"></translation>
+        <translation>WebP</translation>
     </message>
     <message>
         <source>AVIF</source>
-        <translation type="unfinished"></translation>
+        <translation>AVIF</translation>
     </message>
     <message>
         <source>JPEG XL</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG XL</translation>
     </message>
     <message>
         <source>TIFF</source>
-        <translation type="unfinished"></translation>
+        <translation>TIFF</translation>
     </message>
     <message>
         <source>BMP</source>
-        <translation type="unfinished"></translation>
+        <translation>BMP</translation>
     </message>
     <message>
         <source>QOI</source>
-        <translation type="unfinished"></translation>
+        <translation>QOI</translation>
     </message>
     <message>
         <source>No output device was provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen uitvoerapparaat opgegeven.</translation>
     </message>
     <message>
         <source>Cannot save an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan een lege afbeelding niet opslaan.</translation>
     </message>
     <message>
         <source>Could not encode image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan afbeelding niet coderen.</translation>
     </message>
     <message>
         <source>Cannot estimate size of an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan grootte van een lege afbeelding niet schatten.</translation>
     </message>
     <message>
         <source>Cannot create capture directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan map voor schermafbeeldingen niet aanmaken: %1</translation>
     </message>
     <message>
         <source>The monitor capture is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>De schermopname is leeg.</translation>
     </message>
     <message>
         <source>The capture area or monitor scale is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het opnamegebied of de schermschaal is ongeldig.</translation>
     </message>
     <message>
         <source>The capture area is outside the monitor image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het opnamegebied valt buiten de schermafbeelding.</translation>
     </message>
     <message>
         <source>Could not allocate the cropped image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de bijgesneden afbeelding niet toewijzen.</translation>
     </message>
     <message>
         <source>The capture directory is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>De map voor schermafbeeldingen is leeg.</translation>
     </message>
     <message>
         <source>Cannot create a temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen tijdelijk opnamebestand aanmaken: %1</translation>
     </message>
     <message>
         <source>Cannot write temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan niet schrijven naar tijdelijk opnamebestand: %1</translation>
     </message>
     <message>
         <source>Cannot finish temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan tijdelijk opnamebestand niet voltooien: %1</translation>
     </message>
     <message>
         <source>Cannot set permissions of temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan rechten van tijdelijk opnamebestand niet instellen: %1</translation>
     </message>
     <message>
         <source>Cannot publish capture file %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan opnamebestand %1 niet publiceren: %2</translation>
     </message>
     <message>
         <source>No available filename remains for this capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen beschikbare bestandsnaam meer over voor deze opname.</translation>
     </message>
     <message>
         <source>The capture timestamp is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het tijdstempel van de opname is ongeldig.</translation>
     </message>
 </context>
 <context>
     <name>PixelLoupe</name>
     <message>
         <source>%1, %2 · %3 × %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik: Kopiëren · Alt+Klik: Gebruiken · Tab: Formaat</translation>
     </message>
     <message>
         <source>Click: Copy · Tab: Format · Esc: Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik: Kopiëren · Tab: Formaat · Esc: Annuleren</translation>
     </message>
 </context>
 <context>
     <name>ProgrammaticAnnotator</name>
     <message>
         <source>Input image path is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pad naar invoerafbeelding is vereist.</translation>
     </message>
     <message>
         <source>Input file does not exist: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Invoerbestand bestaat niet: %1</translation>
     </message>
     <message>
         <source>Could not read input image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan invoerafbeelding niet lezen: %1</translation>
     </message>
     <message>
         <source>Requested export image format is not supported on this system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het gevraagde exportafbeeldingsformaat wordt niet ondersteund op dit systeem.</translation>
     </message>
     <message>
         <source>Operation #%1 must be a JSON object.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerking #%1 moet een JSON-object zijn.</translation>
     </message>
     <message>
         <source>Arrow operation #%1 requires x1, y1, x2, and y2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijlbewerking #%1 vereist x1, y1, x2 en y2.</translation>
     </message>
     <message>
         <source>Shape operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vormbewerking #%1 vereist x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
         <source>Stroke operation #%1 requires at least 2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>Streekbewerking #%1 vereist ten minste 2 punten.</translation>
     </message>
     <message>
         <source>Text operation #%1 requires x, y, and non-empty text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstbewerking #%1 vereist x, y en niet-lege tekst.</translation>
     </message>
     <message>
         <source>Step operation #%1 requires x and y.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stapbewerking #%1 vereist x en y.</translation>
     </message>
     <message>
         <source>Spotlight operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Spotlight-bewerking #%1 vereist x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
         <source>Redact operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Redactiebewerking #%1 vereist x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Niet-ondersteund aantekeningstype '%1' bij bewerking #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderen van afbeelding met aantekeningen is mislukt.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation type="unfinished"></translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Weigering om invoerbestand '%1' te overschrijven zonder overwrite=true.</translation>
     </message>
 </context>
 <context>
     <name>TriggerPlan</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen scherm aangesloten.</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 is niet aangesloten.</translation>
     </message>
     <message>
         <source>The capture target no longer exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het opnamedoel bestaat niet meer.</translation>
     </message>
     <message>
         <source>Area %1: a different monitor is connected to %2 than when the area was defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1: er is een ander scherm aangesloten op %2 dan toen het gebied werd gedefinieerd.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer overlaps any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 is overgeslagen: het overlapt geen enkel aangesloten scherm meer.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: none of its monitors (%2) are connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 is niet vastgelegd: geen van de schermen (%2) is aangesloten.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: it does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 is niet vastgelegd: het overlapt geen enkel aangesloten scherm.</translation>
     </message>
     <message>
         <source>%1 not connected — saved visible part of %2 on %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 niet aangesloten — zichtbaar deel van %2 op %3 opgeslagen.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: monitor %2 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 is overgeslagen: scherm %2 is niet aangesloten.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer fits on monitor %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 is overgeslagen: het past niet meer op scherm %2.</translation>
     </message>
     <message>
         <source>Group %1 contains no targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1 bevat geen doelen.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie overlapt geen enkel aangesloten scherm.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 kon niet worden vastgelegd voor de gecombineerde afbeelding.</translation>
     </message>
     <message>
         <source>Invalid monitor scale for combined capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige schermschaal voor gecombineerde opname.</translation>
     </message>
     <message>
         <source>Selection size is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectiegrootte is leeg.</translation>
     </message>
     <message>
         <source>There is not enough memory for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is onvoldoende geheugen voor de gecombineerde afbeelding.</translation>
     </message>
     <message>
         <source>Area %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1: %2</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 kon niet worden vastgelegd.</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationCanvas</name>
     <message>
         <source>Bring to Front</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar voorgrond</translation>
     </message>
     <message>
         <source>Send to Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar achtergrond</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliceren</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijderen</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationToolbar</name>
     <message>
         <source>Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteren / Verplaatsen</translation>
     </message>
     <message>
         <source>Select, move, or resize annotations (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekeningen selecteren, verplaatsen of formaat wijzigen (V)</translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijsnijden</translation>
     </message>
     <message>
         <source>Crop image (C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeelding bijsnijden (C)</translation>
     </message>
     <message>
         <source>Arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijl</translation>
     </message>
     <message>
         <source>Draw arrow; hold Shift to snap angle (A)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijl tekenen; houd Shift ingedrukt om hoek uit te lijnen (A)</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechthoek</translation>
     </message>
     <message>
         <source>Draw rectangle; Shift for square, Alt from center (R)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechthoek tekenen; Shift voor vierkant, Alt vanuit midden (R)</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation>Ellips</translation>
     </message>
     <message>
         <source>Draw ellipse; Shift for circle, Alt from center (E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ellips tekenen; Shift voor cirkel, Alt vanuit midden (E)</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pen</translation>
     </message>
     <message>
         <source>Freehand pen (B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrije hand pen (B)</translation>
     </message>
     <message>
         <source>Highlighter</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeerstift</translation>
     </message>
     <message>
         <source>Multiply highlighter (M)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vermenigvuldigende markeerstift (M)</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst</translation>
     </message>
     <message>
         <source>Add text annotation; click or drag box (T)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstaantekening toevoegen; klik of sleep een vak (T)</translation>
     </message>
     <message>
         <source>Step Counter</source>
-        <translation type="unfinished"></translation>
+        <translation>Stappenteller</translation>
     </message>
     <message>
         <source>Place numbered badge; drag to add pointer (N)</source>
-        <translation type="unfinished"></translation>
+        <translation>Genummerde badge plaatsen; sleep om een aanwijzer toe te voegen (N)</translation>
     </message>
     <message>
         <source>Redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Onleesbaar maken</translation>
     </message>
     <message>
         <source>Irreversible redaction (X)</source>
-        <translation type="unfinished"></translation>
+        <translation>Onomkeerbaar onleesbaar maken (X)</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Spotlight</translation>
     </message>
     <message>
         <source>Highlight region and dim surroundings (S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied markeren en omgeving dimmen (S)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongedaan maken (Ctrl+Z)</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongedaan maken</translation>
     </message>
     <message>
         <source>Redo (Ctrl+Shift+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw (Ctrl+Shift+Z)</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw</translation>
     </message>
     <message>
         <source>Color %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur %1</translation>
     </message>
     <message>
         <source>Choose custom color…</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste kleur kiezen…</translation>
     </message>
     <message>
         <source>Custom color</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste kleur</translation>
     </message>
     <message>
         <source>Select Annotation Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekeningskleur selecteren</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Breedte:</translation>
     </message>
     <message>
         <source>Stroke width</source>
-        <translation type="unfinished"></translation>
+        <translation>Lijndikte</translation>
     </message>
     <message>
         <source>Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Omlijning</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>Vulling</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekking:</translation>
     </message>
     <message>
         <source>Fill opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuldekking</translation>
     </message>
     <message>
         <source>Dim:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimmen:</translation>
     </message>
     <message>
         <source>Spotlight dim opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimdekking van spotlight</translation>
     </message>
     <message>
         <source>Font family</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettertypefamilie</translation>
     </message>
     <message>
         <source> pt</source>
-        <translation type="unfinished"></translation>
+        <translation> pt</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettergrootte</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Vet</translation>
     </message>
     <message>
         <source>Bold (Ctrl+B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vet (Ctrl+B)</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Cursief</translation>
     </message>
     <message>
         <source>Italic (Ctrl+I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cursief (Ctrl+I)</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links uitlijnen</translation>
     </message>
     <message>
         <source>Align Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centreren</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechts uitlijnen</translation>
     </message>
     <message>
         <source>Plain</source>
-        <translation type="unfinished"></translation>
+        <translation>Gewoon</translation>
     </message>
     <message>
         <source>Plain text without backing</source>
-        <translation type="unfinished"></translation>
+        <translation>Gewone tekst zonder achtergrond</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduw</translation>
     </message>
     <message>
         <source>Soft drop shadow for contrast</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachte slagschaduw voor contrast</translation>
     </message>
     <message>
         <source>Contrasting glyph outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrasterende tekenomlijning</translation>
     </message>
     <message>
         <source>Pill</source>
-        <translation type="unfinished"></translation>
+        <translation>Pil</translation>
     </message>
     <message>
         <source>Filled contrast pill behind text</source>
-        <translation type="unfinished"></translation>
+        <translation>Gevulde contrastpil achter tekst</translation>
     </message>
     <message>
         <source>Apply text (Esc or Ctrl+Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst toepassen (Esc of Ctrl+Enter)</translation>
     </message>
     <message>
         <source>Apply text</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst toepassen</translation>
     </message>
     <message>
         <source>Discard active text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Actieve tekstbewerking verwerpen</translation>
     </message>
     <message>
         <source>Discard text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstbewerking verwerpen</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
+        <translation>Effen</translation>
     </message>
     <message>
         <source>Solid Block — permanently replaces pixels (recommended for sensitive text).</source>
-        <translation type="unfinished"></translation>
+        <translation>Effen blok — vervangt pixels permanent (aanbevolen voor gevoelige tekst).</translation>
     </message>
     <message>
         <source>Solid redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Effen onleesbaar maken</translation>
     </message>
     <message>
         <source>Pixelate</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelen</translation>
     </message>
     <message>
         <source>Pixelate — coarse randomized blocks; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelen — grove willekeurige blokken; gebruik Effen blok voor strikte tekstgeheimhouding.</translation>
     </message>
     <message>
         <source>Pixelate redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Onleesbaar maken met pixels</translation>
     </message>
     <message>
         <source>Blur</source>
-        <translation type="unfinished"></translation>
+        <translation>Vervagen</translation>
     </message>
     <message>
         <source>Blur — heavy visual obfuscation; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vervagen — zware visuele vervaging; gebruik Effen blok voor strikte tekstgeheimhouding.</translation>
     </message>
     <message>
         <source>Blur redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Onleesbaar maken met vervaging</translation>
     </message>
     <message>
         <source>Block:</source>
-        <translation type="unfinished"></translation>
+        <translation>Blok:</translation>
     </message>
     <message>
         <source>Redaction strength</source>
-        <translation type="unfinished"></translation>
+        <translation>Sterkte van onleesbaar maken</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 px</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Straal:</translation>
     </message>
 </context>
 <context>
     <name>glimply::App</name>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-out van hook na %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed with exit code %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook is mislukt met afsluitcode %1.</translation>
     </message>
     <message>
         <source>Post-capture hook failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook na opname mislukt</translation>
     </message>
     <message>
         <source>Post-capture hook failed (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook na opname mislukt (%1)</translation>
     </message>
     <message>
         <source>Interval capture finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname voltooid</translation>
     </message>
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Interval voor %1 gestopt na %n opname.</numerusform><numerusform>Interval voor %1 gestopt na %n opnamen.</numerusform></translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname gestopt</translation>
     </message>
     <message>
         <source>Recent capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Recente opname</translation>
     </message>
     <message>
         <source>Interval: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval: %1</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen</translation>
     </message>
     <message>
         <source>Pick screen color</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermkleur kiezen</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm opslaan en selecteren (Print-toets)</translation>
     </message>
     <message>
         <source>Capture group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1 vastleggen</translation>
     </message>
     <message>
         <source>Toggle interval for group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval voor groep %1 in-/uitschakelen</translation>
     </message>
     <message>
         <source>Capture area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied %1 vastleggen</translation>
     </message>
     <message>
         <source>Toggle interval for area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval voor gebied %1 in-/uitschakelen</translation>
     </message>
     <message>
         <source>Capture monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 vastleggen</translation>
     </message>
     <message>
         <source>Toggle interval for monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval voor scherm %1 in-/uitschakelen</translation>
     </message>
     <message>
         <source>Capture all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen vastleggen</translation>
     </message>
     <message>
         <source>Toggle interval for all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval voor alle schermen in-/uitschakelen</translation>
     </message>
     <message>
         <source>Pin last capture to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatste opname vastpinnen op het scherm</translation>
     </message>
     <message>
         <source>Show or hide pinned screenshots</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastgepinde schermafbeeldingen tonen of verbergen</translation>
     </message>
     <message>
         <source>Copy text from a screen selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst kopiëren uit een schermselectie</translation>
     </message>
     <message>
         <source>Monitors not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermen niet aangesloten</translation>
     </message>
     <message>
         <source>Partial: %1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedeeltelijk: %1 niet aangesloten</translation>
     </message>
     <message>
         <source>%1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 niet aangesloten</translation>
     </message>
     <message>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm</translation>
     </message>
     <message>
         <source>Text recognition is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstherkenning is niet beschikbaar</translation>
     </message>
     <message>
         <source>Install tesseract and a language package, for example tesseract-data-eng, then try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Installeer tesseract en een taalpakket, bijvoorbeeld tesseract-data-eng, en probeer het opnieuw.</translation>
     </message>
     <message>
         <source>Text recognition failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstherkenning mislukt</translation>
     </message>
     <message>
         <source>No text recognized</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen tekst herkend</translation>
     </message>
     <message>
         <source>The clipboard was left unchanged.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het klembord is ongewijzigd gebleven.</translation>
     </message>
     <message>
         <source>Text copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst gekopieerd</translation>
     </message>
     <message>
         <source>Could not start interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan interval niet starten</translation>
     </message>
     <message>
         <source>Color copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur gekopieerd</translation>
     </message>
     <message>
         <source>%1 copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Last capture: %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatste opname: %1 om %2</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Gereed</translation>
     </message>
     <message>
         <source>Capture failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastleggen mislukt</translation>
     </message>
     <message numerus="yes">
         <source>and %n more</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>en nog %n andere</numerusform><numerusform>en nog %n andere</numerusform></translation>
     </message>
     <message>
         <source>Screenshot saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermafbeelding opgeslagen</translation>
     </message>
     <message numerus="yes">
         <source>%n screenshots saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n schermafbeelding opgeslagen</numerusform><numerusform>%n schermafbeeldingen opgeslagen</numerusform></translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Openen</translation>
     </message>
     <message>
         <source>Show Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestanden tonen</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Tonen in map</translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied niet vastgelegd</translation>
     </message>
     <message>
         <source>Nothing captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Niets vastgelegd</translation>
     </message>
     <message>
         <source>Capture incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>Opname onvolledig</translation>
     </message>
     <message>
         <source>Check area monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebiedsscherm controleren</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedeeltelijke opname</translation>
     </message>
     <message>
         <source>This capture is no longer in the history.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze opname staat niet meer in de geschiedenis.</translation>
     </message>
     <message>
         <source>This file does not belong to the capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit bestand hoort niet bij de opname.</translation>
     </message>
     <message>
         <source>The file was moved or deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het bestand is verplaatst of verwijderd.</translation>
     </message>
     <message>
         <source>Could not read %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan %1 niet lezen: %2</translation>
     </message>
     <message>
         <source>Image copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeelding gekopieerd</translation>
     </message>
     <message>
         <source>%1 copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gekopieerd naar het klembord</translation>
     </message>
     <message>
         <source>Moved to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Verplaatst naar prullenbak</translation>
     </message>
     <message>
         <source>Could not move to the trash: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan niet verplaatsen naar de prullenbak: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown action "%1".</source>
+        <translation>Onbekende actie '%1'.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Niets om vast te pinnen</translation>
     </message>
     <message>
         <source>There is no recent capture file to pin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen recent opnamebestand om vast te pinnen.</translation>
     </message>
     <message>
         <source>Save Pinned Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastgepinde schermafbeelding opslaan</translation>
     </message>
     <message>
         <source>Could not save the pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan de vastgepinde schermafbeelding niet opslaan</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pin</translation>
     </message>
     <message>
         <source>No capture to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen opname om te bewerken</translation>
     </message>
     <message>
         <source>The most recent screenshot file is missing or was moved.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het meest recente schermafbeeldingsbestand ontbreekt of is verplaatst.</translation>
     </message>
     <message>
         <source>Could not open image</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan afbeelding niet openen</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 is niet aangesloten.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer een naam in die in een bestandsnaam gebruikt kan worden.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>‘%1’ wordt al gebruikt door een ander doel of een andere groep.</translation>
     </message>
     <message>
         <source>Only areas, groups and monitors can be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen gebieden, groepen en schermen kunnen worden hernoemd.</translation>
     </message>
     <message>
         <source>Name for monitor %1 (leave empty for %1):</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam voor scherm %1 (laat leeg voor %1):</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm hernoemen</translation>
     </message>
     <message>
         <source>Target query is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doelzoekopdracht is leeg.</translation>
     </message>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen scherm aangesloten.</translation>
     </message>
     <message>
         <source>Monitor “%1” was not found or is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm ‘%1’ is niet gevonden of is niet aangesloten.</translation>
     </message>
     <message>
         <source>Target “%1” matches multiple targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doel ‘%1’ komt overeen met meerdere doelen.</translation>
     </message>
     <message>
         <source>Target “%1” was not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doel ‘%1’ is niet gevonden.</translation>
     </message>
     <message>
         <source>Area width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Breedte en hoogte van gebied moeten positief zijn.</translation>
     </message>
     <message>
         <source>Area name cannot be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebiedsnaam kan niet worden gebruikt in een bestandsnaam.</translation>
     </message>
     <message>
         <source>Monitor “%1” is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm ‘%1’ is niet aangesloten.</translation>
     </message>
     <message>
         <source>Rectangle lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechthoek valt buiten scherm %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Global rectangle does not intersect any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale rechthoek snijdt geen enkel aangesloten scherm.</translation>
     </message>
     <message>
         <source>Invalid overlay mode: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige overlaymodus: %1</translation>
     </message>
     <message>
         <source>A capture countdown is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er loopt al een opname-aftelling.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation type="unfinished"></translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Vensterspecificatie na 'window:' mag niet leeg zijn.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen geopend venster komt overeen met ‘%1’.</translation>
     </message>
     <message>
         <source>Window query “%1” matches multiple open windows.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vensterzoekopdracht ‘%1’ komt overeen met meerdere geopende vensters.</translation>
     </message>
     <message>
         <source>Invalid region specification (expected region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige regiospecificatie (verwacht region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region geometry (expected &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige regiogeometrie (verwacht &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region coordinate value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige regiocoördinaatwaarde.</translation>
     </message>
     <message>
         <source>Region width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Breedte en hoogte van regio moeten positief zijn.</translation>
     </message>
     <message>
         <source>Region lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Regio valt buiten scherm %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doel is niet beschikbaar.</translation>
     </message>
     <message>
         <source>Groups produce multiple images and cannot be written to a single --out path, --stdout, or --clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>Groepen produceren meerdere afbeeldingen en kunnen niet worden geschreven naar één --out-pad, --stdout of --clipboard.</translation>
     </message>
     <message>
         <source>Window capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vensteropname mislukt.</translation>
     </message>
     <message>
         <source>Text recognition needs tesseract. Install tesseract and a language package such as tesseract-data-eng.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstherkenning vereist tesseract. Installeer tesseract en een taalpakket zoals tesseract-data-eng.</translation>
     </message>
     <message>
         <source>Capture countdown was cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opname-aftelling is geannuleerd.</translation>
     </message>
     <message>
         <source>Autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch starten</translation>
     </message>
     <message>
         <source>Could not remove %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan %1 niet verwijderen.</translation>
     </message>
     <message>
         <source>Could not write %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan %1 niet schrijven.</translation>
     </message>
     <message>
         <source>Could not read saved image for inline MCP output: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan opgeslagen afbeelding voor inline MCP-uitvoer niet lezen: %1</translation>
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige JSON voor MCP-toolargumenten: %1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP-verzoek is geweigerd door de gebruiker of verlopen.</translation>
     </message>
     <message>
         <source>glimply is shutting down.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply wordt afgesloten.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastleggen mislukt.</translation>
     </message>
     <message>
         <source>MCP captured %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP heeft %1 vastgelegd</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Niet-ondersteund afbeeldingsformaat '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' moet een geheel getal zijn tussen 1 en 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'target' is required.</source>
+        <translation>'target' is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Een externe MCP-client wil ‘%1’ (%2) vastleggen.</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
-        <translation type="unfinished"></translation>
+        <translation>capture_region vereist monitor, x, y, width en height.</translation>
     </message>
     <message>
         <source>An external MCP client wants to capture region %1x%2 at (%3, %4) on %5.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een externe MCP-client wil regio %1x%2 op (%3, %4) op %5 vastleggen.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Een externe MCP-client wil venster ‘%1’ vastleggen.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is nog geen opname vastgelegd in deze glimply-sessie.</translation>
     </message>
     <message>
         <source>An external MCP client wants to read the last capture (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Een externe MCP-client wil de laatste opname (%1) lezen.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Een externe MCP-client wil elke %1 s intervalopnamen starten voor ‘%2’.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation type="unfinished"></translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Geef 'target' op of stel 'all': true in.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
-        <translation type="unfinished"></translation>
+        <translation>annotate_image vereist een niet-lege input_path en operations-array.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <translation>In MCP-toelatingslijstmodus moet input_path een bestaand bestand zijn in de opnamemap van glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <translation>In MCP-toelatingslijstmodus moet output_path in de opnamemap van glimply staan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Een externe MCP-client wil ‘%1’ aantekenen (%2 bewerking(en)).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekend MCP-tool: %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
     <message>
         <source>Select an area on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer een gebied op %1</translation>
     </message>
     <message>
         <source>Drag inside to move, edges or corners to resize. Shift: square, Alt: from centre, Space while dragging: reposition. Enter confirms, Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep binnenin om te verplaatsen, randen of hoeken om formaat te wijzigen. Shift: vierkant, Alt: vanuit midden, Space tijdens slepen: herpositioneren. Enter bevestigt, Escape annuleert.</translation>
     </message>
     <message>
         <source>Drag to select an area across one or more monitors. Shift: square, Alt: from centre, Space while dragging: reposition. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep om een gebied te selecteren over een of meer schermen. Shift: vierkant, Alt: vanuit midden, Space tijdens slepen: herpositioneren. Escape annuleert.</translation>
     </message>
     <message>
         <source>%1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 op %3, %4</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureOverlay</name>
     <message>
         <source>glimply capture on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply-opname op %1</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevroren</translation>
     </message>
     <message>
         <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon het moment waarop u op de toets drukte. Opnamen worden uit dit beeld gesneden. (Space)</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zie het scherm doorlopen, bijvoorbeeld een video. Opnamen worden gemaakt wanneer u opslaat. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit scherm</translation>
     </message>
     <message>
         <source>Capture all of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles van %1 vastleggen</translation>
     </message>
     <message>
         <source>All Monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen</translation>
     </message>
     <message>
         <source>Capture every monitor in one picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Elk scherm vastleggen in één afbeelding</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Venster</translation>
     </message>
     <message>
         <source>Capture one window, also when it is covered or minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>Eén venster vastleggen, ook als het bedekt of geminimaliseerd is</translation>
     </message>
     <message>
         <source>Areas</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebieden</translation>
     </message>
     <message>
         <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Een opgeslagen gebied of groep vastleggen, of toevoegen als rechthoek</translation>
     </message>
     <message>
         <source>Add a saved area or group as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Een opgeslagen gebied of groep toevoegen als rechthoek</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging</translation>
     </message>
     <message>
         <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermafbeelding opnieuw maken na een aftelling zodat menu's geopend blijven</translation>
     </message>
     <message>
         <source>Annotate</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantekenen</translation>
     </message>
     <message>
         <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeergereedschap tonen of verbergen (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur kiezen</translation>
     </message>
     <message>
         <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelkleuren bemonsteren met een vergrootglas (I)</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken in venster</translation>
     </message>
     <message>
         <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Openen in het Snelle bewerker-venster voor bijsnijden, zoomen en fijne bewerkingen (Ctrl+E)</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Help</translation>
     </message>
     <message>
         <source>Show or hide the controls (F1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bedieningselementen tonen of verbergen (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <source>Keep the full screenshot and open the settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige schermafbeelding behouden en instellingen openen</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <source>Keep the full screenshot and close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige schermafbeelding behouden en sluiten (Escape)</translation>
     </message>
     <message>
         <source>Cancel (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Slepen</translation>
     </message>
     <message>
         <source>Draw a rectangle (or active markup tool)</source>
-        <translation type="unfinished"></translation>
+        <translation>Een rechthoek tekenen (of actief markeergereedschap)</translation>
     </message>
     <message>
         <source>Drag inside / edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnenin / rand slepen</translation>
     </message>
     <message>
         <source>Move / resize the active rectangle or annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Actieve rechthoek of aantekening verplaatsen / formaat wijzigen</translation>
     </message>
     <message>
         <source>Shift / Alt while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift / Alt tijdens slepen</translation>
     </message>
     <message>
         <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Vierkant of 15°-uitlijning behouden / vanuit midden vergroten of dupliceren</translation>
     </message>
     <message>
         <source>Space while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Space tijdens slepen</translation>
     </message>
     <message>
         <source>Reposition shape or selection live</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorm of selectie live herpositioneren</translation>
     </message>
     <message>
         <source>Ctrl in markup tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl in markeergereedschap</translation>
     </message>
     <message>
         <source>Temporarily switch to Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Tijdelijk overschakelen naar Selecteren / Verplaatsen</translation>
     </message>
     <message>
         <source>Click / Right-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik / Rechtsklik</translation>
     </message>
     <message>
         <source>Activate / delete topmost annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Bovenste aantekening of rechthoek activeren / verwijderen</translation>
     </message>
     <message>
         <source>Double-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Dubbelklik</translation>
     </message>
     <message>
         <source>Edit text annotation or save rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstaantekening bewerken of rechthoek opslaan</translation>
     </message>
     <message>
         <source>Save rectangle as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechthoek opslaan als gebied</translation>
     </message>
     <message>
         <source>Click, nothing drawn</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik, niets getekend</translation>
     </message>
     <message>
         <source>Capture this monitor (before annotating)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit scherm vastleggen (vóór aantekenen)</translation>
     </message>
     <message>
         <source>Mouse</source>
-        <translation type="unfinished"></translation>
+        <translation>Muis</translation>
     </message>
     <message>
         <source>V / A R E B M T N X S</source>
-        <translation type="unfinished"></translation>
+        <translation>V / A R E B M T N X S</translation>
     </message>
     <message>
         <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteren / Pijl Rechthoek Ellips Pen Markeer Tekst Stap Onleesbaar Spotlight</translation>
     </message>
     <message>
         <source>Selection modifiers work on all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectiemodifiers werken op alle schermen</translation>
     </message>
     <message>
         <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
     </message>
     <message>
         <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Penseel- of lettergrootte aanpassen  ·  Ongedaan maken / Opnieuw</translation>
     </message>
     <message>
         <source>Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Space</translation>
     </message>
     <message>
         <source>Switch between Frozen and Live (when idle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wisselen tussen Bevroren en Live (indien inactief)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijltjestoetsen / Shift+Pijltjestoetsen</translation>
     </message>
     <message>
         <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation type="unfinished"></translation>
+        <translation>Actieve aantekening of rechthoek verplaatsen met 1 px / 10 px</translation>
     </message>
     <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Pijltjestoetsen / Ctrl+Pijltjestoetsen</translation>
     </message>
     <message>
         <source>Resize from centre / resize square</source>
-        <translation type="unfinished"></translation>
+        <translation>Formaat wijzigen vanuit midden / vierkant formaat wijzigen</translation>
     </message>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <source>Save selection or annotated screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie of scherm met aantekeningen opslaan</translation>
     </message>
     <message>
         <source>Save as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan als gebied</translation>
     </message>
     <message>
         <source>Delete / Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete / Backspace</translation>
     </message>
     <message>
         <source>Delete active annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Actieve aantekening of rechthoek verwijderen</translation>
     </message>
     <message>
         <source>Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape</translation>
     </message>
     <message>
         <source>Commit text, step back, or close</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst vastleggen, stap terug of sluiten</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
         <source>Show or hide this help</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze hulp tonen of verbergen</translation>
     </message>
     <message>
         <source>I</source>
-        <translation type="unfinished"></translation>
+        <translation>I</translation>
     </message>
     <message>
         <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelkleur kiezen (Tab wisselt formaat, Alt+Klik past toe op markering)</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Open selection or screen in Quick Editor window</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie of scherm openen in Snelle bewerker-venster</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>P</translation>
     </message>
     <message>
         <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie vastpinnen op het scherm (één pin per rechthoek)</translation>
     </message>
     <message>
         <source>O</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <source>Copy the text of the selection (needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst van de selectie kopiëren (vereist tesseract)</translation>
     </message>
     <message>
         <source>Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Toetsen</translation>
     </message>
     <message>
         <source>No windows found</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen vensters gevonden</translation>
     </message>
     <message>
         <source>%1 (minimized)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (geminimaliseerd)</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen vertraging</translation>
     </message>
     <message>
         <source>Retake in %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw maken over %1 s</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw maken met aangepaste…</translation>
     </message>
     <message>
         <source>Retake Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging voor opnieuw maken</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Seconden:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging actief houden</translation>
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nog geen opgeslagen gebieden. Teken een rechthoek en kies daarna Opslaan als gebied.</translation>
     </message>
     <message>
         <source>%1    %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1    %2</translation>
     </message>
     <message>
         <source>Capture now</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu vastleggen</translation>
     </message>
     <message>
         <source>Add as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen als rechthoek</translation>
     </message>
     <message>
         <source>Add as a rectangle to adjust it</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen als rechthoek om aan te passen</translation>
     </message>
     <message>
         <source>Add %1 as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 toevoegen als rechthoek</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan</translation>
     </message>
     <message>
         <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan in opnamemap en kopiëren naar klembord (Enter)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <source>Copy to the clipboard only</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen naar klembord kopiëren</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst kopiëren</translation>
     </message>
     <message>
         <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst herkennen en kopiëren naar klembord (O)</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pin</translation>
     </message>
     <message>
         <source>Keep the selection on screen above other windows (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie op scherm boven andere vensters houden (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan als…</translation>
     </message>
     <message>
         <source>Choose where to save</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiezen waar op te slaan</translation>
     </message>
     <message>
         <source>Open markup tools to draw or redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeergereedschap openen om te tekenen of onleesbaar te maken</translation>
     </message>
     <message>
         <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie en aantekeningen openen in het Snelle bewerker-venster (Ctrl+E)</translation>
     </message>
     <message>
         <source>Save as Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan als gebied</translation>
     </message>
     <message>
         <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze rechthoek onthouden om deze met één klik of sneltoets opnieuw vast te leggen</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechthoek toevoegen</translation>
     </message>
     <message>
         <source>Draw another rectangle, also over an existing one</source>
-        <translation type="unfinished"></translation>
+        <translation>Nog een rechthoek tekenen, ook over een bestaande heen</translation>
     </message>
     <message>
         <source>Close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten (Escape)</translation>
     </message>
     <message>
         <source>Combine into a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Combineren in een groep</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets:</translation>
     </message>
     <message>
         <source>Area capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging voor gebiedsopname</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n seconde</numerusform><numerusform>%n seconden</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepast…</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging:</translation>
     </message>
     <message>
         <source>Area Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebiedsvertraging</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
     <message>
         <source>The shortcut is optional and works in every application. You can also capture the area from the glimply widget.</source>
-        <translation type="unfinished"></translation>
+        <translation>De sneltoets is optioneel en werkt in elke toepassing. U kunt het gebied ook vastleggen vanuit de glimply-widget.</translation>
     </message>
     <message>
         <source>Save Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied opslaan</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas as a group</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n gebied opslaan als groep</numerusform><numerusform>%n gebieden opslaan als groep</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Eén sneltoets legt %n gebied op hetzelfde moment vast in een eigen bestand.</numerusform><numerusform>Eén sneltoets legt alle %n gebieden op hetzelfde moment vast, elk in een eigen bestand.</numerusform></translation>
     </message>
     <message>
         <source>Save Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep opslaan</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n gebied opslaan</numerusform><numerusform>%n gebieden opslaan</numerusform></translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Elke rechthoek wordt een eigen gebied met een automatische naam. U kunt ze later hernoemen en sneltoetsen geven in de widget of de instellingen.</translation>
     </message>
     <message numerus="yes">
         <source>Save %n Areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n gebied opslaan</numerusform><numerusform>%n gebieden opslaan</numerusform></translation>
     </message>
     <message>
         <source>Clear or undo annotations to return to Live mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Wis of maak aantekeningen ongedaan om terug te keren naar Live-modus</translation>
     </message>
     <message>
         <source>Delay: %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging: %1 s</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureSession</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen scherm aangesloten.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen</translation>
     </message>
     <message>
         <source>The screen could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het scherm kon niet worden vastgelegd.</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 toegepast en gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik om kleur te kopiëren, Alt+Klik om toe te passen op actief markeergereedschap, Tab wisselt formaat, Escape sluit af.</translation>
     </message>
     <message>
         <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift behoudt een vierkant, Alt vergroot vanuit midden, Space herpositioneert tijdens slepen.</translation>
     </message>
     <message>
         <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ tekst, sleep buiten kaderrand om te verplaatsen; Escape of Ctrl+Enter legt vast.</translation>
     </message>
     <message>
         <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep om te tekenen (Ctrl selecteert tijdelijk; Shift lijnt uit, Alt centreert, Space verplaatst; V keert terug).</translation>
     </message>
     <message>
         <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep de volgende rechthoek ergens heen, ook over een andere heen.</translation>
     </message>
     <message>
         <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter slaat de opname met aantekeningen op, of teken eerst een bijsnijdrechthoek. Escape sluit.</translation>
     </message>
     <message>
         <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep een rechthoek, klik op een scherm om het vast te leggen, of open Aantekenen. Escape behoudt de volledige schermafbeelding.</translation>
     </message>
     <message>
         <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep een rechthoek voor het nieuwe gebied. Escape annuleert.</translation>
     </message>
     <message>
         <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klik op een rechthoek om deze te wijzigen, of sleep een nieuwe.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep binnenin om te verplaatsen, aan de randen om formaat te wijzigen. Sleep elders voor nog een rechthoek. Enter slaat op.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep binnenin om te verplaatsen, aan de randen om formaat te wijzigen. Sleep elders voor nog een rechthoek.</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie overlapt geen enkel aangesloten scherm.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1 kon niet worden vastgelegd.</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie</translation>
     </message>
     <message>
         <source>Copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Gekopieerd naar het klembord</translation>
     </message>
     <message>
         <source>Pinned to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastgepind op het scherm</translation>
     </message>
     <message>
         <source>Could not write %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan %1 niet schrijven: %2</translation>
     </message>
     <message>
         <source>Draw a rectangle first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teken eerst een rechthoek.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer een naam in die in een bestandsnaam gebruikt kan worden.</translation>
     </message>
     <message>
         <source>“%1” is already used by another area or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>‘%1’ wordt al gebruikt door een ander gebied of een andere groep.</translation>
     </message>
     <message>
         <source>Area “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied ‘%1’ opgeslagen</translation>
     </message>
     <message>
         <source>Group “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep ‘%1’ opgeslagen</translation>
     </message>
     <message numerus="yes">
         <source>%n areas saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n gebied opgeslagen</numerusform><numerusform>%n gebieden opgeslagen</numerusform></translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied niet vastgelegd</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedeeltelijke opname</translation>
     </message>
     <message>
         <source>Retake</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw maken</translation>
     </message>
     <message>
         <source>Unredacted Screenshot Exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet-geredigeerde schermafbeelding bestaat</translation>
     </message>
     <message>
         <source>The full screenshot saved when you pressed Print does not include your redactions.</source>
-        <translation type="unfinished"></translation>
+        <translation>De volledige schermafbeelding die werd opgeslagen toen u op Print drukte, bevat uw redacties niet.</translation>
     </message>
     <message>
         <source>Delete the unredacted file (%1) from disk, keep it, or return to editing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Het niet-geredigeerde bestand (%1) van schijf verwijderen, behouden of terugkeren naar bewerken?</translation>
     </message>
     <message>
         <source>Delete Unredacted Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet-geredigeerde schermafbeelding verwijderen</translation>
     </message>
     <message>
         <source>Keep Full Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige schermafbeelding behouden</translation>
     </message>
     <message>
         <source>Back to Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug naar Overlay</translation>
     </message>
     <message>
         <source>Unredacted screenshot deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet-geredigeerde schermafbeelding verwijderd</translation>
     </message>
 </context>
 <context>
     <name>glimply::ColorPickerOverlay</name>
     <message>
         <source>Pick color on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur kiezen op %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::ControlService</name>
     <message>
         <source>%1 · %2 × %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 at %4, %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 op %4, %5</translation>
     </message>
     <message>
         <source>No targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen doelen</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>One image of every monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Eén afbeelding van elk scherm</translation>
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige JSON voor opnameverzoek.</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnameverzoek mist een geldig doel of formaat.</translation>
     </message>
 </context>
 <context>
     <name>glimply::CountdownBanner</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastleggen over %1 s…</translation>
     </message>
     <message>
         <source>Capturing %1 in %2 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastleggen over %2 s…</translation>
     </message>
 </context>
 <context>
     <name>glimply::ExportDialog</name>
     <message>
         <source>Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingen (%1)</translation>
     </message>
     <message>
         <source>All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle bestanden (*)</translation>
     </message>
     <message>
         <source>Save Screenshot As</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermafbeelding opslaan als</translation>
     </message>
     <message>
         <source>Destination file path</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestemmingsbestandspad</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Bladeren…</translation>
     </message>
     <message>
         <source>File:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestand:</translation>
     </message>
     <message>
         <source>Image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingsformaat</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formaat:</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kwaliteit:</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Verliesvrij</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressie- of kwaliteitsniveau</translation>
     </message>
     <message>
         <source>Compression or quality value</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressie- of kwaliteitswaarde</translation>
     </message>
     <message>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet beschikbaar</translation>
     </message>
     <message>
         <source>Calculating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Berekenen…</translation>
     </message>
     <message>
         <source>Estimated size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschatte grootte:</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressie:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>≈ %1</source>
-        <translation type="unfinished"></translation>
+        <translation>≈ %1</translation>
     </message>
     <message>
         <source>Choose Destination File</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestemmingsbestand kiezen</translation>
     </message>
 </context>
 <context>
     <name>glimply::HookRunner</name>
     <message>
         <source>Could not create a temporary directory for testing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan geen tijdelijke map aanmaken om te testen.</translation>
     </message>
 </context>
 <context>
     <name>glimply::IntervalController</name>
     <message>
         <source>Invalid interval target.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldig intervaldoel.</translation>
     </message>
     <message>
         <source>The capture target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het opnamedoel is niet beschikbaar.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname voor ‘%1’ gestopt: minder dan 100 MB vrije schijfruimte over.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname voor ‘%1’ gestopt: het doel is niet meer beschikbaar.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname voor ‘%1’ gestopt: %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::McpConfirmDialog</name>
     <message>
         <source>Allow MCP Capture?</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP-opname toestaan?</translation>
     </message>
     <message>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Weigeren</translation>
     </message>
     <message>
         <source>Allow Once</source>
-        <translation type="unfinished"></translation>
+        <translation>Eenmaal toestaan</translation>
     </message>
     <message>
         <source>Auto-denying in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch weigeren over %1 s…</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle pins verwijderen</translation>
     </message>
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n pin permanent verwijderen?</numerusform><numerusform>%n pins permanent verwijderen?</numerusform></translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>De afbeeldingen ervan worden verwijderd. Opnamen die in de opnamemap zijn opgeslagen worden niet aangetast.</translation>
     </message>
     <message>
         <source>Remove Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Pins verwijderen</translation>
     </message>
     <message>
         <source>Pin removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pin verwijderd</translation>
     </message>
     <message>
         <source>The pinned screenshot was removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>De vastgepinde schermafbeelding is verwijderd.</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongedaan maken</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinWindow</name>
     <message>
         <source>Pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastgepinde schermafbeelding</translation>
     </message>
     <message>
         <source>Opacity %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekking %1</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken in venster</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan als…</translation>
     </message>
     <message>
         <source>Zoom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoomen (%1)</translation>
     </message>
     <message>
         <source>Opacity (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekking (%1)</translation>
     </message>
     <message>
         <source>Remove Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pin verwijderen</translation>
     </message>
 </context>
 <context>
     <name>glimply::QuickEditorWindow</name>
     <message>
         <source>Could not open image file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan afbeeldingsbestand niet openen.</translation>
     </message>
     <message>
         <source>The captured image is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>De vastgelegde afbeelding is leeg.</translation>
     </message>
     <message>
         <source>Editor Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerkeracties</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan</translation>
     </message>
     <message>
         <source>Save changes cleanly to file without altering the clipboard (Ctrl+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wijzigingen netjes opslaan in bestand zonder het klembord te wijzigen (Ctrl+S)</translation>
     </message>
     <message>
         <source>Save Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopie opslaan</translation>
     </message>
     <message>
         <source>Save a new edited copy alongside the original without overwriting (Ctrl+Alt+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Een nieuwe bewerkte kopie naast het origineel opslaan zonder te overschrijven (Ctrl+Alt+S)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan als…</translation>
     </message>
     <message>
         <source>Choose a new file path (Ctrl+Shift+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Een nieuw bestandspad kiezen (Ctrl+Shift+S)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <source>Copy flattened image to clipboard (Ctrl+C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afgevlakte afbeelding naar klembord kopiëren (Ctrl+C)</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst kopiëren</translation>
     </message>
     <message>
         <source>Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst van de afbeelding herkennen en kopiëren (Ctrl+Alt+C, vereist tesseract)</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastpinnen op scherm</translation>
     </message>
     <message>
         <source>Keep the current image on screen above other windows</source>
-        <translation type="unfinished"></translation>
+        <translation>De huidige afbeelding op scherm boven andere vensters houden</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur kiezen</translation>
     </message>
     <message>
         <source>Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixelkleuren bemonsteren uit de afbeelding (I). Tab wisselt formaat, Alt+Klik stelt markeerkleur in.</translation>
     </message>
     <message>
         <source>Drag on canvas to select crop area</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep op canvas om bijsnijdgebied te selecteren</translation>
     </message>
     <message>
         <source>Apply Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijsnijden toepassen</translation>
     </message>
     <message>
         <source>Crop image cleanly to selection (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeelding netjes bijsnijden tot selectie (Enter)</translation>
     </message>
     <message>
         <source>Cancel Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijsnijden annuleren</translation>
     </message>
     <message>
         <source>Exit crop mode (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijsnijdmodus verlaten (Escape)</translation>
     </message>
     <message>
         <source>Zoom out (Ctrl+-)</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitzoomen (Ctrl+-)</translation>
     </message>
     <message>
         <source>Zoom out</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitzoomen</translation>
     </message>
     <message>
         <source>Zoom preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoomvoorinstelling</translation>
     </message>
     <message>
         <source>Zoom level (Ctrl+0 Fit, Ctrl+1 100%, Ctrl/Alt+Wheel)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoomniveau (Ctrl+0 Passend, Ctrl+1 100%, Ctrl/Alt+Wiel)</translation>
     </message>
     <message>
         <source>Fit in Window (Ctrl+0)</source>
-        <translation type="unfinished"></translation>
+        <translation>Passend in venster (Ctrl+0)</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Zoom in (Ctrl++)</source>
-        <translation type="unfinished"></translation>
+        <translation>Inzoomen (Ctrl++)</translation>
     </message>
     <message>
         <source>Zoom in</source>
-        <translation type="unfinished"></translation>
+        <translation>Inzoomen</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 toegepast en gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Untitled capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamloze opname</translation>
     </message>
     <message>
         <source>%1[*] — glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*] — glimply</translation>
     </message>
     <message>
         <source>100%</source>
-        <translation type="unfinished"></translation>
+        <translation>100%</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 px</translation>
     </message>
     <message>
         <source>Crop: %1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Bijsnijden: %1 × %2 op %3, %4</translation>
     </message>
     <message>
         <source>Nothing to save.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niets om op te slaan.</translation>
     </message>
     <message>
         <source>Save Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan mislukt</translation>
     </message>
     <message>
         <source>Could not save %1:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan %1 niet opslaan:
+%2</translation>
     </message>
     <message>
         <source>Saved %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 opgeslagen</translation>
     </message>
     <message>
         <source>Save Copy Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopie opslaan mislukt</translation>
     </message>
     <message>
         <source>Saved copy as %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopie opgeslagen als %1</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet-opgeslagen wijzigingen</translation>
     </message>
     <message>
         <source>Save changes to “%1” before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wijzigingen in ‘%1’ opslaan voor het sluiten?</translation>
     </message>
     <message>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwerpen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
     <name>glimply::SettingsWindow</name>
     <message>
         <source>Export image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportafbeeldingsformaat</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Verliesvrij</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kwaliteit:</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressie- of kwaliteitsniveau</translation>
     </message>
     <message>
         <source>Use default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Standaard gebruiken (%1)</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressie:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>Elke</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Interval duration in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalduur in seconden</translation>
     </message>
     <message>
         <source>Only save when changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen opslaan indien gewijzigd</translation>
     </message>
     <message>
         <source>Stop after:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stoppen na:</translation>
     </message>
     <message>
         <source>No capture limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen opnamelimiet</translation>
     </message>
     <message>
         <source> captures</source>
-        <translation type="unfinished"></translation>
+        <translation> opnamen</translation>
     </message>
     <message>
         <source>Maximum captures per interval run</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximumaantal opnamen per interval</translation>
     </message>
     <message>
         <source>No time limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen tijdslimiet</translation>
     </message>
     <message>
         <source> min</source>
-        <translation type="unfinished"></translation>
+        <translation> min</translation>
     </message>
     <message>
         <source>Maximum interval duration in minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale intervalduur in minuten</translation>
     </message>
     <message>
         <source>Post-capture hook mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook-modus na opname</translation>
     </message>
     <message>
         <source>Use global hook setting</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale hook-instelling gebruiken</translation>
     </message>
     <message>
         <source>Custom command</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste opdracht</translation>
     </message>
     <message>
         <source>Disable hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook uitschakelen</translation>
     </message>
     <message>
         <source>/path/to/script %f</source>
-        <translation type="unfinished"></translation>
+        <translation>/pad/naar/script %f</translation>
     </message>
     <message>
         <source>Custom hook command</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste hook-opdracht</translation>
     </message>
     <message>
         <source>Custom hook timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepaste hook-time-out</translation>
     </message>
     <message>
         <source>Configure glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply instellen</translation>
     </message>
     <message>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Doelen</translation>
     </message>
     <message>
         <source>Areas and monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebieden en schermen</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Groepen</translation>
     </message>
     <message>
         <source>Capture several targets with one shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Meerdere doelen vastleggen met één sneltoets</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslag</translation>
     </message>
     <message>
         <source>Where captures are saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Waar opnamen worden opgeslagen</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <source>Automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisering</translation>
     </message>
     <message>
         <source>Post-capture hooks and external automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Hooks na opname en externe automatisering</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
-        <translation type="unfinished"></translation>
+        <translation>roteson.de</translation>
     </message>
     <message>
         <source>R²W² Development · glimply on GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation>R²W² Development · glimply op GitHub</translation>
     </message>
     <message>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>Doel</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied toevoegen…</translation>
     </message>
     <message>
         <source>Drag a rectangle on any monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleep een rechthoek op een willekeurig scherm</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <source>Also used in the file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wordt ook gebruikt in de bestandsnaam.</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam:</translation>
     </message>
     <message>
         <source>Monitor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm:</translation>
     </message>
     <message>
         <source>X: </source>
-        <translation type="unfinished"></translation>
+        <translation>X: </translation>
     </message>
     <message>
         <source>Left edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Linkerrand</translation>
     </message>
     <message>
         <source>Y: </source>
-        <translation type="unfinished"></translation>
+        <translation>Y: </translation>
     </message>
     <message>
         <source>Top edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Bovenrand</translation>
     </message>
     <message>
         <source>Width: </source>
-        <translation type="unfinished"></translation>
+        <translation>Breedte: </translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Breedte</translation>
     </message>
     <message>
         <source>Height: </source>
-        <translation type="unfinished"></translation>
+        <translation>Hoogte: </translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoogte</translation>
     </message>
     <message>
         <source>Select on Screen…</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteren op scherm…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
-        <translation type="unfinished"></translation>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <translation>Logische pixels ten opzichte van de linkerbovenhoek van het scherm. Opnamen gebruiken de eigen resolutie van het scherm.</translation>
     </message>
     <message>
         <source>Position and size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Positie en grootte:</translation>
     </message>
     <message>
         <source>Include the mouse pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Muisaanwijzer opnemen</translation>
     </message>
     <message>
         <source>Pointer:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanwijzer:</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formaat:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen</translation>
     </message>
     <message>
         <source>Capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnamevertraging</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging:</translation>
     </message>
     <message>
         <source>Interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval:</translation>
     </message>
     <message>
         <source>Hook:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets:</translation>
     </message>
     <message>
         <source>Interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets voor interval in-/uitschakelen</translation>
     </message>
     <message>
         <source>Interval shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalsneltoets:</translation>
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Globaal: werkt in elke toepassing. Ook te bewerken in Systeeminstellingen.</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (niet aangesloten)</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle schermen</translation>
     </message>
     <message>
         <source>Also used in file names and for new areas on this monitor. Leave empty for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wordt ook gebruikt in bestandsnamen en voor nieuwe gebieden op dit scherm. Laat leeg voor %1.</translation>
     </message>
     <message>
         <source>Cross-monitor (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermoverschrijdend (%1)</translation>
     </message>
     <message>
         <source>Global logical coordinates across monitors. Captures compose intersected monitors at the highest scale.</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale logische coördinaten over schermen heen. Opnamen combineren doorsneden schermen op de hoogste schaal.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
-        <translation type="unfinished"></translation>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <translation>Geen van de schermen van dit gebied is aangesloten. Er wordt niets opgeslagen bij activering.</translation>
     </message>
     <message>
         <source>This area no longer overlaps any connected monitor. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit gebied overlapt geen enkel aangesloten scherm meer. Pas het aan of selecteer het opnieuw.</translation>
     </message>
     <message>
         <source>%1 not connected. Triggering saves the visible part on %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 niet aangesloten. Activering slaat het zichtbare deel op %2 op.</translation>
     </message>
     <message>
         <source>A different monitor is connected to %1 than when this area was defined (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is een ander scherm aangesloten op %1 dan toen dit gebied werd gedefinieerd (%2).</translation>
     </message>
     <message>
         <source>One image of all monitors in their current arrangement, at the highest scale. Gaps are transparent.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eén afbeelding van alle schermen in hun huidige opstelling, op de hoogste schaal. Tussenruimten zijn transparant.</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 (logical)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 (logisch)</translation>
     </message>
     <message>
         <source>%1 · not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · niet aangesloten</translation>
     </message>
     <message>
         <source>The monitor is not connected. This area is skipped when triggered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het scherm is niet aangesloten. Dit gebied wordt overgeslagen bij activering.</translation>
     </message>
     <message>
         <source>The area no longer fits on this monitor and is skipped when triggered. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het gebied past niet meer op dit scherm en wordt overgeslagen bij activering. Pas het aan of selecteer het opnieuw.</translation>
     </message>
     <message>
         <source>Monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm %1</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer een naam in die in een bestandsnaam gebruikt kan worden.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>‘%1’ wordt al gebruikt door een ander doel of een andere groep.</translation>
     </message>
     <message>
         <source>Remove Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied verwijderen</translation>
     </message>
     <message>
         <source>Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are kept.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied ‘%1’ verwijderen? De bijbehorende sneltoets wordt gewist en het wordt uit alle groepen verwijderd. Opgeslagen opnamen blijven behouden.</translation>
     </message>
     <message>
         <source>Shortcut Already in Use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets al in gebruik</translation>
     </message>
     <message>
         <source>%1 is already assigned to “%2”. Move it to “%3”?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 is al toegewezen aan ‘%2’. Verplaatsen naar ‘%3’?</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep toevoegen</translation>
     </message>
     <message>
         <source>Group name</source>
-        <translation type="unfinished"></translation>
+        <translation>Groepsnaam</translation>
     </message>
     <message>
         <source>Targets in this group</source>
-        <translation type="unfinished"></translation>
+        <translation>Doelen in deze groep</translation>
     </message>
     <message>
         <source>Targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Doelen:</translation>
     </message>
     <message>
         <source>Each monitor is captured once per trigger, so all files show the same moment and share one timestamp.</source>
-        <translation type="unfinished"></translation>
+        <translation>Elk scherm wordt eenmaal per activering vastgelegd, zodat alle bestanden hetzelfde moment tonen en één tijdstempel delen.</translation>
     </message>
     <message>
         <source>Applies to every target of this group, regardless of their own setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geldt voor elk doel van deze groep, ongeacht hun eigen instelling.</translation>
     </message>
     <message>
         <source>Used when this group is triggered, unless a member target sets its own format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikt wanneer deze groep wordt geactiveerd, tenzij een liddoel een eigen formaat instelt.</translation>
     </message>
     <message>
         <source>Group capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Groepsopnamevertraging</translation>
     </message>
     <message>
         <source>Group shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Groepssneltoets</translation>
     </message>
     <message>
         <source>Group interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets voor groepsinterval in-/uitschakelen</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep %1</translation>
     </message>
     <message>
         <source>Remove Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep verwijderen</translation>
     </message>
     <message>
         <source>Remove group “%1”? Its targets stay; only the group and its shortcut are removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep ‘%1’ verwijderen? De bijbehorende doelen blijven bestaan; alleen de groep en de bijbehorende sneltoets worden verwijderd.</translation>
     </message>
     <message>
         <source>%1 (cross-monitor: %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (schermoverschrijdend: %2)</translation>
     </message>
     <message>
         <source>%1 (area on %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (gebied op %2)</translation>
     </message>
     <message>
         <source>Enter a name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer een naam in.</translation>
     </message>
     <message>
         <source>Capture folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnamemap</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Bladeren…</translation>
     </message>
     <message>
         <source>Folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>Map:</translation>
     </message>
     <message>
         <source>All captures go into this folder, without subfolders. Leave empty for the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle opnamen gaan naar deze map, zonder submappen. Laat leeg voor de standaard.</translation>
     </message>
     <message>
         <source>File name template</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestandsnaamsjabloon</translation>
     </message>
     <message>
         <source>File name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestandsnaam:</translation>
     </message>
     <message>
         <source>Example:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voorbeeld:</translation>
     </message>
     <message>
         <source>Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target name). The file extension matches the chosen format. Existing files are never overwritten: a number is appended instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plaatsaanduidingen: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (doelnaam). De bestandsextensie komt overeen met het gekozen formaat. Bestaande bestanden worden nooit overschreven: in plaats daarvan wordt een nummer toegevoegd.</translation>
     </message>
     <message>
         <source>Number of recent captures to keep</source>
-        <translation type="unfinished"></translation>
+        <translation>Aantal recente opnamen om te bewaren</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschiedenis wissen</translation>
     </message>
     <message>
         <source>Recent captures:</source>
-        <translation type="unfinished"></translation>
+        <translation>Recente opnamen:</translation>
     </message>
     <message>
         <source>Shown in the widget and the tray menu. Interval captures are not listed. Clearing the list never deletes image files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Getoond in de widget en het systeemvakmenu. Intervalopnamen worden niet vermeld. Het wissen van de lijst verwijdert nooit afbeeldingsbestanden.</translation>
     </message>
     <message>
         <source>History cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschiedenis gewist</translation>
     </message>
     <message>
         <source>Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnamemap</translation>
     </message>
     <message>
         <source>System default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeemstandaard (%1)</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Taal:</translation>
     </message>
     <message>
         <source>glimply needs to restart to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply moet opnieuw opstarten om van taal te wisselen.</translation>
     </message>
     <message>
         <source>Restart now</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu opnieuw opstarten</translation>
     </message>
     <message>
         <source>The Plasma widget follows the Plasma language.</source>
-        <translation type="unfinished"></translation>
+        <translation>De Plasma-widget volgt de Plasma-taal.</translation>
     </message>
     <message>
         <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply kon zichzelf niet opnieuw opstarten. Sluit af en start opnieuw om van taal te wisselen.</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply starten bij aanmelden</translation>
     </message>
     <message>
         <source>Startup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opstarten:</translation>
     </message>
     <message>
         <source>Shortcuts only work while glimply is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoetsen werken alleen zolang glimply actief is.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>De Print-toets gebruiken voor glimply</translation>
     </message>
     <message>
         <source>Print key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Print-toets:</translation>
     </message>
     <message>
         <source>Print saves all monitors right away. Turning this off gives the Print key back to the application that had it before, usually Spectacle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Print slaat meteen alle schermen op. Uitschakelen geeft de Print-toets terug aan de toepassing die hem eerst had, meestal Spectacle.</translation>
     </message>
     <message>
         <source>Open the selection overlay after saving</source>
-        <translation type="unfinished"></translation>
+        <translation>De selectie-overlay openen na opslaan</translation>
     </message>
     <message>
         <source>After Print:</source>
-        <translation type="unfinished"></translation>
+        <translation>Na Print:</translation>
     </message>
     <message>
         <source>In the overlay you can cut the screenshot down to rectangles, a monitor or a window. Without it, Print only saves the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>In de overlay kunt u de schermafbeelding bijsnijden tot rechthoeken, een scherm of een venster. Zonder overlay slaat Print alleen de volledige schermafbeelding op.</translation>
     </message>
     <message>
         <source>Last used</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatst gebruikt</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevroren</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Overlay start:</translation>
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevroren toont het moment waarop u op Print drukte. Live laat video's doorspelen en legt vast wanneer u opslaat. Space schakelt op elk moment in de overlay.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan zodra de muisknop wordt losgelaten</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectie:</translation>
     </message>
     <message>
         <source>Skips the buttons: drawing one rectangle saves it right away.</source>
-        <translation type="unfinished"></translation>
+        <translation>Slaat de knoppen over: één rechthoek tekenen slaat deze meteen op.</translation>
     </message>
     <message>
         <source>Show magnifier loupe while selecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergrootglas tonen tijdens selecteren</translation>
     </message>
     <message>
         <source>Loupe:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergrootglas:</translation>
     </message>
     <message>
         <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Toont een vergrote voorvertoning van 11 × 11 echte pixels tijdens het slepen of formaat wijzigen van een bevroren selectie.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets voor kleur kiezen</translation>
     </message>
     <message>
         <source>Pick color shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sneltoets voor kleur kiezen:</translation>
     </message>
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale sneltoets om de pixelkleurkiezer overal te openen.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstherkenning:</translation>
     </message>
     <message>
         <source>Text recognition languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Talen voor tekstherkenning</translation>
     </message>
     <message>
         <source>Languages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Talen:</translation>
     </message>
     <message>
         <source>Not installed. Install the tesseract package and a language package, for example tesseract-data-eng, to copy text from captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet geïnstalleerd. Installeer het pakket tesseract en een taalpakket, bijvoorbeeld tesseract-data-eng, om tekst uit opnamen te kopiëren.</translation>
     </message>
     <message>
         <source>glimply works the same without it; Copy Text then explains what is missing.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply werkt hetzelfde zonder; Tekst kopiëren legt dan uit wat er ontbreekt.</translation>
     </message>
     <message>
         <source>%1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gevonden</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Copy Text uses the checked languages; with none checked it uses all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst kopiëren gebruikt de aangevinkte talen; als er geen is aangevinkt worden ze allemaal gebruikt.</translation>
     </message>
     <message>
         <source>English is not installed (package tesseract-data-eng).</source>
-        <translation type="unfinished"></translation>
+        <translation>Engels is niet geïnstalleerd (pakket tesseract-data-eng).</translation>
     </message>
     <message>
         <source>Post-Capture Command Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Opdracht-hook na opname</translation>
     </message>
     <message>
         <source>Run a command after saving captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Een opdracht uitvoeren na het opslaan van opnamen</translation>
     </message>
     <message>
         <source>Post-capture command</source>
-        <translation type="unfinished"></translation>
+        <translation>Opdracht na opname</translation>
     </message>
     <message>
         <source>Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opdracht:</translation>
     </message>
     <message>
         <source>Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell features.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direct uitgevoerd zonder shell. Geef %f mee voor de bestandspaden, of lees GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT en GLIMPLY_TIMESTAMP. Gebruik een scriptbestand voor pipes of shellfuncties.</translation>
     </message>
     <message>
         <source>Hook timeout in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook-time-out in seconden</translation>
     </message>
     <message>
         <source>Timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-out:</translation>
     </message>
     <message>
         <source>Run hooks on interval captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Hooks uitvoeren bij intervalopnamen</translation>
     </message>
     <message>
         <source>Intervals:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallen:</translation>
     </message>
     <message>
         <source>Test Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook testen</translation>
     </message>
     <message>
         <source>Local MCP Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokale MCP-server</translation>
     </message>
     <message>
         <source>Enable local MCP server (stdio only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokale MCP-server inschakelen (alleen stdio)</translation>
     </message>
     <message>
         <source>MCP access scope</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP-toegangsbereik</translation>
     </message>
     <message>
         <source>Allowlist only (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen toelatingslijst (aanbevolen)</translation>
     </message>
     <message>
         <source>Confirm every capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Elke opname bevestigen</translation>
     </message>
     <message>
         <source>Full session access</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige sessietoegang</translation>
     </message>
     <message>
         <source>Access scope:</source>
-        <translation type="unfinished"></translation>
+        <translation>Toegangsbereik:</translation>
     </message>
     <message>
         <source>Only checked areas and groups can be listed or captured over MCP:</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen aangevinkte gebieden en groepen kunnen via MCP worden opgevraagd of vastgelegd:</translation>
     </message>
     <message>
         <source>MCP allowed targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Toegestane MCP-doelen</translation>
     </message>
     <message>
         <source>No areas or groups yet — add one to allow MCP captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nog geen gebieden of groepen — voeg er een toe om MCP-opnamen toe te staan.</translation>
     </message>
     <message>
         <source>Allowed targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Toegestane doelen:</translation>
     </message>
     <message>
         <source>Warning: Connected local MCP clients can capture any screen, region, or window without confirmation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Waarschuwing: Verbonden lokale MCP-clients kunnen elk scherm, elke regio of elk venster zonder bevestiging vastleggen.</translation>
     </message>
     <message>
         <source>Show a passive notification on MCP captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Een passieve melding tonen bij MCP-opnamen</translation>
     </message>
     <message>
         <source>Notifications:</source>
-        <translation type="unfinished"></translation>
+        <translation>Meldingen:</translation>
     </message>
     <message>
         <source>MCP stdio launch command</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP stdio-startopdracht</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <source>Add this command in a local MCP client (Claude Code, Codex, Cursor). Runs strictly on stdin/stdout with no network port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg deze opdracht toe in een lokale MCP-client (Claude Code, Codex, Cursor). Draait strikt op stdin/stdout zonder netwerkpoort.</translation>
     </message>
     <message>
         <source>Running test hook…</source>
-        <translation type="unfinished"></translation>
+        <translation>Test-hook uitvoeren…</translation>
     </message>
     <message>
         <source>Hook succeeded (exit 0, %1 ms).</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook geslaagd (exit 0, %1 ms).</translation>
     </message>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Time-out van hook na %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hook mislukt: %1</translation>
     </message>
     <message>
         <source>Copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Gekopieerd</translation>
     </message>
     <message>
         <source>%1 (area)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (gebied)</translation>
     </message>
     <message>
         <source>%1 (group)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (groep)</translation>
     </message>
 </context>
 <context>
     <name>glimply::TrayController</name>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Gereed</translation>
     </message>
     <message>
         <source>glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply</translation>
     </message>
     <message>
         <source>Recent Captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Recente opnamen</translation>
     </message>
     <message>
         <source>No recent captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen recente opnamen</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Openen</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken in venster</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Tonen in map</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastpinnen op scherm</translation>
     </message>
     <message>
         <source>Move All to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles naar prullenbak</translation>
     </message>
     <message>
         <source>Move to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Naar prullenbak</translation>
     </message>
     <message>
         <source>%1 · %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 (%3)</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschiedenis wissen</translation>
     </message>
     <message>
         <source>Clears the list; the image files stay where they are</source>
-        <translation type="unfinished"></translation>
+        <translation>Wist de lijst; de afbeeldingsbestanden blijven waar ze zijn</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastleggen over %1 s…</translation>
     </message>
     <message>
         <source>%1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2 s)</translation>
     </message>
     <message>
         <source>Intervals active: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Actieve intervallen: %1</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aftelling annuleren (%1 s)</translation>
     </message>
     <message>
         <source>Stop Interval: %1 (%2 saved)</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval stoppen: %1 (%2 opgeslagen)</translation>
     </message>
     <message>
         <source>Stop All Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle intervallen stoppen</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>No areas yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Nog geen gebieden</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm hernoemen</translation>
     </message>
     <message>
         <source>%1…</source>
-        <translation type="unfinished"></translation>
+        <translation>%1…</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebied toevoegen…</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleur kiezen</translation>
     </message>
     <message>
         <source>Delay (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging (%1 s)</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen vertraging</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n seconde</numerusform><numerusform>%n seconden</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepast…</translation>
     </message>
     <message>
         <source>Capture Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnamevertraging</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Seconden:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging actief houden</translation>
     </message>
     <message>
         <source>Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallen</translation>
     </message>
     <message>
         <source>Stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 stoppen</translation>
     </message>
     <message>
         <source>Start %1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 starten (%2 s)</translation>
     </message>
     <message>
         <source>Open Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatste opname openen</translation>
     </message>
     <message>
         <source>Edit Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatste opname bewerken</translation>
     </message>
     <message>
         <source>Pins (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pins (%1)</translation>
     </message>
     <message>
         <source>Show Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Pins tonen</translation>
     </message>
     <message>
         <source>Remove All Pins…</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle pins verwijderen…</translation>
     </message>
     <message>
         <source>Open Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnamemap openen</translation>
     </message>
     <message>
         <source>Configure glimply…</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply instellen…</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Afsluiten</translation>
     </message>
 </context>
 <context>
     <name>glimply::cli</name>
     <message>
         <source>Could not connect to the D-Bus session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan niet verbinden met de D-Bus-sessiebus.</translation>
     </message>
     <message>
         <source>Unexpected D-Bus reply calling %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Onverwacht D-Bus-antwoord bij aanroepen van %1.</translation>
     </message>
     <message>
         <source>Invalid JSON reply from glimply daemon: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldig JSON-antwoord van glimply-daemon: %1</translation>
     </message>
     <message>
         <source>Missing value for --format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --format.</translation>
     </message>
     <message>
         <source>Unsupported image format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet-ondersteund afbeeldingsformaat: %1</translation>
     </message>
     <message>
         <source>Missing value for --quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --quality.</translation>
     </message>
     <message>
         <source>Quality must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kwaliteit moet een geheel getal zijn tussen 1 en 100.</translation>
     </message>
     <message>
         <source>Missing value for --png-compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --png-compression.</translation>
     </message>
     <message>
         <source>PNG compression must be between 0 and 9.</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG-compressie moet tussen 0 en 9 liggen.</translation>
     </message>
     <message>
         <source>Missing value for --delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --delay.</translation>
     </message>
     <message>
         <source>Delay must be between 0 and 60 seconds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertraging moet tussen 0 en 60 seconden liggen.</translation>
     </message>
     <message>
         <source>Missing path for --out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekend pad voor --out.</translation>
     </message>
     <message>
         <source>Unknown option: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende optie: %1</translation>
     </message>
     <message>
         <source>--stdout and --json cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout en --json kunnen niet samen worden gebruikt.</translation>
     </message>
     <message>
         <source>--stdout and --ocr cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout en --ocr kunnen niet samen worden gebruikt.</translation>
     </message>
     <message>
         <source>Expected exactly one capture target.</source>
-        <translation type="unfinished"></translation>
+        <translation>Precies één opnamedoel verwacht.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastleggen mislukt.</translation>
     </message>
     <message>
         <source>Could not read captured image bytes for --stdout.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan vastgelegde afbeeldingsbytes voor --stdout niet lezen.</translation>
     </message>
     <message>
         <source>Failed reading image stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lezen van afbeeldingsstroom mislukt.</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gekopieerd naar klembord.</translation>
     </message>
     <message>
         <source>Captured %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastgelegd.</translation>
     </message>
     <message>
         <source>Missing value for --kind.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --kind.</translation>
     </message>
     <message>
         <source>Invalid --kind value: %1 (expected targets, monitors, or windows).</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige waarde voor --kind: %1 (verwacht targets, monitors of windows).</translation>
     </message>
     <message>
         <source>Missing value for --name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --name.</translation>
     </message>
     <message>
         <source>Missing value for --monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --monitor.</translation>
     </message>
     <message>
         <source>Missing value for --rect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --rect.</translation>
     </message>
     <message>
         <source>Invalid rectangle %1 (expected X,Y,W,H with W&gt;0, H&gt;0).</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige rechthoek %1 (verwacht X,Y,W,H met W&gt;0, H&gt;0).</translation>
     </message>
     <message>
         <source>Opened interactive area selector.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interactieve gebiedskiezer geopend.</translation>
     </message>
     <message>
         <source>Expected an area ID or name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een gebieds-ID of -naam verwacht.</translation>
     </message>
     <message>
         <source>“%1” is not an area.</source>
-        <translation type="unfinished"></translation>
+        <translation>‘%1’ is geen gebied.</translation>
     </message>
     <message>
         <source>Opened editor for area %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerker geopend voor gebied %1.</translation>
     </message>
     <message>
         <source>Usage: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik: glimply area rename &lt;id-of-naam&gt; &lt;nieuwe-naam&gt; [--json]</translation>
     </message>
     <message>
         <source>Renamed %1 to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hernoemd naar %2.</translation>
     </message>
     <message>
         <source>Usage: glimply area remove &lt;id-or-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik: glimply area remove &lt;id-of-naam&gt; [--json]</translation>
     </message>
     <message>
         <source>Built-in targets cannot be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingebouwde doelen kunnen niet worden verwijderd.</translation>
     </message>
     <message>
         <source>Removed %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 verwijderd.</translation>
     </message>
     <message>
         <source>Unknown area subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekend subcommando voor area: %1</translation>
     </message>
     <message>
         <source>--seconds must be between 1 and 86400.</source>
-        <translation type="unfinished"></translation>
+        <translation>--seconds moet tussen 1 en 86400 liggen.</translation>
     </message>
     <message>
         <source>--max-captures must be between 0 and 100000.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-captures moet tussen 0 en 100000 liggen.</translation>
     </message>
     <message>
         <source>--max-minutes must be between 0 and 10080.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-minutes moet tussen 0 en 10080 liggen.</translation>
     </message>
     <message>
         <source>Expected exactly one target to start an interval for.</source>
-        <translation type="unfinished"></translation>
+        <translation>Precies één doel verwacht om een interval voor te starten.</translation>
     </message>
     <message>
         <source>Started interval capture for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalopname gestart voor %1.</translation>
     </message>
     <message>
         <source>Do not pass a target name together with --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geef geen doelnaam op samen met --all.</translation>
     </message>
     <message>
         <source>Specify a target or --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geef een doel op of --all.</translation>
     </message>
     <message>
         <source>Stopped all active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle actieve intervallen gestopt.</translation>
     </message>
     <message>
         <source>Stopped interval for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval voor %1 gestopt.</translation>
     </message>
     <message>
         <source>No active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen actieve intervallen.</translation>
     </message>
     <message>
         <source>Unknown interval subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekend subcommando voor interval: %1</translation>
     </message>
     <message>
         <source>Missing value for --mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekende waarde voor --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode moet 'frozen' of 'live' zijn.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
-        <translation type="unfinished"></translation>
+        <translation>--delay moet tussen 0 en 60 liggen.</translation>
     </message>
     <message>
         <source>--limit expects a positive number.</source>
-        <translation type="unfinished"></translation>
+        <translation>--limit verwacht een positief getal.</translation>
     </message>
     <message>
         <source>No recent captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen recente opnamen.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontbrekend subcommando.</translation>
     </message>
     <message>
         <source>Unknown subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekend subcommando: %1</translation>
     </message>
 </context>
 <context>
@@ -3583,19 +3561,27 @@ Scriptable CLI subcommands:
   interval           Start, stop, or inspect interval captures
   overlay            Open the interactive capture overlay
   mcp                Run the local stdio MCP server (disabled by default)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lichtgewicht KDE-hulpmiddel voor schermafbeeldingen en aantekeningen
+
+Scriptbare CLI-subcommando's:
+  capture &lt;target&gt;   Een gebied, groep, scherm, alle schermen of venster vastleggen
+  list               Ingestelde doelen, schermen of geopende vensters tonen
+  area               Opgeslagen gebieden toevoegen, bewerken, hernoemen of verwijderen
+  interval           Intervalopnamen starten, stoppen of inspecteren
+  overlay            De interactieve opname-overlay openen
+  mcp                De lokale stdio MCP-server uitvoeren (standaard uitgeschakeld)</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingsbestand(en) om te openen in het Snelle bewerker-venster.</translation>
     </message>
     <message>
         <source>Open an image file in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een afbeeldingsbestand openen in het Snelle bewerker-venster.</translation>
     </message>
     <message>
         <source>Release the Print key shortcut and exit.</source>
-        <translation type="unfinished"></translation>
+        <translation>De sneltoets Print-toets vrijgeven en afsluiten.</translation>
     </message>
 </context>
 </TS>
