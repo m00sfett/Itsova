@@ -1294,25 +1294,26 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                 [this, watcher, request, resolvedTargetId, plan, callback] {
                     WorkerOutput out = watcher->result();
                     watcher->deleteLater();
-                    if (out.cliResult.ok) {
-                        if (request.clipboard && !out.clipboardImage.isNull()) {
-                            QGuiApplication::clipboard()->setImage(out.clipboardImage);
-                        }
-                        if (!out.writtenPaths.isEmpty()) {
-                            recordCapture(out.writtenPaths, out.cliResult.displayName, resolvedTargetId);
-                            const QString fmt = out.cliResult.files.isEmpty()
-                                                    ? formatConfigKey(store_.effectiveExportOptions(resolvedTargetId).format)
-                                                    : out.cliResult.files.first().format;
-                            const QString groupId = store_.group(resolvedTargetId) ? resolvedTargetId : QString();
-                            const QString trigger =
-                                request.triggerKind.isEmpty() ? QStringLiteral("cli") : request.triggerKind;
-                            runPostCaptureHook(resolvedTargetId, out.cliResult.displayName, out.writtenPaths,
-                                               QDateTime::currentDateTime(), fmt, trigger, false, groupId);
-                        } else {
-                            tray_->blink();
-                            Q_EMIT captured(true);
-                        }
-                    } else {
+                    if (out.cliResult.ok && request.clipboard && !out.clipboardImage.isNull()) {
+                        QGuiApplication::clipboard()->setImage(out.clipboardImage);
+                    }
+                    // Files that reached the disk are recorded even when a later group member
+                    // failed, so they are not left behind untracked.
+                    if (!out.writtenPaths.isEmpty()) {
+                        recordCapture(out.writtenPaths, out.cliResult.displayName, resolvedTargetId);
+                        const QString fmt = out.cliResult.files.isEmpty()
+                                                ? formatConfigKey(store_.effectiveExportOptions(resolvedTargetId).format)
+                                                : out.cliResult.files.first().format;
+                        const QString groupId = store_.group(resolvedTargetId) ? resolvedTargetId : QString();
+                        const QString trigger =
+                            request.triggerKind.isEmpty() ? QStringLiteral("cli") : request.triggerKind;
+                        runPostCaptureHook(resolvedTargetId, out.cliResult.displayName, out.writtenPaths,
+                                           QDateTime::currentDateTime(), fmt, trigger, false, groupId);
+                    } else if (out.cliResult.ok) {
+                        tray_->blink();
+                        Q_EMIT captured(true);
+                    }
+                    if (!out.cliResult.ok && out.writtenPaths.isEmpty()) {
                         Q_EMIT captured(false);
                     }
                     if (callback) {

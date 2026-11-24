@@ -278,8 +278,18 @@ int handleCapture(const QStringList &args, CliBackend &backend, QIODevice &out, 
         if (result.tempStdoutFile && !result.stdoutFile.isEmpty()) {
             QFile::remove(result.stdoutFile);
         }
+        // A group can fail after some members were already saved; still report those files.
+        QJsonObject extra;
+        if (!result.files.isEmpty()) {
+            extra.insert(QStringLiteral("files"), captureResultToJson(result).value(QStringLiteral("files")));
+            if (!jsonMode) {
+                for (const CliCaptureFile &file : result.files) {
+                    writeLine(out, file.path);
+                }
+            }
+        }
         return emitError(jsonMode, result.exitCode > 0 ? result.exitCode : 1,
-                         result.error.isEmpty() ? CliText::tr("Capture failed.") : result.error, {}, out, err);
+                         result.error.isEmpty() ? CliText::tr("Capture failed.") : result.error, extra, out, err);
     }
 
     if (req.toStdout) {
