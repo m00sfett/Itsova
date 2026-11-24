@@ -1,5 +1,6 @@
 #include "cli.h"
 
+#include "latencytrace.h"
 #include "ocrengine.h"
 
 #include <QCoreApplication>
@@ -184,6 +185,15 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "Lists recent captures, newest first (interval captures are not recorded).\n\n"
                                  "Options:\n"
                                  "  --limit <N>                         Show at most N captures\n"
+                                 "  --json                              Output JSON\n"
+                                 "  -h, --help                          Show this help"));
+    } else if (subcommand == QLatin1String("latency")) {
+        writeLine(out,
+                  QStringLiteral("Usage: glimply latency [--last N] [--json]\n\n"
+                                 "Shows how long the last Print captures took, from the key press to the written file.\n"
+                                 "Times are milliseconds after glimply received the key; \"key\" is the delay before that.\n\n"
+                                 "Options:\n"
+                                 "  --last <N>                          Only the last N captures\n"
                                  "  --json                              Output JSON\n"
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("overlay")) {
@@ -1285,6 +1295,127 @@ static int handleHistory(const QStringList &args, CliBackend &backend, QIODevice
     return 0;
 }
 
+namespace
+{
+
+QString formatMs(qint64 us)
+{
+    return us < 0 ? QStringLiteral("-") : QString::number(double(us) / 1000.0, 'f', 1);
+}
+
+} // namespace
+
+static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice &out, QIODevice &err)
+{
+    const bool jsonMode = args.contains(QStringLiteral("--json"));
+    int last = -1;
+    for (int i = 0; i < args.size(); ++i) {
+        const QString &arg = args.at(i);
+        if (arg == QLatin1String("-h") || arg == QLatin1String("--help")) {
+            printSubcommandHelp(QStringLiteral("latency"), out);
+            return 0;
+        }
+        if (arg == QLatin1String("--json")) {
+            continue;
+        }
+        if (arg == QLatin1String("--last")) {
+            bool ok = false;
+            last = i + 1 < args.size() ? args.at(i + 1).toInt(&ok) : 0;
+            ++i;
+            if (!ok || last < 1) {
+                return emitError(jsonMode, 2, CliText::tr("--last expects a positive number."), {}, out, err);
+            }
+            continue;
+        }
+        return emitError(jsonMode, 2, CliText::tr("Unknown option: %1").arg(arg), {}, out, err);
+    }
+    QJsonArray items;
+    const CliSimpleResult res = backend.latencyReport(&items);
+    if (!res.ok) {
+        return emitError(jsonMode, res.exitCode, res.error, {}, out, err);
+    }
+    while (last > 0 && items.size() > last) {
+        items.removeFirst();
+    }
+    QList<LatencySample> samples;
+    for (const QJsonValue &v : std::as_const(items)) {
+        samples.append(LatencySample::fromJson(v.toObject()));
+    }
+    using Field = qint64 LatencySample::*;
+    const QList<std::pair<QString, Field>> columns{
+        {QStringLiteral("key"), &LatencySample::pressToTriggerUs},
+        {QStringLiteral("request"), &LatencySample::requestUs},
+        {QStringLiteral("pixels"), &LatencySample::pixelsUs},
+        {QStringLiteral("overlay"), &LatencySample::overlayUs},
+        {QStringLiteral("file"), &LatencySample::fileUs},
+        {QStringLiteral("pins"), &LatencySample::pinWaitUs},
+    };
+    auto statsFor = [&](Field field) {
+        QList<qint64> values;
+        for (const LatencySample &sample : std::as_const(samples)) {
+            values.append(sample.*field);
+        }
+        return latencyStats(values);
+    };
+    if (jsonMode) {
+        QJsonObject summary;
+        for (const auto &[name, field] : columns) {
+            const LatencyStats stats = statsFor(field);
+            summary.insert(name, QJsonObject{{QStringLiteral("count"), stats.count},
+                                             {QStringLiteral("medianUs"), stats.medianUs},
+                                             {QStringLiteral("p95Us"), stats.p95Us},
+                                             {QStringLiteral("maxUs"), stats.maxUs}});
+        }
+        writeJson(out, QJsonObject{{QStringLiteral("samples"), items}, {QStringLiteral("summary"), summary}});
+        return 0;
+    }
+    if (samples.isEmpty()) {
+        writeLine(out, CliText::tr("No Print captures measured since glimply started."));
+        return 0;
+    }
+    QStringList header{QStringLiteral("#")};
+    for (const auto &column : columns) {
+        header.append(column.first);
+    }
+    header << QStringLiteral("monitors");
+    writeLine(out, header.join(QLatin1Char('\t')));
+    int index = 0;
+    for (const LatencySample &sample : std::as_const(samples)) {
+        QStringList row{QString::number(++index)};
+        for (const auto &column : columns) {
+            row.append(formatMs(sample.*(column.second)));
+        }
+        row << QString::number(sample.monitors);
+        writeLine(out, row.join(QLatin1Char('\t')));
+    }
+    for (const QString &label : {QStringLiteral("median"), QStringLiteral("p95"), QStringLiteral("max")}) {
+        QStringList row{label};
+        for (const auto &column : columns) {
+            const LatencyStats stats = statsFor(column.second);
+            row.append(formatMs(label == QLatin1String("median") ? stats.medianUs
+                                : label == QLatin1String("p95")  ? stats.p95Us
+                                                                 : stats.maxUs));
+        }
+        writeLine(out, row.join(QLatin1Char('\t')));
+    }
+    return 0;
+}
+
+CliSimpleResult DBusCliBackend::latencyReport(QJsonArray *outArray)
+{
+    QString err;
+    const QDBusMessage reply = callControl(QStringLiteral("LatencyReport"), {}, 10'000, &err);
+    if (!err.isEmpty()) {
+        return {false, 1, {}, err};
+    }
+    QJsonDocument doc;
+    if (!parseJsonDoc(reply.arguments().value(0).toString().toUtf8(), &doc, &err)) {
+        return {false, 1, {}, err};
+    }
+    *outArray = doc.array();
+    return {true, 0, {}, {}};
+}
+
 CliSimpleResult DBusCliBackend::history(QJsonArray *outArray)
 {
     QString err;
@@ -1303,7 +1434,8 @@ CliSimpleResult DBusCliBackend::history(QJsonArray *outArray)
 bool isCliSubcommand(const QString &arg)
 {
     return arg == QLatin1String("capture") || arg == QLatin1String("list") || arg == QLatin1String("area")
-        || arg == QLatin1String("interval") || arg == QLatin1String("overlay") || arg == QLatin1String("history");
+        || arg == QLatin1String("interval") || arg == QLatin1String("overlay") || arg == QLatin1String("history")
+        || arg == QLatin1String("latency");
 }
 
 int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QIODevice &err)
@@ -1332,6 +1464,9 @@ int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QI
     }
     if (subcommand == QLatin1String("history")) {
         return handleHistory(subArgs, backend, out, err);
+    }
+    if (subcommand == QLatin1String("latency")) {
+        return handleLatency(subArgs, backend, out, err);
     }
 
     writeLine(err, CliText::tr("Unknown subcommand: %1").arg(subcommand));

@@ -161,6 +161,10 @@ Q_SIGNALS:
     void captured(bool success);
     void historyChanged();
 
+private Q_SLOTS:
+    // kglobalaccel globalShortcutPressed: keeps the key timestamp for the latency trace (#67).
+    void noteShortcutPressed(const QString &component, const QString &action, qlonglong timestamp);
+
 private:
     void executeTriggerNow(const QString &id);
     void startPrintNow(std::optional<bool> forcedFrozen = std::nullopt, bool forceOverlay = false);
@@ -176,7 +180,8 @@ private:
     void pruneHistory();
     void savePinImageAs(const QImage &image);
     // Makes pins transparent, then calls start; pins come back when owner is destroyed.
-    void startWithPinsHidden(QObject *owner, std::function<void()> start);
+    // recordLatency: the wait for the pins counts into the running Print latency trace (#67).
+    void startWithPinsHidden(QObject *owner, std::function<void()> start, bool recordLatency = false);
     void historyModified(bool sweepThumbnails);
     void requestThumbnails();
 

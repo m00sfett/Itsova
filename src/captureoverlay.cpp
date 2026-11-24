@@ -8,6 +8,7 @@
 #include "colorformat.h"
 #include "exportdialog.h"
 #include "imageoutput.h"
+#include "latencytrace.h"
 #include "ocrengine.h"
 #include "pixelloupe.h"
 #include "screens.h"
@@ -243,10 +244,10 @@ void CaptureSession::start()
         }
         if (!forceShowOverlay_ && !store().printOpensOverlay) {
             const ExportOptions printOpts = store().effectiveExportOptions(allMonitorsTargetId());
-            app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+            app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath()},
                                      QDateTime::currentDateTime(), formatConfigKey(printOpts.format),
                                      QStringLiteral("print"));
-            finish({}, {printPath_});
+            finish({}, {printPath()});
             return;
         }
     } else if (frozen_) {
@@ -273,30 +274,89 @@ void CaptureSession::start()
 
 void CaptureSession::savePrintImage()
 {
+    waitForPrintWrite(); // a previous Print press may still be writing its file
     QStringList connectors;
     for (const ScreenInfo &screen : std::as_const(screens_)) {
         connectors.append(screen.connector);
     }
     captureFrames(connectors);
-    QString error;
-    const QImage image = composeAllMonitors(screens_, frames_, &error);
-    if (image.isNull()) {
-        finish({}, {}, {error.isEmpty() ? tr("The screen could not be captured.") : error});
-        return;
+    LatencyTrace::mark(LatencyTrace::Stage::Pixels);
+    for (const ScreenInfo &screen : std::as_const(screens_)) {
+        if (frames_.value(screen.connector).image.isNull()) {
+            QString error;
+            (void)composeAllMonitors(screens_, frames_, &error);
+            finish({}, {}, {error.isEmpty() ? tr("The screen could not be captured.") : error});
+            return;
+        }
     }
-    QStringList errors;
-    const ExportOptions printOptions = store().effectiveExportOptions(allMonitorsTargetId());
-    const QStringList paths = write({{allMonitorsTargetId(), image}}, &errors, printOptions);
-    if (paths.isEmpty()) {
-        finish({}, {}, errors);
+
+    // Composing, encoding and writing take far longer than the capture itself, so they run in the
+    // background while the overlay opens; everything that needs the file waits in printPath() (#67).
+    const ExportOptions options = store().effectiveExportOptions(allMonitorsTargetId());
+    const QString directory = store().effectiveCaptureDirectory();
+    const QString filenameTemplate = store().effectiveFilenameTemplate();
+    const QDateTime timestamp = QDateTime::currentDateTime();
+    const QList<ScreenInfo> screens = screens_;
+    const QHash<QString, CaptureResult> frames = frames_;
+    printWritePending_ = true;
+    printWrite_ = QtConcurrent::run([screens, frames, directory, filenameTemplate, options, timestamp] {
+        PrintWrite result;
+        QString error;
+        result.image = composeAllMonitors(screens, frames, &error);
+        if (result.image.isNull()) {
+            result.errors.append(error.isEmpty() ? tr("The screen could not be captured.") : error);
+            return result;
+        }
+        const OutputWriter writer(directory, filenameTemplate, options);
+        QString path;
+        if (writer.writeImage(result.image, allMonitorsTargetId(), timestamp, options, &path, &error)) {
+            result.paths.append(path);
+        } else {
+            result.errors.append(error);
+        }
+        return result;
+    });
+    auto *watcher = new QFutureWatcher<PrintWrite>(this);
+    connect(watcher, &QFutureWatcher<PrintWrite>::finished, this, [this, watcher] {
+        watcher->deleteLater();
+        applyPrintWrite();
+    });
+    watcher->setFuture(printWrite_);
+}
+
+void CaptureSession::waitForPrintWrite()
+{
+    if (printWritePending_) {
+        printWrite_.waitForFinished();
+        applyPrintWrite();
+    }
+}
+
+void CaptureSession::applyPrintWrite()
+{
+    if (!printWritePending_) {
+        return; // already applied by waitForPrintWrite()
+    }
+    printWritePending_ = false;
+    const PrintWrite result = printWrite_.result();
+    if (result.paths.isEmpty()) {
+        finish({}, {}, result.errors);
         return;
     }
     if (!printPath_.isEmpty()) {
         QFile::remove(printPath_);
     }
-    printPath_ = paths.first();
-    QGuiApplication::clipboard()->setImage(image);
-    app_->recordCapture(paths, tr("All monitors"));
+    printPath_ = result.paths.first();
+    LatencyTrace::mark(LatencyTrace::Stage::File);
+    QGuiApplication::clipboard()->setImage(result.image);
+    app_->recordCapture(result.paths, tr("All monitors"));
+    finishLatencyBenchIfDone();
+}
+
+QString &CaptureSession::printPath()
+{
+    waitForPrintWrite();
+    return printPath_;
 }
 
 void CaptureSession::printPressed()
@@ -311,6 +371,16 @@ void CaptureSession::printPressed()
             showOverlays();
         }
     });
+}
+
+void CaptureSession::finishLatencyBenchIfDone()
+{
+    if (finished_ || purpose_ != Purpose::Print || !qEnvironmentVariableIsSet("GLIMPLY_LATENCY_BENCH")) {
+        return;
+    }
+    if (LatencyTrace::reached(LatencyTrace::Stage::Overlay) && LatencyTrace::reached(LatencyTrace::Stage::File)) {
+        QTimer::singleShot(0, this, [this] { finish({}, printPath_.isEmpty() ? QStringList() : QStringList{printPath_}); });
+    }
 }
 
 void CaptureSession::setForcedFrozen(std::optional<bool> frozen)
@@ -944,13 +1014,13 @@ QImage CaptureSession::selectionImage(const Selection &selection, QString *error
 
 void CaptureSession::removePrintSnapshotIfRedacted()
 {
-    if (!shouldDeletePrintFileOnCopy(annotations_, printPath_)) {
+    if (!shouldDeletePrintFileOnCopy(annotations_, printPath())) {
         return;
     }
-    const QString oldPath = printPath_;
+    const QString oldPath = printPath();
     if (purgeUnredactedPrintFile(oldPath, false)) {
         app_->forgetCapturePath(oldPath);
-        printPath_.clear();
+        printPath().clear();
     }
 }
 
@@ -1051,7 +1121,7 @@ void CaptureSession::copy(const QString &preferredConnector)
             }
             QGuiApplication::clipboard()->setImage(image);
             removePrintSnapshotIfRedacted();
-            finish(tr("Copied to the clipboard"), printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
+            finish(tr("Copied to the clipboard"), printPath().isEmpty() ? QStringList() : QStringList{printPath()});
         });
         return;
     }
@@ -1066,7 +1136,7 @@ void CaptureSession::copy(const QString &preferredConnector)
         }
         QGuiApplication::clipboard()->setImage(image);
         removePrintSnapshotIfRedacted();
-        finish(tr("Copied to the clipboard"), printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
+        finish(tr("Copied to the clipboard"), printPath().isEmpty() ? QStringList() : QStringList{printPath()});
     });
 }
 
@@ -1102,7 +1172,7 @@ void CaptureSession::pin()
         }
         removePrintSnapshotIfRedacted();
         finish(pinned > 0 ? tr("Pinned to the screen") : QString(),
-               printPath_.isEmpty() ? QStringList() : QStringList{printPath_}, errors);
+               printPath().isEmpty() ? QStringList() : QStringList{printPath()}, errors);
     });
 }
 
@@ -1307,7 +1377,7 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
     const QString saved = ordered.size() == 1 ? tr("Area “%1” saved").arg(trimmed)
                           : combine           ? tr("Group “%1” saved").arg(trimmed)
                                               : tr("%n areas saved", nullptr, int(areaIds.size()));
-    finish(saved, printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
+    finish(saved, printPath().isEmpty() ? QStringList() : QStringList{printPath()});
     return {};
 }
 
@@ -1406,11 +1476,11 @@ void CaptureSession::editInWindow(const QString &preferredConnector)
         }
 
         auto handoffDoc = annotations_.cloneTranslated(-QPointF(globalOrigin), clipBounds);
-        if (!printPath_.isEmpty()) {
-            const QString oldPrint = printPath_;
+        if (!printPath().isEmpty()) {
+            const QString oldPrint = printPath();
             purgeUnredactedPrintFile(oldPrint, annotations_.hasRedactions());
             app_->forgetCapturePath(oldPrint);
-            printPath_.clear();
+            printPath().clear();
         }
 
         finished_ = true;
@@ -1451,13 +1521,13 @@ void CaptureSession::captureAllMonitors()
     if (annotationController_.isEditingText()) {
         annotationController_.requestCommitActiveText(false);
     }
-    if (shouldBypassRawPrintFastPath(frozen_, printPath_, annotations_)) {
+    if (shouldBypassRawPrintFastPath(frozen_, printPath(), annotations_)) {
         // The full screenshot of this moment is already saved without edits.
         const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
-        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath()},
                                  QDateTime::currentDateTime(), formatConfigKey(opts.format),
                                  QStringLiteral("overlay"));
-        finish({}, {printPath_});
+        finish({}, {printPath()});
         return;
     }
     QStringList connectors;
@@ -1623,11 +1693,11 @@ void CaptureSession::retakeWithDelay(int seconds)
                 }
                 return;
             }
-            if (!self->printPath_.isEmpty()) {
-                const QString oldPath = self->printPath_;
+            if (!self->printPath().isEmpty()) {
+                const QString oldPath = self->printPath();
                 QFile::remove(oldPath);
                 self->app_->forgetCapturePath(oldPath);
-                self->printPath_.clear();
+                self->printPath().clear();
             }
             self->captureFrames(connectors);
             self->changed();
@@ -1675,7 +1745,7 @@ void CaptureSession::openSettings()
 
 void CaptureSession::close()
 {
-    if (purpose_ == Purpose::Print && annotations_.hasRedactions() && !printPath_.isEmpty() && !finished_) {
+    if (purpose_ == Purpose::Print && annotations_.hasRedactions() && !printPath().isEmpty() && !finished_) {
         QWidget *parentWidget = nullptr;
         for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
             if (overlay && overlay->geometry().contains(QCursor::pos())) {
@@ -1690,7 +1760,7 @@ void CaptureSession::close()
                         tr("The full screenshot saved when you pressed Print does not include your redactions."),
                         QMessageBox::NoButton, parentWidget);
         box.setInformativeText(tr("Delete the unredacted file (%1) from disk, keep it, or return to editing?")
-                                   .arg(QFileInfo(printPath_).fileName()));
+                                   .arg(QFileInfo(printPath()).fileName()));
         QPushButton *deleteBtn = box.addButton(tr("Delete Unredacted Screenshot"), QMessageBox::DestructiveRole);
         QPushButton *keepBtn = box.addButton(tr("Keep Full Screenshot"), QMessageBox::AcceptRole);
         QPushButton *backBtn = box.addButton(tr("Back to Overlay"), QMessageBox::RejectRole);
@@ -1701,22 +1771,22 @@ void CaptureSession::close()
             return;
         }
         if (box.clickedButton() == deleteBtn) {
-            const QString oldPath = printPath_;
+            const QString oldPath = printPath();
             purgeUnredactedPrintFile(oldPath, true);
             app_->forgetCapturePath(oldPath);
-            printPath_.clear();
+            printPath().clear();
             finish(tr("Unredacted screenshot deleted"), {});
             return;
         }
         Q_UNUSED(keepBtn);
     }
-    if (!printPath_.isEmpty()) {
+    if (!printPath().isEmpty()) {
         const ExportOptions opts = store().effectiveExportOptions(allMonitorsTargetId());
-        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath_},
+        app_->runPostCaptureHook(allMonitorsTargetId(), tr("All monitors"), {printPath()},
                                  QDateTime::currentDateTime(), formatConfigKey(opts.format),
                                  QStringLiteral("print"));
     }
-    finish({}, printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
+    finish({}, printPath().isEmpty() ? QStringList() : QStringList{printPath()});
 }
 
 void CaptureSession::finishWith(const QStringList &paths, const QImage &clipboardImage, const QStringList &errors,
@@ -1727,9 +1797,9 @@ void CaptureSession::finishWith(const QStringList &paths, const QImage &clipboar
         return;
     }
     // The narrowed-down result replaces the full screenshot taken when Print was pressed.
-    if (!printPath_.isEmpty() && !paths.contains(printPath_)) {
-        QFile::remove(printPath_);
-        printPath_.clear();
+    if (!printPath().isEmpty() && !paths.contains(printPath())) {
+        QFile::remove(printPath());
+        printPath().clear();
     }
     auto *mime = new QMimeData;
     if (!clipboardImage.isNull()) {
@@ -1756,6 +1826,10 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
 {
     if (finished_) {
         return;
+    }
+    waitForPrintWrite();
+    if (finished_) {
+        return; // the pending write failed and finished the session with its error
     }
     finished_ = true;
     for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
@@ -2592,6 +2666,18 @@ int CaptureOverlay::closeButtonAt(const QPoint &globalPos) const
 
 void CaptureOverlay::paintEvent(QPaintEvent *)
 {
+    // Marks the first overlay frame once it is fully painted (#67).
+    struct FirstFrameMark {
+        CaptureSession *session;
+        ~FirstFrameMark()
+        {
+            if (session->purpose() == CaptureSession::Purpose::Print
+                && !LatencyTrace::reached(LatencyTrace::Stage::Overlay)) {
+                LatencyTrace::mark(LatencyTrace::Stage::Overlay);
+                QTimer::singleShot(0, session, &CaptureSession::finishLatencyBenchIfDone);
+            }
+        }
+    } firstFrameMark{session_};
     QPainter painter(this);
     const QRect area = rect();
     const QImage background = session_->frame(screen_.connector);

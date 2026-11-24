@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.8.0 LANGUAGES CXX)
+project(glimply VERSION 0.9.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -74,6 +74,7 @@ add_library(glimply_capture STATIC
     src/imageoutput.cpp
     src/intervalcontroller.cpp
     src/kwinpinscript.cpp
+    src/latencytrace.cpp
     src/mcppolicy.cpp
     src/mcpserver.cpp
     src/ocrengine.cpp
@@ -194,6 +195,9 @@ if(BUILD_TESTING)
     add_executable(intervaltest tests/intervaltest.cpp)
     target_link_libraries(intervaltest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME interval COMMAND intervaltest)
+    add_executable(latencytracetest tests/latencytracetest.cpp)
+    target_link_libraries(latencytracetest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME latencytrace COMMAND latencytracetest)
     add_executable(clitest tests/clitest.cpp)
     target_link_libraries(clitest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME cli COMMAND clitest)

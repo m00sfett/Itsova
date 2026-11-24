@@ -11,6 +11,9 @@
 #include <QScreen>
 #include <QStandardPaths>
 #include <QTimer>
+#include <QWindow>
+
+#include <utility>
 
 namespace glimply
 {
@@ -19,14 +22,65 @@ namespace
 
 constexpr int saveDelayMs = 500;
 constexpr int undoWindowMs = 10'000;
-// Same settle time the live overlay uses before it grabs frames.
-constexpr int captureHideDelayMs = 250;
+// Upper bound for the compositor to confirm the transparent pin frames (the former fixed wait).
+constexpr int captureHideTimeoutMs = 250;
 // Safety net: pins never stay invisible because a capture path forgot endCapture().
 constexpr int captureWatchdogMs = 60'000;
 
 const QString controlService = QStringLiteral("io.github.m00sfett.glimply");
 const QString controlPath = QStringLiteral("/Control");
 const QString controlInterface = QStringLiteral("io.github.m00sfett.glimply.Control");
+
+// Waits until every given window has had its last commit consumed by the compositor: a requested
+// update is delivered on the Wayland frame callback of the frame that showed the transparent pin.
+class FrameWaiter : public QObject
+{
+public:
+    FrameWaiter(const QList<QWindow *> &windows, QObject *context, std::function<void()> ready)
+        : QObject(context)
+        , ready_(std::move(ready))
+    {
+        for (QWindow *window : windows) {
+            pending_.append(window);
+            window->installEventFilter(this);
+            window->requestUpdate();
+        }
+        QTimer::singleShot(captureHideTimeoutMs, this, [this] { fire(); });
+    }
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (event->type() == QEvent::UpdateRequest) {
+            pending_.removeAll(watched);
+            pending_.removeAll(nullptr);
+            if (pending_.isEmpty()) {
+                // After the window has handled this update itself.
+                QTimer::singleShot(0, this, [this] { fire(); });
+            }
+        }
+        return false;
+    }
+
+private:
+    void fire()
+    {
+        if (!ready_) {
+            return;
+        }
+        for (const QPointer<QObject> &window : std::as_const(pending_)) {
+            if (window) {
+                window->removeEventFilter(this);
+            }
+        }
+        auto ready = std::exchange(ready_, {});
+        deleteLater();
+        ready();
+    }
+
+    QList<QPointer<QObject>> pending_;
+    std::function<void()> ready_;
+};
 
 KNotification *makeNotification(const QString &eventId)
 {
@@ -327,23 +381,28 @@ void PinManager::scheduleSave()
     saveTimer_->start();
 }
 
-int PinManager::beginCapture()
+void PinManager::beginCapture(QObject *context, std::function<void()> ready)
 {
     ++captureDepth_;
     captureWatchdog_->start();
     if (captureDepth_ > 1) {
-        return 0; // already transparent; the first capture waited for the compositor
+        ready(); // already transparent; the first capture waited for the compositor
+        return;
     }
-    bool anyVisible = false;
+    QList<QWindow *> visible;
     for (auto it = windows_.cbegin(); it != windows_.cend(); ++it) {
         if (PinWindow *window = it.value()) {
-            if (window->isVisible()) {
-                anyVisible = true;
-            }
             window->setCaptureTransparent(true);
+            if (window->isVisible() && window->windowHandle()) {
+                visible.append(window->windowHandle());
+            }
         }
     }
-    return anyVisible ? captureHideDelayMs : 0;
+    if (visible.isEmpty()) {
+        ready();
+        return;
+    }
+    new FrameWaiter(visible, context, std::move(ready));
 }
 
 void PinManager::endCapture()
