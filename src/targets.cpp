@@ -324,6 +324,7 @@ void TargetStore::load(const KConfig &config)
         mcp.notifyOnCapture = mcpCfg.readEntry("NotifyOnCapture", true);
     }
     keepDelayActive = general.readEntry("KeepDelayActive", false);
+    historyLimit = std::clamp(config.group(QStringLiteral("History")).readEntry("Limit", 20), 5, 100);
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
@@ -510,6 +511,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);
+    config.group(QStringLiteral("History")).writeEntry("Limit", std::clamp(historyLimit, 5, 100));
     general.writeEntry("CaptureDelaySeconds", keepDelayActive ? std::clamp(captureDelaySeconds, 0, 60) : 0);
 
     config.deleteGroup(QStringLiteral("MonitorNames"));

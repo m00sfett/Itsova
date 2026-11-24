@@ -26,6 +26,7 @@ PlasmoidItem {
     property bool countdownActive: false
     property int activeIntervalCount: 0
     property string lastError: ""
+    property var historyEntries: []
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
     readonly property int closeDelay: 300
@@ -94,6 +95,7 @@ PlasmoidItem {
         call("CountdownActive", [], function (value) {
             root.countdownActive = value === true;
         });
+        refreshHistory();
         call("Intervals", [], function (json) {
             let list = [];
             try {
@@ -102,6 +104,29 @@ PlasmoidItem {
                 list = [];
             }
             root.activeIntervalCount = Array.isArray(list) ? list.length : 0;
+        });
+    }
+
+    function refreshHistory() {
+        call("History", [], function (json) {
+            let list = [];
+            try {
+                list = JSON.parse(json);
+            } catch (e) {
+                console.warn("glimply: invalid history", e);
+            }
+            root.historyEntries = Array.isArray(list) ? list : [];
+        });
+    }
+
+    function historyAction(action, entryId, path) {
+        if (action !== "copy" && action !== "trash") {
+            root.expanded = false;
+        }
+        call("HistoryAction", [action, entryId, path], function (error) {
+            if (error) {
+                console.warn("glimply:", error);
+            }
         });
     }
 
@@ -134,6 +159,7 @@ PlasmoidItem {
                 root.refresh();
             } else {
                 targetModel.clear();
+                root.historyEntries = [];
             }
         }
     }
@@ -153,6 +179,10 @@ PlasmoidItem {
 
         function dbusIntervalsChanged() {
             root.refresh();
+        }
+
+        function dbusHistoryChanged() {
+            root.refreshHistory();
         }
 
         function dbusCaptured(success) {
@@ -377,6 +407,15 @@ PlasmoidItem {
                         required property string section
                         width: ListView.view.width
                         label: section
+                    }
+
+                    footer: RecentSection {
+                        width: ListView.view.width
+                        entries: root.historyEntries
+                        expanded: Plasmoid.configuration.recentExpanded
+                        onExpandedToggled: value => Plasmoid.configuration.recentExpanded = value
+                        onAction: (action, entryId, path) => root.historyAction(action, entryId, path)
+                        onClearRequested: root.call("ClearHistory")
                     }
 
                     delegate: TargetRow {

@@ -40,6 +40,7 @@ ControlService::ControlService(App *app)
     connect(app_, &App::intervalsChanged, this, &ControlService::IntervalsChanged);
     connect(app_->shortcuts(), &ShortcutManager::shortcutChanged, this, &ControlService::Changed);
     connect(app_, &App::captured, this, &ControlService::Captured);
+    connect(app_, &App::historyChanged, this, &ControlService::HistoryChanged);
 
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Control"), this,
                                                  QDBusConnection::ExportScriptableContents);
@@ -150,6 +151,21 @@ QString ControlService::Rename(const QString &id, const QString &name)
 void ControlService::Remove(const QString &id)
 {
     app_->removeTarget(id);
+}
+
+QString ControlService::History()
+{
+    return QString::fromUtf8(QJsonDocument(app_->historyJson()).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::HistoryAction(const QString &action, const QString &entryId, const QString &path)
+{
+    return app_->historyAction(action, entryId, path);
+}
+
+void ControlService::ClearHistory()
+{
+    app_->clearHistory();
 }
 
 void ControlService::OpenLastCapture()

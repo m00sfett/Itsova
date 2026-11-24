@@ -11,7 +11,7 @@
 #include <string>
 
 #ifndef GLIMPLY_VERSION
-#define GLIMPLY_VERSION "0.6.1"
+#define GLIMPLY_VERSION "0.7.0"
 #endif
 
 namespace glimply

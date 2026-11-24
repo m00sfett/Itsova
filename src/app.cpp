@@ -7,6 +7,7 @@
 #include "cli.h"
 #include "colorpicker.h"
 #include "countdowntimer.h"
+#include "historystore.h"
 #include "hookrunner.h"
 #include "intervalcontroller.h"
 #include "mcpconfirmdialog.h"
@@ -23,6 +24,7 @@
 #include "screens.h"
 #include "settingswindow.h"
 #include "shortcutmanager.h"
+#include "thumbnailcache.h"
 #include "traycontroller.h"
 #include "triggerengine.h"
 #include "triggerplan.h"
@@ -87,6 +89,30 @@ App::App(QObject *parent)
     store_.load(*config_);
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
 
+    history_ = std::make_unique<HistoryStore>(HistoryStore::defaultFilePath(), store_.historyLimit);
+    thumbnails_ = std::make_unique<ThumbnailCache>();
+    QString historyError;
+    if (!history_->load(&historyError)) {
+        qWarning("glimply: ignoring unreadable capture history %s: %s", qPrintable(history_->filePath()),
+                 qPrintable(historyError));
+    }
+    if (history_->prune()) {
+        history_->save();
+    }
+    thumbnails_->sweep([this] {
+        QStringList files;
+        for (const HistoryEntry &entry : history_->entries()) {
+            files += entry.files;
+        }
+        return files;
+    }());
+    // Thumbnail completions and other bursts are folded into one HistoryChanged signal.
+    historyChangedTimer_ = new QTimer(this);
+    historyChangedTimer_->setSingleShot(true);
+    historyChangedTimer_->setInterval(100);
+    connect(historyChangedTimer_, &QTimer::timeout, this, &App::historyChanged);
+    tray_->setHistoryProvider([this] { return historyEntries(); });
+
     connect(hooks_, &HookRunner::hookFailed, this, [this](const HookResult &res) {
         QString detail = res.timedOut ? tr("Hook timed out after %1 ms.").arg(res.elapsedMs)
                                       : (!res.errorString.isEmpty() ? res.errorString
@@ -110,7 +136,7 @@ App::App(QObject *parent)
         Q_EMIT targetsChanged();
     });
     connect(intervals_, &IntervalController::captureSaved, this, [this](const QString &targetId, const TriggerResult &result) {
-        recordCapture(result.writtenPaths, result.displayName, targetId);
+        recordCapture(result.writtenPaths, result.displayName, targetId, QStringLiteral("interval"));
         const QString fmt = result.outputInfos.isEmpty() ? formatConfigKey(store_.effectiveExportOptions(targetId).format)
                                                          : result.outputInfos.first().format;
         const QString groupId = store_.group(targetId) ? targetId : QString();
@@ -157,6 +183,14 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::addAreaRequested, this, &App::addArea);
     connect(tray_, &TrayController::pickColorRequested, this, &App::startColorPicker);
     connect(tray_, &TrayController::renameMonitorRequested, this, &App::renameMonitorWithDialog);
+    connect(tray_, &TrayController::historyActionRequested, this,
+            [this](const QString &action, const QString &entryId, const QString &path) {
+                const QString error = historyAction(action, entryId, path);
+                if (!error.isEmpty()) {
+                    notifyError(tr("Recent capture"), {error});
+                }
+            });
+    connect(tray_, &TrayController::clearHistoryRequested, this, &App::clearHistory);
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -240,6 +274,9 @@ ShortcutManager *App::shortcuts() const
 void App::storeChanged(const QStringList &deletedIds)
 {
     store_.save(*config_);
+    if (history_->setLimit(store_.historyLimit)) {
+        historyModified(true);
+    }
     syncShortcuts(deletedIds);
     applyAutostart();
     Q_EMIT targetsChanged();
@@ -505,10 +542,19 @@ void App::startColorPicker()
     picker->start();
 }
 
-void App::recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId)
+void App::recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId,
+                        const QString &triggerKind)
 {
     if (paths.isEmpty()) {
         return;
+    }
+    HistoryEntry entry;
+    entry.targetId = targetId;
+    entry.targetName = displayName;
+    entry.triggerKind = triggerKind;
+    entry.files = paths;
+    if (history_->record(entry)) {
+        historyModified(true);
     }
     lastPaths_ = paths;
     lastCaptureTargetId_ = targetId;
@@ -525,6 +571,9 @@ void App::recordCapture(const QStringList &paths, const QString &displayName, co
 
 void App::forgetCapturePath(const QString &path)
 {
+    if (history_->removeFile(path)) {
+        historyModified(true);
+    }
     if (path.isEmpty() || lastPaths_.removeAll(path) == 0) {
         return;
     }
@@ -687,7 +736,7 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
             fallback = KNotification::Warning;
         } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")
                    || eventId == QLatin1String("colorPicked") || eventId == QLatin1String("intervalStopped")
-                   || eventId == QLatin1String("mcpCapture")) {
+                   || eventId == QLatin1String("mcpCapture") || eventId == QLatin1String("historyAction")) {
             fallback = KNotification::Notification;
         }
         KNotification::event(fallback, title, text);
@@ -709,6 +758,11 @@ void App::openLastCapture()
         QDesktopServices::openUrl(QUrl::fromLocalFile(paths.first()));
         return;
     }
+    showInFolder(paths);
+}
+
+void App::showInFolder(const QStringList &paths)
+{
     QStringList uris;
     for (const QString &path : paths) {
         uris.append(QUrl::fromLocalFile(path).toString());
@@ -719,6 +773,148 @@ void App::openLastCapture()
                                                        QStringLiteral("ShowItems"));
     call.setArguments({uris, QString()});
     QDBusConnection::sessionBus().asyncCall(call);
+}
+
+void App::pruneHistory()
+{
+    if (history_->prune()) {
+        historyModified(true);
+    }
+}
+
+const QList<HistoryEntry> &App::historyEntries()
+{
+    pruneHistory();
+    return history_->entries();
+}
+
+QJsonArray App::historyJson()
+{
+    pruneHistory();
+    requestThumbnails();
+    return history_->toJson([this](const QString &path) { return thumbnails_->existingThumbnail(path); });
+}
+
+QString App::historyAction(const QString &action, const QString &entryId, const QString &path)
+{
+    const std::optional<HistoryEntry> entry = history_->entry(entryId);
+    if (!entry) {
+        return tr("This capture is no longer in the history.");
+    }
+    // Only files recorded in this entry are accepted, so the D-Bus API cannot reach other files.
+    if (!path.isEmpty() && !entry->files.contains(path)) {
+        return tr("This file does not belong to the capture.");
+    }
+    const QStringList files = path.isEmpty() ? entry->files : QStringList{path};
+    QStringList existing;
+    for (const QString &file : files) {
+        if (QFileInfo::exists(file)) {
+            existing.append(file);
+        }
+    }
+    if (existing.isEmpty()) {
+        pruneHistory();
+        return tr("The file was moved or deleted.");
+    }
+
+    if (action == QLatin1String("open")) {
+        if (existing.size() == 1) {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(existing.first()));
+        } else {
+            showInFolder(existing);
+        }
+        return {};
+    }
+    if (action == QLatin1String("edit")) {
+        openEditorForFile(existing.first());
+        return {};
+    }
+    if (action == QLatin1String("folder")) {
+        showInFolder(existing);
+        return {};
+    }
+    if (action == QLatin1String("copy")) {
+        QImageReader reader(existing.first());
+        reader.setAutoTransform(true);
+        const QImage image = reader.read();
+        if (image.isNull()) {
+            return tr("Could not read %1: %2").arg(QFileInfo(existing.first()).fileName(), reader.errorString());
+        }
+        QGuiApplication::clipboard()->setImage(image);
+        notify(QStringLiteral("historyAction"), tr("Image copied"),
+               {tr("%1 copied to the clipboard").arg(QFileInfo(existing.first()).fileName())});
+        return {};
+    }
+    if (action == QLatin1String("trash")) {
+        QStringList trashed;
+        QStringList failed;
+        for (const QString &file : std::as_const(existing)) {
+            if (QFile::moveToTrash(file)) {
+                trashed.append(QFileInfo(file).fileName());
+                forgetCapturePath(file);
+            } else {
+                failed.append(QFileInfo(file).fileName());
+            }
+        }
+        if (!trashed.isEmpty()) {
+            notify(QStringLiteral("historyAction"), tr("Moved to trash"), {trashed.join(QStringLiteral(", "))});
+        }
+        if (!failed.isEmpty()) {
+            return tr("Could not move to the trash: %1").arg(failed.join(QStringLiteral(", ")));
+        }
+        return {};
+    }
+    return tr("Unknown action \"%1\".").arg(action);
+}
+
+void App::clearHistory()
+{
+    if (history_->entries().isEmpty()) {
+        return;
+    }
+    history_->clear();
+    historyModified(true);
+}
+
+void App::historyModified(bool sweepThumbnails)
+{
+    QString error;
+    if (!history_->save(&error)) {
+        qWarning("glimply: could not save the capture history: %s", qPrintable(error));
+    }
+    if (sweepThumbnails) {
+        QStringList files;
+        for (const HistoryEntry &entry : history_->entries()) {
+            files += entry.files;
+        }
+        thumbnails_->sweep(files);
+    }
+    requestThumbnails();
+    historyChangedTimer_->start();
+}
+
+void App::requestThumbnails()
+{
+    for (const HistoryEntry &entry : history_->entries()) {
+        for (const QString &file : entry.files) {
+            if (thumbnailsPending_.contains(file) || !thumbnails_->existingThumbnail(file).isEmpty()) {
+                continue;
+            }
+            thumbnailsPending_.insert(file);
+            auto *watcher = new QFutureWatcher<QString>(this);
+            connect(watcher, &QFutureWatcher<QString>::finished, this, [this, watcher, file] {
+                const bool made = !watcher->result().isEmpty();
+                watcher->deleteLater();
+                // A file that cannot be decoded stays marked, so it is not retried on every query.
+                if (made) {
+                    thumbnailsPending_.remove(file);
+                    historyChangedTimer_->start();
+                }
+            });
+            const ThumbnailCache cache(thumbnails_->directory());
+            watcher->setFuture(QtConcurrent::run([cache, file] { return cache.generate(file); }));
+        }
+    }
 }
 
 void App::editLastCapture()
@@ -776,7 +972,7 @@ void App::attachEditorWindow(QuickEditorWindow *window)
     window->setAttribute(Qt::WA_DeleteOnClose);
     connect(window, &QuickEditorWindow::savedToFile, this,
             [this](const QString &savedPath, const QString &displayName) {
-                recordCapture({savedPath}, displayName);
+                recordCapture({savedPath}, displayName, QString(), QStringLiteral("editor"));
                 const std::optional<ImageFormat> fmt = imageFormatFromPath(savedPath);
                 runPostCaptureHook({}, displayName, {savedPath}, QDateTime::currentDateTime(),
                                    fmt ? formatConfigKey(*fmt) : QStringLiteral("png"), QStringLiteral("editor"));
@@ -1300,7 +1496,8 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                     // Files that reached the disk are recorded even when a later group member
                     // failed, so they are not left behind untracked.
                     if (!out.writtenPaths.isEmpty()) {
-                        recordCapture(out.writtenPaths, out.cliResult.displayName, resolvedTargetId);
+                        recordCapture(out.writtenPaths, out.cliResult.displayName, resolvedTargetId,
+                                      request.triggerKind.isEmpty() ? QStringLiteral("cli") : request.triggerKind);
                         const QString fmt = out.cliResult.files.isEmpty()
                                                 ? formatConfigKey(store_.effectiveExportOptions(resolvedTargetId).format)
                                                 : out.cliResult.files.first().format;

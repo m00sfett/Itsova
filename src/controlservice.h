@@ -36,6 +36,11 @@ public Q_SLOTS:
     Q_SCRIPTABLE void OpenLastCapture();
     Q_SCRIPTABLE void EditLastCapture();
     Q_SCRIPTABLE void OpenCaptureFolder();
+    // Capture history (#26): JSON array, newest first; see HistoryStore::toJson.
+    Q_SCRIPTABLE QString History();
+    // action: open, edit, copy, folder, trash. Returns an error message or an empty string.
+    Q_SCRIPTABLE QString HistoryAction(const QString &action, const QString &entryId, const QString &path);
+    Q_SCRIPTABLE void ClearHistory();
     Q_SCRIPTABLE void Configure(const QString &targetId);
     Q_SCRIPTABLE int DelaySeconds() const;
     Q_SCRIPTABLE bool KeepDelayActive() const;
@@ -63,6 +68,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     Q_SCRIPTABLE void Changed();
     Q_SCRIPTABLE void IntervalsChanged();
+    Q_SCRIPTABLE void HistoryChanged();
     Q_SCRIPTABLE void Captured(bool success);
     void widgetActiveChanged(bool active);
 

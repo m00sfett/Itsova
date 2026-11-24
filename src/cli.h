@@ -98,6 +98,12 @@ public:
     virtual CliSimpleResult stopAllIntervals() = 0;
     virtual CliSimpleResult intervalStatus(QJsonArray *outArray) = 0;
     virtual CliSimpleResult openOverlay(const QString &mode, int delaySeconds) = 0;
+    // Capture history, newest first (JSON as returned by D-Bus History()).
+    virtual CliSimpleResult history(QJsonArray *outArray)
+    {
+        Q_UNUSED(outArray);
+        return {false, 1, {}, QStringLiteral("history is not supported by this backend")};
+    }
 };
 
 class DBusCliBackend final : public CliBackend
@@ -119,6 +125,7 @@ public:
     CliSimpleResult stopAllIntervals() override;
     CliSimpleResult intervalStatus(QJsonArray *outArray) override;
     CliSimpleResult openOverlay(const QString &mode, int delaySeconds) override;
+    CliSimpleResult history(QJsonArray *outArray) override;
 };
 
 [[nodiscard]] bool isCliSubcommand(const QString &arg);

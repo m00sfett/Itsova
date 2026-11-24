@@ -179,6 +179,29 @@ public:
         return {true, 0, {}, {}};
     }
 
+    QJsonArray historyItems{
+        QJsonObject{
+            {QStringLiteral("id"), QStringLiteral("e2")},
+            {QStringLiteral("timestamp"), QStringLiteral("2026-11-24T15:01:02.000")},
+            {QStringLiteral("targetName"), QStringLiteral("Both Monitors")},
+            {QStringLiteral("files"),
+             QJsonArray{QJsonObject{{QStringLiteral("path"), QStringLiteral("/p/a.png")}},
+                        QJsonObject{{QStringLiteral("path"), QStringLiteral("/p/b.png")}}}},
+        },
+        QJsonObject{
+            {QStringLiteral("id"), QStringLiteral("e1")},
+            {QStringLiteral("timestamp"), QStringLiteral("2026-11-24T14:00:00.000")},
+            {QStringLiteral("targetName"), QStringLiteral("Work Area")},
+            {QStringLiteral("files"), QJsonArray{QJsonObject{{QStringLiteral("path"), QStringLiteral("/p/c.png")}}}},
+        },
+    };
+
+    CliSimpleResult history(QJsonArray *outArray) override
+    {
+        *outArray = historyItems;
+        return {true, 0, {}, {}};
+    }
+
     CliSimpleResult openOverlay(const QString &mode, int delaySeconds) override
     {
         lastOverlayMode = mode;
@@ -203,7 +226,39 @@ private Q_SLOTS:
     void areaSubcommands();
     void intervalAndOverlaySubcommands();
     void requestJsonRoundTrip();
+    void historySubcommand();
 };
+
+void CliTest::historySubcommand()
+{
+    MockCliBackend backend;
+    QBuffer out;
+    QBuffer err;
+    out.open(QIODevice::ReadWrite);
+    err.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history")}, backend, out, err), 0);
+    const QStringList lines = QString::fromUtf8(out.data()).trimmed().split(QLatin1Char('\n'));
+    QCOMPARE(lines.size(), 3);
+    QCOMPARE(lines.first(), QStringLiteral("2026-11-24 15:01:02\tBoth Monitors\t/p/a.png"));
+    QCOMPARE(lines.last(), QStringLiteral("2026-11-24 14:00:00\tWork Area\t/p/c.png"));
+
+    QBuffer jsonOut;
+    jsonOut.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("1"),
+                     QStringLiteral("--json")},
+                    backend, jsonOut, err),
+             0);
+    const QJsonArray parsed = QJsonDocument::fromJson(jsonOut.data()).array();
+    QCOMPARE(parsed.size(), 1);
+    QCOMPARE(parsed.first().toObject().value(QStringLiteral("id")).toString(), QStringLiteral("e2"));
+
+    QBuffer badOut;
+    badOut.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("0")},
+                    backend, badOut, err),
+             2);
+    QVERIFY(isCliSubcommand(QStringLiteral("history")));
+}
 
 void CliTest::captureJsonAndOptions()
 {

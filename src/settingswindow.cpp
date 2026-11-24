@@ -2,6 +2,7 @@
 
 #include "app.h"
 #include "areaselector.h"
+#include "historystore.h"
 #include "hookrunner.h"
 #include "imageoutput.h"
 #include "screens.h"
@@ -1592,6 +1593,37 @@ QWidget *SettingsWindow::createStoragePage()
                                         "never overwritten: a number is appended instead."),
                                      page));
 
+    historyLimit_ = new QSpinBox(page);
+    historyLimit_->setRange(HistoryStore::MinLimit, HistoryStore::MaxLimit);
+    historyLimit_->setSuffix(tr(" captures"));
+    historyLimit_->setAccessibleName(tr("Number of recent captures to keep"));
+    auto *clearHistory = new QPushButton(QIcon::fromTheme(QStringLiteral("edit-clear-history")), tr("Clear History"),
+                                         page);
+    historyFeedback_ = new QLabel(page);
+    historyFeedback_->setVisible(false);
+    auto *historyRow = new QHBoxLayout;
+    historyRow->addWidget(historyLimit_);
+    historyRow->addWidget(clearHistory);
+    historyRow->addWidget(historyFeedback_);
+    historyRow->addStretch(1);
+    form->addRow(tr("Recent captures:"), historyRow);
+    form->addRow(QString(), makeHint(tr("Shown in the widget and the tray menu. Interval captures are not listed. "
+                                        "Clearing the list never deletes image files."),
+                                     page));
+    connect(historyLimit_, &QSpinBox::valueChanged, this, [this](int value) {
+        if (updating_) {
+            return;
+        }
+        app_->store().historyLimit = value;
+        app_->storeChanged();
+    });
+    connect(clearHistory, &QPushButton::clicked, this, [this] {
+        app_->clearHistory();
+        historyFeedback_->setText(tr("History cleared"));
+        historyFeedback_->setVisible(true);
+        QTimer::singleShot(3000, historyFeedback_, [label = historyFeedback_] { label->setVisible(false); });
+    });
+
     const auto applyDirectory = [this] {
         if (updating_) {
             return;
@@ -1995,6 +2027,7 @@ void SettingsWindow::refreshStorage()
     directory_->setText(store.captureDirectory);
     template_->setText(store.filenameTemplate);
     storageExport_->setOptions(store.exportOptions);
+    historyLimit_->setValue(store.historyLimit);
     templatePreview_->setText(
         filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime(),
                     store.exportOptions.format));

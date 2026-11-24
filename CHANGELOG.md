@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - Unreleased
+
+Daily-driver milestone: capture history, Pin-to-Screen and local text recognition.
+
+### Added
+
+- Capture history (#26): glimply remembers the most recent captures (default 20, adjustable from 5 to 100 under *Settings → Storage*) across restarts in `~/.local/state/glimply/history.json`, with cached thumbnails in `~/.cache/glimply/thumbs/`. Manual, CLI, MCP and quick-editor captures are recorded; interval captures are not. Entries whose files were deleted or moved disappear automatically.
+- Plasma widget: a collapsible *Recent* section below the targets shows the newest captures as a thumbnail grid (8 at first, *Show all* for the rest). Click opens a capture; the corner button, right click or the Menu key offer *Open*, *Edit in Window*, *Copy*, *Show in Folder* and *Move to Trash*. Captures with several files show a count badge and expand into their files.
+- Tray menu: a *Recent Captures* submenu with the newest 10 captures and the same actions, plus *Clear History*.
+- *Move to Trash* uses the system trash and never deletes permanently. *Clear History* only empties the list; image files stay where they are.
+- CLI: `glimply history [--limit N] [--json]` lists recent captures. D-Bus: `History()`, `HistoryAction(action, entryId, path)`, `ClearHistory()` and the `HistoryChanged` signal; actions only accept files that are recorded in the history.
+
 ## [0.6.1] - 2026-11-24
 
 ### Fixed

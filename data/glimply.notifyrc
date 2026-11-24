@@ -55,3 +55,9 @@ Name=MCP capture executed
 Comment=An external local MCP client captured a screenshot
 Action=Popup
 Urgency=Low
+
+[Event/historyAction]
+Name=Recent capture action
+Comment=A recent capture was copied or moved to the trash
+Action=Popup
+Urgency=Low

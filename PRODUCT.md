@@ -38,6 +38,7 @@ Runs as a tray icon or Plasma widget. Triggered by the Print key, global shortcu
 - Scriptable CLI (`capture`, `list`, `area`, `interval`, `overlay` with `--stdout`, `--no-save`, `--json`) and expanded async session D-Bus API (`CaptureSync`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `AddAreaRect`, `OpenOverlay`, `McpDispatch`), plus shell-free async post-capture command hooks (`Automation` Settings page + per-target/group overrides).
 - Local stdio MCP server (`glimply mcp`): strictly local, disabled by default, three security scopes (`Allowlist`, `Confirm every capture` 30 s auto-deny Breeze dialog, `Full session access`), metadata-first responses with optional `include_image` + `max_dimension`, and programmatic vector callout / irreversible redaction tools (`annotate_image`).
 - All UI text translatable; English by default, 18 more languages later.
+- Capture history: the newest captures (default 20, persisted, interval captures excluded) as a thumbnail grid in the widget's collapsible *Recent* section and a *Recent Captures* tray submenu, with Open, Edit in Window, Copy, Show in Folder and Move to Trash (system trash only); `glimply history` and D-Bus `History()` for scripts.
 - Not yet: shaped selections, targets that follow a window, text recognition, upload.
 
 ## Brand Commitments
