@@ -16,6 +16,10 @@ Daily-driver milestone: capture history, Pin-to-Screen and local text recognitio
 - Tray menu: a *Recent Captures* submenu with the newest 10 captures and the same actions, plus *Clear History*.
 - *Move to Trash* uses the system trash and never deletes permanently. *Clear History* only empties the list; image files stay where they are.
 - CLI: `glimply history [--limit N] [--json]` lists recent captures. D-Bus: `History()`, `HistoryAction(action, entryId, path)`, `ClearHistory()` and the `HistoryChanged` signal; actions only accept files that are recorded in the history.
+- Pin-to-Screen (#28): keep a screenshot on screen as a borderless reference window above all other windows. Pin from the capture overlay (`P` or the *Pin* button; one pin per rectangle, annotations included, no file written), from the quick editor (*Pin to Screen*), from a recent capture, or with the global shortcut *Pin last capture to the screen* (unbound by default).
+- Pins survive restarts until you remove them (stored in `~/.local/share/glimply/pins/`), come back on their monitor (or on the primary monitor while it is unplugged), and are made invisible during every capture so they never end up in a screenshot.
+- Pin controls: drag to move, mouse wheel zooms in steps from 25 % to 400 %, Ctrl+wheel sets the opacity (20–100 %), double click resets to 100 %, Ctrl+C copies; the context menu offers *Copy*, *Edit in Window*, *Save As…*, zoom, opacity and *Remove Pin*. `Esc` or *Remove Pin* removes a pin with an *Undo* notification for 10 seconds.
+- Tray menu *Pins (N)*: *Show Pins* toggles all pins (remembered across restarts; also a global shortcut, unbound by default) and *Remove All Pins…* removes them after a confirmation.
 
 ## [0.6.1] - 2026-11-24
 
