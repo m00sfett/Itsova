@@ -7,6 +7,8 @@
 #include <QDir>
 #include <QStandardPaths>
 
+#include <algorithm>
+
 namespace glimply
 {
 
@@ -115,6 +117,67 @@ QString configuredUiLanguage()
 {
     const KConfig config(QStringLiteral("glimplyrc"), KConfig::SimpleConfig);
     return configuredUiLanguage(config);
+}
+
+const QList<UiLanguageChoice> &uiLanguageChoices()
+{
+    static const QList<UiLanguageChoice> choices = [] {
+        QList<UiLanguageChoice> list{
+            {QStringLiteral("ar"), QStringLiteral("العربية"), QStringLiteral("Arabic")},
+            {QStringLiteral("zh_CN"), QStringLiteral("中文（简体）"), QStringLiteral("Chinese (Simplified)")},
+            {QStringLiteral("zh_TW"), QStringLiteral("中文（繁體）"), QStringLiteral("Chinese (Traditional)")},
+            {QStringLiteral("nl"), QStringLiteral("Nederlands"), QStringLiteral("Dutch")},
+            {QStringLiteral("en"), QStringLiteral("English"), QStringLiteral("English")},
+            {QStringLiteral("fr"), QStringLiteral("Français"), QStringLiteral("French")},
+            {QStringLiteral("de"), QStringLiteral("Deutsch"), QStringLiteral("German")},
+            {QStringLiteral("hi"), QStringLiteral("हिन्दी"), QStringLiteral("Hindi")},
+            {QStringLiteral("id"), QStringLiteral("Bahasa Indonesia"), QStringLiteral("Indonesian")},
+            {QStringLiteral("it"), QStringLiteral("Italiano"), QStringLiteral("Italian")},
+            {QStringLiteral("ja"), QStringLiteral("日本語"), QStringLiteral("Japanese")},
+            {QStringLiteral("ko"), QStringLiteral("한국어"), QStringLiteral("Korean")},
+            {QStringLiteral("pl"), QStringLiteral("Polski"), QStringLiteral("Polish")},
+            {QStringLiteral("pt"), QStringLiteral("Português (Brasil)"), QStringLiteral("Portuguese")},
+            {QStringLiteral("ru"), QStringLiteral("Русский"), QStringLiteral("Russian")},
+            {QStringLiteral("es"), QStringLiteral("Español"), QStringLiteral("Spanish")},
+            {QStringLiteral("tr"), QStringLiteral("Türkçe"), QStringLiteral("Turkish")},
+            {QStringLiteral("uk"), QStringLiteral("Українська"), QStringLiteral("Ukrainian")},
+            {QStringLiteral("vi"), QStringLiteral("Tiếng Việt"), QStringLiteral("Vietnamese")},
+        };
+        std::sort(list.begin(), list.end(), [](const UiLanguageChoice &a, const UiLanguageChoice &b) {
+            return a.englishName < b.englishName;
+        });
+        return list;
+    }();
+    return choices;
+}
+
+QString uiLanguageNativeName(const QString &code)
+{
+    for (const UiLanguageChoice &choice : uiLanguageChoices()) {
+        if (choice.code == code) {
+            return choice.nativeName;
+        }
+    }
+    return code;
+}
+
+namespace
+{
+QString &activeLanguageStorage()
+{
+    static QString language = QString::fromLatin1(sourceUiLanguage);
+    return language;
+}
+} // namespace
+
+void setActiveUiLanguage(const QString &code)
+{
+    activeLanguageStorage() = code;
+}
+
+QString activeUiLanguage()
+{
+    return activeLanguageStorage();
 }
 
 QStringList translationDirectories()
