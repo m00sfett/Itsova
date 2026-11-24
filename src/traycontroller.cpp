@@ -4,6 +4,7 @@
 #include "trayicon.h"
 
 #include <KStatusNotifierItem>
+#include <kstatusnotifieritem_version.h>
 
 #include <QAction>
 #include <QEvent>
@@ -56,7 +57,14 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     item_->setToolTipSubTitle(statusText_);
     item_->setStandardActionsEnabled(false); // the menu adds its own Quit
     item_->setContextMenu(menu_); // the item takes ownership
+#if KSTATUSNOTIFIERITEM_VERSION >= QT_VERSION_CHECK(6, 14, 0)
     item_->setIsMenu(true); // a click opens the menu
+#else
+    // KF6 before 6.14 (Debian 13) has no setIsMenu: open the menu on activation instead.
+    connect(item_, &KStatusNotifierItem::activateRequested, this, [this](bool, const QPoint &pos) {
+        menu_->popup(pos);
+    });
+#endif
 
     blinkTimer_->setSingleShot(true);
     blinkTimer_->setInterval(blinkDurationMs);

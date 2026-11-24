@@ -189,6 +189,7 @@ public:
     int historyLimit = 20;
     // Text recognition languages (backend codes); empty = every installed language except osd.
     QStringList ocrLanguages;
+    QString uiLanguage; // [General] Language: a UI language code, empty follows the system (#53)
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();

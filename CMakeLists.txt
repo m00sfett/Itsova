@@ -9,15 +9,15 @@ set(CMAKE_AUTOMOC ON)
 
 include(GNUInstallDirs)
 
-find_package(Qt6 6.12 REQUIRED COMPONENTS Widgets Concurrent DBus Gui LinguistTools)
-find_package(KF6Config REQUIRED)
-find_package(KF6GlobalAccel REQUIRED)
-find_package(KF6StatusNotifierItem REQUIRED)
-find_package(KF6Notifications REQUIRED)
-find_package(KF6DBusAddons REQUIRED)
-find_package(KF6WidgetsAddons REQUIRED)
-find_package(KF6XmlGui REQUIRED)
-find_package(KF6I18n REQUIRED)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Widgets Concurrent DBus Gui LinguistTools)
+find_package(KF6Config 6.13 REQUIRED)
+find_package(KF6GlobalAccel 6.13 REQUIRED)
+find_package(KF6StatusNotifierItem 6.13 REQUIRED)
+find_package(KF6Notifications 6.13 REQUIRED)
+find_package(KF6DBusAddons 6.13 REQUIRED)
+find_package(KF6WidgetsAddons 6.13 REQUIRED)
+find_package(KF6XmlGui 6.13 REQUIRED)
+find_package(KF6I18n 6.13 REQUIRED)
 
 add_executable(glimply
     src/main.cpp

@@ -256,6 +256,7 @@ int main(int argc, char *argv[])
     QApplication::setDesktopFileName(QStringLiteral("io.github.m00sfett.glimply"));
     language.install(application);
     language.restoreEnvironment();
+    glimply::setActiveUiLanguage(language.language());
     // Qt derives the direction from the qtbase catalog; set it from the language as well, since
     // not every UI language has a Qt catalog.
     QGuiApplication::setLayoutDirection(QLocale(language.language()).textDirection());

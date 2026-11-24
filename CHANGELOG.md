@@ -15,10 +15,13 @@ Public release readiness: translations, packaging and documentation. The reposit
 - glimply picks its language from `[General] Language` in `glimplyrc` when set, else from the system language, else English. KDE and Qt dialogs follow the same language, so a window never mixes two languages. Right-to-left languages mirror the layout.
 - `scripts/update-translations.sh` refreshes all catalogs from the code; `scripts/check-translations.py` checks them (placeholders, accelerators, plural forms, untranslated entries) and runs as a CTest test. `i18n/glossary.md` holds the terminology and the words that are never translated.
 
+- Language setting (#53): *Settings → General → Language* offers *System default* and the 19 languages by their own names. After a change, an inline message offers *Restart now*; glimply quits and starts again in the new language. The Plasma widget follows the Plasma language.
+
 ### Changed
 
 - MCP denial messages and `--json` CLI output stay English whatever the UI language; human-readable CLI messages follow it.
 - English plural forms are now correct where a count is shown ("1 capture", "3 seconds").
+- Lowered minimum supported toolchain (#55) from Qt 6.12 to Qt 6.8 and KDE Frameworks 6.13 (CMake 3.31+), verified in a Debian 13 (`trixie`) container via `scripts/check-debian13.sh`, with a compile-time compatibility fallback for `KStatusNotifierItem::setIsMenu` before KF6 6.14.
 
 ## [0.7.1] - 2026-11-24
 

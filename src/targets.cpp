@@ -341,6 +341,7 @@ void TargetStore::load(const KConfig &config)
     keepDelayActive = general.readEntry("KeepDelayActive", false);
     historyLimit = std::clamp(config.group(QStringLiteral("History")).readEntry("Limit", 20), 5, 100);
     ocrLanguages = config.group(QStringLiteral("TextRecognition")).readEntry("Languages", QStringList());
+    uiLanguage = general.readEntry("Language", QString()).trimmed();
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
@@ -509,6 +510,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("Autostart", autostart);
     general.writeEntry("UsePrintKey", usePrintKey);
     general.writeEntry("PrintOpensOverlay", printOpensOverlay);
+    general.writeEntry("Language", uiLanguage);
     switch (overlayStart) {
     case OverlayStart::LastUsed:
         general.writeEntry("OverlayStart", QStringLiteral("last"));

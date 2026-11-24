@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QList>
 #include <QString>
 #include <QStringList>
 
@@ -31,6 +32,23 @@ inline constexpr char sourceUiLanguage[] = "en";
 // [General] Language from glimplyrc; empty means "follow the system".
 [[nodiscard]] QString configuredUiLanguage(const KConfig &config);
 [[nodiscard]] QString configuredUiLanguage();
+
+// A UI language as offered in the settings: its code, its own name in its own script, and its
+// English name (the sort key, so the order does not change with the UI language).
+struct UiLanguageChoice
+{
+    QString code;
+    QString nativeName;
+    QString englishName;
+};
+// English and every translated language, sorted by English name.
+[[nodiscard]] const QList<UiLanguageChoice> &uiLanguageChoices();
+// The native name for a code ("de" -> "Deutsch"); the code itself when unknown.
+[[nodiscard]] QString uiLanguageNativeName(const QString &code);
+
+// The language this process runs in, decided once at startup.
+void setActiveUiLanguage(const QString &code);
+[[nodiscard]] QString activeUiLanguage();
 
 // Directories searched for glimply_<lang>.qm, most specific first: next to the executable (build
 // tree), the install prefix relative to the executable, then the XDG data directories.

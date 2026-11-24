@@ -3,6 +3,7 @@
 #include "app.h"
 #include "areaselector.h"
 #include "historystore.h"
+#include "i18n.h"
 #include "hookrunner.h"
 #include "imageoutput.h"
 #include "ocrengine.h"
@@ -12,8 +13,10 @@
 #include "triggerplan.h"
 
 #include <KKeySequenceWidget>
+#include <KMessageWidget>
 #include <KPageWidgetItem>
 
+#include <QAction>
 #include <QCheckBox>
 #include <QClipboard>
 #include <QComboBox>
@@ -1684,6 +1687,47 @@ QWidget *SettingsWindow::createGeneralPage()
     auto *form = new QFormLayout(content);
     form->setContentsMargins(0, 0, 0, 0);
     form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+
+    // UI language (#53). Native names in their own script, so everyone finds their language
+    // whatever the current one is; sorted by English name, so the order never moves.
+    language_ = new QComboBox(page);
+    language_->addItem(tr("System default (%1)")
+                           .arg(uiLanguageNativeName(resolveUiLanguage(QString(), systemUiLanguages()))),
+                       QString());
+    for (const UiLanguageChoice &choice : uiLanguageChoices()) {
+        language_->addItem(choice.nativeName, choice.code);
+    }
+    form->addRow(tr("Language:"), language_);
+    languageRestart_ = new KMessageWidget(tr("glimply needs to restart to switch the language."), page);
+    languageRestart_->setMessageType(KMessageWidget::Information);
+    languageRestart_->setWordWrap(true);
+    languageRestart_->setCloseButtonVisible(false);
+    auto *restartNow = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), tr("Restart now"), languageRestart_);
+    languageRestart_->addAction(restartNow);
+    languageRestart_->hide();
+    form->addRow(QString(), languageRestart_);
+    form->addRow(QString(), makeHint(tr("The Plasma widget follows the Plasma language."), page));
+    connect(language_, &QComboBox::currentIndexChanged, this, [this] {
+        const QString code = language_->currentData().toString();
+        const bool differs = resolveUiLanguage(code, systemUiLanguages()) != activeUiLanguage();
+        if (differs) {
+            languageRestart_->animatedShow();
+        } else if (languageRestart_->isVisible()) {
+            languageRestart_->animatedHide();
+        }
+        if (!updating_) {
+            app_->store().uiLanguage = code;
+            app_->storeChanged();
+        }
+    });
+    connect(restartNow, &QAction::triggered, this, [this] {
+        if (!app_->restart()) {
+            languageRestart_->setMessageType(KMessageWidget::Warning);
+            languageRestart_->setText(tr("glimply could not restart itself. Quit and start it again to switch the "
+                                         "language."));
+        }
+    });
+
     autostart_ = new QCheckBox(tr("Start glimply when I log in"), page);
     form->addRow(tr("Startup:"), autostart_);
     form->addRow(QString(), makeHint(tr("Shortcuts only work while glimply is running."), page));
@@ -2105,6 +2149,12 @@ void SettingsWindow::refreshStorage()
     templatePreview_->setText(
         filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime(),
                     store.exportOptions.format));
+    {
+        const int index = language_->findData(matchUiLanguage(store.uiLanguage).isEmpty()
+                                                  ? QString()
+                                                  : matchUiLanguage(store.uiLanguage));
+        language_->setCurrentIndex(index < 0 ? 0 : index);
+    }
     autostart_->setChecked(store.autostart);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
