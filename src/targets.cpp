@@ -29,7 +29,43 @@ QString migrateId(const QString &id)
 }
 constexpr auto groupGroupPrefix = "Group ";
 constexpr auto exportOverrideGroupPrefix = "ExportOverride ";
+constexpr auto builtInIntervalGroupPrefix = "BuiltInInterval ";
 constexpr auto builtInDelaysGroup = "BuiltInDelays";
+constexpr auto intervalShortcutPrefix = "interval:";
+
+IntervalConfig clampedIntervalConfig(IntervalConfig cfg)
+{
+    cfg.seconds = std::clamp(cfg.seconds, 1, 86400);
+    cfg.maxCaptures = std::clamp(cfg.maxCaptures, 0, 100000);
+    cfg.maxMinutes = std::clamp(cfg.maxMinutes, 0, 10080);
+    return cfg;
+}
+
+IntervalConfig readIntervalConfig(const KConfigGroup &group)
+{
+    IntervalConfig cfg;
+    cfg.seconds = group.readEntry("IntervalSeconds", cfg.seconds);
+    cfg.maxCaptures = group.readEntry("IntervalMaxCaptures", cfg.maxCaptures);
+    cfg.maxMinutes = group.readEntry("IntervalMaxMinutes", cfg.maxMinutes);
+    cfg.onlyWhenChanged = group.readEntry("IntervalOnlyWhenChanged", cfg.onlyWhenChanged);
+    return clampedIntervalConfig(cfg);
+}
+
+void writeIntervalConfig(KConfigGroup &group, const IntervalConfig &rawCfg)
+{
+    const IntervalConfig cfg = clampedIntervalConfig(rawCfg);
+    if (cfg == IntervalConfig{}) {
+        group.deleteEntry("IntervalSeconds");
+        group.deleteEntry("IntervalMaxCaptures");
+        group.deleteEntry("IntervalMaxMinutes");
+        group.deleteEntry("IntervalOnlyWhenChanged");
+        return;
+    }
+    group.writeEntry("IntervalSeconds", cfg.seconds);
+    group.writeEntry("IntervalMaxCaptures", cfg.maxCaptures);
+    group.writeEntry("IntervalMaxMinutes", cfg.maxMinutes);
+    group.writeEntry("IntervalOnlyWhenChanged", cfg.onlyWhenChanged);
+}
 
 ExportOptions readExportOptions(const KConfigGroup &group, const QString &prefix, const ExportOptions &fallback = {})
 {
@@ -134,6 +170,21 @@ QString connectorFromScreenTargetId(const QString &id)
     return isScreenTargetId(id) ? id.mid(int(qstrlen(screenPrefix))) : QString();
 }
 
+QString intervalShortcutId(const QString &targetId)
+{
+    return targetId.isEmpty() ? QString() : QLatin1String(intervalShortcutPrefix) + targetId;
+}
+
+bool isIntervalShortcutId(const QString &id)
+{
+    return id.startsWith(QLatin1String(intervalShortcutPrefix));
+}
+
+QString targetIdFromIntervalShortcutId(const QString &id)
+{
+    return isIntervalShortcutId(id) ? id.mid(int(qstrlen(intervalShortcutPrefix))) : QString();
+}
+
 QString TargetStore::defaultCaptureDirectory()
 {
     return QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).filePath(QStringLiteral("glimply"));
@@ -174,6 +225,7 @@ void TargetStore::load(const KConfig &config)
     groups.clear();
     builtInExportOverrides.clear();
     builtInDelays.clear();
+    builtInIntervals.clear();
 
     const KConfigGroup general = config.group(QStringLiteral("General"));
     exportOptions = readExportOptions(config.group(QStringLiteral("Export")), QString());
@@ -251,6 +303,7 @@ void TargetStore::load(const KConfig &config)
             area.includeCursor = entry.readEntry("IncludeCursor", false);
             area.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             area.exportOverride = readExportOverride(entry);
+            area.interval = readIntervalConfig(entry);
             const bool validSingle = !area.isCrossMonitor() && !area.connector.isEmpty();
             const bool validCross = area.isCrossMonitor() && !area.monitors.isEmpty() && area.rect.isValid();
             if (!area.id.isEmpty() && !area.name.isEmpty() && (validSingle || validCross)) {
@@ -266,6 +319,7 @@ void TargetStore::load(const KConfig &config)
             group.includeCursor = entry.readEntry("IncludeCursor", false);
             group.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             group.exportOverride = readExportOverride(entry);
+            group.interval = readIntervalConfig(entry);
             if (!group.id.isEmpty() && !group.name.isEmpty()) {
                 groups.append(group);
             }
@@ -276,6 +330,12 @@ void TargetStore::load(const KConfig &config)
             ov.options = readExportOptions(entry, QString());
             if (!id.isEmpty()) {
                 builtInExportOverrides.insert(id, ov);
+            }
+        } else if (name.startsWith(QLatin1String(builtInIntervalGroupPrefix))) {
+            const QString id = migrateId(name.mid(int(qstrlen(builtInIntervalGroupPrefix))));
+            const IntervalConfig cfg = readIntervalConfig(entry);
+            if (!id.isEmpty() && cfg != IntervalConfig{}) {
+                builtInIntervals.insert(id, cfg);
             }
         }
     }
@@ -299,7 +359,8 @@ void TargetStore::save(KConfig &config) const
     for (const QString &name : config.groupList()) {
         if (name.startsWith(QLatin1String(areaGroupPrefix)) || name.startsWith(QLatin1String(legacyAreaGroupPrefix))
             || name.startsWith(QLatin1String(groupGroupPrefix))
-            || name.startsWith(QLatin1String(exportOverrideGroupPrefix))) {
+            || name.startsWith(QLatin1String(exportOverrideGroupPrefix))
+            || name.startsWith(QLatin1String(builtInIntervalGroupPrefix))) {
             config.deleteGroup(name);
         }
     }
@@ -376,6 +437,7 @@ void TargetStore::save(KConfig &config) const
             entry.writeEntry("DelaySeconds", std::clamp(area.delaySeconds, 0, 60));
         }
         writeExportOverride(entry, area.exportOverride);
+        writeIntervalConfig(entry, area.interval);
         areaOrder.append(area.id);
     }
     QStringList groupOrder;
@@ -388,12 +450,20 @@ void TargetStore::save(KConfig &config) const
             entry.writeEntry("DelaySeconds", std::clamp(group.delaySeconds, 0, 60));
         }
         writeExportOverride(entry, group.exportOverride);
+        writeIntervalConfig(entry, group.interval);
         groupOrder.append(group.id);
     }
     for (auto it = builtInExportOverrides.cbegin(); it != builtInExportOverrides.cend(); ++it) {
         if (it.value().enabled) {
             KConfigGroup entry = config.group(QLatin1String(exportOverrideGroupPrefix) + it.key());
             writeExportOptions(entry, QString(), it.value().options);
+        }
+    }
+    for (auto it = builtInIntervals.cbegin(); it != builtInIntervals.cend(); ++it) {
+        const IntervalConfig cfg = clampedIntervalConfig(it.value());
+        if (cfg != IntervalConfig{}) {
+            KConfigGroup entry = config.group(QLatin1String(builtInIntervalGroupPrefix) + it.key());
+            writeIntervalConfig(entry, cfg);
         }
     }
     general.writeEntry("AreaOrder", areaOrder);
@@ -547,6 +617,7 @@ void TargetStore::remove(const QString &id)
     groups.removeIf([&](const Group &g) { return g.id == id; });
     builtInExportOverrides.remove(id);
     builtInDelays.remove(id);
+    builtInIntervals.remove(id);
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
     }
@@ -596,6 +667,35 @@ bool TargetStore::consumeOneShotDelay()
         return true;
     }
     return false;
+}
+
+IntervalConfig TargetStore::targetIntervalConfig(const QString &targetId) const
+{
+    if (const Area *r = area(targetId)) {
+        return clampedIntervalConfig(r->interval);
+    }
+    if (const Group *g = group(targetId)) {
+        return clampedIntervalConfig(g->interval);
+    }
+    return clampedIntervalConfig(builtInIntervals.value(targetId));
+}
+
+void TargetStore::setTargetIntervalConfig(const QString &targetId, const IntervalConfig &cfg)
+{
+    const IntervalConfig clamped = clampedIntervalConfig(cfg);
+    if (Area *r = area(targetId)) {
+        r->interval = clamped;
+        return;
+    }
+    if (Group *g = group(targetId)) {
+        g->interval = clamped;
+        return;
+    }
+    if (clamped != IntervalConfig{}) {
+        builtInIntervals.insert(targetId, clamped);
+    } else {
+        builtInIntervals.remove(targetId);
+    }
 }
 
 ExportOverride TargetStore::targetExportOverride(const QString &targetId) const

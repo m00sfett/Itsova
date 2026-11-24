@@ -66,6 +66,7 @@ add_library(glimply_capture STATIC
     src/captureservice.cpp
     src/colorformat.cpp
     src/imageoutput.cpp
+    src/intervalcontroller.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
     src/selectionmodel.cpp
@@ -100,6 +101,7 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" D
 install(FILES data/glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
 install(FILES data/io.github.m00sfett.glimply.svg data/io.github.m00sfett.glimply-tray.svg
               data/io.github.m00sfett.glimply-tray-flash.svg
+              data/io.github.m00sfett.glimply-tray-interval.svg
         DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 # D-Bus activation: the Plasma widget starts glimply on demand.
@@ -158,6 +160,9 @@ if(BUILD_TESTING)
     add_executable(loupepickertest tests/loupepickertest.cpp)
     target_link_libraries(loupepickertest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME loupepicker COMMAND loupepickertest)
+    add_executable(intervaltest tests/intervaltest.cpp)
+    target_link_libraries(intervaltest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME interval COMMAND intervaltest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

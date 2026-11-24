@@ -37,3 +37,9 @@ Name=Color copied
 Comment=A sampled screen color was copied to the clipboard
 Action=Popup
 Urgency=Low
+
+[Event/intervalStopped]
+Name=Interval capture stopped
+Comment=A scheduled interval capture reached its configured limit and finished
+Action=Popup
+Urgency=Low

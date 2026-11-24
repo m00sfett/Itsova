@@ -47,6 +47,7 @@ struct RenderedOutput
     QImage image;
     QString error;
     ExportOptions exportOptions;
+    QString targetId;
 };
 
 [[nodiscard]] QList<ScreenInfo> intersectingScreens(const QList<ScreenInfo> &screens, const QRect &globalRect);

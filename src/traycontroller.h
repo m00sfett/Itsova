@@ -1,5 +1,7 @@
 #pragma once
 
+#include "intervalcontroller.h"
+
 #include <QKeySequence>
 #include <QList>
 #include <QObject>
@@ -24,6 +26,8 @@ struct MenuTarget
     QString detail; // e.g. "not connected"
     QKeySequence shortcut;
     bool available = true;
+    int intervalSeconds = 5;
+    bool intervalActive = false;
 };
 
 class TrayController : public QObject
@@ -38,6 +42,7 @@ public:
     void setLastCaptureAvailable(bool available);
     void setDelayState(int seconds, bool keepActive);
     void setCountdownState(bool active, int remainingSeconds);
+    void setActiveIntervals(const QList<ActiveIntervalStatus> &active);
     void setStatusText(const QString &text);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
@@ -48,6 +53,9 @@ Q_SIGNALS:
     void triggerRequested(const QString &id);
     void delayChangedRequested(int seconds, bool keepActive);
     void cancelCountdownRequested();
+    void toggleIntervalRequested(const QString &id);
+    void stopIntervalRequested(const QString &id);
+    void stopAllIntervalsRequested();
     void openLastCaptureRequested();
     void editLastCaptureRequested();
     void openFolderRequested();
@@ -59,11 +67,14 @@ Q_SIGNALS:
 private:
     void rebuildMenu();
     void updateIcon();
+    void updateToolTip();
 
     TargetProvider provider_;
     KStatusNotifierItem *item_;
     QMenu *menu_;
     QTimer *blinkTimer_;
+    QList<ActiveIntervalStatus> activeIntervals_;
+    QString statusText_;
     bool flashing_ = false;
     bool lastCaptureAvailable_ = false;
     int delaySeconds_ = 0;

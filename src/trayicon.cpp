@@ -14,8 +14,9 @@ const QColor ink(0x08, 0x06, 0x04);
 const QColor red(0xB1, 0x12, 0x18);
 const QColor yellow(0xFF, 0xD2, 0x1F);
 
-QPixmap renderGlyph(int size, bool flash)
+QPixmap renderGlyph(int size, TrayIconState state)
 {
+    const bool flash = state == TrayIconState::Flash;
     QPixmap pixmap(size, size);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
@@ -46,18 +47,34 @@ QPixmap renderGlyph(int size, bool flash)
     } else {
         painter.drawRoundedRect(QRectF(9, 9, 4, 4), 1, 1);
     }
+
+    if (state == TrayIconState::IntervalActive) {
+        painter.resetTransform();
+        painter.scale(size / 22.0, size / 22.0);
+        painter.setPen(QPen(ink, 1.0));
+        painter.setBrush(yellow);
+        painter.drawEllipse(QPointF(17.5, 17.5), 3.5, 3.5);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(red);
+        painter.drawEllipse(QPointF(17.5, 17.5), 1.4, 1.4);
+    }
     return pixmap;
 }
 
 } // namespace
 
-QIcon trayIcon(bool flash)
+QIcon trayIcon(TrayIconState state)
 {
     QIcon icon;
     for (const int size : {16, 22, 24, 32, 44, 48, 64}) {
-        icon.addPixmap(renderGlyph(size, flash));
+        icon.addPixmap(renderGlyph(size, state));
     }
     return icon;
+}
+
+QIcon trayIcon(bool flash)
+{
+    return trayIcon(flash ? TrayIconState::Flash : TrayIconState::Normal);
 }
 
 } // namespace glimply

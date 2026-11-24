@@ -18,6 +18,8 @@ PlasmaComponents3.ItemDelegate {
     required property string detail
     required property string shortcut
     required property bool available
+    property bool intervalActive: false
+    property int intervalSeconds: 5
 
     // "normal", "rename" or "confirmDelete"
     property string mode: "normal"
@@ -27,6 +29,7 @@ PlasmaComponents3.ItemDelegate {
     readonly property bool renamable: editable || kind === "monitor"
 
     signal captureRequested(string id)
+    signal toggleIntervalRequested(string id, bool active)
     signal editRequested(string id, string kind)
     signal renameRequested(string id, string name, var done)
     signal deleteRequested(string id)
@@ -135,6 +138,14 @@ PlasmaComponents3.ItemDelegate {
                     label: i18n("Capture now")
                     enabled: row.available
                     onClicked: row.captureRequested(row.targetId)
+                }
+                RowButton {
+                    iconName: row.intervalActive ? "media-playback-stop" : "chronometer"
+                    label: row.intervalActive ? i18n("Stop interval")
+                                              : i18n("Start interval (%1 s)", row.intervalSeconds)
+                    checked: row.intervalActive
+                    enabled: row.intervalActive || row.available
+                    onClicked: row.toggleIntervalRequested(row.targetId, row.intervalActive)
                 }
                 RowButton {
                     visible: row.editable
