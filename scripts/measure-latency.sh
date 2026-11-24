@@ -3,7 +3,9 @@
 # virtual KWin on a private D-Bus session with a throw-away HOME, runs the given glimply binary
 # there, triggers its Print shortcut N times through kglobalaccel and prints `glimply latency`.
 #
-# Usage: scripts/measure-latency.sh [--runs N] [--monitors N] [--json] <path/to/glimply>
+# Usage: scripts/measure-latency.sh [--runs N] [--monitors N] [--pins] [--json] <path/to/glimply>
+#
+# --pins pins the warm-up capture to the screen first, so every run waits for a visible pin.
 #
 # The trigger comes from kglobalaccel's invokeShortcut, which carries no key timestamp, so the
 # "key" column stays empty here; real key presses on the desktop fill it (see `glimply latency`).
@@ -12,13 +14,15 @@ set -euo pipefail
 runs=20
 monitors=1
 json=()
+pins=()
 binary=""
 while (($#)); do
     case "$1" in
     --runs) runs="$2"; shift 2 ;;
     --monitors) monitors="$2"; shift 2 ;;
     --json) json=(--json); shift ;;
-    -h | --help) sed -n '2,9p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    --pins) pins=(--pins); shift ;;
+    -h | --help) sed -n '2,11p' "${BASH_SOURCE[0]}"; exit 0 ;;
     *) binary="$(realpath "$1")"; shift ;;
     esac
 done
@@ -47,7 +51,7 @@ if [[ -z "${GLIMPLY_MEASURE_INNER:-}" ]]; then
         HOME="$home" XDG_CONFIG_HOME="$home/.config" XDG_DATA_HOME="$home/.local/share" \
         XDG_CACHE_HOME="$home/.cache" XDG_STATE_HOME="$home/.local/state" \
         dbus-run-session --config-file="$home/session.conf" -- "${BASH_SOURCE[0]}" --runs "$runs" \
-        --monitors "$monitors" "${json[@]}" "$binary" &
+        --monitors "$monitors" "${pins[@]}" "${json[@]}" "$binary" &
     inner_pid=$!
     status=0
     wait "$inner_pid" || status=$?
@@ -121,7 +125,13 @@ trigger() {
 }
 
 # One warm-up press first: the first capture after start pays for lazy initialisation.
-for _ in $(seq 0 "$runs"); do
+trigger
+if ((${#pins[@]})); then
+    busctl --user --auto-start=no call io.github.m00sfett.glimply /Control \
+        io.github.m00sfett.glimply.Control PinLastCapture
+    sleep 1
+fi
+for _ in $(seq 1 "$runs"); do
     trigger
 done
 
