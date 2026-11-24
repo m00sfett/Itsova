@@ -2,6 +2,7 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[ko]=glimply 스크린샷
 Comment[nl]=glimply-schermafbeeldingen
 Comment[id]=Tangkapan layar glimply
 Comment[hi]=glimply स्क्रीनशॉट
@@ -15,6 +16,7 @@ Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[ko]=캡처 실패
 Name[nl]=Vastleggen mislukt
 Name[id]=Tangkapan gagal
 Name[hi]=कैप्चर विफल रहा
@@ -26,6 +28,7 @@ Name[ja]=キャプチャに失敗
 Name[fr]=Échec de la capture
 Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[ko]=캡처에 실패했거나 대상을 건너뛰었습니다
 Comment[nl]=Een opname is mislukt of een doel is overgeslagen
 Comment[id]=Tangkapan gagal atau target dilewati
 Comment[hi]=कोई कैप्चर विफल रहा या कोई लक्ष्य छोड़ दिया गया
@@ -41,6 +44,7 @@ Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[ko]=모니터 변경됨
 Name[nl]=Scherm gewijzigd
 Name[id]=Monitor berubah
 Name[hi]=मॉनिटर बदल गया
@@ -52,6 +56,7 @@ Name[ja]=ディスプレイが変更されました
 Name[fr]=Écran modifié
 Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[ko]=영역의 모니터가 정의된 모니터와 다릅니다
 Comment[nl]=Het scherm van een gebied verschilt van het scherm waarop het is gedefinieerd
 Comment[id]=Monitor area berbeda dari saat area ditentukan
 Comment[hi]=किसी क्षेत्र का मॉनिटर उस मॉनिटर से भिन्न है जिस पर इसे परिभाषित किया गया था
@@ -67,6 +72,7 @@ Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[ko]=설정 문제
 Name[nl]=Instellingsprobleem
 Name[id]=Masalah pengaturan
 Name[hi]=सेटिंग्स समस्या
@@ -78,6 +84,7 @@ Name[ja]=設定の問題
 Name[fr]=Problème de paramètres
 Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[ko]=glimply가 자동 시작 등의 설정을 적용할 수 없습니다
 Comment[nl]=glimply kon een instelling niet toepassen, zoals automatisch starten
 Comment[id]=glimply tidak dapat menerapkan pengaturan, seperti mulai otomatis
 Comment[hi]=glimply कोई सेटिंग लागू नहीं कर सका, जैसे स्वतः प्रारंभ
@@ -92,6 +99,7 @@ Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[ko]=캡처 저장됨
 Name[nl]=Opname opgeslagen
 Name[id]=Tangkapan disimpan
 Name[hi]=कैप्चर सहेजा गया
@@ -103,6 +111,7 @@ Name[ja]=キャプチャを保存しました
 Name[fr]=Capture enregistrée
 Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[ko]=Print 키 또는 오버레이의 캡처가 저장되었습니다
 Comment[nl]=Een opname van de Print-toets of de overlay is opgeslagen
 Comment[id]=Tangkapan dari tombol Print atau overlay telah disimpan
 Comment[hi]=Print कुंजी या ओवरले से एक कैप्चर सहेजा गया
@@ -118,6 +127,7 @@ Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[ko]=일부 캡처
 Name[nl]=Gedeeltelijke opname
 Name[id]=Tangkapan sebagian
 Name[hi]=आंशिक कैप्चर
@@ -129,6 +139,7 @@ Name[ja]=一部のキャプチャ
 Name[fr]=Capture partielle
 Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[ko]=모니터 연결이 끊겨 다중 모니터 영역이 일부만 캡처되었거나 건너뛰어졌습니다
 Comment[nl]=Een schermoverschrijdend gebied is gedeeltelijk vastgelegd of overgeslagen omdat een scherm is losgekoppeld
 Comment[id]=Area lintas-monitor ditangkap sebagian atau dilewati karena monitor tidak terhubung
 Comment[hi]=एक क्रॉस-मॉनिटर क्षेत्र आंशिक रूप से कैप्चर किया गया या छोड़ दिया गया क्योंकि एक मॉनिटर डिस्कनेक्ट है
@@ -144,6 +155,7 @@ Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[ko]=색상 복사됨
 Name[nl]=Kleur gekopieerd
 Name[id]=Warna disalin
 Name[hi]=रंग कॉपी किया गया
@@ -155,6 +167,7 @@ Name[ja]=色をコピーしました
 Name[fr]=Couleur copiée
 Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[ko]=추출한 화면 색상이 클립보드에 복사되었습니다
 Comment[nl]=Een bemonsterde schermkleur is gekopieerd naar het klembord
 Comment[id]=Warna layar yang diambil sampelnya telah disalin ke papan klip
 Comment[hi]=एक नमूना स्क्रीन रंग क्लिपबोर्ड पर कॉपी किया गया
@@ -170,6 +183,7 @@ Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[ko]=간격 캡처 중지됨
 Name[nl]=Intervalopname gestopt
 Name[id]=Tangkapan interval dihentikan
 Name[hi]=अंतराल कैप्चर रोका गया
@@ -181,6 +195,7 @@ Name[ja]=インターバルキャプチャを停止しました
 Name[fr]=Capture à intervalles arrêtée
 Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[ko]=예약된 간격 캡처가 구성된 제한에 도달하여 종료되었습니다
 Comment[nl]=Een geplande intervalopname heeft de ingestelde limiet bereikt en is voltooid
 Comment[id]=Tangkapan interval terjadwal mencapai batas yang dikonfigurasi dan selesai
 Comment[hi]=एक निर्धारित अंतराल कैप्चर अपनी कॉन्फ़िगर की गई सीमा तक पहुँच गया और समाप्त हो गया
@@ -196,6 +211,7 @@ Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[ko]=캡처 후 훅 실패
 Name[nl]=Hook na opname mislukt
 Name[id]=Hook pasca-tangkapan gagal
 Name[hi]=कैप्चर-पश्चात हुक विफल रहा
@@ -207,6 +223,7 @@ Name[ja]=キャプチャ後のフックに失敗しました
 Name[fr]=Échec du hook après capture
 Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[ko]=구성된 캡처 후 명령이 오류와 함께 종료되었거나 시간 초과되었습니다
 Comment[nl]=Een ingestelde opdracht na opname is afgesloten met een fout of verlopen
 Comment[id]=Perintah pasca-tangkapan yang dikonfigurasi keluar dengan galat atau kehabisan waktu
 Comment[hi]=एक कॉन्फ़िगर किया गया कैप्चर-पश्चात कमांड त्रुटि के साथ समाप्त हुआ या समय समाप्त हो गया
@@ -222,6 +239,7 @@ Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[ko]=MCP 캡처 실행됨
 Name[nl]=MCP-opname uitgevoerd
 Name[id]=Tangkapan MCP dijalankan
 Name[hi]=MCP कैप्चर निष्पादित
@@ -233,6 +251,7 @@ Name[ja]=MCP によるキャプチャを実行しました
 Name[fr]=Capture MCP exécutée
 Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[ko]=외부 로컬 MCP 클라이언트가 스크린샷을 캡처했습니다
 Comment[nl]=Een externe lokale MCP-client heeft een schermafbeelding vastgelegd
 Comment[id]=Klien MCP lokal eksternal menangkap tangkapan layar
 Comment[hi]=एक बाहरी स्थानीय MCP क्लाइंट ने स्क्रीनशॉट कैप्चर किया
@@ -248,6 +267,7 @@ Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[ko]=최근 캡처 작업
 Name[nl]=Actie op recente opname
 Name[id]=Tindakan tangkapan terbaru
 Name[hi]=हालिया कैप्चर क्रिया
@@ -259,6 +279,7 @@ Name[ja]=最近のキャプチャの操作
 Name[fr]=Action sur une capture récente
 Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[ko]=최근 캡처가 복사되었거나 휴지통으로 이동되었습니다
 Comment[nl]=Een recente opname is gekopieerd of verplaatst naar de prullenbak
 Comment[id]=Tangkapan terbaru disalin atau dipindahkan ke tempat sampah
 Comment[hi]=एक हालिया कैप्चर कॉपी किया गया या ट्रैश में ले जाया गया
@@ -274,6 +295,7 @@ Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[ko]=핀 제거됨
 Name[nl]=Pin verwijderd
 Name[id]=Pin dihapus
 Name[hi]=पिन हटाया गया
@@ -285,6 +307,7 @@ Name[ja]=固定を削除しました
 Name[fr]=Épingle supprimée
 Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[ko]=고정된 스크린샷이 제거되었으며 몇 초 동안은 복원할 수 있습니다
 Comment[nl]=Een vastgepinde schermafbeelding is verwijderd en kan nog enkele seconden worden hersteld
 Comment[id]=Tangkapan layar yang disematkan telah dihapus dan masih dapat dipulihkan selama beberapa detik
 Comment[hi]=एक पिन किया गया स्क्रीनशॉट हटा दिया गया था और कुछ सेकंड के लिए अभी भी पुनर्स्थापित किया जा सकता है
@@ -300,6 +323,7 @@ Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[ko]=텍스트 복사됨
 Name[nl]=Tekst gekopieerd
 Name[id]=Teks disalin
 Name[hi]=पाठ कॉपी किया गया
@@ -311,6 +335,7 @@ Name[ja]=テキストをコピーしました
 Name[fr]=Texte copié
 Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[ko]=인식된 텍스트가 클립보드에 복사되었거나 텍스트를 찾을 수 없습니다
 Comment[nl]=Herkende tekst is gekopieerd naar het klembord, of er is geen tekst gevonden
 Comment[id]=Teks yang dikenali telah disalin ke papan klip, atau tidak ada teks ditemukan
 Comment[hi]=पहचाना गया पाठ क्लिपबोर्ड पर कॉपी किया गया, या कोई पाठ नहीं मिला
