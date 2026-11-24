@@ -243,10 +243,27 @@ void App::recordCapture(const QStringList &paths, const QString &displayName)
                                                                   QLocale::ShortFormat)));
 }
 
+void App::forgetCapturePath(const QString &path)
+{
+    if (path.isEmpty() || lastPaths_.removeAll(path) == 0) {
+        return;
+    }
+    const bool hasAny = !lastPaths_.isEmpty();
+    tray_->setLastCaptureAvailable(hasAny);
+    if (!hasAny) {
+        tray_->setStatusText(tr("Ready"));
+    }
+    Q_EMIT targetsChanged();
+}
+
 void App::notifySaved(const QString &title, const QStringList &paths, const QStringList &errors)
 {
     if (paths.isEmpty()) {
-        notifyError(title.isEmpty() ? tr("Capture failed") : title, errors);
+        if (errors.isEmpty() && !title.isEmpty()) {
+            notify(QStringLiteral("captureSaved"), title, {});
+        } else {
+            notifyError(title.isEmpty() ? tr("Capture failed") : title, errors);
+        }
         return;
     }
     QStringList lines;

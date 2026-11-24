@@ -26,7 +26,8 @@ Runs as a tray icon or Plasma widget. Triggered by the Print key, global shortcu
 
 - Targets: areas (one monitor, logical coordinates, auto-named `<monitor>-<n>`), built-in per-monitor targets, "All monitors". Groups of targets with their own shortcut.
 - Monitors can be named; the name belongs to the physical monitor (manufacturer, model, serial), falls back to the connector, and is used for display, monitor capture file names and new area names.
-- Overlay modifiers mean the same with mouse and keys: Shift steps by 10, Alt works around the centre, Ctrl keeps a square.
+- Unified PhotoCraft / Photoshop modifiers across overlays and markup: with the mouse, `Shift` keeps a square/circle (or 15° angle snap), `Alt` grows from the centre (or duplicates an annotation), `Space` while dragging repositions in-progress shapes/selections live, and `Ctrl` in markup temporarily switches to `Select / Move`. With arrow keys, `Shift` steps by 10, `Alt` resizes around the centre, and `Ctrl` resizes as a square.
+- Optional progressive-disclosure markup in the capture overlay (`Annotate` or single-letter tool keys `A R E B M T N X S`): non-destructive vector callouts, rich text with legibility modes, step counter, spotlight dim mask, and irreversible pixel redactions (`Solid`, `Pixelate`, `Blur`) rendered directly at native monitor DPI, with automatic `Print`-snapshot leak protection when redacting.
 - No default shortcuts. Cursor off by default, per target and per group.
 - Storage: `~/Pictures/glimply/`, flat, `{date}_{time}_{area}.png`, PNG only.
 - Feedback: one short tray icon blink after success; a notification with Open and Show in Folder after Print and overlay captures; errors always notify.

@@ -11,7 +11,7 @@ namespace glimply
 struct SelectionConstraints {
     // The rectangle grows symmetrically around its centre (Alt).
     bool fromCentre = false;
-    // Width and height stay equal (Ctrl).
+    // Width and height stay equal (Shift).
     bool square = false;
 };
 

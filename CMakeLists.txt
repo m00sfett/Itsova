@@ -23,11 +23,9 @@ add_executable(glimply
     src/main.cpp
     src/app.cpp
     src/controlservice.cpp
-    src/areaselector.cpp
     src/captureoverlay.cpp
     src/printkey.cpp
     src/settingswindow.cpp
-    src/screens.cpp
     src/shortcutmanager.cpp
     src/traycontroller.cpp
     src/trayicon.cpp
@@ -62,9 +60,11 @@ add_library(glimply_capture STATIC
     src/annotations/annotationrenderer.cpp
     src/annotations/annotationsettings.cpp
     src/annotations/annotationtextlayout.cpp
+    src/annotations/overlayexport.cpp
     src/annotations/redactionprocessor.cpp
     src/captureservice.cpp
     src/imageoutput.cpp
+    src/screens.cpp
     src/selectiongeometry.cpp
     src/selectionmodel.cpp
     src/targets.cpp
@@ -80,6 +80,7 @@ add_library(glimply_ui STATIC
     src/annotations/annotationcontroller.cpp
     src/annotations/annotationtoolbar.cpp
     src/annotations/inlinetexteditor.cpp
+    src/areaselector.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
 target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n)
@@ -133,6 +134,9 @@ if(BUILD_TESTING)
     add_executable(redactiontest tests/redactiontest.cpp)
     target_link_libraries(redactiontest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME redaction COMMAND redactiontest)
+    add_executable(overlaymarkuptest tests/overlaymarkuptest.cpp)
+    target_link_libraries(overlaymarkuptest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME overlaymarkup COMMAND overlaymarkuptest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

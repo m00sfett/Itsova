@@ -1,5 +1,9 @@
 #include "captureoverlay.h"
 
+#include "annotations/annotationrenderer.h"
+#include "annotations/annotationtoolbar.h"
+#include "annotations/inlinetexteditor.h"
+#include "annotations/overlayexport.h"
 #include "app.h"
 #include "imageoutput.h"
 #include "screens.h"
@@ -17,6 +21,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFocusEvent>
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -25,6 +30,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
+#include <QMessageBox>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPainter>
@@ -42,6 +48,7 @@
 #include <QtConcurrent>
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <mutex>
 
@@ -171,6 +178,7 @@ CaptureSession::CaptureSession(App *app, Purpose purpose)
     : QObject(app)
     , app_(app)
     , purpose_(purpose)
+    , annotationController_(&annotations_, this)
 {
 }
 
@@ -188,6 +196,33 @@ void CaptureSession::start()
         finish({}, {}, {tr("No monitor is connected.")});
         return;
     }
+
+    QRect desktopBounds;
+    for (const ScreenInfo &screen : std::as_const(screens_)) {
+        desktopBounds = desktopBounds.united(screen.geometry);
+    }
+    annotationController_.setCropToolEnabled(false);
+    annotationController_.setBounds(QRectF(desktopBounds));
+    annotationController_.applySettings(store().annotations);
+
+    connect(&annotations_, &AnnotationDocument::changed, this, &CaptureSession::changed);
+    connect(&annotations_, &AnnotationDocument::selectionChanged, this, [this](int id) {
+        if (id > 0) {
+            selections_.deactivate();
+        }
+        changed();
+    });
+    connect(&annotationController_, &AnnotationController::previewChanged, this, &CaptureSession::changed);
+    connect(&annotationController_, &AnnotationController::cursorChanged, this, &CaptureSession::changed);
+    connect(&annotationController_, &AnnotationController::toolChanged, this, [this](ToolKind t) {
+        if (t != ToolKind::Select) {
+            selections_.deactivate();
+        }
+        changed();
+    });
+    connect(&annotationController_, &AnnotationController::textEditStarted, this,
+            &CaptureSession::handleInlineTextRequested);
+
     frozen_ = store().overlayStartsFrozen();
     if (purpose_ == Purpose::Print) {
         savePrintImage();
@@ -271,6 +306,11 @@ bool CaptureSession::frozen() const
     return frozen_;
 }
 
+bool CaptureSession::canSwitchToLive() const
+{
+    return annotations_.isEmpty() && !annotationController_.isEditingText();
+}
+
 QImage CaptureSession::frame(const QString &connector) const
 {
     return frozen_ ? frames_.value(connector).image : QImage();
@@ -284,6 +324,110 @@ SelectionModel &CaptureSession::selections()
 TargetStore &CaptureSession::store() const
 {
     return app_->store();
+}
+
+AnnotationDocument &CaptureSession::annotations()
+{
+    return annotations_;
+}
+
+const AnnotationDocument &CaptureSession::annotations() const
+{
+    return annotations_;
+}
+
+AnnotationController &CaptureSession::annotationController()
+{
+    return annotationController_;
+}
+
+const AnnotationController &CaptureSession::annotationController() const
+{
+    return annotationController_;
+}
+
+bool CaptureSession::markupVisible() const
+{
+    return markupVisible_;
+}
+
+void CaptureSession::setMarkupVisible(bool visible)
+{
+    if (purpose_ != Purpose::Print) {
+        return;
+    }
+    if (visible == markupVisible_) {
+        return;
+    }
+    if (!visible) {
+        if (annotationController_.isEditingText()) {
+            annotationController_.requestCommitActiveText(true);
+        }
+        markupVisible_ = false;
+        annotationController_.setTool(ToolKind::Select);
+        changed();
+        return;
+    }
+    markupVisible_ = true;
+    if (!frozen_) {
+        setFrozen(true);
+    } else {
+        changed();
+    }
+}
+
+void CaptureSession::activateMarkupTool(ToolKind tool)
+{
+    if (purpose_ != Purpose::Print) {
+        return;
+    }
+    markupVisible_ = true;
+    annotationController_.setTool(tool);
+    if (!frozen_) {
+        setFrozen(true);
+    } else {
+        changed();
+    }
+}
+
+void CaptureSession::persistAnnotationSettings()
+{
+    annotationController_.writeSettings(store().annotations);
+    app_->saveSettings();
+}
+
+const ScreenInfo *CaptureSession::screenFor(const QString &connector) const
+{
+    for (const ScreenInfo &screen : screens_) {
+        if (screen.connector == connector) {
+            return &screen;
+        }
+    }
+    return nullptr;
+}
+
+void CaptureSession::handleInlineTextRequested(const AnnotationItem &item, bool isExisting)
+{
+    const QPoint pos = item.rect.topLeft().toPoint();
+    CaptureOverlay *target = nullptr;
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay && overlay->screen().geometry.contains(pos)) {
+            target = overlay.data();
+            break;
+        }
+    }
+    if (!target && !overlays_.isEmpty()) {
+        target = overlays_.first().data();
+    }
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay && overlay != target) {
+            overlay->stopInlineTextEdit();
+        }
+    }
+    if (target) {
+        target->activateWindow();
+        target->startInlineTextEdit(item, isExisting);
+    }
 }
 
 bool CaptureSession::forceNew() const
@@ -308,14 +452,24 @@ void CaptureSession::setDragging(bool dragging)
 QString CaptureSession::hint() const
 {
     if (dragging_) {
-        return tr("Hold Alt to grow from the centre, Ctrl for a square.");
+        return tr("Shift keeps a square, Alt grows from the centre, Space repositions while dragging.");
+    }
+    if (annotationController_.isEditingText()) {
+        return tr("Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.");
+    }
+    if (annotationController_.tool() != ToolKind::Select) {
+        return tr("Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).");
     }
     if (forceNew_) {
         return tr("Drag the next rectangle anywhere, also over another one.");
     }
     if (selections_.isEmpty()) {
+        if (!annotations_.isEmpty()) {
+            return tr("Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.");
+        }
         return purpose_ == Purpose::Print
-                   ? tr("Drag a rectangle, or click a monitor to capture it. Escape keeps the full screenshot.")
+                   ? tr("Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full "
+                        "screenshot.")
                    : tr("Drag a rectangle for the new area. Escape cancels.");
     }
     if (!selections_.active()) {
@@ -448,12 +602,45 @@ QImage CaptureSession::selectionImage(const Selection &selection, QString *error
         *error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(selection.connector) : frame.error;
         return {};
     }
-    return cropLogicalArea(frame.image, selection.rect, frame.scale, error);
+    const QImage cropped = cropLogicalArea(frame.image, selection.rect, frame.scale, error);
+    if (cropped.isNull() || annotations_.isEmpty()) {
+        return cropped;
+    }
+    const ScreenInfo *screen = screenFor(selection.connector);
+    const QRectF globalLogical = screen ? QRectF(selection.rect.translated(screen->geometry.topLeft()))
+                                        : QRectF(selection.rect);
+    const qreal scale = frame.scale > 0.0 ? frame.scale : 1.0;
+    return renderAnnotatedCrop(cropped, globalLogical, scale, annotations_);
 }
 
-void CaptureSession::save()
+void CaptureSession::removePrintSnapshotIfRedacted()
 {
+    if (!shouldDeletePrintFileOnCopy(annotations_, printPath_)) {
+        return;
+    }
+    const QString oldPath = printPath_;
+    if (purgeUnredactedPrintFile(oldPath, false)) {
+        app_->forgetCapturePath(oldPath);
+        printPath_.clear();
+    }
+}
+
+void CaptureSession::save(const QString &preferredConnector)
+{
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
     if (selections_.isEmpty()) {
+        if (purpose_ == Purpose::Print && !annotations_.isEmpty() && !screens_.isEmpty()) {
+            const QList<QString> hit = annotatedConnectors(screens_, annotations_);
+            if (hit.size() > 1) {
+                captureAllMonitors();
+            } else {
+                const QString target = hit.size() == 1 ? hit.first()
+                                     : (!preferredConnector.isEmpty() ? preferredConnector : screens_.first().connector);
+                captureMonitor(target);
+            }
+        }
         return;
     }
     QStringList connectors;
@@ -486,13 +673,55 @@ void CaptureSession::save()
     });
 }
 
-void CaptureSession::copy()
+void CaptureSession::copy(const QString &preferredConnector)
 {
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
     const Selection *active = selections_.active();
     if (!active && !selections_.isEmpty()) {
         active = &selections_.stack().last();
     }
     if (!active) {
+        if (purpose_ != Purpose::Print || annotations_.isEmpty() || screens_.isEmpty()) {
+            return;
+        }
+        const QList<QString> hit = annotatedConnectors(screens_, annotations_);
+        QStringList connectors;
+        const bool allMonitors = hit.size() > 1;
+        QString targetConnector;
+        if (allMonitors) {
+            for (const ScreenInfo &screen : std::as_const(screens_)) {
+                connectors.append(screen.connector);
+            }
+        } else {
+            targetConnector = hit.size() == 1 ? hit.first()
+                                              : (!preferredConnector.isEmpty() ? preferredConnector
+                                                                               : screens_.first().connector);
+            connectors.append(targetConnector);
+        }
+        withFrames(connectors, [this, allMonitors, targetConnector] {
+            QString error;
+            QImage image;
+            if (allMonitors) {
+                image = renderAnnotatedAllMonitors(screens_, frames_, annotations_, &error);
+            } else if (const ScreenInfo *screen = screenFor(targetConnector)) {
+                const CaptureResult frame = frames_.value(targetConnector);
+                if (frame.image.isNull()) {
+                    error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(targetConnector)
+                                                  : frame.error;
+                } else {
+                    image = renderAnnotatedMonitor(*screen, frame, annotations_);
+                }
+            }
+            if (image.isNull()) {
+                finish({}, {}, {error});
+                return;
+            }
+            QGuiApplication::clipboard()->setImage(image);
+            removePrintSnapshotIfRedacted();
+            finish(tr("Copied to the clipboard"), printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
+        });
         return;
     }
     const Selection selection = *active;
@@ -504,12 +733,16 @@ void CaptureSession::copy()
             return;
         }
         QGuiApplication::clipboard()->setImage(image);
+        removePrintSnapshotIfRedacted();
         finish(tr("Copied to the clipboard"), printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
     });
 }
 
 void CaptureSession::saveAs()
 {
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
     if (selections_.isEmpty()) {
         return;
     }
@@ -628,22 +861,30 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
 
 void CaptureSession::captureMonitor(const QString &connector)
 {
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
     withFrames({connector}, [this, connector] {
         const CaptureResult frame = frames_.value(connector);
         if (frame.image.isNull()) {
             finish({}, {}, {frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(connector) : frame.error});
             return;
         }
+        const ScreenInfo *screen = screenFor(connector);
+        const QImage out = screen ? renderAnnotatedMonitor(*screen, frame, annotations_) : frame.image;
         QStringList errors;
         const QString name = monitorName(connector);
-        finishWith(write({{name, frame.image}}, &errors), frame.image, errors, name);
+        finishWith(write({{name, out}}, &errors), out, errors, name);
     });
 }
 
 void CaptureSession::captureAllMonitors()
 {
-    if (frozen_ && !printPath_.isEmpty()) {
-        // The full screenshot of this moment is already saved.
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+    if (shouldBypassRawPrintFastPath(frozen_, printPath_, annotations_)) {
+        // The full screenshot of this moment is already saved without edits.
         finish({}, {printPath_});
         return;
     }
@@ -653,7 +894,7 @@ void CaptureSession::captureAllMonitors()
     }
     withFrames(connectors, [this] {
         QString error;
-        const QImage image = composeAllMonitors(screens_, frames_, &error);
+        const QImage image = renderAnnotatedAllMonitors(screens_, frames_, annotations_, &error);
         if (image.isNull()) {
             finish({}, {}, {error});
             return;
@@ -719,6 +960,9 @@ void CaptureSession::setFrozen(bool frozen)
     if (frozen == frozen_ || switching_ || finished_) {
         return;
     }
+    if (!frozen && !canSwitchToLive()) {
+        return;
+    }
     // The next overlay starts in this mode when the setting says "Last used".
     store().lastOverlayFrozen = frozen;
     app_->saveSettings();
@@ -760,11 +1004,48 @@ void CaptureSession::toggleHelp()
 void CaptureSession::openSettings()
 {
     close();
-    app_->showSettings();
+    if (finished_) {
+        app_->showSettings();
+    }
 }
 
 void CaptureSession::close()
 {
+    if (purpose_ == Purpose::Print && annotations_.hasRedactions() && !printPath_.isEmpty() && !finished_) {
+        QWidget *parentWidget = nullptr;
+        for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+            if (overlay && overlay->geometry().contains(QCursor::pos())) {
+                parentWidget = overlay.data();
+                break;
+            }
+        }
+        if (!parentWidget && !overlays_.isEmpty()) {
+            parentWidget = overlays_.first().data();
+        }
+        QMessageBox box(QMessageBox::Warning, tr("Unredacted Screenshot Exists"),
+                        tr("The full screenshot saved when you pressed Print does not include your redactions."),
+                        QMessageBox::NoButton, parentWidget);
+        box.setInformativeText(tr("Delete the unredacted file (%1) from disk, keep it, or return to editing?")
+                                   .arg(QFileInfo(printPath_).fileName()));
+        QPushButton *deleteBtn = box.addButton(tr("Delete Unredacted Screenshot"), QMessageBox::DestructiveRole);
+        QPushButton *keepBtn = box.addButton(tr("Keep Full Screenshot"), QMessageBox::AcceptRole);
+        QPushButton *backBtn = box.addButton(tr("Back to Overlay"), QMessageBox::RejectRole);
+        box.setDefaultButton(backBtn);
+        box.setEscapeButton(backBtn);
+        box.exec();
+        if (box.clickedButton() == backBtn || !box.clickedButton()) {
+            return;
+        }
+        if (box.clickedButton() == deleteBtn) {
+            const QString oldPath = printPath_;
+            purgeUnredactedPrintFile(oldPath, true);
+            app_->forgetCapturePath(oldPath);
+            printPath_.clear();
+            finish(tr("Unredacted screenshot deleted"), {});
+            return;
+        }
+        Q_UNUSED(keepBtn);
+    }
     finish({}, printPath_.isEmpty() ? QStringList() : QStringList{printPath_});
 }
 
@@ -828,12 +1109,78 @@ CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
     buildTopBar();
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        buildMarkupBar();
+        textEditor_ = new InlineTextEditor(this);
+        AnnotationController &ctrl = session_->annotationController();
+        connect(&ctrl, &AnnotationController::textEditStyleUpdated, textEditor_, &InlineTextEditor::updateStyle);
+        connect(&ctrl, &AnnotationController::textEditCommitRequested, textEditor_, &InlineTextEditor::commit);
+        connect(&ctrl, &AnnotationController::textEditCancelRequested, textEditor_, &InlineTextEditor::cancel);
+        connect(textEditor_, &InlineTextEditor::draftChanged, &ctrl, &AnnotationController::updateActiveTextDraft);
+        connect(textEditor_, &InlineTextEditor::styleToggled, &ctrl, &AnnotationController::updateActiveTextDraft);
+        connect(textEditor_, &InlineTextEditor::committed, this,
+                [this](const AnnotationItem &item, bool, bool switchToSelect) {
+                    session_->annotationController().updateActiveTextDraft(item);
+                    session_->annotationController().commitTextEdit(switchToSelect);
+                    session_->persistAnnotationSettings();
+                    setFocus(Qt::OtherFocusReason);
+                });
+        connect(textEditor_, &InlineTextEditor::cancelled, this, [this](int) {
+            session_->annotationController().cancelTextEdit();
+            setFocus(Qt::OtherFocusReason);
+        });
+    }
     buildActionBar();
 }
 
 QString CaptureOverlay::connector() const
 {
     return screen_.connector;
+}
+
+const ScreenInfo &CaptureOverlay::screen() const
+{
+    return screen_;
+}
+
+InlineTextEditor *CaptureOverlay::textEditor() const
+{
+    return textEditor_;
+}
+
+void CaptureOverlay::startInlineTextEdit(const AnnotationItem &item, bool isExisting)
+{
+    if (textEditor_) {
+        textEditor_->startEditing(item, isExisting, 1.0, -QPointF(screen_.geometry.topLeft()));
+    }
+}
+
+void CaptureOverlay::stopInlineTextEdit()
+{
+    if (textEditor_ && !textEditor_->isHidden()) {
+        textEditor_->hide();
+    }
+}
+
+QPointF CaptureOverlay::toGlobalLogical(const QPointF &localPos) const
+{
+    return localPos + QPointF(screen_.geometry.topLeft());
+}
+
+void CaptureOverlay::buildMarkupBar()
+{
+    auto *panel = new OverlayPanel(this);
+    markupPanel_ = panel;
+    auto *layout = new QHBoxLayout(panel);
+    layout->setContentsMargins(0, 0, 0, 0);
+    annotationToolbar_ = new AnnotationToolbar(&session_->annotationController(), panel);
+    annotationToolbar_->setCompactOverlayMode(true);
+    annotationToolbar_->setSettings(&session_->store().annotations);
+    connect(annotationToolbar_, &AnnotationToolbar::settingsModified, this, [this] {
+        session_->persistAnnotationSettings();
+    });
+    layout->addWidget(annotationToolbar_);
+    panel->hide();
 }
 
 void CaptureOverlay::buildTopBar()
@@ -899,6 +1246,14 @@ void CaptureOverlay::buildTopBar()
     connect(areasMenu, &QMenu::aboutToHide, this, [this] { session_->setHighlights({}); });
     row->addWidget(areas);
 
+    if (print) {
+        annotateButton_ = barButton(panel, QStringLiteral("draw-freehand"), tr("Annotate"),
+                                    tr("Show or hide markup tools (A, R, E, B, M, T, N, X, S)"));
+        annotateButton_->setCheckable(true);
+        connect(annotateButton_, &QToolButton::clicked, this, [this](bool on) { session_->setMarkupVisible(on); });
+        row->addWidget(annotateButton_);
+    }
+
     separator();
     helpButton_ = barButton(panel, QStringLiteral("help-contextual"), tr("Help"), tr("Show or hide the controls (F1)"));
     helpButton_->setCheckable(true);
@@ -963,28 +1318,36 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
     };
 
     QList<QPair<QString, QString>> mouse{
-        {tr("Drag"), tr("Draw a rectangle")},
-        {tr("Drag inside / edge"), tr("Move / resize the active rectangle")},
-        {tr("Alt / Ctrl while dragging"), tr("Grow from the centre / keep a square")},
-        {tr("Click a rectangle"), tr("Make it active")},
-        {tr("Right-click a rectangle"), tr("Delete it")},
-        {tr("Double-click a rectangle"), print ? tr("Save it") : tr("Save it as an area")},
+        {tr("Drag"), tr("Draw a rectangle (or active markup tool)")},
+        {tr("Drag inside / edge"), tr("Move / resize the active rectangle or annotation")},
+        {tr("Shift / Alt while dragging"), tr("Keep a square or 15° snap / grow from centre or duplicate")},
+        {tr("Space while dragging"), tr("Reposition shape or selection live")},
+        {tr("Ctrl in markup tool"), tr("Temporarily switch to Select / Move")},
+        {tr("Click / Right-click"), tr("Activate / delete topmost annotation or rectangle")},
+        {tr("Double-click"), print ? tr("Edit text annotation or save rectangle") : tr("Save rectangle as area")},
     };
     if (print) {
-        mouse.append({tr("Click, nothing drawn"), tr("Capture this monitor")});
+        mouse.append({tr("Click, nothing drawn"), tr("Capture this monitor (before annotating)")});
     }
     section(tr("Mouse"), mouse);
 
-    section(tr("Keys"), {
-        {tr("Space"), tr("Switch between Frozen and Live")},
-        {tr("Arrows"), tr("Move by 1 px; with Shift by 10 px")},
-        {tr("Alt + arrows"), tr("Resize around the centre")},
-        {tr("Ctrl + arrows"), tr("Resize as a square; with Alt around the centre")},
-        {tr("Enter"), print ? tr("Save") : tr("Save as area")},
-        {tr("Delete"), tr("Delete the active rectangle")},
-        {tr("Escape"), print ? tr("Close and keep the full screenshot") : tr("Cancel")},
+    QList<QPair<QString, QString>> keys{
+        {tr("V / A R E B M T N X S"), print ? tr("Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight")
+                                          : tr("Selection modifiers work on all monitors")},
+        {tr("[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z"), tr("Step brush or font size  ·  Undo / Redo")},
+        {tr("Space"), tr("Switch between Frozen and Live (when idle)")},
+        {tr("Arrows / Shift+Arrows"), tr("Move active annotation or rectangle by 1 px / 10 px")},
+        {tr("Alt+Arrows / Ctrl+Arrows"), tr("Resize from centre / resize square")},
+        {tr("Enter"), print ? tr("Save selection or annotated screen") : tr("Save as area")},
+        {tr("Delete / Backspace"), tr("Delete active annotation or rectangle")},
+        {tr("Escape"), print ? tr("Commit text, step back, or close") : tr("Cancel")},
         {tr("F1"), tr("Show or hide this help")},
-    });
+    };
+    if (!print) {
+        keys.removeFirst();
+        keys.removeFirst();
+    }
+    section(tr("Keys"), keys);
     return panel;
 }
 
@@ -1137,6 +1500,10 @@ void CaptureOverlay::buildActionBar()
                                     tr("Choose where to save"));
         connect(saveAs, &QPushButton::clicked, this, [this] { session_->saveAs(); });
         row->addWidget(saveAs);
+        auto *annotate = actionButton(actionButtons_, QStringLiteral("draw-freehand"), tr("Annotate"),
+                                      tr("Open markup tools to draw or redact"));
+        connect(annotate, &QPushButton::clicked, this, [this] { session_->setMarkupVisible(!session_->markupVisible()); });
+        row->addWidget(annotate);
     }
     auto *area = actionButton(actionButtons_, QStringLiteral("bookmark-new"), tr("Save as Area"),
                               tr("Remember this rectangle to capture it again with one click or shortcut"));
@@ -1290,6 +1657,14 @@ void CaptureOverlay::refresh()
     if (topBar_) {
         frozenButton_->setChecked(session_->frozen());
         liveButton_->setChecked(!session_->frozen());
+        liveButton_->setEnabled(session_->canSwitchToLive());
+        liveButton_->setToolTip(
+            session_->canSwitchToLive()
+                ? tr("See the screen move on, for example a video. Captures are taken when you save. (Space)")
+                : tr("Clear or undo annotations to return to Live mode"));
+        if (annotateButton_) {
+            annotateButton_->setChecked(session_->markupVisible());
+        }
         hint_->setText(session_->hint());
         helpButton_->setChecked(session_->helpExpanded());
         helpPanel_->setVisible(session_->helpExpanded());
@@ -1299,7 +1674,20 @@ void CaptureOverlay::refresh()
         topBar_->show();
         topBar_->raise();
     }
+    if (markupPanel_) {
+        const bool showMarkup = session_->markupVisible() && session_->purpose() == CaptureSession::Purpose::Print;
+        markupPanel_->setVisible(showMarkup);
+        if (showMarkup && topBar_) {
+            markupPanel_->adjustSize();
+            const QSize mSize = markupPanel_->sizeHint();
+            const int x = std::clamp((width() - mSize.width()) / 2, 0, std::max(0, width() - mSize.width()));
+            const int y = std::clamp(topBar_->geometry().bottom() + 6, 0, std::max(0, height() - mSize.height()));
+            markupPanel_->setGeometry(x, y, mSize.width(), mSize.height());
+            markupPanel_->raise();
+        }
+    }
     placeActionBar();
+    updateCursor(lastPosition_);
     update();
 }
 
@@ -1318,9 +1706,16 @@ void CaptureOverlay::placeActionBar()
     actionBar_->adjustSize();
     const QSize size = actionBar_->sizeHint();
     const QRect rect = active->rect;
+    int topObstacleBottom = topBar_ ? topBar_->geometry().bottom() + 4 : 0;
+    if (markupPanel_ && !markupPanel_->isHidden()) {
+        topObstacleBottom = std::max(topObstacleBottom, markupPanel_->geometry().bottom() + 4);
+    }
     QPoint position(rect.right() + 1 - size.width(), rect.bottom() + 1 + barGap);
     if (position.y() + size.height() > height()) {
         position.setY(rect.top() - barGap - size.height());
+        if (position.y() < topObstacleBottom && position.y() < 0) {
+            position.setY(rect.bottom() - size.height() - barGap);
+        }
     }
     if (position.y() < 0) {
         position.setY(rect.bottom() - size.height() - barGap);
@@ -1332,6 +1727,9 @@ void CaptureOverlay::placeActionBar()
     actionBar_->raise();
     if (topBar_) {
         topBar_->raise();
+    }
+    if (markupPanel_ && !markupPanel_->isHidden()) {
+        markupPanel_->raise();
     }
 }
 
@@ -1371,20 +1769,37 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
         painter.drawImage(area, background);
     }
 
-    const SelectionModel &model = session_->selections();
-    QPainterPath holes;
-    for (const Selection &selection : model.stack()) {
-        if (selection.connector == screen_.connector) {
-            holes.addRect(selection.rect);
-        }
-    }
-    QPainterPath shade;
-    shade.addRect(area);
-    painter.fillPath(shade.subtracted(holes), QColor(0, 0, 0, frozen ? frozenDim : liveDim));
-
     const QPalette pal = palette();
     const QColor accent = pal.color(QPalette::Highlight);
     const QColor negative(218, 68, 83); // Breeze "negative text"
+
+    if (session_->purpose() == CaptureSession::Purpose::Print
+        && (!session_->annotations().isEmpty() || session_->annotationController().draftItem())) {
+        painter.save();
+        painter.translate(-screen_.geometry.topLeft());
+        const qreal frameScale = frozen && width() > 0 ? qreal(background.width()) / width() : 1.0;
+        paintAnnotationOverlay(painter, QRectF(screen_.geometry), session_->annotations(), accent,
+                               session_->annotationController().hoveredId(),
+                               session_->annotationController().draftItem(), frozen ? &background : nullptr,
+                               frameScale, QPointF(screen_.geometry.topLeft()),
+                               session_->annotationController().editingTextItemId());
+        painter.restore();
+    }
+
+    const SelectionModel &model = session_->selections();
+    const bool suppressBackdropDim = model.isEmpty() && session_->purpose() == CaptureSession::Purpose::Print
+                                    && (session_->markupVisible() || !session_->annotations().isEmpty());
+    if (!suppressBackdropDim) {
+        QPainterPath holes;
+        for (const Selection &selection : model.stack()) {
+            if (selection.connector == screen_.connector) {
+                holes.addRect(selection.rect);
+            }
+        }
+        QPainterPath shade;
+        shade.addRect(area);
+        painter.fillPath(shade.subtracted(holes), QColor(0, 0, 0, frozen ? frozenDim : liveDim));
+    }
 
     // Outlines of areas or windows hovered in a list.
     for (const CaptureSession::Highlight &highlight : session_->highlights()) {
@@ -1532,6 +1947,21 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
         setCursor(Qt::PointingHandCursor);
         return;
     }
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        AnnotationController &ctrl = session_->annotationController();
+        const Qt::KeyboardModifiers mods = QGuiApplication::keyboardModifiers();
+        const QPointF gPos = toGlobalLogical(pos);
+        if (ctrl.isDragging() || ctrl.effectiveTool(mods) != ToolKind::Select) {
+            setCursor(ctrl.cursorFor(gPos, mods, 8.0));
+            return;
+        }
+        const AnnotationItem *selAnn = session_->annotations().selectedItem();
+        if (session_->annotations().topmostHitAt(gPos) > 0
+            || (selAnn && selAnn->handleAt(gPos, 8.0) != AnnotationHandle::None)) {
+            setCursor(ctrl.cursorFor(gPos, mods, 8.0));
+            return;
+        }
+    }
     const Selection *active = activeHere();
     if (active && !session_->forceNew()) {
         const Qt::Edges edges = edgesAt(active->rect, pos);
@@ -1566,10 +1996,17 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
 void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
-        // Right click deletes the rectangle under the pointer; elsewhere it does nothing, so a
-        // missed rectangle never throws the whole selection away.
+        // Right click deletes the topmost annotation under pointer first, else the crop rectangle.
         if (drag_ == Drag::None) {
             const QPoint pos = event->position().toPoint();
+            if (session_->purpose() == CaptureSession::Purpose::Print
+                && !session_->annotationController().isDragging()) {
+                if (const int annId = session_->annotations().topmostHitAt(toGlobalLogical(pos))) {
+                    session_->annotations().removeItem(annId);
+                    updateCursor(pos);
+                    return;
+                }
+            }
             if (const int id = session_->selections().topmostAt(screen_.connector, pos)) {
                 session_->selections().remove(id);
                 hoverId_ = 0;
@@ -1585,18 +2022,36 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
     if (areaPanel_) {
         showActionButtons();
     }
+    if (session_->purpose() == CaptureSession::Purpose::Print
+        && session_->annotationController().isEditingText()) {
+        session_->annotationController().requestCommitActiveText(false);
+        return;
+    }
+
     SelectionModel &model = session_->selections();
     const QPoint pos = event->position().toPoint();
     anchor_ = pos;
     lastPosition_ = pos;
+    spaceHeld_ = false;
 
-    if (const int id = closeButtonAt(pos)) {
-        model.remove(id);
-        hoverId_ = 0;
-        drag_ = Drag::None;
-        session_->changed();
-        updateCursor(pos);
-        return;
+    const bool selectTool = session_->purpose() != CaptureSession::Purpose::Print
+                         || session_->annotationController().effectiveTool(event->modifiers()) == ToolKind::Select;
+    if (selectTool) {
+        if (const int id = closeButtonAt(pos)) {
+            model.remove(id);
+            hoverId_ = 0;
+            drag_ = Drag::None;
+            session_->changed();
+            updateCursor(pos);
+            return;
+        }
+    }
+
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        if (session_->annotationController().mousePress(toGlobalLogical(event->position()), Qt::LeftButton,
+                                                        event->modifiers(), 8.0)) {
+            return;
+        }
     }
 
     const Selection *active = activeHere();
@@ -1621,8 +2076,27 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
 {
     const QPoint position = event->position().toPoint();
+    const QPoint step = position - lastPosition_;
     lastPosition_ = position;
+
+    if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
+        session_->annotationController().mouseMove(toGlobalLogical(event->position()), event->modifiers());
+        return;
+    }
+
     if (drag_ == Drag::None) {
+        if (session_->purpose() == CaptureSession::Purpose::Print) {
+            AnnotationController &ctrl = session_->annotationController();
+            const bool annHit = ctrl.mouseMove(toGlobalLogical(event->position()), event->modifiers());
+            if (annHit || ctrl.effectiveTool(event->modifiers()) != ToolKind::Select) {
+                if (hoverId_) {
+                    hoverId_ = 0;
+                    update();
+                }
+                updateCursor(position);
+                return;
+            }
+        }
         const int hover = session_->selections().topmostAt(screen_.connector, position);
         if (hover != hoverId_) {
             hoverId_ = hover;
@@ -1631,6 +2105,7 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
         updateCursor(position);
         return;
     }
+
     if (drag_ == Drag::Pending) {
         if ((position - anchor_).manhattanLength() < QApplication::startDragDistance()) {
             return;
@@ -1642,13 +2117,20 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
     } else if (drag_ == Drag::Move || drag_ == Drag::Resize) {
         session_->setDragging(drag_ == Drag::Resize);
     }
+    if (spaceHeld_ && (drag_ == Drag::Create || drag_ == Drag::Resize)) {
+        anchor_.setX(std::clamp(anchor_.x() + step.x(), 0, width()));
+        anchor_.setY(std::clamp(anchor_.y() + step.y(), 0, height()));
+        if (drag_ == Drag::Resize) {
+            dragStartRect_ = clampToArea(dragStartRect_.translated(step), size());
+        }
+    }
     applyDrag(position, event->modifiers());
 }
 
 void CaptureOverlay::applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers)
 {
     const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
-                                           modifiers.testFlag(Qt::ControlModifier)};
+                                           modifiers.testFlag(Qt::ShiftModifier)};
     SelectionModel &model = session_->selections();
     const QSize bounds = size();
     if (drag_ == Drag::Create) {
@@ -1669,13 +2151,22 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
+    if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
+        session_->annotationController().mouseRelease(toGlobalLogical(event->position()), Qt::LeftButton,
+                                                      event->modifiers());
+        session_->persistAnnotationSettings();
+        updateCursor(event->position().toPoint());
+        return;
+    }
     SelectionModel &model = session_->selections();
     const Drag drag = std::exchange(drag_, Drag::None);
+    spaceHeld_ = false;
     session_->setDragging(false);
     if (drag == Drag::Pending) {
         if (pendingId_) {
             model.activate(pendingId_);
-        } else if (model.isEmpty() && session_->purpose() == CaptureSession::Purpose::Print) {
+        } else if (model.isEmpty() && session_->purpose() == CaptureSession::Purpose::Print
+                   && session_->annotations().isEmpty() && !session_->markupVisible()) {
             // Nothing drawn yet: a click captures this monitor.
             session_->captureMonitor(screen_.connector);
             return;
@@ -1691,8 +2182,9 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
                 model.remove(dragId_);
             }
         } else if (drag == Drag::Create && session_->store().captureOnRelease
-                   && session_->purpose() == CaptureSession::Purpose::Print) {
-            session_->save();
+                   && session_->purpose() == CaptureSession::Purpose::Print
+                   && session_->annotations().isEmpty() && !session_->markupVisible()) {
+            session_->save(screen_.connector);
             return;
         }
     }
@@ -1705,16 +2197,37 @@ void CaptureOverlay::mouseDoubleClickEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        if (session_->annotationController().mouseDoubleClick(toGlobalLogical(event->position()), Qt::LeftButton,
+                                                              event->modifiers())) {
+            return;
+        }
+    }
     SelectionModel &model = session_->selections();
     if (const int id = model.topmostAt(screen_.connector, event->position().toPoint())) {
         model.activate(id);
         if (session_->purpose() == CaptureSession::Purpose::Print) {
-            session_->save();
+            session_->save(screen_.connector);
         } else {
             session_->changed();
             showAreaPanel();
         }
     }
+}
+
+void CaptureOverlay::focusOutEvent(QFocusEvent *event)
+{
+    if (textEditor_) {
+        if (QWidget *focused = QApplication::focusWidget(); focused && textEditor_->isAncestorOf(focused)) {
+            QWidget::focusOutEvent(event);
+            return;
+        }
+    }
+    spaceHeld_ = false;
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        session_->annotationController().cancelActiveGesture();
+    }
+    QWidget::focusOutEvent(event);
 }
 
 void CaptureOverlay::leaveEvent(QEvent *event)
@@ -1723,36 +2236,139 @@ void CaptureOverlay::leaveEvent(QEvent *event)
         hoverId_ = 0;
         update();
     }
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        session_->annotationController().clearHover();
+    }
     QWidget::leaveEvent(event);
 }
 
 bool CaptureOverlay::reapplyModifiers(QKeyEvent *event)
 {
-    if (event->key() != Qt::Key_Control && event->key() != Qt::Key_Alt) {
+    const int key = event->key();
+    if (key != Qt::Key_Shift && key != Qt::Key_Alt && key != Qt::Key_Control) {
         return false;
     }
     if (drag_ == Drag::Create || drag_ == Drag::Resize || drag_ == Drag::Move) {
         applyDrag(lastPosition_, event->modifiers());
     }
-    return true;
+    updateCursor(lastPosition_);
+    return false;
 }
 
 void CaptureOverlay::keyReleaseEvent(QKeyEvent *event)
 {
-    if (!reapplyModifiers(event)) {
-        QWidget::keyReleaseEvent(event);
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        if (session_->annotationController().isEditingText()) {
+            event->accept();
+            return;
+        }
+        if (drag_ == Drag::None) {
+            session_->annotationController().keyRelease(event);
+        }
     }
+    if (event->key() == Qt::Key_Space && spaceHeld_) {
+        if (!event->isAutoRepeat()) {
+            spaceHeld_ = false;
+        }
+        return;
+    }
+    reapplyModifiers(event);
+    QWidget::keyReleaseEvent(event);
 }
 
 void CaptureOverlay::keyPressEvent(QKeyEvent *event)
 {
-    if (reapplyModifiers(event)) {
+    if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isEditingText()) {
+        event->accept();
         return;
     }
+
+    if (areaPanel_) {
+        if (event->key() == Qt::Key_Escape) {
+            showActionButtons();
+            return;
+        }
+        QWidget::keyPressEvent(event);
+        return;
+    }
+
     SelectionModel &model = session_->selections();
-    // One meaning per modifier, as with the mouse: Shift = steps of 10, Alt = around the centre,
-    // Ctrl = square. Alt or Ctrl turn the arrow keys from moving into resizing.
+
+    // Crop-drag in progress: Space repositions, modifiers reshape, Escape aborts only the drag.
+    if (drag_ != Drag::None) {
+        if (event->key() == Qt::Key_Space) {
+            if (!event->isAutoRepeat()) {
+                spaceHeld_ = true;
+            }
+            return;
+        }
+        if (event->key() == Qt::Key_Escape) {
+            const Drag aborted = std::exchange(drag_, Drag::None);
+            spaceHeld_ = false;
+            session_->setDragging(false);
+            if (aborted == Drag::Create) {
+                model.remove(dragId_);
+            } else if (aborted == Drag::Resize || aborted == Drag::Move) {
+                model.setRect(dragId_, dragStartRect_);
+            }
+            session_->changed();
+            updateCursor(lastPosition_);
+            return;
+        }
+        reapplyModifiers(event);
+        return;
+    }
+
+    reapplyModifiers(event);
+
     const Qt::KeyboardModifiers modifiers = event->modifiers();
+    const bool plainKey = !modifiers.testFlag(Qt::ControlModifier) && !modifiers.testFlag(Qt::AltModifier)
+                       && !modifiers.testFlag(Qt::MetaModifier);
+
+    if (session_->purpose() == CaptureSession::Purpose::Print && plainKey && !event->isAutoRepeat()) {
+        switch (event->key()) {
+        case Qt::Key_A:
+            session_->activateMarkupTool(ToolKind::Arrow);
+            return;
+        case Qt::Key_R:
+            session_->activateMarkupTool(ToolKind::Rectangle);
+            return;
+        case Qt::Key_E:
+            session_->activateMarkupTool(ToolKind::Ellipse);
+            return;
+        case Qt::Key_B:
+            session_->activateMarkupTool(ToolKind::Pen);
+            return;
+        case Qt::Key_M:
+            session_->activateMarkupTool(ToolKind::Highlighter);
+            return;
+        case Qt::Key_T:
+            session_->activateMarkupTool(ToolKind::Text);
+            return;
+        case Qt::Key_N:
+            session_->activateMarkupTool(ToolKind::Step);
+            return;
+        case Qt::Key_X:
+            session_->activateMarkupTool(ToolKind::Redact);
+            return;
+        case Qt::Key_S:
+            session_->activateMarkupTool(ToolKind::Spotlight);
+            return;
+        default:
+            break;
+        }
+    }
+
+    if (session_->purpose() == CaptureSession::Purpose::Print) {
+        if (session_->annotationController().keyPress(event)) {
+            if (event->key() == Qt::Key_BracketLeft || event->key() == Qt::Key_BracketRight) {
+                session_->persistAnnotationSettings();
+            }
+            updateCursor(lastPosition_);
+            return;
+        }
+    }
+
     const int step = modifiers.testFlag(Qt::ShiftModifier) ? 10 : 1;
     const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
                                            modifiers.testFlag(Qt::ControlModifier)};
@@ -1762,14 +2378,19 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         session_->toggleHelp();
         return;
     case Qt::Key_Space:
-        if (!event->isAutoRepeat() && drag_ == Drag::None) {
+        if (!event->isAutoRepeat()) {
             session_->setFrozen(!session_->frozen());
         }
         return;
+    case Qt::Key_D:
+        if (modifiers.testFlag(Qt::ControlModifier) && !modifiers.testFlag(Qt::AltModifier) && model.activeId()) {
+            model.deactivate();
+            session_->changed();
+            return;
+        }
+        break;
     case Qt::Key_Escape:
-        if (areaPanel_) {
-            showActionButtons();
-        } else if (session_->forceNew()) {
+        if (session_->forceNew()) {
             session_->setForceNew(false);
         } else {
             session_->close();
@@ -1778,10 +2399,13 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Return:
     case Qt::Key_Enter:
         if (model.isEmpty()) {
+            if (session_->purpose() == CaptureSession::Purpose::Print && !session_->annotations().isEmpty()) {
+                session_->save(screen_.connector);
+            }
             return;
         }
         if (session_->purpose() == CaptureSession::Purpose::Print) {
-            session_->save();
+            session_->save(screen_.connector);
         } else {
             showAreaPanel();
         }
@@ -1811,6 +2435,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     }
     const Selection *active = activeHere();
     if (!active) {
+        QWidget::keyPressEvent(event);
         return;
     }
     model.setRect(active->id, steppedSelection(active->rect, delta, constraints, minimumAreaSize, size()));
