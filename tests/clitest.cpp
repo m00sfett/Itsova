@@ -227,7 +227,68 @@ private Q_SLOTS:
     void intervalAndOverlaySubcommands();
     void requestJsonRoundTrip();
     void historySubcommand();
+    void captureOcrOutput();
 };
+
+void CliTest::captureOcrOutput()
+{
+    MockCliBackend backend;
+    backend.nextCaptureResult.ok = true;
+    backend.nextCaptureResult.exitCode = 0;
+    backend.nextCaptureResult.displayName = QStringLiteral("Both");
+    backend.nextCaptureResult.files = {
+        {QStringLiteral("screen:DP-1"), QStringLiteral("/p/a.png"), 10, 10, QStringLiteral("png"), 1, QStringLiteral("left")},
+        {QStringLiteral("screen:HDMI-A-1"), QStringLiteral("/p/b.png"), 10, 10, QStringLiteral("png"), 1, QStringLiteral("right")}};
+    backend.nextCaptureResult.ocrRequested = true;
+    backend.nextCaptureResult.ocrTexts = {{QStringLiteral("DP-1"), QStringLiteral("left")},
+                                          {QStringLiteral("HDMI-A-1"), QStringLiteral("right")}};
+    QBuffer out;
+    QBuffer err;
+    out.open(QIODevice::ReadWrite);
+    err.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
+                    backend, out, err),
+             0);
+    QVERIFY(backend.lastCaptureReq.ocr);
+    QCOMPARE(QString::fromUtf8(out.data()), QStringLiteral("== DP-1 ==\nleft\n\n== HDMI-A-1 ==\nright\n"));
+
+    QBuffer jsonOut;
+    jsonOut.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
+                     QStringLiteral("--json")},
+                    backend, jsonOut, err),
+             0);
+    const QJsonObject obj = QJsonDocument::fromJson(jsonOut.data()).object();
+    QCOMPARE(obj.value(QStringLiteral("text")).toString(), QStringLiteral("left\n\nright"));
+    QCOMPARE(obj.value(QStringLiteral("files")).toArray().at(1).toObject().value(QStringLiteral("text")).toString(),
+             QStringLiteral("right"));
+    QVERIFY(captureResultFromJson(obj).ocrRequested);
+
+    // No backend: the capture is saved, the path is printed, the reason goes to stderr, exit 1.
+    backend.nextCaptureResult.ocrTexts.clear();
+    backend.nextCaptureResult.ocrError = QStringLiteral("Text recognition needs tesseract.");
+    QBuffer missingOut;
+    QBuffer missingErr;
+    missingOut.open(QIODevice::ReadWrite);
+    missingErr.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
+                    backend, missingOut, missingErr),
+             1);
+    QVERIFY(missingOut.data().startsWith("/p/a.png\n"));
+    QVERIFY(missingErr.data().contains("tesseract"));
+
+    QBuffer conflictOut;
+    conflictOut.open(QIODevice::ReadWrite);
+    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
+                     QStringLiteral("--stdout")},
+                    backend, conflictOut, err),
+             2);
+
+    CliCaptureRequest request;
+    request.target = QStringLiteral("all");
+    request.ocr = true;
+    QVERIFY(captureRequestFromJson(captureRequestToJson(request)).ocr);
+}
 
 void CliTest::historySubcommand()
 {
@@ -269,7 +330,7 @@ void CliTest::captureJsonAndOptions()
     backend.nextCaptureResult.displayName = QStringLiteral("DP-1-1");
     backend.nextCaptureResult.timestamp = QStringLiteral("2026-11-24T15:00:00");
     backend.nextCaptureResult.files = {
-        {QStringLiteral("area:111"), QStringLiteral("/tmp/shot.jpg"), 200, 100, QStringLiteral("jpeg"), 4321}};
+        {QStringLiteral("area:111"), QStringLiteral("/tmp/shot.jpg"), 200, 100, QStringLiteral("jpeg"), 4321, QString()}};
 
     QBuffer out;
     QBuffer err;
@@ -392,7 +453,7 @@ void CliTest::capturePartialFailureReportsFiles()
     backend.nextCaptureResult.exitCode = 1;
     backend.nextCaptureResult.error = QStringLiteral("Area B: monitor capture failed.");
     backend.nextCaptureResult.files.append(
-        {QStringLiteral("area:111"), QStringLiteral("/tmp/a.png"), 10, 10, QStringLiteral("png"), 123});
+        {QStringLiteral("area:111"), QStringLiteral("/tmp/a.png"), 10, 10, QStringLiteral("png"), 123, QString()});
 
     QBuffer out;
     QBuffer err;
