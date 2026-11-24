@@ -145,19 +145,11 @@ QString sanitizeFilenameToken(const QString &token)
     return sanitized;
 }
 
-OutputWriter::OutputWriter(QString directory, QString filenameTemplate)
-    : directory_(std::move(directory)),
-      filenameTemplate_(filenameTemplate.isEmpty()
-                            ? QStringLiteral("{date}_{time}_{area}.png")
-                            : std::move(filenameTemplate))
-{
-}
-
-bool OutputWriter::writeImage(const QImage &image,
-                              const QString &areaToken,
-                              const QDateTime &timestamp,
-                              QString *writtenPath,
-                              QString *error) const
+bool writeUniquePngFile(const QString &directory,
+                        const QString &baseFilename,
+                        const QImage &image,
+                        QString *writtenPath,
+                        QString *error)
 {
     if (writtenPath) {
         writtenPath->clear();
@@ -168,33 +160,28 @@ bool OutputWriter::writeImage(const QImage &image,
         }
         return false;
     }
-    if (!timestamp.isValid()) {
-        if (error) {
-            *error = ImageOutputStrings::tr("The capture timestamp is invalid.");
-        }
-        return false;
-    }
-
-    if (directory_.isEmpty()) {
+    if (directory.isEmpty()) {
         if (error) {
             *error = ImageOutputStrings::tr("The capture directory is empty.");
         }
         return false;
     }
-
-    if (!QDir(directory_).exists() && !QDir().mkpath(directory_)) {
+    if (!QDir(directory).exists() && !QDir().mkpath(directory)) {
         if (error) {
-            *error = ImageOutputStrings::tr("Cannot create capture directory: %1").arg(directory_);
+            *error = ImageOutputStrings::tr("Cannot create capture directory: %1").arg(directory);
         }
         return false;
     }
 
-    const QDir outputDirectory(directory_);
-    const QString filename = filenameFor(filenameTemplate_, areaToken, timestamp);
+    QString filename = baseFilename;
+    if (!filename.endsWith(QStringLiteral(".png"), Qt::CaseInsensitive)) {
+        filename.append(QStringLiteral(".png"));
+    }
     const qsizetype extensionPosition = filename.lastIndexOf(QLatin1Char('.'));
     const QString stem = filename.left(extensionPosition);
     const QString extension = filename.mid(extensionPosition);
 
+    const QDir outputDirectory(directory);
     QTemporaryFile temporary(outputDirectory.filePath(QStringLiteral(".glimply-XXXXXX")));
     if (!temporary.open()) {
         if (error) {
@@ -267,6 +254,33 @@ bool OutputWriter::writeImage(const QImage &image,
         *error = ImageOutputStrings::tr("No available filename remains for this capture.");
     }
     return false;
+}
+
+OutputWriter::OutputWriter(QString directory, QString filenameTemplate)
+    : directory_(std::move(directory)),
+      filenameTemplate_(filenameTemplate.isEmpty()
+                            ? QStringLiteral("{date}_{time}_{area}.png")
+                            : std::move(filenameTemplate))
+{
+}
+
+bool OutputWriter::writeImage(const QImage &image,
+                              const QString &areaToken,
+                              const QDateTime &timestamp,
+                              QString *writtenPath,
+                              QString *error) const
+{
+    if (writtenPath) {
+        writtenPath->clear();
+    }
+    if (!timestamp.isValid()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("The capture timestamp is invalid.");
+        }
+        return false;
+    }
+    return writeUniquePngFile(directory_, filenameFor(filenameTemplate_, areaToken, timestamp), image, writtenPath,
+                              error);
 }
 
 } // namespace glimply

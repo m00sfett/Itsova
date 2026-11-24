@@ -45,6 +45,7 @@ public:
 Q_SIGNALS:
     void triggerRequested(const QString &id);
     void openLastCaptureRequested();
+    void editLastCaptureRequested();
     void openFolderRequested();
     void configureRequested();
     void addAreaRequested();

@@ -133,6 +133,11 @@ void ControlService::OpenLastCapture()
     app_->openLastCapture();
 }
 
+void ControlService::EditLastCapture()
+{
+    app_->editLastCapture();
+}
+
 void ControlService::OpenCaptureFolder()
 {
     app_->openCaptureFolder();

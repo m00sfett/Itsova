@@ -34,6 +34,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE QString Rename(const QString &id, const QString &name);
     Q_SCRIPTABLE void Remove(const QString &id);
     Q_SCRIPTABLE void OpenLastCapture();
+    Q_SCRIPTABLE void EditLastCapture();
     Q_SCRIPTABLE void OpenCaptureFolder();
     Q_SCRIPTABLE void Configure(const QString &targetId);
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
