@@ -2,6 +2,7 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[zh_TW]=glimply 螢幕擷取
 Comment[zh_CN]=glimply 截图
 Comment[uk]=Знімки екрана glimply
 Comment[tr]=glimply ekran görüntüleri
@@ -22,6 +23,7 @@ Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[zh_TW]=擷取失敗
 Name[zh_CN]=截图失败
 Name[uk]=Не вдалося зробити знімок
 Name[tr]=Yakalama başarısız oldu
@@ -40,6 +42,7 @@ Name[ja]=キャプチャに失敗
 Name[fr]=Échec de la capture
 Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[zh_TW]=擷取失敗或目標被略過
 Comment[zh_CN]=截图失败或目标被跳过
 Comment[uk]=Не вдалося зробити знімок або ціль було пропущено
 Comment[tr]=Bir yakalama başarısız oldu veya bir hedef atlandı
@@ -62,6 +65,7 @@ Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[zh_TW]=螢幕已變更
 Name[zh_CN]=显示器已更改
 Name[uk]=Монітор змінено
 Name[tr]=Ekran değişti
@@ -80,6 +84,7 @@ Name[ja]=ディスプレイが変更されました
 Name[fr]=Écran modifié
 Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[zh_TW]=區域所在的螢幕與定義時不同
 Comment[zh_CN]=区域的显示器与定义时不同
 Comment[uk]=Монітор області відрізняється від того, на якому її було визначено
 Comment[tr]=Bir bölgenin ekranı tanımlandığı ekrandan farklı
@@ -102,6 +107,7 @@ Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[zh_TW]=設定問題
 Name[zh_CN]=设置问题
 Name[uk]=Проблема параметрів
 Name[tr]=Ayarlar sorunu
@@ -120,6 +126,7 @@ Name[ja]=設定の問題
 Name[fr]=Problème de paramètres
 Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[zh_TW]=glimply 無法套用設定（例如自動啟動）
 Comment[zh_CN]=glimply 无法应用某项设置（例如自动启动）
 Comment[uk]=glimply не вдалося застосувати параметр, наприклад автозапуск
 Comment[tr]=glimply otomatik başlatma gibi bir ayarı uygulayamadı
@@ -141,6 +148,7 @@ Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[zh_TW]=已儲存擷取
 Name[zh_CN]=截图已保存
 Name[uk]=Знімок збережено
 Name[tr]=Yakalama kaydedildi
@@ -159,6 +167,7 @@ Name[ja]=キャプチャを保存しました
 Name[fr]=Capture enregistrée
 Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[zh_TW]=已儲存來自 Print 鍵或覆疊層的擷取
 Comment[zh_CN]=来自 Print 键或覆盖层的截图已保存
 Comment[uk]=Знімок із клавіші Print або накладення збережено
 Comment[tr]=Print tuşundan veya katmandan bir yakalama kaydedildi
@@ -181,6 +190,7 @@ Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[zh_TW]=部分擷取
 Name[zh_CN]=部分截图
 Name[uk]=Частковий знімок
 Name[tr]=Kısmi yakalama
@@ -199,6 +209,7 @@ Name[ja]=一部のキャプチャ
 Name[fr]=Capture partielle
 Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[zh_TW]=因螢幕未連接，跨螢幕區域僅部分擷取或已略過
 Comment[zh_CN]=由于显示器未连接，跨显示器区域仅部分截取或被跳过
 Comment[uk]=Міжмоніторну область захоплено частково або пропущено через відключений монітор
 Comment[tr]=Bir ekran bağlı olmadığı için ekranlar arası bir alan kısmen yakalandı veya atlandı
@@ -221,6 +232,7 @@ Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[zh_TW]=已複製色彩
 Name[zh_CN]=颜色已复制
 Name[uk]=Колір скопійовано
 Name[tr]=Renk kopyalandı
@@ -239,6 +251,7 @@ Name[ja]=色をコピーしました
 Name[fr]=Couleur copiée
 Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[zh_TW]=已將取樣的螢幕色彩複製到剪貼簿
 Comment[zh_CN]=采样的屏幕颜色已复制到剪贴板
 Comment[uk]=Вибраний колір екрана скопійовано до буфера обміну
 Comment[tr]=Örneklenen bir ekran rengi panoya kopyalandı
@@ -261,6 +274,7 @@ Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[zh_TW]=定時擷取已停止
 Name[zh_CN]=间隔截图已停止
 Name[uk]=Інтервальне захоплення зупинено
 Name[tr]=Aralıklı yakalama durduruldu
@@ -279,6 +293,7 @@ Name[ja]=インターバルキャプチャを停止しました
 Name[fr]=Capture à intervalles arrêtée
 Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[zh_TW]=排程的定時擷取已達到設定上限並完成
 Comment[zh_CN]=计划的间隔截图已达到配置限制并完成
 Comment[uk]=Заплановане інтервальне захоплення досягло налаштованого обмеження й завершилося
 Comment[tr]=Zamanlanmış bir aralıklı yakalama yapılandırılan sınırına ulaştı ve tamamlandı
@@ -301,6 +316,7 @@ Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[zh_TW]=擷取後 Hook 失敗
 Name[zh_CN]=截图后 Hook 失败
 Name[uk]=Помилка хука після знімка
 Name[tr]=Yakalama sonrası kanca başarısız oldu
@@ -319,6 +335,7 @@ Name[ja]=キャプチャ後のフックに失敗しました
 Name[fr]=Échec du hook après capture
 Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[zh_TW]=設定的擷取後指令結束時發生錯誤或逾時
 Comment[zh_CN]=配置的截图后命令退出时出错或超时
 Comment[uk]=Налаштована команда після знімка завершилася з помилкою або перевищила час очікування
 Comment[tr]=Yapılandırılmış bir yakalama sonrası komut hatayla çıktı veya zaman aşımına uğradı
@@ -341,6 +358,7 @@ Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[zh_TW]=已執行 MCP 擷取
 Name[zh_CN]=已执行 MCP 截图
 Name[uk]=Виконано захоплення MCP
 Name[tr]=MCP yakalaması yürütüldü
@@ -359,6 +377,7 @@ Name[ja]=MCP によるキャプチャを実行しました
 Name[fr]=Capture MCP exécutée
 Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[zh_TW]=外部本機 MCP 用戶端擷取了螢幕畫面
 Comment[zh_CN]=外部本地 MCP 客户端截取了一张屏幕截图
 Comment[uk]=Зовнішній локальний клієнт MCP зробив знімок екрана
 Comment[tr]=Harici bir yerel MCP istemcisi ekran görüntüsü yakaladı
@@ -381,6 +400,7 @@ Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[zh_TW]=近期擷取動作
 Name[zh_CN]=最近截图操作
 Name[uk]=Дія з недавнім знімком
 Name[tr]=Son yakalama eylemi
@@ -399,6 +419,7 @@ Name[ja]=最近のキャプチャの操作
 Name[fr]=Action sur une capture récente
 Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[zh_TW]=近期的擷取已複製或移至垃圾桶
 Comment[zh_CN]=最近的截图已复制或移至回收站
 Comment[uk]=Недавній знімок скопійовано або переміщено до смітника
 Comment[tr]=Son yakalama kopyalandı veya çöp kutusuna taşındı
@@ -421,6 +442,7 @@ Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[zh_TW]=已移除釘選
 Name[zh_CN]=贴图已移除
 Name[uk]=Закріплення видалено
 Name[tr]=Sabitleme kaldırıldı
@@ -439,6 +461,7 @@ Name[ja]=固定を削除しました
 Name[fr]=Épingle supprimée
 Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[zh_TW]=已移除釘選的螢幕擷取，幾秒內仍可復原
 Comment[zh_CN]=贴图已被移除，在几秒内仍可恢复
 Comment[uk]=Закріплений знімок екрана видалено, але його ще можна відновити протягом кількох секунд
 Comment[tr]=Sabitlenmiş bir ekran görüntüsü kaldırıldı ve birkaç saniye boyunca geri yüklenebilir
@@ -461,6 +484,7 @@ Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[zh_TW]=已複製文字
 Name[zh_CN]=文本已复制
 Name[uk]=Текст скопійовано
 Name[tr]=Metin kopyalandı
@@ -479,6 +503,7 @@ Name[ja]=テキストをコピーしました
 Name[fr]=Texte copié
 Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[zh_TW]=已將辨識出的文字複製到剪貼簿，或未找到文字
 Comment[zh_CN]=已将识别的文本复制到剪贴板，或未找到文本
 Comment[uk]=Розпізнаний текст скопійовано до буфера обміну або текст не знайдено
 Comment[tr]=Tanınan metin panoya kopyalandı veya metin bulunamadı

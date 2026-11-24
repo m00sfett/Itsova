@@ -30,7 +30,8 @@
         "Description[vi]": "Chụp các vùng màn hình cố định và màn hình, đồng thời quản lý chúng",
         "Description[tr]": "Sabit ekran alanlarını ve ekranları yakala ve yönet",
         "Description[uk]": "Захоплення фіксованих областей екрана та моніторів і керування ними",
-        "Description[zh_CN]": "截取固定屏幕区域和显示器并进行管理"
+        "Description[zh_CN]": "截取固定屏幕区域和显示器并进行管理",
+        "Description[zh_TW]": "擷取固定螢幕區域與螢幕並進行管理"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",
