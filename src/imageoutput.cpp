@@ -89,6 +89,29 @@ QString makeFilenameImpl(const QString &filenameTemplate,
     return replaceImageExtension(std::move(safeFilename), format);
 }
 
+bool renameNoReplaceUnsupported(int error)
+{
+    return error == EINVAL || error == ENOSYS || error == EOPNOTSUPP || error == ENOTSUP;
+}
+
+// Reserves finalPath exclusively, then moves temporaryPath over the reserved placeholder.
+// Returns 0 on success, otherwise -1 with errno set (EEXIST when the name is taken).
+int publishViaExclusiveReservation(const QByteArray &temporaryPath, const QByteArray &finalPath)
+{
+    const int fd = ::open(finalPath.constData(), O_WRONLY | O_CREAT | O_EXCL | O_CLOEXEC, 0600);
+    if (fd < 0) {
+        return -1;
+    }
+    ::close(fd);
+    if (::rename(temporaryPath.constData(), finalPath.constData()) != 0) {
+        const int renameError = errno;
+        ::unlink(finalPath.constData());
+        errno = renameError;
+        return -1;
+    }
+    return 0;
+}
+
 } // namespace
 
 QList<ImageFormat> availableCuratedFormats()
@@ -536,13 +559,27 @@ bool writeUniqueImageFile(const QString &directory,
     const QByteArray temporaryPath = QFile::encodeName(temporary.fileName());
     temporary.close();
 
+    // Some filesystems (FUSE mounts, older NFS/CIFS) reject RENAME_NOREPLACE. They fall back to
+    // reserving the name with O_EXCL and then replacing only that reserved placeholder.
+    bool useExclusiveReservation = false;
     for (quint64 suffix = 1; suffix != 0; ++suffix) {
         const QString candidateName = suffix == 1
                                           ? filename
                                           : stem + QLatin1Char('-') + QString::number(suffix) + extension;
         const QString candidatePath = outputDirectory.absoluteFilePath(candidateName);
         const QByteArray finalPath = QFile::encodeName(candidatePath);
-        if (::renameat2(AT_FDCWD, temporaryPath.constData(), AT_FDCWD, finalPath.constData(), RENAME_NOREPLACE) != 0) {
+        int published = -1;
+        if (!useExclusiveReservation) {
+            published = ::renameat2(AT_FDCWD, temporaryPath.constData(), AT_FDCWD, finalPath.constData(),
+                                    RENAME_NOREPLACE);
+            if (published != 0 && renameNoReplaceUnsupported(errno)) {
+                useExclusiveReservation = true;
+            }
+        }
+        if (useExclusiveReservation) {
+            published = publishViaExclusiveReservation(temporaryPath, finalPath);
+        }
+        if (published != 0) {
             if (errno == EEXIST) {
                 continue;
             }
