@@ -1,6 +1,7 @@
 #include "cli.h"
 
 #include <QBuffer>
+#include <QDir>
 #include <QFile>
 #include <QImage>
 #include <QJsonArray>
@@ -196,6 +197,7 @@ private Q_SLOTS:
     void captureJsonAndOptions();
     void captureStdoutBinaryAndCleanup();
     void captureErrorsAndExitCodes();
+    void captureRelativeOutIsAbsolute();
     void listSubcommands();
     void areaSubcommands();
     void intervalAndOverlaySubcommands();
@@ -308,6 +310,23 @@ void CliTest::captureErrorsAndExitCodes()
     backend.nextCaptureResult.error = QStringLiteral("Not found");
     QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("missing")}, backend, out, err),
              3);
+}
+
+void CliTest::captureRelativeOutIsAbsolute()
+{
+    MockCliBackend backend;
+    backend.nextCaptureResult.ok = true;
+    QBuffer out;
+    QBuffer err;
+    out.open(QIODevice::ReadWrite);
+    err.open(QIODevice::ReadWrite);
+
+    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
+                           QStringLiteral("--out"), QStringLiteral("sub/shot.png")},
+                          backend, out, err);
+    QCOMPARE(rc, 0);
+    // The daemon runs in another working directory; the CLI must send an absolute path.
+    QCOMPARE(backend.lastCaptureReq.outPath, QDir::current().absoluteFilePath(QStringLiteral("sub/shot.png")));
 }
 
 void CliTest::listSubcommands()

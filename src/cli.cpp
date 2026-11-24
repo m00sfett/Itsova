@@ -6,6 +6,7 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonDocument>
 
 #include <algorithm>
@@ -246,7 +247,8 @@ int handleCapture(const QStringList &args, CliBackend &backend, QIODevice &out, 
             if (i + 1 >= args.size()) {
                 return emitError(jsonMode, 2, CliText::tr("Missing path for --out."), {}, out, err);
             }
-            req.outPath = nextVal();
+            // The daemon has its own working directory, so resolve relative paths here.
+            req.outPath = QFileInfo(nextVal()).absoluteFilePath();
         } else if (arg == QLatin1String("--stdout")) {
             req.toStdout = true;
         } else if (arg == QLatin1String("--clipboard")) {
