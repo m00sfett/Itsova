@@ -67,3 +67,9 @@ Name=Pin removed
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
 Action=Popup
 Urgency=Low
+
+[Event/textCopied]
+Name=Text copied
+Comment=Recognized text was copied to the clipboard, or no text was found
+Action=Popup
+Urgency=Low

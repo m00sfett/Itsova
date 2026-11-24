@@ -5,6 +5,7 @@
 #include "historystore.h"
 #include "hookrunner.h"
 #include "imageoutput.h"
+#include "ocrengine.h"
 #include "screens.h"
 #include "selectiongeometry.h"
 #include "shortcutmanager.h"
@@ -28,10 +29,12 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QLocale>
 #include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
 #include <QScreen>
+#include <QScopedValueRollback>
 #include <QScrollArea>
 #include <QSignalBlocker>
 #include <QSlider>
@@ -486,6 +489,8 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     addFooter();
     resize(860, 600);
     refresh();
+    // Probed once per window: the list must not be rebuilt while the user ticks a language.
+    refreshTextRecognition();
 }
 
 void SettingsWindow::addFooter()
@@ -1761,7 +1766,76 @@ QWidget *SettingsWindow::createGeneralPage()
             assignShortcut(colorPickerTargetId(), seq, colorPickerShortcut_);
         }
     });
+
+    // Text recognition (#27): optional, detected at runtime.
+    ocrStatus_ = new QLabel(page);
+    ocrStatus_->setWordWrap(true);
+    ocrStatus_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    form->addRow(tr("Text recognition:"), ocrStatus_);
+    ocrLanguages_ = new QListWidget(page);
+    ocrLanguages_->setAccessibleName(tr("Text recognition languages"));
+    ocrLanguages_->setSelectionMode(QAbstractItemView::NoSelection);
+    ocrLanguages_->setMaximumHeight(ocrLanguages_->fontMetrics().height() * 7);
+    form->addRow(tr("Languages:"), ocrLanguages_);
+    ocrHint_ = makeHint(QString(), page);
+    form->addRow(QString(), ocrHint_);
+    connect(ocrLanguages_, &QListWidget::itemChanged, this, [this] {
+        if (updating_) {
+            return;
+        }
+        QStringList chosen;
+        for (int i = 0; i < ocrLanguages_->count(); ++i) {
+            const QListWidgetItem *item = ocrLanguages_->item(i);
+            if (item->checkState() == Qt::Checked) {
+                chosen.append(item->data(Qt::UserRole).toString());
+            }
+        }
+        app_->store().ocrLanguages = chosen;
+        app_->storeChanged();
+    });
     return page;
+}
+
+void SettingsWindow::refreshTextRecognition()
+{
+    const QScopedValueRollback<bool> guard(updating_, true);
+    TesseractOcrEngine &engine = app_->ocrEngine();
+    engine.refresh();
+    ocrLanguages_->clear();
+    if (!engine.available()) {
+        ocrStatus_->setText(tr("Not installed. Install the tesseract package and a language package, for example "
+                               "tesseract-data-eng, to copy text from captures."));
+        ocrLanguages_->setEnabled(false);
+        ocrHint_->setText(tr("glimply works the same without it; Copy Text then explains what is missing."));
+        return;
+    }
+    ocrStatus_->setText(tr("%1 found").arg(engine.description()));
+    const QStringList installed = engine.languages();
+    const QStringList active = effectiveOcrLanguages(app_->store().ocrLanguages, installed);
+    QList<QPair<QString, QString>> rows;
+    for (const QString &code : installed) {
+        if (code == QLatin1String("osd") || code == QLatin1String("equ")) {
+            continue; // orientation/equation data, not reading languages
+        }
+        // tesseract uses ISO 639-2 codes such as "deu"; show a readable name where Qt knows one.
+        const QLocale locale(QLocale::codeToLanguage(code, QLocale::ISO639Part2));
+        const QString name = locale.language() == QLocale::C ? code
+                                                             : tr("%1 (%2)").arg(QLocale::languageToString(locale.language()), code);
+        rows.append({name, code});
+    }
+    std::sort(rows.begin(), rows.end(), [](const auto &a, const auto &b) { return a.first.localeAwareCompare(b.first) < 0; });
+    for (const auto &[name, code] : std::as_const(rows)) {
+        auto *item = new QListWidgetItem(name, ocrLanguages_);
+        item->setData(Qt::UserRole, code);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(active.contains(code) ? Qt::Checked : Qt::Unchecked);
+    }
+    ocrLanguages_->setEnabled(!rows.isEmpty());
+    QString hint = tr("Copy Text uses the checked languages; with none checked it uses all of them.");
+    if (!installed.contains(QStringLiteral("eng"))) {
+        hint += QLatin1Char(' ') + tr("English is not installed (package tesseract-data-eng).");
+    }
+    ocrHint_->setText(hint);
 }
 
 QWidget *SettingsWindow::createAutomationPage()

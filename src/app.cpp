@@ -13,6 +13,7 @@
 #include "mcpconfirmdialog.h"
 #include "mcppolicy.h"
 #include "mcpserver.h"
+#include "ocrengine.h"
 #include "pinmanager.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
@@ -105,6 +106,7 @@ App::App(QObject *parent)
     store_.load(*config_);
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
 
+    ocr_ = std::make_shared<TesseractOcrEngine>();
     pins_ = new PinManager(this);
     connect(pins_, &PinManager::changed, this, [this] { tray_->setPinState(pins_->count(), pins_->pinsShown()); });
     connect(pins_, &PinManager::copyRequested, this, [](const QImage &image) {
@@ -362,6 +364,7 @@ void App::syncShortcuts(const QStringList &deletedIds)
     entries.append({colorPickerTargetId(), tr("Pick screen color")});
     entries.append({pinLastCaptureActionId(), tr("Pin last capture to the screen")});
     entries.append({pinsToggleActionId(), tr("Show or hide pinned screenshots")});
+    entries.append({ocrSelectionActionId(), tr("Copy text from a screen selection")});
     shortcuts_->sync(entries, deletedIds);
 }
 
@@ -453,6 +456,75 @@ void App::startPrintNow(std::optional<bool> forcedFrozen, bool forceOverlay)
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
     startWithPinsHidden(session, [session] { session->start(); });
+}
+
+void App::startOcrSelection()
+{
+    if (session_ || selector_ || colorPicker_) {
+        return;
+    }
+    auto *session = new CaptureSession(this, CaptureSession::Purpose::Print);
+    session->setTextMode(true);
+    session->setForcedFrozen(true);
+    session->setForceShowOverlay(true);
+    session_ = session;
+    connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
+    startWithPinsHidden(session, [session] { session->start(); });
+}
+
+TesseractOcrEngine &App::ocrEngine()
+{
+    return *ocr_;
+}
+
+QStringList App::ocrLanguages() const
+{
+    return effectiveOcrLanguages(store_.ocrLanguages, ocr_->languages());
+}
+
+void App::copyTextFromImages(const QList<QImage> &images)
+{
+    if (images.isEmpty()) {
+        return;
+    }
+    if (!ocr_->available()) {
+        notifyError(tr("Text recognition is not available"),
+                    {tr("Install tesseract and a language package, for example tesseract-data-eng, then try again.")});
+        return;
+    }
+    const QStringList langs = ocrLanguages();
+    const std::shared_ptr<const OcrEngine> engine = ocr_;
+    auto *watcher = new QFutureWatcher<OcrResult>(this);
+    connect(watcher, &QFutureWatcher<OcrResult>::finished, this, [this, watcher] {
+        const OcrResult result = watcher->result();
+        watcher->deleteLater();
+        if (!result.ok) {
+            notifyError(tr("Text recognition failed"), {result.error});
+            return;
+        }
+        if (result.text.isEmpty()) {
+            // Keep whatever is on the clipboard instead of replacing it with nothing (Q8).
+            notify(QStringLiteral("textCopied"), tr("No text recognized"),
+                   {tr("The clipboard was left unchanged.")});
+            return;
+        }
+        QGuiApplication::clipboard()->setText(result.text);
+        notify(QStringLiteral("textCopied"), tr("Text copied"), {ocrPreview(result.text)});
+    });
+    watcher->setFuture(QtConcurrent::run([engine, images, langs] {
+        QStringList texts;
+        for (const QImage &image : images) {
+            const OcrResult part = engine->recognize(image, langs);
+            if (!part.ok) {
+                return part;
+            }
+            texts.append(part.text);
+        }
+        OcrResult joined;
+        joined.ok = true;
+        joined.text = joinOcrTexts(texts);
+        return joined;
+    }));
 }
 
 void App::startWithPinsHidden(QObject *owner, std::function<void()> start)
@@ -718,6 +790,10 @@ void App::trigger(const QString &id)
         pins_->setPinsShown(!pins_->pinsShown());
         return;
     }
+    if (id == ocrSelectionActionId()) {
+        startOcrSelection();
+        return;
+    }
     const int delay = store_.effectiveDelaySeconds(id);
     if (delay > 0) {
         runWithDelay(delay, targetLabel(store_, id), [this, id] { executeTriggerNow(id); });
@@ -795,7 +871,8 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
             fallback = KNotification::Warning;
         } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")
                    || eventId == QLatin1String("colorPicked") || eventId == QLatin1String("intervalStopped")
-                   || eventId == QLatin1String("mcpCapture") || eventId == QLatin1String("historyAction")) {
+                   || eventId == QLatin1String("mcpCapture") || eventId == QLatin1String("historyAction")
+                   || eventId == QLatin1String("textCopied")) {
             fallback = KNotification::Notification;
         }
         KNotification::event(fallback, title, text);
@@ -1094,6 +1171,8 @@ void App::attachEditorWindow(QuickEditorWindow *window)
             });
     connect(window, &QuickEditorWindow::settingsModified, this, &App::saveSettings);
     connect(window, &QuickEditorWindow::pinRequested, this, [this](const QImage &image) { pins_->pinImage(image); });
+    connect(window, &QuickEditorWindow::copyTextRequested, this,
+            [this](const QImage &image) { copyTextFromImages({image}); });
     editors_.append(window);
     window->show();
     window->raise();
@@ -1636,6 +1715,8 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                 });
 
         const int pinWait = pins_->beginCapture();
+        const std::shared_ptr<const OcrEngine> ocrEngine = request.ocr ? ocr_ : nullptr;
+        const QStringList ocrLangs = request.ocr ? ocrLanguages() : QStringList();
         watcher->setFuture(QtConcurrent::run([=] {
             if (pinWait > 0) {
                 QThread::msleep(pinWait); // let the compositor drop the now transparent pins
@@ -1732,10 +1813,31 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                 out.writtenPaths.append(savedPath);
                 out.cliResult.files.append({rendered.targetId, savedPath, rendered.image.width(),
                                             rendered.image.height(),
-                                            formatConfigKey(rendered.exportOptions.format), QFileInfo(savedPath).size()});
+                                            formatConfigKey(rendered.exportOptions.format), QFileInfo(savedPath).size(),
+                                            QString()});
                 if (request.toStdout && out.cliResult.stdoutFile.isEmpty()) {
                     out.cliResult.stdoutFile = savedPath;
                     out.cliResult.tempStdoutFile = false;
+                }
+            }
+
+            if (request.ocr) {
+                out.cliResult.ocrRequested = true;
+                if (!ocrEngine || !ocrEngine->available()) {
+                    out.cliResult.ocrError = App::tr("Text recognition needs tesseract. Install tesseract and a "
+                                                     "language package such as tesseract-data-eng.");
+                } else {
+                    for (qsizetype i = 0; i < outputs.size(); ++i) {
+                        const OcrResult text = ocrEngine->recognize(outputs.at(i).image, ocrLangs);
+                        if (!text.ok) {
+                            out.cliResult.ocrError = text.error;
+                            break;
+                        }
+                        out.cliResult.ocrTexts.append({outputs.at(i).token, text.text});
+                        if (i < out.cliResult.files.size()) {
+                            out.cliResult.files[i].text = text.text;
+                        }
+                    }
                 }
             }
 

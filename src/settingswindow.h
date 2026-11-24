@@ -53,6 +53,7 @@ private:
     void refreshGroups();
     void refreshGroupDetails();
     void refreshStorage();
+    void refreshTextRecognition();
     void refreshAutomation();
 
     [[nodiscard]] QString selectedTargetId() const;
@@ -145,6 +146,9 @@ private:
     QComboBox *mcpAccessMode_ = nullptr;
     QWidget *mcpAllowlistBox_ = nullptr;
     QListWidget *mcpAllowlistList_ = nullptr;
+    QLabel *ocrStatus_ = nullptr;
+    QListWidget *ocrLanguages_ = nullptr;
+    QLabel *ocrHint_ = nullptr;
     QLabel *mcpAllowlistEmpty_ = nullptr;
     QLabel *mcpFullWarning_ = nullptr;
     QCheckBox *mcpNotify_ = nullptr;

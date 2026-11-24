@@ -8,6 +8,7 @@
 #include "colorformat.h"
 #include "exportdialog.h"
 #include "imageoutput.h"
+#include "ocrengine.h"
 #include "pixelloupe.h"
 #include "screens.h"
 #include "selectiongeometry.h"
@@ -227,7 +228,15 @@ void CaptureSession::start()
             &CaptureSession::handleInlineTextRequested);
 
     frozen_ = forcedFrozen_.has_value() ? *forcedFrozen_ : store().overlayStartsFrozen();
-    if (purpose_ == Purpose::Print) {
+    if (purpose_ == Purpose::Print && textMode_) {
+        // Text mode writes no file (Q15); it only needs the frozen frames to read from.
+        frozen_ = true;
+        QStringList connectors;
+        for (const ScreenInfo &screen : std::as_const(screens_)) {
+            connectors.append(screen.connector);
+        }
+        captureFrames(connectors);
+    } else if (purpose_ == Purpose::Print) {
         savePrintImage();
         if (finished_) {
             return;
@@ -292,7 +301,7 @@ void CaptureSession::savePrintImage()
 
 void CaptureSession::printPressed()
 {
-    if (finished_ || purpose_ != Purpose::Print) {
+    if (finished_ || purpose_ != Purpose::Print || textMode_) {
         return;
     }
     hideOverlays();
@@ -1094,6 +1103,70 @@ void CaptureSession::pin()
         removePrintSnapshotIfRedacted();
         finish(pinned > 0 ? tr("Pinned to the screen") : QString(),
                printPath_.isEmpty() ? QStringList() : QStringList{printPath_}, errors);
+    });
+}
+
+void CaptureSession::setTextMode(bool on)
+{
+    textMode_ = on;
+}
+
+bool CaptureSession::textMode() const
+{
+    return textMode_;
+}
+
+void CaptureSession::copyText(const QString &preferredConnector)
+{
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+    if (screens_.isEmpty()) {
+        return;
+    }
+    QStringList connectors;
+    if (selections_.isEmpty()) {
+        connectors.append(!preferredConnector.isEmpty() ? preferredConnector : screens_.first().connector);
+    } else {
+        for (const Selection &selection : selections_.stack()) {
+            for (const QString &conn : intersectingConnectors(selection.rect)) {
+                if (!connectors.contains(conn)) {
+                    connectors.append(conn);
+                }
+            }
+        }
+    }
+    withFrames(connectors, [this, connectors] {
+        QList<QImage> images;
+        QStringList errors;
+        if (selections_.isEmpty()) {
+            const CaptureResult frame = frames_.value(connectors.first());
+            if (frame.image.isNull()) {
+                errors.append(frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(connectors.first())
+                                                    : frame.error);
+            } else {
+                images.append(frame.image);
+            }
+        } else {
+            // OCR reads the picture without annotations, in reading order (Q14).
+            const QList<Selection> stack = selections_.stack();
+            QList<QRect> rects;
+            for (const Selection &selection : stack) {
+                rects.append(selection.rect);
+            }
+            for (int index : ocrReadingOrder(rects)) {
+                QString error;
+                const QImage image = cropSelectionImage(stack.at(index), false, nullptr, &error);
+                if (image.isNull()) {
+                    errors.append(error);
+                } else {
+                    images.append(image);
+                }
+            }
+        }
+        app_->copyTextFromImages(images);
+        // The text notification comes from the recognition; only failures to read pixels show here.
+        finish(QString(), QStringList(), errors);
     });
 }
 
@@ -1983,6 +2056,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         keys.insert(2, {tr("I"), tr("Pick pixel color (Tab cycles format, Alt+Click applies to markup)")});
         keys.insert(3, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
         keys.insert(4, {tr("P"), tr("Pin the selection to the screen (one pin per rectangle)")});
+        keys.insert(5, {tr("O"), tr("Copy the text of the selection (needs tesseract)")});
     }
     section(tr("Keys"), keys);
     return panel;
@@ -2188,6 +2262,10 @@ void CaptureOverlay::buildActionBar()
                                   tr("Copy to the clipboard only"));
         connect(copy, &QPushButton::clicked, this, [this] { session_->copy(); });
         row->addWidget(copy);
+        auto *copyText = actionButton(actionButtons_, QStringLiteral("edit-select-text"), tr("Copy Text"),
+                                      tr("Recognize the text and copy it to the clipboard (O)"));
+        connect(copyText, &QPushButton::clicked, this, [this] { session_->copyText(screen_.connector); });
+        row->addWidget(copyText);
         auto *pin = actionButton(actionButtons_, QStringLiteral("window-pin"), tr("Pin"),
                                  tr("Keep the selection on screen above other windows (P)"));
         connect(pin, &QPushButton::clicked, this, [this] { session_->pin(); });
@@ -3209,6 +3287,9 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         case Qt::Key_P:
             session_->pin();
             return;
+        case Qt::Key_O:
+            session_->copyText(screen_.connector);
+            return;
         case Qt::Key_A:
             session_->activateMarkupTool(ToolKind::Arrow);
             return;
@@ -3292,7 +3373,9 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             }
             return;
         }
-        if (session_->purpose() == CaptureSession::Purpose::Print) {
+        if (session_->purpose() == CaptureSession::Purpose::Print && session_->textMode()) {
+            session_->copyText(screen_.connector);
+        } else if (session_->purpose() == CaptureSession::Purpose::Print) {
             session_->save(screen_.connector);
         } else {
             session_->showAreaPanel();

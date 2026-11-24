@@ -63,6 +63,8 @@ Q_SIGNALS:
     void settingsModified();
     // The user asked to pin the current (annotated) image to the screen.
     void pinRequested(const QImage &image);
+    // The user asked to recognize the text of the image (without annotations).
+    void copyTextRequested(const QImage &image);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

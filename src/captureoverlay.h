@@ -118,6 +118,12 @@ public:
     void editInWindow(const QString &preferredConnector = QString());
     // Pins every rectangle (with annotations) to the screen and closes the overlay.
     void pin();
+    // Recognizes the text of every rectangle (without annotations; the whole monitor when there
+    // is none) and closes the overlay (#27).
+    void copyText(const QString &preferredConnector = QString());
+    // Text mode: no Print snapshot is saved and Enter copies text instead of saving.
+    void setTextMode(bool on);
+    [[nodiscard]] bool textMode() const;
     // Returns an error message, or an empty string when the areas were saved.
     QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds = 0);
     void captureMonitor(const QString &connector);
@@ -169,6 +175,7 @@ private:
     Purpose purpose_;
     std::optional<bool> forcedFrozen_;
     bool forceShowOverlay_ = false;
+    bool textMode_ = false;
     bool frozen_ = true;
     bool markupVisible_ = false;
     bool forceNew_ = false;

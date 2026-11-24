@@ -151,6 +151,15 @@ void QuickEditorWindow::buildUi()
     copyAction_->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyAction_->setToolTip(tr("Copy flattened image to clipboard (Ctrl+C)"));
     connect(copyAction_, &QAction::triggered, this, &QuickEditorWindow::copyToClipboard);
+    QAction *copyTextAction =
+        fileBar->addAction(QIcon::fromTheme(QStringLiteral("edit-select-text")), tr("Copy Text"));
+    copyTextAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
+    copyTextAction->setToolTip(tr("Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)"));
+    connect(copyTextAction, &QAction::triggered, this, [this] {
+        if (valid_ && !canvas_->image().isNull()) {
+            Q_EMIT copyTextRequested(canvas_->image());
+        }
+    });
     QAction *pinAction = fileBar->addAction(QIcon::fromTheme(QStringLiteral("window-pin")), tr("Pin to Screen"));
     pinAction->setToolTip(tr("Keep the current image on screen above other windows"));
     connect(pinAction, &QAction::triggered, this, [this] {
