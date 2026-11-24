@@ -137,9 +137,26 @@ void PinWindow::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
     if (QWindow *window = windowHandle()) {
-        connect(window, &QWindow::screenChanged, this, [this] { applySize(); }, Qt::UniqueConnection);
+        connect(window, &QWindow::screenChanged, this, &PinWindow::applySize, Qt::UniqueConnection);
     }
     applySize();
+}
+
+QRect PinWindow::readoutRect() const
+{
+    if (readout_.isEmpty()) {
+        return {};
+    }
+    const QFontMetrics fm(font());
+    const int spacing = style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    const int margin = spacing > 0 ? spacing : 6;
+    QRect box = fm.boundingRect(readout_).adjusted(-margin, -margin / 2, margin, margin / 2);
+    if (layoutDirection() == Qt::RightToLeft) {
+        box.moveBottomLeft(rect().bottomLeft() + QPoint(margin, -margin));
+    } else {
+        box.moveBottomRight(rect().bottomRight() - QPoint(margin, margin));
+    }
+    return box;
 }
 
 void PinWindow::paintEvent(QPaintEvent *)
@@ -168,12 +185,7 @@ void PinWindow::paintEvent(QPaintEvent *)
     painter.drawRect(rect().adjusted(0, 0, -1, -1));
 
     if (!readout_.isEmpty()) {
-        const QFontMetrics fm(font());
-        const int margin = style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing) > 0
-                               ? style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing)
-                               : 6;
-        QRect box = fm.boundingRect(readout_).adjusted(-margin, -margin / 2, margin, margin / 2);
-        box.moveBottomRight(rect().bottomRight() - QPoint(margin, margin));
+        const QRect box = readoutRect();
         QColor background = pal.color(QPalette::ToolTipBase);
         background.setAlphaF(0.9);
         painter.setPen(Qt::NoPen);

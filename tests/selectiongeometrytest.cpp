@@ -171,6 +171,34 @@ private Q_SLOTS:
         QCOMPARE(steppedSelection(QRect(10, 300, 40, 40), {10, 0}, centredSquare, 4, bounds),
                  QRect(0, 290, 60, 60));
     }
+
+    void rtlOverlayChromePlacement()
+    {
+        const QRect anchor(200, 100, 300, 120);
+        const QSize barSize(160, 40);
+        const QSize overlaySize(1000, 800);
+        QCOMPARE(placeOverlayActionBar(anchor, barSize, overlaySize, 40, 8, Qt::LeftToRight), QPoint(340, 228));
+        QCOMPARE(placeOverlayActionBar(anchor, barSize, overlaySize, 40, 8, Qt::RightToLeft), QPoint(200, 228));
+
+        // Near bottom edge, flips above the selection and respects edge clamping in RTL.
+        const QRect nearEdge(5, 740, 80, 50);
+        QCOMPARE(placeOverlayActionBar(nearEdge, barSize, overlaySize, 40, 8, Qt::RightToLeft), QPoint(5, 692));
+
+        const QRect roomy(100, 50, 200, 120);
+        const QRect screenBounds(0, 0, 1000, 800);
+        const QRect ltrClose = overlayCloseButtonRect(roomy, screenBounds, 24, Qt::LeftToRight);
+        const QRect rtlClose = overlayCloseButtonRect(roomy, screenBounds, 24, Qt::RightToLeft);
+        QCOMPARE(ltrClose.center(), QPoint(roomy.right() - 20, roomy.top() + 20));
+        QCOMPARE(rtlClose.center(), QPoint(roomy.left() + 20, roomy.top() + 20));
+
+        const QRect small(100, 50, 30, 30);
+        QVERIFY(overlayCloseButtonRect(small, screenBounds, 24, Qt::LeftToRight).center().x() > small.right());
+        QVERIFY(overlayCloseButtonRect(small, screenBounds, 24, Qt::RightToLeft).center().x() < small.left());
+
+        const QRectF frame(100.0, 50.0, 200.0, 120.0);
+        QCOMPARE(overlaySelectionBadgeCenter(frame, Qt::LeftToRight), QPointF(114.0, 64.0));
+        QCOMPARE(overlaySelectionBadgeCenter(frame, Qt::RightToLeft), QPointF(286.0, 64.0));
+    }
 };
 
 QTEST_GUILESS_MAIN(SelectionGeometryTest)

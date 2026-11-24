@@ -2,9 +2,11 @@
 #include "pinstore.h"
 #include "pinwindow.h"
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QFileInfo>
 #include <QImage>
+#include <QPainter>
 #include <QTemporaryDir>
 #include <QSignalSpy>
 #include <QTest>
@@ -24,6 +26,7 @@ private Q_SLOTS:
     void outputAtPicksContainingOrNearest();
     void scriptEscapesCaption();
     void windowSizeFollowsZoomAndScale();
+    void rtlReadoutMirrorsWithoutMirroringImage();
 };
 
 void PinTest::zoomSteps()
@@ -184,6 +187,41 @@ void PinTest::windowSizeFollowsZoomAndScale()
     QCOMPARE(zoomSpy.count(), 1);
     window.setOpacityLevel(0.04);
     QCOMPARE(window.opacity(), 0.2);
+}
+
+void PinTest::rtlReadoutMirrorsWithoutMirroringImage()
+{
+    QImage image(200, 100, QImage::Format_ARGB32);
+    {
+        QPainter p(&image);
+        p.fillRect(0, 0, 100, 100, QColor(220, 20, 20));
+        p.fillRect(100, 0, 100, 100, QColor(20, 20, 220));
+    }
+    PinWindow window(QStringLiteral("rtl"), image, 1.0, 1.0);
+    window.setLayoutDirection(Qt::LeftToRight);
+    window.show();
+    QVERIFY(QTest::qWaitForWindowExposed(&window));
+    window.setZoom(1.5);
+
+    const QRect ltrBox = window.readoutRect();
+    QVERIFY(!ltrBox.isEmpty());
+    QVERIFY(ltrBox.center().x() > window.width() / 2);
+    const QImage ltrGrab = window.grab().toImage();
+    QVERIFY(ltrGrab.pixelColor(20, 20).red() > 180);
+    QVERIFY(ltrGrab.pixelColor(window.width() - 20, 20).blue() > 180);
+
+    window.setLayoutDirection(Qt::RightToLeft);
+    QCoreApplication::processEvents();
+    const QRect rtlBox = window.readoutRect();
+    QVERIFY(!rtlBox.isEmpty());
+    QVERIFY(rtlBox.center().x() < window.width() / 2);
+    QCOMPARE(rtlBox.bottom(), ltrBox.bottom());
+    // Captured image content must stay unmirrored in RTL.
+    const QImage rtlGrab = window.grab().toImage();
+    QVERIFY(rtlGrab.pixelColor(20, 20).red() > 180);
+    QVERIFY(rtlGrab.pixelColor(window.width() - 20, 20).blue() > 180);
+
+    window.close();
 }
 
 QTEST_MAIN(PinTest)

@@ -2,6 +2,8 @@
 #include "annotations/annotationitem.h"
 #include "annotations/overlayexport.h"
 #include "areaselector.h"
+#include "quickeditorwindow.h"
+#include "targets.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -11,6 +13,7 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QTemporaryDir>
+#include <QToolButton>
 #include <QtTest>
 
 using namespace glimply;
@@ -23,6 +26,7 @@ private Q_SLOTS:
     void areaOverlayPhotoCraftModifiersAndSpaceDrag();
     void multiMonitorAnnotationMappingAndAllMonitors();
     void redactionPrintLeakGuards();
+    void rtlCaptureGeometryAndQuickEditorLayout();
 };
 
 void OverlayMarkupTest::areaOverlayPhotoCraftModifiersAndSpaceDrag()
@@ -163,6 +167,70 @@ void OverlayMarkupTest::redactionPrintLeakGuards()
     QVERIFY(purgeUnredactedPrintFile(printFile, true));
     QVERIFY(!QFile::exists(printFile));
     QVERIFY(QGuiApplication::clipboard()->image().isNull());
+}
+
+void OverlayMarkupTest::rtlCaptureGeometryAndQuickEditorLayout()
+{
+    struct DirectionGuard {
+        Qt::LayoutDirection previous = QGuiApplication::layoutDirection();
+        ~DirectionGuard() { QGuiApplication::setLayoutDirection(previous); }
+    } restoreDirection;
+
+    QImage bg(600, 400, QImage::Format_RGB32);
+    bg.fill(Qt::white);
+    QGuiApplication::setLayoutDirection(Qt::RightToLeft);
+
+    AreaOverlay overlay(QStringLiteral("DP-1"), QSize(600, 400), bg, QRect());
+    overlay.resize(600, 400);
+    QCOMPARE(overlay.layoutDirection(), Qt::RightToLeft);
+
+    QMouseEvent press(QEvent::MouseButtonPress, QPointF(100, 100), QPointF(100, 100), Qt::LeftButton, Qt::LeftButton,
+                      Qt::NoModifier);
+    QMouseEvent move(QEvent::MouseMove, QPointF(250, 200), QPointF(250, 200), Qt::NoButton, Qt::LeftButton,
+                     Qt::NoModifier);
+    QMouseEvent release(QEvent::MouseButtonRelease, QPointF(250, 200), QPointF(250, 200), Qt::LeftButton, Qt::NoButton,
+                        Qt::NoModifier);
+    QApplication::sendEvent(&overlay, &press);
+    QApplication::sendEvent(&overlay, &move);
+    QApplication::sendEvent(&overlay, &release);
+    QCOMPARE(overlay.selection(), QRect(100, 100, 150, 100));
+
+    // Arrow navigation keeps physical screen coordinates under RTL.
+    QKeyEvent shiftRight(QEvent::KeyPress, Qt::Key_Right, Qt::ShiftModifier);
+    QApplication::sendEvent(&overlay, &shiftRight);
+    QCOMPARE(overlay.selection(), QRect(110, 100, 150, 100));
+
+    auto checkEditorToolbarOrder = [&](Qt::LayoutDirection direction, int *selectX, int *textX) {
+        QGuiApplication::setLayoutDirection(direction);
+        TargetStore store;
+        QuickEditorWindow editor(store, bg, 1.0, std::make_unique<AnnotationDocument>(), QStringLiteral("rtl"));
+        QVERIFY(editor.isValid());
+        editor.resize(700, 500);
+        editor.show();
+        QVERIFY(QTest::qWaitForWindowExposed(&editor));
+        QApplication::processEvents();
+        QCOMPARE(editor.layoutDirection(), direction);
+
+        AnnotationToolbar *toolbar = editor.toolbar();
+        QVERIFY(toolbar != nullptr);
+        QToolButton *selectButton = toolbar->toolButton(ToolKind::Select);
+        QToolButton *textButton = toolbar->toolButton(ToolKind::Text);
+        QVERIFY(selectButton != nullptr);
+        QVERIFY(textButton != nullptr);
+        *selectX = selectButton->mapTo(toolbar, QPoint(0, 0)).x();
+        *textX = textButton->mapTo(toolbar, QPoint(0, 0)).x();
+        QVERIFY(!editor.grab().toImage().isNull());
+
+        editor.setCloseDecisionOverride(QuickEditorWindow::CloseDecision::Discard);
+        editor.close();
+    };
+
+    int ltrSelectX = 0, ltrTextX = 0;
+    int rtlSelectX = 0, rtlTextX = 0;
+    checkEditorToolbarOrder(Qt::LeftToRight, &ltrSelectX, &ltrTextX);
+    checkEditorToolbarOrder(Qt::RightToLeft, &rtlSelectX, &rtlTextX);
+    QVERIFY(ltrSelectX < ltrTextX);
+    QVERIFY(rtlSelectX > rtlTextX);
 }
 
 int main(int argc, char *argv[])

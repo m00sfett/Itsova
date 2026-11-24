@@ -2,6 +2,7 @@
 #include "annotations/annotationcontroller.h"
 #include "annotations/annotationdocument.h"
 #include "colorformat.h"
+#include "pixelloupe.h"
 #include "quickeditorwindow.h"
 #include "targets.h"
 
@@ -11,9 +12,11 @@
 #include <QGuiApplication>
 #include <QImage>
 #include <QPainter>
+#include <QPalette>
 #include <QTemporaryDir>
 #include <QtTest>
 
+#include <algorithm>
 #include <memory>
 
 using namespace glimply;
@@ -28,6 +31,7 @@ private Q_SLOTS:
     void loupeSmartQuadrantPlacement();
     void storePersistsColorFormatAndLoupeToggle();
     void quickEditorColorPickerCopiesAndAppliesColor();
+    void rtlColorPickerLoupeMirrorsSwatchRowOnly();
 };
 
 void LoupePickerTest::colorFormatConversionsAndCycle()
@@ -213,6 +217,78 @@ void LoupePickerTest::quickEditorColorPickerCopiesAndAppliesColor()
 
     window.setCloseDecisionOverride(QuickEditorWindow::CloseDecision::Discard);
     window.close();
+}
+
+void LoupePickerTest::rtlColorPickerLoupeMirrorsSwatchRowOnly()
+{
+    QImage native(100, 100, QImage::Format_RGB32);
+    {
+        QPainter p(&native);
+        p.fillRect(0, 0, 50, 100, QColor(220, 30, 30));
+        p.fillRect(50, 0, 50, 100, QColor(30, 60, 220));
+    }
+    // Single green pixel sampled in the swatch without coloring the left/right grid halves.
+    native.setPixelColor(50, 50, QColor(0, 230, 40));
+
+    auto render = [&](Qt::LayoutDirection direction) {
+        QImage target(400, 400, QImage::Format_ARGB32_Premultiplied);
+        target.fill(Qt::white);
+        QPainter painter(&target);
+        painter.setLayoutDirection(direction);
+        PixelLoupe::paintColorPickerLoupe(painter, QPoint(40, 40), target.rect(), QGuiApplication::palette(), native,
+                                          QPoint(50, 50), ColorFormat::Hex, false);
+        return target;
+    };
+
+    auto analyze = [](const QImage &rendered, double *redMeanX, double *blueMeanX, double *swatchMeanX) {
+        long redSum = 0, redCount = 0;
+        long blueSum = 0, blueCount = 0;
+        int maxGridY = -1;
+        for (int y = 0; y < rendered.height(); ++y) {
+            for (int x = 0; x < rendered.width(); ++x) {
+                const QColor c = rendered.pixelColor(x, y);
+                if (c.red() > 180 && c.green() < 80 && c.blue() < 80) {
+                    redSum += x;
+                    ++redCount;
+                    maxGridY = std::max(maxGridY, y);
+                } else if (c.blue() > 180 && c.red() < 80 && c.green() < 100) {
+                    blueSum += x;
+                    ++blueCount;
+                    maxGridY = std::max(maxGridY, y);
+                }
+            }
+        }
+        QVERIFY(redCount > 0);
+        QVERIFY(blueCount > 0);
+        *redMeanX = double(redSum) / double(redCount);
+        *blueMeanX = double(blueSum) / double(blueCount);
+
+        long swatchSum = 0, swatchCount = 0;
+        for (int y = maxGridY + 2; y < rendered.height(); ++y) {
+            for (int x = 0; x < rendered.width(); ++x) {
+                const QColor c = rendered.pixelColor(x, y);
+                if (c.green() > 190 && c.red() < 40 && c.blue() < 80) {
+                    swatchSum += x;
+                    ++swatchCount;
+                }
+            }
+        }
+        QVERIFY(swatchCount > 0);
+        *swatchMeanX = double(swatchSum) / double(swatchCount);
+    };
+
+    double ltrRedX = 0, ltrBlueX = 0, ltrSwatchX = 0;
+    double rtlRedX = 0, rtlBlueX = 0, rtlSwatchX = 0;
+    analyze(render(Qt::LeftToRight), &ltrRedX, &ltrBlueX, &ltrSwatchX);
+    analyze(render(Qt::RightToLeft), &rtlRedX, &rtlBlueX, &rtlSwatchX);
+
+    // The magnified grid always preserves physical left (red) vs right (blue).
+    QVERIFY(ltrRedX < ltrBlueX);
+    QVERIFY(rtlRedX < rtlBlueX);
+    const double gridCenterX = 0.5 * (rtlRedX + rtlBlueX);
+    // In LTR the color swatch leads on the left of the text; in RTL it leads on the right.
+    QVERIFY(ltrSwatchX < gridCenterX);
+    QVERIFY(rtlSwatchX > gridCenterX);
 }
 
 QTEST_MAIN(LoupePickerTest)

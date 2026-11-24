@@ -31,6 +31,7 @@ public:
     void setCaptureTransparent(bool transparent);
     // Logical size for the current zoom on a screen with the given device pixel ratio.
     [[nodiscard]] QSize logicalSizeFor(qreal devicePixelRatio) const;
+    [[nodiscard]] QRect readoutRect() const;
 
 Q_SIGNALS:
     void zoomChanged(double zoom);
