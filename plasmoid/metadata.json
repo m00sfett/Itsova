@@ -14,7 +14,9 @@
         "License": "AGPL-3.0-or-later",
         "Name": "glimply",
         "Version": "@GLIMPLY_VERSION@",
-        "Description[de]": "Feste Bildschirmbereiche und Bildschirme aufnehmen und verwalten"
+        "Description[de]": "Feste Bildschirmbereiche und Bildschirme aufnehmen und verwalten",
+        "Description[fr]": "Capturer des zones fixes de l'écran et des écrans, et les gérer",
+        "Description[ja]": "固定の画面範囲とディスプレイをキャプチャして管理します"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",

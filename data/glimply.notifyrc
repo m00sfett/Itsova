@@ -2,99 +2,149 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[ja]=glimply のスクリーンショット
+Comment[fr]=Captures d'écran glimply
 Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[ja]=キャプチャに失敗
+Name[fr]=Échec de la capture
 Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[ja]=キャプチャに失敗したか、対象がスキップされました
+Comment[fr]=Une capture a échoué ou une cible a été ignorée
 Comment[de]=Ein Bildschirmfoto ist fehlgeschlagen oder ein Ziel wurde übersprungen
 Action=Popup
 Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[ja]=ディスプレイが変更されました
+Name[fr]=Écran modifié
 Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[ja]=範囲のディスプレイが、定義時のディスプレイと異なります
+Comment[fr]=L'écran d'une zone diffère de celui sur lequel elle a été définie
 Comment[de]=Der Bildschirm eines Bereichs unterscheidet sich von dem, auf dem er festgelegt wurde
 Action=Popup
 Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[ja]=設定の問題
+Name[fr]=Problème de paramètres
 Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[ja]=glimply は自動起動などの設定を適用できませんでした
+Comment[fr]=glimply n'a pas pu appliquer un paramètre, comme le lancement automatique
 Comment[de]=glimply konnte eine Einstellung wie den Autostart nicht anwenden
 Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[ja]=キャプチャを保存しました
+Name[fr]=Capture enregistrée
 Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[ja]=Print キーまたはオーバーレイからのキャプチャを保存しました
+Comment[fr]=Une capture lancée par la touche Print ou depuis la superposition a été enregistrée
 Comment[de]=Ein Bildschirmfoto über die Taste Print oder das Overlay wurde gespeichert
 Action=Popup
 Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[ja]=一部のキャプチャ
+Name[fr]=Capture partielle
 Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[ja]=ディスプレイが切断されているため、複数ディスプレイにまたがる範囲が一部だけキャプチャされたか、スキップされました
+Comment[fr]=Une zone multi-écrans a été partiellement capturée ou ignorée car un écran est déconnecté
 Comment[de]=Ein über mehrere Bildschirme reichender Bereich wurde nur teilweise aufgenommen oder übersprungen, weil ein Bildschirm nicht angeschlossen ist
 Action=Popup
 Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[ja]=色をコピーしました
+Name[fr]=Couleur copiée
 Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[ja]=取得した画面の色をクリップボードにコピーしました
+Comment[fr]=Une couleur d'écran prélevée a été copiée dans le presse-papiers
 Comment[de]=Eine aufgenommene Bildschirmfarbe wurde in die Zwischenablage kopiert
 Action=Popup
 Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[ja]=インターバルキャプチャを停止しました
+Name[fr]=Capture à intervalles arrêtée
 Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[ja]=設定された上限に達したため、インターバルキャプチャが終了しました
+Comment[fr]=Une capture à intervalles planifiée a atteint sa limite configurée et s'est terminée
 Comment[de]=Eine Intervallaufnahme hat ihr eingestelltes Limit erreicht und ist beendet
 Action=Popup
 Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[ja]=キャプチャ後のフックに失敗しました
+Name[fr]=Échec du hook après capture
 Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[ja]=設定されたキャプチャ後のコマンドがエラーで終了したか、タイムアウトしました
+Comment[fr]=Une commande configurée après capture s'est terminée avec une erreur ou a dépassé le délai
 Comment[de]=Ein konfigurierter Befehl nach dem Bildschirmfoto wurde mit einem Fehler beendet oder hat das Zeitlimit überschritten
 Action=Popup
 Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[ja]=MCP によるキャプチャを実行しました
+Name[fr]=Capture MCP exécutée
 Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[ja]=外部のローカル MCP クライアントがスクリーンショットをキャプチャしました
+Comment[fr]=Un client MCP local externe a capturé une capture d'écran
 Comment[de]=Ein externer lokaler MCP-Client hat ein Bildschirmfoto aufgenommen
 Action=Popup
 Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[ja]=最近のキャプチャの操作
+Name[fr]=Action sur une capture récente
 Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[ja]=最近のキャプチャがコピーされたか、ゴミ箱に移動されました
+Comment[fr]=Une capture récente a été copiée ou déplacée dans la corbeille
 Comment[de]=Ein letztes Bildschirmfoto wurde kopiert oder in den Papierkorb verschoben
 Action=Popup
 Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[ja]=固定を削除しました
+Name[fr]=Épingle supprimée
 Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[ja]=固定したスクリーンショットを削除しました。数秒間は復元できます
+Comment[fr]=Une capture épinglée a été supprimée et peut encore être restaurée pendant quelques secondes
 Comment[de]=Ein angeheftetes Bildschirmfoto wurde entfernt und kann noch einige Sekunden wiederhergestellt werden
 Action=Popup
 Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[ja]=テキストをコピーしました
+Name[fr]=Texte copié
 Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[ja]=認識したテキストをクリップボードにコピーしたか、テキストが見つかりませんでした
+Comment[fr]=Le texte reconnu a été copié dans le presse-papiers, ou aucun texte n'a été trouvé
 Comment[de]=Erkannter Text wurde in die Zwischenablage kopiert oder es wurde kein Text gefunden
 Action=Popup
 Urgency=Low
