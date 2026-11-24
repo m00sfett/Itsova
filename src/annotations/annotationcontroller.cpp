@@ -949,14 +949,27 @@ void AnnotationController::stepActiveSize(int direction)
             doc_->commitModification(*sel, after, /*mergeKey=*/2);
         }
     } else if (targetKind == ItemKind::Redact) {
-        const int next = std::clamp(redactionStrength_ + direction * 2,
-                                    settings_.redactionMode == RedactionMode::Blur ? 14 : 12,
-                                    settings_.redactionMode == RedactionMode::Blur ? 48 : 40);
-        setRedactionStrength(next);
-        if (sel && sel->kind == ItemKind::Redact) {
-            AnnotationItem after = *sel;
-            after.redactionStrength = next;
-            doc_->commitModification(*sel, after, /*mergeKey=*/2);
+        const RedactionMode mode = sel ? sel->redactionMode : settings_.redactionMode;
+        if (mode != RedactionMode::Solid) {
+            const int minV = mode == RedactionMode::Blur ? 14 : 12;
+            const int maxV = mode == RedactionMode::Blur ? 48 : 40;
+            const int curV = sel ? sel->redactionStrength
+                                 : (mode == RedactionMode::Blur ? settings_.blurRadius : settings_.pixelateBlockSize);
+            const int next = std::clamp(curV + direction * 2, minV, maxV);
+            if (mode == RedactionMode::Blur) {
+                settings_.blurRadius = next;
+            } else {
+                settings_.pixelateBlockSize = next;
+            }
+            if (mode == settings_.redactionMode) {
+                redactionStrength_ = next;
+            }
+            Q_EMIT styleChanged();
+            if (sel && sel->kind == ItemKind::Redact) {
+                AnnotationItem after = *sel;
+                after.redactionStrength = next;
+                doc_->commitModification(*sel, after, /*mergeKey=*/2);
+            }
         }
     } else {
         const qreal next = std::clamp((sel ? sel->strokeWidth : settings_.strokeWidth) + direction * 1.0,
