@@ -2,74 +2,99 @@
 IconName=io.github.m00sfett.glimply
 Name=glimply
 Comment=glimply screenshots
+Comment[de]=glimply-Bildschirmfotos
 
 [Event/captureFailed]
 Name=Capture failed
+Name[de]=Bildschirmfoto fehlgeschlagen
 Comment=A capture failed or a target was skipped
+Comment[de]=Ein Bildschirmfoto ist fehlgeschlagen oder ein Ziel wurde übersprungen
 Action=Popup
 Urgency=Normal
 
 [Event/monitorChanged]
 Name=Monitor changed
+Name[de]=Bildschirm geändert
 Comment=A region's monitor differs from the one it was defined on
+Comment[de]=Der Bildschirm eines Bereichs unterscheidet sich von dem, auf dem er festgelegt wurde
 Action=Popup
 Urgency=Low
 
 [Event/settingsProblem]
 Name=Settings problem
+Name[de]=Problem mit den Einstellungen
 Comment=glimply could not apply a setting, such as autostart
+Comment[de]=glimply konnte eine Einstellung wie den Autostart nicht anwenden
 Action=Popup
 
 [Event/captureSaved]
 Name=Capture saved
+Name[de]=Bildschirmfoto gespeichert
 Comment=A capture from the Print key or the overlay was saved
+Comment[de]=Ein Bildschirmfoto über die Taste Print oder das Overlay wurde gespeichert
 Action=Popup
 Urgency=Low
 
 [Event/partialCapture]
 Name=Partial capture
+Name[de]=Teilweises Bildschirmfoto
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Comment[de]=Ein über mehrere Bildschirme reichender Bereich wurde nur teilweise aufgenommen oder übersprungen, weil ein Bildschirm nicht angeschlossen ist
 Action=Popup
 Urgency=Low
 
 [Event/colorPicked]
 Name=Color copied
+Name[de]=Farbe kopiert
 Comment=A sampled screen color was copied to the clipboard
+Comment[de]=Eine aufgenommene Bildschirmfarbe wurde in die Zwischenablage kopiert
 Action=Popup
 Urgency=Low
 
 [Event/intervalStopped]
 Name=Interval capture stopped
+Name[de]=Intervallaufnahme gestoppt
 Comment=A scheduled interval capture reached its configured limit and finished
+Comment[de]=Eine Intervallaufnahme hat ihr eingestelltes Limit erreicht und ist beendet
 Action=Popup
 Urgency=Low
 
 [Event/hookFailed]
 Name=Post-capture hook failed
+Name[de]=Hook nach dem Bildschirmfoto fehlgeschlagen
 Comment=A configured post-capture command exited with an error or timed out
+Comment[de]=Ein konfigurierter Befehl nach dem Bildschirmfoto wurde mit einem Fehler beendet oder hat das Zeitlimit überschritten
 Action=Popup
 Urgency=Normal
 
 [Event/mcpCapture]
 Name=MCP capture executed
+Name[de]=MCP-Bildschirmfoto ausgeführt
 Comment=An external local MCP client captured a screenshot
+Comment[de]=Ein externer lokaler MCP-Client hat ein Bildschirmfoto aufgenommen
 Action=Popup
 Urgency=Low
 
 [Event/historyAction]
 Name=Recent capture action
+Name[de]=Aktion für letztes Bildschirmfoto
 Comment=A recent capture was copied or moved to the trash
+Comment[de]=Ein letztes Bildschirmfoto wurde kopiert oder in den Papierkorb verschoben
 Action=Popup
 Urgency=Low
 
 [Event/pinRemoved]
 Name=Pin removed
+Name[de]=Anheftung entfernt
 Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Comment[de]=Ein angeheftetes Bildschirmfoto wurde entfernt und kann noch einige Sekunden wiederhergestellt werden
 Action=Popup
 Urgency=Low
 
 [Event/textCopied]
 Name=Text copied
+Name[de]=Text kopiert
 Comment=Recognized text was copied to the clipboard, or no text was found
+Comment[de]=Erkannter Text wurde in die Zwischenablage kopiert oder es wurde kein Text gefunden
 Action=Popup
 Urgency=Low

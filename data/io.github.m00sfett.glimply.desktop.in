@@ -2,10 +2,13 @@
 Type=Application
 Name=glimply
 GenericName=Fixed Region Screenshots
+GenericName[de]=Bildschirmfotos fester Bereiche
 Comment=Capture fixed screen regions and monitors with global shortcuts
+Comment[de]=Feste Bildschirmbereiche und Bildschirme mit globalen Tastenkürzeln aufnehmen
 Exec=@GLIMPLY_EXEC@
 Icon=io.github.m00sfett.glimply
 Categories=Utility;Graphics;
 Keywords=screenshot;capture;region;monitor;
+Keywords[de]=screenshot;capture;region;monitor;Bildschirmfoto;Aufnahme;Bereich;Bildschirm;
 StartupNotify=false
 X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2

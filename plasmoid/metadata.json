@@ -13,7 +13,8 @@
         "Id": "io.github.m00sfett.glimply.widget",
         "License": "AGPL-3.0-or-later",
         "Name": "glimply",
-        "Version": "@GLIMPLY_VERSION@"
+        "Version": "@GLIMPLY_VERSION@",
+        "Description[de]": "Feste Bildschirmbereiche und Bildschirme aufnehmen und verwalten"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",
