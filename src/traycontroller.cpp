@@ -44,12 +44,13 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     , item_(new KStatusNotifierItem(QStringLiteral("glimply"), this))
     , menu_(new QMenu)
     , blinkTimer_(new QTimer(this))
+    , statusText_(tr("Ready"))
 {
     item_->setCategory(KStatusNotifierItem::ApplicationStatus);
     item_->setStatus(KStatusNotifierItem::Active);
     item_->setTitle(tr("glimply"));
     item_->setToolTipTitle(tr("glimply"));
-    item_->setToolTipSubTitle(tr("Ready"));
+    item_->setToolTipSubTitle(statusText_);
     item_->setStandardActionsEnabled(false); // the menu adds its own Quit
     item_->setContextMenu(menu_); // the item takes ownership
     item_->setIsMenu(true); // a click opens the menu
@@ -80,14 +81,20 @@ void TrayController::setCountdownState(bool active, int remainingSeconds)
 {
     countdownActive_ = active;
     countdownRemaining_ = remainingSeconds;
-    if (active) {
-        item_->setToolTipSubTitle(tr("Capturing in %1 s…").arg(remainingSeconds));
-    }
+    updateToolTip();
+}
+
+void TrayController::setActiveIntervals(const QList<ActiveIntervalStatus> &active)
+{
+    activeIntervals_ = active;
+    updateIcon();
+    updateToolTip();
 }
 
 void TrayController::setStatusText(const QString &text)
 {
-    item_->setToolTipSubTitle(text);
+    statusText_ = text;
+    updateToolTip();
 }
 
 void TrayController::setStandby(bool standby)
@@ -104,8 +111,31 @@ void TrayController::blink()
 
 void TrayController::updateIcon()
 {
-    item_->setIconByPixmap(trayIcon(flashing_));
-    item_->setToolTipIconByPixmap(trayIcon());
+    const TrayIconState state = flashing_ ? TrayIconState::Flash
+                              : !activeIntervals_.isEmpty() ? TrayIconState::IntervalActive
+                                                            : TrayIconState::Normal;
+    const TrayIconState staticState =
+        !activeIntervals_.isEmpty() ? TrayIconState::IntervalActive : TrayIconState::Normal;
+    item_->setIconByPixmap(trayIcon(state));
+    item_->setToolTipIconByPixmap(trayIcon(staticState));
+}
+
+void TrayController::updateToolTip()
+{
+    if (countdownActive_) {
+        item_->setToolTipSubTitle(tr("Capturing in %1 s…").arg(countdownRemaining_));
+        return;
+    }
+    if (!activeIntervals_.isEmpty()) {
+        QStringList names;
+        names.reserve(activeIntervals_.size());
+        for (const ActiveIntervalStatus &status : activeIntervals_) {
+            names.append(tr("%1 (%2 s)").arg(status.displayName).arg(status.config.seconds));
+        }
+        item_->setToolTipSubTitle(tr("Intervals active: %1").arg(names.join(QStringLiteral(", "))));
+        return;
+    }
+    item_->setToolTipSubTitle(statusText_);
 }
 
 void TrayController::rebuildMenu()
@@ -138,6 +168,24 @@ void TrayController::rebuildMenu()
                                                 tr("Cancel Countdown (%1 s)").arg(countdownRemaining_), menu_));
         connect(cancelCountdown, &QAction::triggered, this, &TrayController::cancelCountdownRequested);
         first = false;
+    }
+
+    if (!activeIntervals_.isEmpty()) {
+        addSection();
+        for (const ActiveIntervalStatus &status : activeIntervals_) {
+            auto *stopAction = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
+                                               tr("Stop Interval: %1 (%2 saved)")
+                                                   .arg(status.displayName)
+                                                   .arg(status.captureCount),
+                                               menu_));
+            connect(stopAction, &QAction::triggered, this,
+                    [this, id = status.targetId] { Q_EMIT stopIntervalRequested(id); });
+        }
+        if (activeIntervals_.size() > 1) {
+            auto *stopAll = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
+                                            tr("Stop All Intervals"), menu_));
+            connect(stopAll, &QAction::triggered, this, &TrayController::stopAllIntervalsRequested);
+        }
     }
 
     const QList<MenuTarget> targets = provider_();
@@ -237,6 +285,32 @@ void TrayController::rebuildMenu()
         }
     });
     add(delayMenu->menuAction());
+
+    auto *intervalsMenu = new QMenu(tr("Intervals"), menu_);
+    intervalsMenu->setIcon(QIcon::fromTheme(QStringLiteral("chronometer")));
+    for (const MenuTarget &target : targets) {
+        const QString text = target.intervalActive
+                                 ? tr("Stop %1").arg(target.name)
+                                 : tr("Start %1 (%2 s)").arg(target.name).arg(target.intervalSeconds);
+        QAction *action = intervalsMenu->addAction(
+            QIcon::fromTheme(QString::fromLatin1(target.intervalActive ? "media-playback-stop" : "media-playback-start")),
+            text);
+        action->setEnabled(target.intervalActive || target.available);
+        connect(action, &QAction::triggered, this, [this, id = target.id, active = target.intervalActive] {
+            if (active) {
+                Q_EMIT stopIntervalRequested(id);
+            } else {
+                QTimer::singleShot(menuCloseDelayMs, this, [this, id] { Q_EMIT toggleIntervalRequested(id); });
+            }
+        });
+    }
+    if (!activeIntervals_.isEmpty()) {
+        intervalsMenu->addSeparator();
+        QAction *stopAll = intervalsMenu->addAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
+                                                    tr("Stop All Intervals"));
+        connect(stopAll, &QAction::triggered, this, &TrayController::stopAllIntervalsRequested);
+    }
+    add(intervalsMenu->menuAction());
 
     auto *openLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-open")), tr("Open Last Capture"), menu_));
     openLast->setEnabled(lastCaptureAvailable_);

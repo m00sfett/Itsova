@@ -43,11 +43,17 @@ public Q_SLOTS:
     Q_SCRIPTABLE void SetDelay(int seconds, bool keepActive);
     Q_SCRIPTABLE void CancelCountdown();
     Q_SCRIPTABLE void PickColor();
+    Q_SCRIPTABLE QString Intervals() const;
+    Q_SCRIPTABLE QString StartInterval(const QString &id, int seconds, int maxCaptures, int maxMinutes,
+                                       bool onlyWhenChanged);
+    Q_SCRIPTABLE void StopInterval(const QString &id);
+    Q_SCRIPTABLE void StopAllIntervals();
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 
 Q_SIGNALS:
     Q_SCRIPTABLE void Changed();
+    Q_SCRIPTABLE void IntervalsChanged();
     Q_SCRIPTABLE void Captured(bool success);
     void widgetActiveChanged(bool active);
 

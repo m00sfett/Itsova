@@ -35,6 +35,16 @@ struct ExportOverride
     bool operator==(const ExportOverride &) const = default;
 };
 
+struct IntervalConfig
+{
+    int seconds = 5;        // clamped 1..86400
+    int maxCaptures = 0;    // 0 = unlimited, 0..100000
+    int maxMinutes = 0;     // 0 = unlimited, 0..10080
+    bool onlyWhenChanged = false;
+
+    bool operator==(const IntervalConfig &) const = default;
+};
+
 struct AreaMonitorBinding
 {
     QString connector;
@@ -57,6 +67,7 @@ struct Area
     bool includeCursor = false;
     int delaySeconds = 0;
     ExportOverride exportOverride;
+    IntervalConfig interval;
 
     [[nodiscard]] bool isCrossMonitor() const { return !monitors.isEmpty(); }
     [[nodiscard]] QStringList involvedConnectors() const;
@@ -70,14 +81,18 @@ struct Group
     bool includeCursor = false;
     int delaySeconds = 0;
     ExportOverride exportOverride;
+    IntervalConfig interval;
 };
 
-// Ids of built-in targets.
+// Ids of built-in targets and interval shortcuts.
 [[nodiscard]] QString screenTargetId(const QString &connector);
 [[nodiscard]] QString allMonitorsTargetId();
 [[nodiscard]] QString colorPickerTargetId();
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
+[[nodiscard]] QString intervalShortcutId(const QString &targetId);
+[[nodiscard]] bool isIntervalShortcutId(const QString &id);
+[[nodiscard]] QString targetIdFromIntervalShortcutId(const QString &id);
 
 // The persistent configuration: areas, groups and per-target settings of built-in targets.
 class TargetStore
@@ -116,6 +131,7 @@ public:
     ExportOptions exportOptions;
     QHash<QString, ExportOverride> builtInExportOverrides;
     QHash<QString, int> builtInDelays;
+    QHash<QString, IntervalConfig> builtInIntervals;
     int captureDelaySeconds = 0;
     bool keepDelayActive = false;
 
@@ -131,6 +147,8 @@ public:
     void setTargetDelaySeconds(const QString &targetId, int seconds);
     [[nodiscard]] int effectiveDelaySeconds(const QString &targetId = QString()) const;
     bool consumeOneShotDelay();
+    [[nodiscard]] IntervalConfig targetIntervalConfig(const QString &targetId) const;
+    void setTargetIntervalConfig(const QString &targetId, const IntervalConfig &cfg);
 
     void load(const KConfig &config);
     void save(KConfig &config) const;

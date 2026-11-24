@@ -2,10 +2,13 @@
 
 #include "imageoutput.h"
 
+#include <QFileInfo>
 #include <QFutureWatcher>
 #include <QHash>
 #include <QtConcurrent>
 
+#include <cstddef>
+#include <cstring>
 #include <mutex>
 #include <utility>
 
@@ -29,8 +32,34 @@ QStringList TriggerEngine::lastPaths() const
     return lastPaths_;
 }
 
-TriggerResult TriggerEngine::execute(const TriggerPlan &plan, const Capturer &capturer, const QString &directory,
-                                     const QString &filenameTemplate, const QDateTime &timestamp)
+bool TriggerEngine::imagesPixelEqual(const QImage &a, const QImage &b)
+{
+    if (a.isNull() || b.isNull() || a.size() != b.size()) {
+        return false;
+    }
+    const QImage *imgA = &a;
+    const QImage *imgB = &b;
+    QImage convertedA;
+    QImage convertedB;
+    if (a.format() != b.format() || a.depth() < 8) {
+        convertedA = a.convertToFormat(QImage::Format_RGBA8888);
+        convertedB = b.convertToFormat(QImage::Format_RGBA8888);
+        imgA = &convertedA;
+        imgB = &convertedB;
+    }
+    const qsizetype rowBytes = static_cast<qsizetype>(imgA->width()) * (imgA->depth() / 8);
+    for (int y = 0; y < imgA->height(); ++y) {
+        if (std::memcmp(imgA->constScanLine(y), imgB->constScanLine(y), static_cast<std::size_t>(rowBytes)) != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+TriggerResult TriggerEngine::executeWithChangeFilter(const TriggerPlan &plan, const Capturer &capturer,
+                                                    const QString &directory, const QString &filenameTemplate,
+                                                    const QDateTime &timestamp, const FrameMap *previousFrames,
+                                                    FrameMap *updatedFrames)
 {
     TriggerResult result;
     result.triggerId = plan.triggerId;
@@ -60,16 +89,35 @@ TriggerResult TriggerEngine::execute(const TriggerPlan &plan, const Capturer &ca
             result.errors.append(output.error);
             continue;
         }
+        const QString frameKey = output.targetId.isEmpty() ? output.token : output.targetId;
+        if (previousFrames) {
+            const auto prevIt = previousFrames->constFind(frameKey);
+            if (prevIt != previousFrames->cend() && imagesPixelEqual(*prevIt, output.image)) {
+                ++result.skippedUnchanged;
+                continue;
+            }
+        }
         QString path;
         QString error;
         if (writer.writeImage(output.image, output.token, timestamp, output.exportOptions, &path, &error)) {
             result.writtenPaths.append(path);
+            result.outputInfos.append({frameKey, path, output.image.width(), output.image.height(),
+                                       formatConfigKey(output.exportOptions.format), QFileInfo(path).size()});
+            if (updatedFrames) {
+                updatedFrames->insert(frameKey, output.image);
+            }
         } else {
             result.errors.append(error);
         }
     }
     result.errors.removeDuplicates();
     return result;
+}
+
+TriggerResult TriggerEngine::execute(const TriggerPlan &plan, const Capturer &capturer, const QString &directory,
+                                     const QString &filenameTemplate, const QDateTime &timestamp)
+{
+    return executeWithChangeFilter(plan, capturer, directory, filenameTemplate, timestamp, nullptr, nullptr);
 }
 
 void TriggerEngine::run(TriggerPlan plan, const QString &directory, const QString &filenameTemplate)
@@ -88,6 +136,40 @@ void TriggerEngine::run(TriggerPlan plan, const QString &directory, const QStrin
                                           timestamp] {
         return execute(plan, capturer, directory, filenameTemplate, timestamp);
     }));
+}
+
+void TriggerEngine::runIntervalTick(TriggerPlan plan, const QString &directory, const QString &filenameTemplate,
+                                    std::optional<FrameMap> previousFrames,
+                                    std::function<void(TriggerResult, FrameMap)> onDone)
+{
+    struct TickResult
+    {
+        TriggerResult result;
+        FrameMap updatedFrames;
+    };
+
+    const QDateTime timestamp = QDateTime::currentDateTime();
+    auto *watcher = new QFutureWatcher<TickResult>(this);
+    connect(watcher, &QFutureWatcher<TickResult>::finished, this,
+            [this, watcher, callback = std::move(onDone)] {
+                TickResult out = watcher->result();
+                watcher->deleteLater();
+                out.result.fromInterval = true;
+                if (!out.result.writtenPaths.isEmpty()) {
+                    lastPaths_ = out.result.writtenPaths;
+                }
+                if (callback) {
+                    callback(std::move(out.result), std::move(out.updatedFrames));
+                }
+            });
+    watcher->setFuture(QtConcurrent::run(
+        [plan = std::move(plan), capturer = capturer_, directory, filenameTemplate, timestamp,
+         prev = std::move(previousFrames)] {
+            TickResult out;
+            out.result = executeWithChangeFilter(plan, capturer, directory, filenameTemplate, timestamp,
+                                                 prev ? &*prev : nullptr, &out.updatedFrames);
+            return out;
+        }));
 }
 
 } // namespace glimply

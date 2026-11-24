@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.0] - Unreleased
+## [Unreleased]
+
+### Added
+
+- Scheduled concurrent interval captures per area, monitor, all monitors, or group (`#22`) with per-target interval configuration (`Every N s`, optional `Only save when changed` raw pixel comparison preserving group frame simultaneity, optional `maxCaptures` and `maxMinutes` stop limits), dedicated global toggle shortcuts, active tray/Plasma-widget interval indicator (`io.github.m00sfett.glimply-tray-interval`) with `Start` / `Stop` / `Stop All` controls, and automatic low-disk (`< 100 MB`) / disconnect stop protection.
+
+## [0.5.0] - 2026-11-24
 
 Multi-format image export, non-blocking capture delay timer, cross-monitor selections and areas, and a native pixel magnifier loupe + color picker.
 

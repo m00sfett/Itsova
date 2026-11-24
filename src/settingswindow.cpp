@@ -262,6 +262,97 @@ private:
     std::function<void()> onChanged_;
 };
 
+class IntervalConfigWidget : public QWidget
+{
+public:
+    explicit IntervalConfigWidget(QWidget *parent = nullptr)
+        : QWidget(parent)
+    {
+        auto *layout = new QVBoxLayout(this);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(4);
+
+        auto *topRow = new QHBoxLayout;
+        topRow->setContentsMargins(0, 0, 0, 0);
+        topRow->setSpacing(6);
+        topRow->addWidget(new QLabel(SettingsWindow::tr("Every"), this));
+
+        secondsSpin_ = new QSpinBox(this);
+        secondsSpin_->setRange(1, 86400);
+        secondsSpin_->setSuffix(SettingsWindow::tr(" s"));
+        secondsSpin_->setKeyboardTracking(false);
+        secondsSpin_->setAccessibleName(SettingsWindow::tr("Interval duration in seconds"));
+        topRow->addWidget(secondsSpin_);
+
+        onlyChangedCheck_ = new QCheckBox(SettingsWindow::tr("Only save when changed"), this);
+        topRow->addWidget(onlyChangedCheck_);
+        topRow->addStretch(1);
+        layout->addLayout(topRow);
+
+        auto *limitsRow = new QHBoxLayout;
+        limitsRow->setContentsMargins(0, 0, 0, 0);
+        limitsRow->setSpacing(6);
+        limitsRow->addWidget(new QLabel(SettingsWindow::tr("Stop after:"), this));
+
+        maxCapturesSpin_ = new QSpinBox(this);
+        maxCapturesSpin_->setRange(0, 100000);
+        maxCapturesSpin_->setSpecialValueText(SettingsWindow::tr("No capture limit"));
+        maxCapturesSpin_->setSuffix(SettingsWindow::tr(" captures"));
+        maxCapturesSpin_->setKeyboardTracking(false);
+        maxCapturesSpin_->setAccessibleName(SettingsWindow::tr("Maximum captures per interval run"));
+        limitsRow->addWidget(maxCapturesSpin_);
+
+        maxMinutesSpin_ = new QSpinBox(this);
+        maxMinutesSpin_->setRange(0, 10080);
+        maxMinutesSpin_->setSpecialValueText(SettingsWindow::tr("No time limit"));
+        maxMinutesSpin_->setSuffix(SettingsWindow::tr(" min"));
+        maxMinutesSpin_->setKeyboardTracking(false);
+        maxMinutesSpin_->setAccessibleName(SettingsWindow::tr("Maximum interval duration in minutes"));
+        limitsRow->addWidget(maxMinutesSpin_);
+        limitsRow->addStretch(1);
+        layout->addLayout(limitsRow);
+
+        const auto notifyChanged = [this] {
+            if (!updating_ && onChanged_) {
+                onChanged_();
+            }
+        };
+        connect(secondsSpin_, &QSpinBox::valueChanged, this, notifyChanged);
+        connect(maxCapturesSpin_, &QSpinBox::valueChanged, this, notifyChanged);
+        connect(maxMinutesSpin_, &QSpinBox::valueChanged, this, notifyChanged);
+        connect(onlyChangedCheck_, &QCheckBox::toggled, this, notifyChanged);
+    }
+
+    void setOnChanged(std::function<void()> callback)
+    {
+        onChanged_ = std::move(callback);
+    }
+
+    void setConfig(const IntervalConfig &cfg)
+    {
+        updating_ = true;
+        secondsSpin_->setValue(std::clamp(cfg.seconds, 1, 86400));
+        maxCapturesSpin_->setValue(std::clamp(cfg.maxCaptures, 0, 100000));
+        maxMinutesSpin_->setValue(std::clamp(cfg.maxMinutes, 0, 10080));
+        onlyChangedCheck_->setChecked(cfg.onlyWhenChanged);
+        updating_ = false;
+    }
+
+    [[nodiscard]] IntervalConfig config() const
+    {
+        return {secondsSpin_->value(), maxCapturesSpin_->value(), maxMinutesSpin_->value(),
+                onlyChangedCheck_->isChecked()};
+    }
+
+private:
+    bool updating_ = false;
+    QSpinBox *secondsSpin_ = nullptr;
+    QSpinBox *maxCapturesSpin_ = nullptr;
+    QSpinBox *maxMinutesSpin_ = nullptr;
+    QCheckBox *onlyChangedCheck_ = nullptr;
+    std::function<void()> onChanged_;
+};
+
 SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     : KPageDialog(parent)
     , app_(app)
@@ -454,12 +545,22 @@ QWidget *SettingsWindow::createTargetsPage()
     targetDelay_->setAccessibleName(tr("Capture delay"));
     form->addRow(tr("Delay:"), targetDelay_);
 
+    targetInterval_ = new IntervalConfigWidget(targetDetails_);
+    form->addRow(tr("Interval:"), targetInterval_);
+
     targetShortcut_ = new KKeySequenceWidget(targetDetails_);
     targetShortcut_->setAccessibleName(tr("Shortcut"));
     targetShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
                                                  | KKeySequenceWidget::StandardShortcuts);
     targetShortcut_->setMultiKeyShortcutsAllowed(false);
     form->addRow(tr("Shortcut:"), targetShortcut_);
+
+    targetIntervalShortcut_ = new KKeySequenceWidget(targetDetails_);
+    targetIntervalShortcut_->setAccessibleName(tr("Interval toggle shortcut"));
+    targetIntervalShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
+                                                         | KKeySequenceWidget::StandardShortcuts);
+    targetIntervalShortcut_->setMultiKeyShortcutsAllowed(false);
+    form->addRow(tr("Interval shortcut:"), targetIntervalShortcut_);
     form->addRow(QString(), makeHint(tr("Global: works in every application. Also editable in System Settings."),
                                      targetDetails_));
 
@@ -520,11 +621,27 @@ QWidget *SettingsWindow::createTargetsPage()
             app_->storeChanged();
         }
     });
+    targetInterval_->setOnChanged([this] {
+        if (updating_) {
+            return;
+        }
+        const QString id = selectedTargetId();
+        if (!id.isEmpty()) {
+            app_->store().setTargetIntervalConfig(id, targetInterval_->config());
+            app_->storeChanged();
+        }
+    });
     connect(targetShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &sequence) {
         if (!updating_) {
             assignShortcut(selectedTargetId(), sequence, targetShortcut_);
         }
     });
+    connect(targetIntervalShortcut_, &KKeySequenceWidget::keySequenceChanged, this,
+            [this](const QKeySequence &sequence) {
+                if (!updating_) {
+                    assignShortcut(intervalShortcutId(selectedTargetId()), sequence, targetIntervalShortcut_);
+                }
+            });
     return page;
 }
 
@@ -761,8 +878,12 @@ void SettingsWindow::refreshTargetDetails()
     targetExport_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetDelay_->setValue(store.targetDelaySeconds(id));
     targetDelay_->setEnabled(isArea || screen || id == allMonitorsTargetId());
+    targetInterval_->setConfig(store.targetIntervalConfig(id));
+    targetInterval_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetShortcut_->setKeySequence(app_->shortcuts()->shortcut(id));
     targetShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
+    targetIntervalShortcut_->setKeySequence(app_->shortcuts()->shortcut(intervalShortcutId(id)));
+    targetIntervalShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     updating_ = false;
 }
 
@@ -968,8 +1089,7 @@ void SettingsWindow::removeSelectedArea()
     if (answer != QMessageBox::Yes) {
         return;
     }
-    app_->store().remove(id);
-    app_->storeChanged({id});
+    app_->removeTarget(id);
 }
 
 void SettingsWindow::assignShortcut(const QString &id, const QKeySequence &sequence, KKeySequenceWidget *editor)
@@ -982,14 +1102,19 @@ void SettingsWindow::assignShortcut(const QString &id, const QKeySequence &seque
         QStringList owners;
         for (const Group &group : app_->store().groups) {
             owners.append(group.id);
+            owners.append(intervalShortcutId(group.id));
         }
         for (const Area &area : app_->store().areas) {
             owners.append(area.id);
+            owners.append(intervalShortcutId(area.id));
         }
         for (const ScreenInfo &screen : currentScreens()) {
-            owners.append(screenTargetId(screen.connector));
+            const QString sid = screenTargetId(screen.connector);
+            owners.append(sid);
+            owners.append(intervalShortcutId(sid));
         }
         owners.append(allMonitorsTargetId());
+        owners.append(intervalShortcutId(allMonitorsTargetId()));
         owners.append(colorPickerTargetId());
         for (const QString &owner : std::as_const(owners)) {
             if (owner == id || shortcuts->shortcut(owner) != sequence) {
@@ -1080,12 +1205,22 @@ QWidget *SettingsWindow::createGroupsPage()
     groupDelay_->setAccessibleName(tr("Group capture delay"));
     form->addRow(tr("Delay:"), groupDelay_);
 
+    groupInterval_ = new IntervalConfigWidget(groupDetails_);
+    form->addRow(tr("Interval:"), groupInterval_);
+
     groupShortcut_ = new KKeySequenceWidget(groupDetails_);
     groupShortcut_->setAccessibleName(tr("Group shortcut"));
     groupShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
                                                 | KKeySequenceWidget::StandardShortcuts);
     groupShortcut_->setMultiKeyShortcutsAllowed(false);
     form->addRow(tr("Shortcut:"), groupShortcut_);
+
+    groupIntervalShortcut_ = new KKeySequenceWidget(groupDetails_);
+    groupIntervalShortcut_->setAccessibleName(tr("Group interval toggle shortcut"));
+    groupIntervalShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
+                                                        | KKeySequenceWidget::StandardShortcuts);
+    groupIntervalShortcut_->setMultiKeyShortcutsAllowed(false);
+    form->addRow(tr("Interval shortcut:"), groupIntervalShortcut_);
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 2);
 
@@ -1116,8 +1251,7 @@ QWidget *SettingsWindow::createGroupsPage()
             tr("Remove group “%1”? Its targets stay; only the group and its shortcut are removed.").arg(group->name),
             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
         if (answer == QMessageBox::Yes) {
-            app_->store().remove(id);
-            app_->storeChanged({id});
+            app_->removeTarget(id);
         }
     });
     connect(groupName_, &QLineEdit::editingFinished, this, &SettingsWindow::renameGroup);
@@ -1157,11 +1291,23 @@ QWidget *SettingsWindow::createGroupsPage()
             app_->storeChanged();
         }
     });
+    groupInterval_->setOnChanged([this] {
+        if (Group *group = app_->store().group(selectedGroupId()); group && !updating_) {
+            group->interval = groupInterval_->config();
+            app_->storeChanged();
+        }
+    });
     connect(groupShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &sequence) {
         if (!updating_) {
             assignShortcut(selectedGroupId(), sequence, groupShortcut_);
         }
     });
+    connect(groupIntervalShortcut_, &KKeySequenceWidget::keySequenceChanged, this,
+            [this](const QKeySequence &sequence) {
+                if (!updating_) {
+                    assignShortcut(intervalShortcutId(selectedGroupId()), sequence, groupIntervalShortcut_);
+                }
+            });
     return page;
 }
 
@@ -1235,7 +1381,10 @@ void SettingsWindow::refreshGroupDetails()
     groupCursor_->setChecked(group && group->includeCursor);
     groupExport_->setOverride(group ? group->exportOverride : ExportOverride{}, app_->store().exportOptions.format);
     groupDelay_->setValue(group ? group->delaySeconds : 0);
+    groupInterval_->setConfig(group ? group->interval : IntervalConfig{});
     groupShortcut_->setKeySequence(group ? app_->shortcuts()->shortcut(group->id) : QKeySequence());
+    groupIntervalShortcut_->setKeySequence(
+        group ? app_->shortcuts()->shortcut(intervalShortcutId(group->id)) : QKeySequence());
     updating_ = false;
 }
 

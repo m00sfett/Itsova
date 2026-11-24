@@ -24,15 +24,21 @@ PlasmoidItem {
     property int delaySeconds: 0
     property bool keepDelayActive: false
     property bool countdownActive: false
+    property int activeIntervalCount: 0
     property string lastError: ""
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
     readonly property int closeDelay: 300
 
-    Plasmoid.icon: flashing ? "io.github.m00sfett.glimply-tray-flash" : "io.github.m00sfett.glimply-tray"
+    Plasmoid.icon: flashing ? "io.github.m00sfett.glimply-tray-flash"
+                 : activeIntervalCount > 0 ? "io.github.m00sfett.glimply-tray-interval"
+                                           : "io.github.m00sfett.glimply-tray"
     Plasmoid.status: running ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
     toolTipMainText: "glimply"
-    toolTipSubText: running ? i18n("Capture fixed areas and monitors") : i18n("glimply is not running")
+    toolTipSubText: !running ? i18n("glimply is not running")
+                  : activeIntervalCount > 0
+                    ? i18np("1 interval capture active", "%1 interval captures active", activeIntervalCount)
+                    : i18n("Capture fixed areas and monitors")
 
     ListModel {
         id: targetModel
@@ -88,6 +94,15 @@ PlasmoidItem {
         call("CountdownActive", [], function (value) {
             root.countdownActive = value === true;
         });
+        call("Intervals", [], function (json) {
+            let list = [];
+            try {
+                list = JSON.parse(json);
+            } catch (e) {
+                list = [];
+            }
+            root.activeIntervalCount = Array.isArray(list) ? list.length : 0;
+        });
     }
 
     function afterClose(callback) {
@@ -133,6 +148,10 @@ PlasmoidItem {
         enabled: root.running
 
         function dbusChanged() {
+            root.refresh();
+        }
+
+        function dbusIntervalsChanged() {
             root.refresh();
         }
 
@@ -306,47 +325,88 @@ PlasmoidItem {
             }
         }
 
-        PlasmaComponents3.ScrollView {
+        ColumnLayout {
             anchors.fill: parent
+            spacing: 0
             visible: root.running
 
-            contentItem: ListView {
-                id: list
-                model: targetModel
-                clip: true
-                spacing: 0
-                topMargin: Kirigami.Units.smallSpacing
-                bottomMargin: Kirigami.Units.smallSpacing
-                highlight: null
-                currentIndex: -1
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.margins: Kirigami.Units.smallSpacing
+                visible: root.activeIntervalCount > 0
+                spacing: Kirigami.Units.smallSpacing
 
-                section.property: "section"
-                section.delegate: Kirigami.ListSectionHeader {
-                    required property string section
-                    width: ListView.view.width
-                    label: section
+                Kirigami.Icon {
+                    Layout.preferredWidth: Kirigami.Units.iconSizes.smallMedium
+                    Layout.preferredHeight: Kirigami.Units.iconSizes.smallMedium
+                    source: "chronometer"
                 }
+                PlasmaComponents3.Label {
+                    Layout.fillWidth: true
+                    text: i18np("1 interval capture active", "%1 interval captures active", root.activeIntervalCount)
+                    font: Kirigami.Theme.smallFont
+                }
+                PlasmaComponents3.ToolButton {
+                    icon.name: "media-playback-stop"
+                    text: i18n("Stop All")
+                    onClicked: root.call("StopAllIntervals")
+                }
+            }
 
-                delegate: TargetRow {
-                    width: ListView.view.width
-                    onCaptureRequested: id => root.afterClose(() => root.call("Trigger", [id]))
-                    onEditRequested: (id, kind) => {
-                        if (kind === "area") {
-                            root.afterClose(() => root.call("EditArea", [id]));
-                        } else {
-                            root.expanded = false;
-                            root.call("Configure", [id]);
-                        }
+            Kirigami.Separator {
+                Layout.fillWidth: true
+                visible: root.activeIntervalCount > 0
+            }
+
+            PlasmaComponents3.ScrollView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                contentItem: ListView {
+                    id: list
+                    model: targetModel
+                    clip: true
+                    spacing: 0
+                    topMargin: Kirigami.Units.smallSpacing
+                    bottomMargin: Kirigami.Units.smallSpacing
+                    highlight: null
+                    currentIndex: -1
+
+                    section.property: "section"
+                    section.delegate: Kirigami.ListSectionHeader {
+                        required property string section
+                        width: ListView.view.width
+                        label: section
                     }
-                    onRenameRequested: (id, name, done) => root.call("Rename", [id, name], error => done(error || ""))
-                    onDeleteRequested: id => root.call("Remove", [id])
-                }
 
-                PlasmaExtras.PlaceholderMessage {
-                    anchors.centerIn: parent
-                    width: parent.width - Kirigami.Units.gridUnit * 4
-                    visible: list.count === 0 && root.running
-                    text: i18n("Loading…")
+                    delegate: TargetRow {
+                        width: ListView.view.width
+                        onCaptureRequested: id => root.afterClose(() => root.call("Trigger", [id]))
+                        onToggleIntervalRequested: (id, active) => {
+                            if (active) {
+                                root.call("StopInterval", [id]);
+                            } else {
+                                root.afterClose(() => root.call("StartInterval", [id, 0, 0, 0, false]));
+                            }
+                        }
+                        onEditRequested: (id, kind) => {
+                            if (kind === "area") {
+                                root.afterClose(() => root.call("EditArea", [id]));
+                            } else {
+                                root.expanded = false;
+                                root.call("Configure", [id]);
+                            }
+                        }
+                        onRenameRequested: (id, name, done) => root.call("Rename", [id, name], error => done(error || ""))
+                        onDeleteRequested: id => root.call("Remove", [id])
+                    }
+
+                    PlasmaExtras.PlaceholderMessage {
+                        anchors.centerIn: parent
+                        width: parent.width - Kirigami.Units.gridUnit * 4
+                        visible: list.count === 0 && root.running
+                        text: i18n("Loading…")
+                    }
                 }
             }
         }

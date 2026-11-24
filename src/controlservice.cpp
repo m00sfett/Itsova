@@ -1,6 +1,7 @@
 #include "controlservice.h"
 
 #include "app.h"
+#include "intervalcontroller.h"
 #include "screens.h"
 #include "shortcutmanager.h"
 #include "traycontroller.h"
@@ -32,6 +33,7 @@ ControlService::ControlService(App *app)
     });
 
     connect(app_, &App::targetsChanged, this, &ControlService::Changed);
+    connect(app_, &App::intervalsChanged, this, &ControlService::IntervalsChanged);
     connect(app_->shortcuts(), &ShortcutManager::shortcutChanged, this, &ControlService::Changed);
     connect(app_, &App::captured, this, &ControlService::Captured);
 
@@ -105,6 +107,8 @@ QString ControlService::Targets() const
             {QStringLiteral("detail"), detail},
             {QStringLiteral("shortcut"), target.shortcut.toString(QKeySequence::NativeText)},
             {QStringLiteral("available"), target.available},
+            {QStringLiteral("intervalActive"), target.intervalActive},
+            {QStringLiteral("intervalSeconds"), target.intervalSeconds},
         });
     }
     return QString::fromUtf8(QJsonDocument(targets).toJson(QJsonDocument::Compact));
@@ -188,6 +192,55 @@ void ControlService::CancelCountdown()
 void ControlService::PickColor()
 {
     app_->startColorPicker();
+}
+
+QString ControlService::Intervals() const
+{
+    QJsonArray array;
+    for (const ActiveIntervalStatus &status : app_->activeIntervals()) {
+        array.append(QJsonObject{
+            {QStringLiteral("targetId"), status.targetId},
+            {QStringLiteral("displayName"), status.displayName},
+            {QStringLiteral("seconds"), status.config.seconds},
+            {QStringLiteral("maxCaptures"), status.config.maxCaptures},
+            {QStringLiteral("maxMinutes"), status.config.maxMinutes},
+            {QStringLiteral("onlyWhenChanged"), status.config.onlyWhenChanged},
+            {QStringLiteral("captureCount"), status.captureCount},
+            {QStringLiteral("skippedUnchanged"), status.skippedUnchanged},
+            {QStringLiteral("startedAt"), status.startedAt.toString(Qt::ISODate)},
+        });
+    }
+    return QString::fromUtf8(QJsonDocument(array).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::StartInterval(const QString &id, int seconds, int maxCaptures, int maxMinutes,
+                                      bool onlyWhenChanged)
+{
+    if (seconds <= 0 && maxCaptures <= 0 && maxMinutes <= 0 && !onlyWhenChanged) {
+        return app_->startInterval(id);
+    }
+    IntervalConfig cfg = app_->store().targetIntervalConfig(id);
+    if (seconds > 0) {
+        cfg.seconds = seconds;
+    }
+    if (maxCaptures >= 0) {
+        cfg.maxCaptures = maxCaptures;
+    }
+    if (maxMinutes >= 0) {
+        cfg.maxMinutes = maxMinutes;
+    }
+    cfg.onlyWhenChanged = onlyWhenChanged;
+    return app_->startInterval(id, cfg);
+}
+
+void ControlService::StopInterval(const QString &id)
+{
+    app_->stopInterval(id);
+}
+
+void ControlService::StopAllIntervals()
+{
+    app_->stopAllIntervals();
 }
 
 void ControlService::RegisterWidget()

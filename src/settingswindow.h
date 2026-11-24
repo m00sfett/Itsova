@@ -22,6 +22,7 @@ namespace glimply
 class App;
 class AreaSelector;
 class ExportOptionsWidget;
+class IntervalConfigWidget;
 
 // The only window of glimply. Changes apply immediately; there is nothing to confirm.
 class SettingsWindow : public KPageDialog
@@ -89,7 +90,9 @@ private:
     QCheckBox *targetCursor_ = nullptr;
     ExportOptionsWidget *targetExport_ = nullptr;
     QSpinBox *targetDelay_ = nullptr;
+    IntervalConfigWidget *targetInterval_ = nullptr;
     KKeySequenceWidget *targetShortcut_ = nullptr;
+    KKeySequenceWidget *targetIntervalShortcut_ = nullptr;
     QList<QWidget *> areaOnly_;
     QList<QWidget *> nameRow_; // areas and connected monitors
     QLabel *nameHint_ = nullptr;
@@ -104,7 +107,9 @@ private:
     QCheckBox *groupCursor_ = nullptr;
     ExportOptionsWidget *groupExport_ = nullptr;
     QSpinBox *groupDelay_ = nullptr;
+    IntervalConfigWidget *groupInterval_ = nullptr;
     KKeySequenceWidget *groupShortcut_ = nullptr;
+    KKeySequenceWidget *groupIntervalShortcut_ = nullptr;
 
     // Storage and general
     QLineEdit *directory_ = nullptr;

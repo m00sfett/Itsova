@@ -11,18 +11,21 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 
 class QImage;
 
 namespace glimply
 {
 
+struct ActiveIntervalStatus;
 class AnnotationDocument;
 class CaptureSession;
 class ColorPickerSession;
 class ControlService;
 class CountdownBanner;
 class CountdownController;
+class IntervalController;
 class QuickEditorWindow;
 class ShortcutManager;
 class TrayController;
@@ -60,6 +63,12 @@ public:
     [[nodiscard]] bool keepDelayActive() const;
     void setCaptureDelay(int seconds, bool keepActive);
     void cancelCountdown();
+    QString startInterval(const QString &id, const std::optional<IntervalConfig> &overrideConfig = std::nullopt);
+    bool stopInterval(const QString &id);
+    void stopAllIntervals();
+    bool toggleInterval(const QString &id);
+    [[nodiscard]] bool isIntervalActive(const QString &id) const;
+    [[nodiscard]] QList<ActiveIntervalStatus> activeIntervals() const;
     void runWithDelay(int seconds,
                       const QString &label,
                       std::function<void()> onReady,
@@ -98,6 +107,7 @@ public:
 
 Q_SIGNALS:
     void targetsChanged();
+    void intervalsChanged();
     void captured(bool success);
 
 private:
@@ -120,6 +130,7 @@ private:
     ControlService *control_;
     CountdownController *countdown_;
     CountdownBanner *countdownBanner_;
+    IntervalController *intervals_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;

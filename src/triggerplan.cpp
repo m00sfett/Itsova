@@ -376,7 +376,7 @@ QList<RenderedOutput> renderOutputs(const TriggerPlan &plan, const QHash<QString
 {
     QList<RenderedOutput> rendered;
     for (const OutputSpec &output : plan.outputs) {
-        RenderedOutput result{output.token, {}, {}, output.exportOptions};
+        RenderedOutput result{output.token, {}, {}, output.exportOptions, output.targetId};
         if (output.kind == OutputSpec::Kind::AllMonitors) {
             result.image = composeAllMonitors(plan.screens, frames, &result.error);
         } else if (output.kind == OutputSpec::Kind::CrossMonitorArea) {

@@ -5,6 +5,7 @@
 #include "captureoverlay.h"
 #include "colorpicker.h"
 #include "countdowntimer.h"
+#include "intervalcontroller.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
 #include "controlservice.h"
@@ -51,9 +52,37 @@ App::App(QObject *parent)
     , tray_(new TrayController([this] { return menuTargets(); }, this))
     , countdown_(new CountdownController(this))
     , countdownBanner_(new CountdownBanner(countdown_))
+    , intervals_(new IntervalController(
+          [this](const QString &targetId) { return planTrigger(store_, targetId, currentScreens()); },
+          [this] { return store_.effectiveCaptureDirectory(); },
+          [this] { return store_.effectiveFilenameTemplate(); },
+          [this](TriggerPlan plan, const QString &dir, const QString &tmpl,
+                 std::optional<TriggerEngine::FrameMap> prev,
+                 std::function<void(TriggerResult, TriggerEngine::FrameMap)> done) {
+              engine_->runIntervalTick(std::move(plan), dir, tmpl, std::move(prev), std::move(done));
+          },
+          this))
 {
     store_.load(*config_);
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+
+    connect(intervals_, &IntervalController::changed, this, [this] {
+        tray_->setActiveIntervals(intervals_->activeIntervals());
+        Q_EMIT intervalsChanged();
+        Q_EMIT targetsChanged();
+    });
+    connect(intervals_, &IntervalController::captureSaved, this, [this](const QString &, const TriggerResult &result) {
+        recordCapture(result.writtenPaths, result.displayName);
+    });
+    connect(intervals_, &IntervalController::intervalFinished, this,
+            [this](const QString &, const QString &displayName, int captureCount) {
+                notify(QStringLiteral("intervalStopped"), tr("Interval capture finished"),
+                       {tr("Stopped interval for %1 after %n capture(s).", nullptr, captureCount).arg(displayName)});
+            });
+    connect(intervals_, &IntervalController::intervalStoppedWithError, this,
+            [this](const QString &, const QString &, const QString &reason) {
+                notifyError(tr("Interval capture stopped"), {reason});
+            });
 
     const auto syncCountdownUi = [this] {
         tray_->setCountdownState(countdown_->isActive(), countdown_->remainingSeconds());
@@ -71,6 +100,13 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::triggerRequested, this, &App::trigger);
     connect(tray_, &TrayController::delayChangedRequested, this, &App::setCaptureDelay);
     connect(tray_, &TrayController::cancelCountdownRequested, this, &App::cancelCountdown);
+    connect(tray_, &TrayController::toggleIntervalRequested, this, [this](const QString &id) {
+        toggleInterval(id);
+    });
+    connect(tray_, &TrayController::stopIntervalRequested, this, [this](const QString &id) {
+        stopInterval(id);
+    });
+    connect(tray_, &TrayController::stopAllIntervalsRequested, this, &App::stopAllIntervals);
     connect(tray_, &TrayController::openLastCaptureRequested, this, &App::openLastCapture);
     connect(tray_, &TrayController::editLastCaptureRequested, this, &App::editLastCapture);
     connect(tray_, &TrayController::openFolderRequested, this, &App::openCaptureFolder);
@@ -173,6 +209,9 @@ void App::saveSettings()
 
 QString App::targetLabel(const TargetStore &store, const QString &id)
 {
+    if (isIntervalShortcutId(id)) {
+        return tr("Interval: %1").arg(targetLabel(store, targetIdFromIntervalShortcutId(id)));
+    }
     if (id == allMonitorsTargetId()) {
         return tr("All monitors");
     }
@@ -197,14 +236,20 @@ void App::syncShortcuts(const QStringList &deletedIds)
     entries.append({PrintKey::actionId(), tr("Save the screen and select (Print key)")});
     for (const Group &group : std::as_const(store_.groups)) {
         entries.append({group.id, tr("Capture group %1").arg(group.name)});
+        entries.append({intervalShortcutId(group.id), tr("Toggle interval for group %1").arg(group.name)});
     }
     for (const Area &area : std::as_const(store_.areas)) {
         entries.append({area.id, tr("Capture area %1").arg(area.name)});
+        entries.append({intervalShortcutId(area.id), tr("Toggle interval for area %1").arg(area.name)});
     }
     for (const ScreenInfo &screen : currentScreens()) {
-        entries.append({screenTargetId(screen.connector), tr("Capture monitor %1").arg(store_.monitorName(screen))});
+        const QString screenId = screenTargetId(screen.connector);
+        const QString monName = store_.monitorName(screen);
+        entries.append({screenId, tr("Capture monitor %1").arg(monName)});
+        entries.append({intervalShortcutId(screenId), tr("Toggle interval for monitor %1").arg(monName)});
     }
     entries.append({allMonitorsTargetId(), tr("Capture all monitors")});
+    entries.append({intervalShortcutId(allMonitorsTargetId()), tr("Toggle interval for all monitors")});
     entries.append({colorPickerTargetId(), tr("Pick screen color")});
     shortcuts_->sync(entries, deletedIds);
 }
@@ -216,11 +261,23 @@ QList<MenuTarget> App::menuTargets() const
         return std::any_of(screens.cbegin(), screens.cend(),
                            [&](const ScreenInfo &s) { return s.connector == connector; });
     };
+    const auto makeTarget = [&](MenuTarget::Section section, const QString &id, const QString &name,
+                                const QString &detail, bool available) {
+        MenuTarget entry;
+        entry.section = section;
+        entry.id = id;
+        entry.name = name;
+        entry.detail = detail;
+        entry.shortcut = shortcuts_->shortcut(id);
+        entry.available = available;
+        entry.intervalSeconds = store_.targetIntervalConfig(id).seconds;
+        entry.intervalActive = intervals_ && intervals_->isActive(id);
+        return entry;
+    };
 
     QList<MenuTarget> targets;
     for (const Group &group : store_.groups) {
-        targets.append({MenuTarget::Section::Group, group.id, group.name, {}, shortcuts_->shortcut(group.id),
-                        !group.targetIds.isEmpty()});
+        targets.append(makeTarget(MenuTarget::Section::Group, group.id, group.name, {}, !group.targetIds.isEmpty()));
     }
     for (const Area &area : store_.areas) {
         if (area.isCrossMonitor()) {
@@ -240,22 +297,19 @@ QList<MenuTarget> App::menuTargets() const
             } else if (!missingConnectors.isEmpty()) {
                 detail = tr("Partial: %1 not connected").arg(missingConnectors.join(QStringLiteral(", ")));
             }
-            targets.append(
-                {MenuTarget::Section::Area, area.id, area.name, detail, shortcuts_->shortcut(area.id), available});
+            targets.append(makeTarget(MenuTarget::Section::Area, area.id, area.name, detail, available));
         } else {
             const bool present = connected(area.connector);
-            targets.append({MenuTarget::Section::Area, area.id, area.name,
-                            present ? QString() : tr("%1 not connected").arg(area.connector),
-                            shortcuts_->shortcut(area.id), present});
+            targets.append(makeTarget(MenuTarget::Section::Area, area.id, area.name,
+                                      present ? QString() : tr("%1 not connected").arg(area.connector), present));
         }
     }
     for (const ScreenInfo &screen : screens) {
         const QString id = screenTargetId(screen.connector);
-        targets.append({MenuTarget::Section::Monitor, id, store_.monitorName(screen), {}, shortcuts_->shortcut(id),
-                        true});
+        targets.append(makeTarget(MenuTarget::Section::Monitor, id, store_.monitorName(screen), {}, true));
     }
-    targets.append({MenuTarget::Section::Monitor, allMonitorsTargetId(), tr("All monitors"), {},
-                    shortcuts_->shortcut(allMonitorsTargetId()), !screens.isEmpty()});
+    targets.append(
+        makeTarget(MenuTarget::Section::Monitor, allMonitorsTargetId(), tr("All monitors"), {}, !screens.isEmpty()));
     return targets;
 }
 
@@ -315,6 +369,46 @@ void App::setCaptureDelay(int seconds, bool keepActive)
 void App::cancelCountdown()
 {
     countdown_->cancel();
+}
+
+QString App::startInterval(const QString &id, const std::optional<IntervalConfig> &overrideConfig)
+{
+    const IntervalConfig cfg = overrideConfig ? *overrideConfig : store_.targetIntervalConfig(id);
+    const QString error = intervals_->start(id, targetLabel(store_, id), cfg);
+    if (!error.isEmpty()) {
+        notifyError(tr("Could not start interval"), {error});
+    }
+    return error;
+}
+
+bool App::stopInterval(const QString &id)
+{
+    return intervals_->stop(id);
+}
+
+void App::stopAllIntervals()
+{
+    intervals_->stopAll();
+}
+
+bool App::toggleInterval(const QString &id)
+{
+    QString error;
+    const bool nowActive = intervals_->toggle(id, targetLabel(store_, id), store_.targetIntervalConfig(id), &error);
+    if (!error.isEmpty()) {
+        notifyError(tr("Could not start interval"), {error});
+    }
+    return nowActive;
+}
+
+bool App::isIntervalActive(const QString &id) const
+{
+    return intervals_->isActive(id);
+}
+
+QList<ActiveIntervalStatus> App::activeIntervals() const
+{
+    return intervals_->activeIntervals();
 }
 
 void App::runWithDelay(int seconds, const QString &label, std::function<void()> onReady,
@@ -464,6 +558,10 @@ void App::trigger(const QString &id)
         cancelCountdown();
         return;
     }
+    if (isIntervalShortcutId(id)) {
+        toggleInterval(targetIdFromIntervalShortcutId(id));
+        return;
+    }
     if (id == PrintKey::actionId()) {
         startPrint();
         return;
@@ -534,7 +632,7 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
         if (eventId == QLatin1String("monitorChanged")) {
             fallback = KNotification::Warning;
         } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")
-                   || eventId == QLatin1String("colorPicked")) {
+                   || eventId == QLatin1String("colorPicked") || eventId == QLatin1String("intervalStopped")) {
             fallback = KNotification::Notification;
         }
         KNotification::event(fallback, title, text);
@@ -745,8 +843,9 @@ void App::removeTarget(const QString &id)
     if (!store_.area(id) && !store_.group(id)) {
         return;
     }
+    intervals_->stop(id);
     store_.remove(id);
-    storeChanged({id});
+    storeChanged({id, intervalShortcutId(id)});
 }
 
 bool App::hasLastCapture() const
