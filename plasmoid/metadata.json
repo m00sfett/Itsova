@@ -26,7 +26,8 @@
         "Description[nl]": "Vaste schermgebieden en schermen vastleggen en beheren",
         "Description[ko]": "고정 화면 영역과 모니터를 캡처하고 관리합니다",
         "Description[pl]": "Przechwytuj stałe obszary ekranu i ekrany oraz zarządzaj nimi",
-        "Description[ru]": "Снимайте фиксированные области экрана и экраны и управляйте ими"
+        "Description[ru]": "Снимайте фиксированные области экрана и экраны и управляйте ими",
+        "Description[vi]": "Chụp các vùng màn hình cố định và màn hình, đồng thời quản lý chúng"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",
