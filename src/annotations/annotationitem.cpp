@@ -158,8 +158,17 @@ QRectF AnnotationItem::boundingRect() const
     case ItemKind::Spotlight:
         return rect.normalized().adjusted(-2.0, -2.0, 2.0, 2.0);
     case ItemKind::Redact:
-    case ItemKind::Text:
         return rect.normalized();
+    case ItemKind::Text: {
+        const QRectF r = rect.normalized();
+        if (legibility == TextLegibility::Pill) {
+            return r.adjusted(-8.0, -4.0, 8.0, 4.0);
+        }
+        if (legibility == TextLegibility::Shadow || legibility == TextLegibility::Outline) {
+            return r.adjusted(-4.0, -4.0, 4.0, 4.0);
+        }
+        return r;
+    }
     }
     return {};
 }

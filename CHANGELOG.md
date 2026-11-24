@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Non-destructive vector annotation engine (`AnnotationDocument`, `AnnotationItem`, `AnnotationRenderer`, `AnnotationController`, `AnnotationCanvas`) with logical coordinate storage, Undo/Redo with edit coalescing, multi-rectangle export clipping, and native-DPI rasterization (`#12`).
 - Core markup tools (`Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Multiply Highlighter`, auto-numbering `Step Counter` with optional pointer and renumbering on delete, and unified `Spotlight / Focus` dim mask), `[Annotations]` settings persistence in `TargetStore`, and shared KDE/Breeze `AnnotationToolbar` with progressive disclosure (`#13`).
+- Rich text annotation tool (`Text`) with PhotoCraft/Photoshop inline editing (Point Text & Paragraph Text, `Escape` / `Ctrl+Enter` commit, exterior-margin drag move, double-click re-edit), HarfBuzz-safe `QTextLayout` rendering, and four legibility modes (`None`, `Shadow`, `Outline`, `Pill`) (`#14`).
 
 ## [0.3.0] - Unreleased
 

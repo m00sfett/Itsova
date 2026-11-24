@@ -10,8 +10,10 @@
 #include <QWidget>
 
 class QButtonGroup;
+class QFontComboBox;
 class QLabel;
 class QSlider;
+class QSpinBox;
 class QToolButton;
 
 namespace glimply
@@ -36,6 +38,9 @@ public:
     [[nodiscard]] QToolButton *customColorButton() const;
     [[nodiscard]] QToolButton *undoButton() const;
     [[nodiscard]] QToolButton *redoButton() const;
+    [[nodiscard]] QToolButton *applyTextButton() const;
+    [[nodiscard]] QToolButton *cancelTextButton() const;
+    [[nodiscard]] QToolButton *legibilityButton(TextLegibility legibility) const;
 
     [[nodiscard]] bool isPropertyBarVisible() const;
     [[nodiscard]] bool isColorGroupVisible() const;
@@ -43,6 +48,8 @@ public:
     [[nodiscard]] bool isFillGroupVisible() const;
     [[nodiscard]] bool isFillOpacityVisible() const;
     [[nodiscard]] bool isSpotlightGroupVisible() const;
+    [[nodiscard]] bool isTextGroupVisible() const;
+    [[nodiscard]] bool isTextActionBoxVisible() const;
 
 Q_SIGNALS:
     void settingsModified();
@@ -57,6 +64,7 @@ private:
     void applyFillOpacityChoice(int percent);
     void applySpotlightShapeChoice(SpotlightShape shape);
     void applySpotlightDimChoice(int percent);
+    void applyTextChange(const std::function<void(AnnotationItem &)> &mutateItem, int mergeKey);
     [[nodiscard]] bool activeTargetKind(ItemKind *outKind) const;
 
     AnnotationController *controller_ = nullptr;
@@ -94,6 +102,22 @@ private:
     QToolButton *spotlightEllipseButton_ = nullptr;
     QSlider *spotlightDimSlider_ = nullptr;
     QLabel *spotlightDimLabel_ = nullptr;
+
+    QWidget *textGroup_ = nullptr;
+    QFontComboBox *fontCombo_ = nullptr;
+    QSpinBox *fontSizeSpin_ = nullptr;
+    QToolButton *boldButton_ = nullptr;
+    QToolButton *italicButton_ = nullptr;
+    QToolButton *alignLeftButton_ = nullptr;
+    QToolButton *alignCenterButton_ = nullptr;
+    QToolButton *alignRightButton_ = nullptr;
+    QToolButton *legNoneButton_ = nullptr;
+    QToolButton *legShadowButton_ = nullptr;
+    QToolButton *legOutlineButton_ = nullptr;
+    QToolButton *legPillButton_ = nullptr;
+    QWidget *textActionBox_ = nullptr;
+    QToolButton *applyTextButton_ = nullptr;
+    QToolButton *cancelTextButton_ = nullptr;
 };
 
 } // namespace glimply
