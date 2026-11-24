@@ -40,7 +40,8 @@ Runs as a tray icon or Plasma widget. Triggered by the Print key, global shortcu
 - All UI text translatable; English by default, 18 more languages later.
 - Capture history: the newest captures (default 20, persisted, interval captures excluded) as a thumbnail grid in the widget's collapsible *Recent* section and a *Recent Captures* tray submenu, with Open, Edit in Window, Copy, Show in Folder and Move to Trash (system trash only); `glimply history` and D-Bus `History()` for scripts.
 - Pin-to-Screen: persistent, always-on-top borderless reference windows (overlay `P`, quick editor, history, unbound global shortcut) with wheel zoom, Ctrl+wheel opacity, undoable removal and a tray hide/show toggle; KWin places and keeps them above via a per-pin script, and pins turn invisible during every capture.
-- Not yet: shaped selections, targets that follow a window, text recognition, upload.
+- Optional text recognition: *Copy Text* in the overlay (`O`) and quick editor, a text-mode overlay shortcut and `glimply capture --ocr`, using a runtime-detected `tesseract` behind an `OcrEngine` interface; language choice in Settings.
+- Not yet: shaped selections, targets that follow a window, upload.
 
 ## Brand Commitments
 
