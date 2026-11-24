@@ -5,24 +5,41 @@ all monitors instantly; an overlay then lets you cut the picture down to
 rectangles, one monitor or one window. Fixed areas, monitors and groups can be
 captured the moment a global shortcut is pressed, without any overlay.
 
-The project is in active development (0.4.x) and targets KDE Plasma 6 on Wayland.
+The project is in active development (0.5.x) and targets KDE Plasma 6 on Wayland.
 
 ## Features
 
-- **Print key** replacement: Print saves all monitors as one PNG and copies it
-  to the clipboard, then opens the capture overlay. glimply takes the key over
-  from Spectacle on first start and gives it back exactly when you turn the
-  option off or uninstall.
+- **Print key** replacement: Print saves all monitors immediately and copies the
+  picture to the clipboard, then opens the capture overlay. glimply takes the
+  key over from Spectacle on first start and gives it back exactly when you turn
+  the option off or uninstall.
 - **Capture overlay** with labelled buttons on every monitor: Frozen or Live,
-  This Monitor, All Monitors, Window, Areas, Help. Draw several rectangles
-  (they may overlap), save them all at once as numbered files, copy one, or
-  save them as areas or as a group with one shortcut. Escape keeps the full
-  screenshot. **Space** switches between Frozen and Live, **F1** shows all
-  controls, a right click deletes a rectangle.
+  This Monitor, All Monitors, Window, Areas, Delay, Annotate, Pick Color, Help.
+  Draw several rectangles across one or multiple monitors (`8 px` magnetic edge
+  snapping), save them all at once as numbered files, copy one, or save them as
+  areas or as a group with one shortcut. Escape keeps the full screenshot.
+  **Space** switches between Frozen and Live, **F1** shows all controls, a right
+  click deletes a rectangle.
+- **Multi-format export & live size estimate**: PNG by default plus JPEG (transparent
+  regions flatten cleanly to `#000000`), WebP (lossless or lossy), and
+  runtime-detected AVIF / JPEG XL. *Configure glimply…* supports Target > Group >
+  Global overrides; **Save As…** opens a compact Breeze dialog with live async
+  file-size preview.
+- **Capture delay timer**: non-blocking countdown banner (`Off`, `3 s`, `5 s`,
+  `10 s`, or custom `1–60 s`) usable pre-capture from the widget, tray, or
+  per-area/group delays, or inside the overlay via **Delay** retake. One-Shot by
+  default unless **Keep delay active** is toggled on.
 - **Windows** captured on their own, also when covered or minimized.
-- **Areas** bound to one monitor, stored in logical coordinates and captured
-  at the monitor's native resolution. glimply names them `<monitor>-<n>`
-  (for example `DP-1-1`); you can rename them.
+- **Areas** on one monitor (`<monitor>-<n>`) or spanning multiple monitors
+  (mixed-DPI composition at highest involved scale, byte-identical fast path
+  for single-monitor areas, and graceful partial-visibility capture + passive
+  notice if an involved monitor is disconnected).
+- **Pixel loupe & color picker**: an `11 × 11` nearest-neighbor magnifier while
+  dragging or resizing frozen selections (toggleable under *General*), plus a
+  `15 × 15` eyedropper (`I` / **Pick Color** in overlay & Quick Editor, or
+  standalone from the widget, tray, global shortcut, and D-Bus `PickColor`).
+  **Tab** cycles `#RRGGBB` / `rgb()` / `hsl()` / `hsv()`; **Alt+Click** sets the
+  active annotation tool color.
 - **Monitor names**: give a monitor a name such as `Left` in the widget, the
   settings or the tray menu. The name sticks to the physical monitor, appears
   in file names of monitor captures and starts the names of new areas.
@@ -37,13 +54,14 @@ The project is in active development (0.4.x) and targets KDE Plasma 6 on Wayland
   shortcuts.
 - **Plasma widget** in the system tray: every area, group and monitor in one
   list with its shortcut and buttons to capture, edit the area on screen,
-  rename and delete (inline, without dialogs), plus *Add Area*, *Open Last
-  Capture* and *Open Capture Folder*. Without the widget, glimply shows a
-  classic tray icon with a menu instead.
+  rename and delete (inline, without dialogs), plus *Delay*, *Pick Color*,
+  *Add Area*, *Open Last Capture*, *Edit Last Capture*, and *Open Capture Folder*.
+  Without the widget, glimply shows a classic tray icon with a menu instead.
 - **Feedback** without interruptions: the tray icon blinks once after a
   capture. Errors, such as a missing monitor, raise a notification.
-- Captures are saved as PNG in `~/Pictures/glimply/` (your XDG pictures folder)
-  as `{date}_{time}_{area}.png`. Existing files are never overwritten.
+- Captures are saved in `~/Pictures/glimply/` (your XDG pictures folder) as
+  `{date}_{time}_{area}.{ext}` (PNG by default). Existing files are never
+  overwritten.
 
 ## Build requirements
 
@@ -144,9 +162,11 @@ Groups are created under *Configure glimply… → Groups*.
 ### D-Bus interface
 
 The widget uses `io.github.m00sfett.glimply` at `/Control`
-(`io.github.m00sfett.glimply.Control`): `Targets` (JSON), `Trigger`, `AddArea`,
-`EditArea`, `Rename`, `Remove`, `OpenLastCapture`, `EditLastCapture`,
-`OpenCaptureFolder`, `Configure`, and the signals `Changed` and `Captured`. Scripts can use it too,
+(`io.github.m00sfett.glimply.Control`): `Targets` (JSON), `HasLastCapture`,
+`Trigger`, `AddArea`, `EditArea`, `Rename`, `Remove`, `OpenLastCapture`,
+`EditLastCapture`, `OpenCaptureFolder`, `Configure`, `DelaySeconds`,
+`KeepDelayActive`, `CountdownActive`, `SetDelay`, `CancelCountdown`,
+`PickColor`, and the signals `Changed` and `Captured`. Scripts can use it too,
 for example `busctl --user call io.github.m00sfett.glimply /Control
 io.github.m00sfett.glimply.Control Trigger s all`.
 

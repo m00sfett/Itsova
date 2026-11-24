@@ -26,11 +26,15 @@ public:
     ~AreaSelector() override;
 
     // initialGlobalRect: global logical rectangle for editing an existing area, or invalid.
-    void start(const QRect &initialGlobalRect = QRect());
+    void start(const QRect &initialGlobalRect = QRect(), bool showLoupe = true);
 
     [[nodiscard]] QRect selection() const;
     void setSelection(const QRect &globalRect);
     void clearSelection();
+    [[nodiscard]] bool showLoupe() const;
+    [[nodiscard]] bool dragLoupeActive() const;
+    [[nodiscard]] QPoint dragCursorGlobal() const;
+    void setDragLoupe(bool active, const QPoint &globalPos = {});
     [[nodiscard]] QString pillConnector() const;
     [[nodiscard]] QList<ScreenInfo> screens() const;
 
@@ -45,6 +49,9 @@ private:
     QRect desktopBounds_;
     QList<QRect> screenRects_;
     QRect selection_;
+    bool showLoupe_ = true;
+    bool dragLoupeActive_ = false;
+    QPoint dragCursorGlobal_;
     QList<QPointer<AreaOverlay>> overlays_;
 };
 
@@ -57,7 +64,7 @@ public:
     AreaOverlay(const QString &connector, const QSize &logicalSize, const QImage &background, const QRect &initial);
     // Multi-monitor overlay constructor managed by AreaSelector.
     AreaOverlay(AreaSelector *selector, const ScreenInfo &screen, const QRect &desktopBounds,
-                const QList<QRect> &screenRects, const QImage &background);
+                const QList<QRect> &screenRects, const QImage &background, qreal backgroundScale = 1.0);
 
     [[nodiscard]] QString connector() const;
     [[nodiscard]] QRect selection() const;
@@ -97,8 +104,10 @@ private:
     QRect desktopBounds_;
     QList<QRect> screenRects_;
     QImage background_;
+    qreal backgroundScale_ = 1.0;
     QRect selection_;
     Drag drag_ = Drag::None;
+    bool localDragLoupeActive_ = false;
     bool spaceHeld_ = false;
     QPoint anchor_;
     QPoint lastPosition_;

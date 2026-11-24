@@ -3,10 +3,12 @@
 #include "annotationrenderer.h"
 #include "inlinetexteditor.h"
 #include "imageoutput.h"
+#include "pixelloupe.h"
 #include "selectiongeometry.h"
 
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QCursor>
 #include <QFocusEvent>
 #include <QGuiApplication>
 #include <QIcon>
@@ -103,6 +105,7 @@ AnnotationCanvas::AnnotationCanvas(QWidget *parent)
 {
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
+    setProperty("_kde_no_window_grab", true);
     connect(doc_, &AnnotationDocument::changed, this, qOverload<>(&QWidget::update));
     connect(controller_, &AnnotationController::previewChanged, this, qOverload<>(&QWidget::update));
     connect(controller_, &AnnotationController::cursorChanged, this, &AnnotationCanvas::refreshCursor);
@@ -244,6 +247,61 @@ AnnotationController *AnnotationCanvas::controller() const
 InlineTextEditor *AnnotationCanvas::textEditor() const
 {
     return textEditor_;
+}
+
+void AnnotationCanvas::setColorPickerActive(bool active)
+{
+    if (active && image_.isNull()) {
+        return;
+    }
+    if (colorPickerActive_ == active) {
+        return;
+    }
+    if (active) {
+        if (controller_->isEditingText()) {
+            controller_->requestCommitActiveText(false);
+        }
+        controller_->cancelActiveGesture();
+        panning_ = false;
+        if (!rect().contains(lastWidgetPos_.toPoint())) {
+            const QPoint mapped = mapFromGlobal(QCursor::pos());
+            if (rect().contains(mapped)) {
+                lastWidgetPos_ = mapped;
+            }
+        }
+    }
+    colorPickerActive_ = active;
+    refreshCursor();
+    update();
+    Q_EMIT colorPickerActiveChanged(active);
+}
+
+bool AnnotationCanvas::isColorPickerActive() const
+{
+    return colorPickerActive_;
+}
+
+void AnnotationCanvas::setColorFormat(ColorFormat format)
+{
+    if (colorFormat_ != format) {
+        colorFormat_ = format;
+        if (colorPickerActive_) {
+            update();
+        }
+    }
+}
+
+ColorFormat AnnotationCanvas::colorFormat() const
+{
+    return colorFormat_;
+}
+
+bool AnnotationCanvas::focusNextPrevChild(bool next)
+{
+    if (colorPickerActive_) {
+        return false;
+    }
+    return QWidget::focusNextPrevChild(next);
 }
 
 void AnnotationCanvas::applyInitialEditorView()
@@ -517,6 +575,10 @@ void AnnotationCanvas::applyCropDrag(const QPoint &logicalPos, Qt::KeyboardModif
 
 void AnnotationCanvas::refreshCursor()
 {
+    if (colorPickerActive_) {
+        setCursor(Qt::CrossCursor);
+        return;
+    }
     if (panning_) {
         setCursor(Qt::ClosedHandCursor);
         return;
@@ -571,6 +633,7 @@ void AnnotationCanvas::paintEvent(QPaintEvent *)
         }
     }
 
+    painter.save();
     painter.translate(panOffset_);
     painter.scale(zoom_, zoom_);
 
@@ -638,6 +701,16 @@ void AnnotationCanvas::paintEvent(QPaintEvent *)
             painter.drawEllipse(hp, r, r);
         }
     }
+    painter.restore();
+
+    if (colorPickerActive_ && !image_.isNull() && rect().contains(lastWidgetPos_.toPoint())) {
+        const QPointF logicalPos = widgetToLogical(lastWidgetPos_);
+        if (logicalRect.contains(logicalPos)) {
+            const QPoint nativePx = logicalToNativePixel(logicalPos, QPointF(0.0, 0.0), imageScale_, image_.size());
+            PixelLoupe::paintColorPickerLoupe(painter, lastWidgetPos_.toPoint(), rect(), palette(), image_, nativePx,
+                                              colorFormat_, true);
+        }
+    }
 }
 
 void AnnotationCanvas::resizeEvent(QResizeEvent *event)
@@ -660,6 +733,25 @@ void AnnotationCanvas::resizeEvent(QResizeEvent *event)
 void AnnotationCanvas::mousePressEvent(QMouseEvent *event)
 {
     lastWidgetPos_ = event->position();
+
+    if (colorPickerActive_) {
+        if (event->button() == Qt::RightButton) {
+            setColorPickerActive(false);
+        } else if (event->button() == Qt::LeftButton && !image_.isNull()) {
+            const QPointF logicalPos = widgetToLogical(event->position());
+            if (QRectF(QPointF(0.0, 0.0), logicalImageSize()).contains(logicalPos)) {
+                const QPoint nativePx = logicalToNativePixel(logicalPos, QPointF(0.0, 0.0), imageScale_, image_.size());
+                const QColor sampled = sampleNativePixel(image_, nativePx);
+                if (sampled.isValid()) {
+                    Q_EMIT colorPicked(sampled, formatColor(sampled, colorFormat_),
+                                       event->modifiers().testFlag(Qt::AltModifier));
+                }
+            }
+            setColorPickerActive(false);
+        }
+        event->accept();
+        return;
+    }
 
     if (controller_->isEditingText() && event->button() == Qt::LeftButton) {
         textEditor_->commit(false);
@@ -714,6 +806,13 @@ void AnnotationCanvas::mousePressEvent(QMouseEvent *event)
 void AnnotationCanvas::mouseMoveEvent(QMouseEvent *event)
 {
     lastWidgetPos_ = event->position();
+
+    if (colorPickerActive_) {
+        refreshCursor();
+        update();
+        event->accept();
+        return;
+    }
 
     if (panning_) {
         setPanOffset(panDragStartOffset_ + (event->position() - panDragStartWidget_));
@@ -865,8 +964,44 @@ void AnnotationCanvas::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (colorPickerActive_) {
+        const Qt::KeyboardModifiers mods = event->modifiers();
+        const bool plain = !mods.testFlag(Qt::ControlModifier) && !mods.testFlag(Qt::AltModifier)
+                        && !mods.testFlag(Qt::MetaModifier);
+        if (event->key() == Qt::Key_Tab) {
+            colorFormat_ = nextColorFormat(colorFormat_);
+            Q_EMIT colorFormatChanged(colorFormat_);
+            update();
+            event->accept();
+            return;
+        }
+        if (event->key() == Qt::Key_Escape || (plain && !event->isAutoRepeat() && event->key() == Qt::Key_I)) {
+            setColorPickerActive(false);
+            event->accept();
+            return;
+        }
+        if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && !image_.isNull()) {
+            const QPointF logicalPos = widgetToLogical(lastWidgetPos_);
+            if (QRectF(QPointF(0.0, 0.0), logicalImageSize()).contains(logicalPos)) {
+                const QPoint nativePx = logicalToNativePixel(logicalPos, QPointF(0.0, 0.0), imageScale_, image_.size());
+                const QColor sampled = sampleNativePixel(image_, nativePx);
+                if (sampled.isValid()) {
+                    Q_EMIT colorPicked(sampled, formatColor(sampled, colorFormat_), mods.testFlag(Qt::AltModifier));
+                }
+            }
+            setColorPickerActive(false);
+            event->accept();
+            return;
+        }
+    }
+
     if (editorMode_) {
         const Qt::KeyboardModifiers mods = event->modifiers();
+        if (!colorPickerActive_ && !event->isAutoRepeat() && event->key() == Qt::Key_I && mods == Qt::NoModifier) {
+            setColorPickerActive(true);
+            event->accept();
+            return;
+        }
         if (event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
             if (cropDrag_ != CropDrag::None) {
                 cropSpaceHeld_ = true;
@@ -992,6 +1127,10 @@ void AnnotationCanvas::focusOutEvent(QFocusEvent *event)
 void AnnotationCanvas::leaveEvent(QEvent *event)
 {
     controller_->clearHover();
+    if (colorPickerActive_) {
+        lastWidgetPos_ = QPointF(-1.0, -1.0);
+        update();
+    }
     QWidget::leaveEvent(event);
 }
 

@@ -119,6 +119,11 @@ QString allMonitorsTargetId()
     return QStringLiteral("all");
 }
 
+QString colorPickerTargetId()
+{
+    return QStringLiteral("pick-color");
+}
+
 bool isScreenTargetId(const QString &id)
 {
     return id.startsWith(QLatin1String(screenPrefix));
@@ -193,6 +198,8 @@ void TargetStore::load(const KConfig &config)
     lastOverlayFrozen = general.readEntry("LastOverlayFrozen", true);
     overlayHelpExpanded = general.readEntry("OverlayHelpExpanded", true);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
+    showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
+    colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
 
     monitorNames.clear();
     const KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
@@ -321,6 +328,8 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("LastOverlayFrozen", lastOverlayFrozen);
     general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
+    general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
+    general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);
     general.writeEntry("CaptureDelaySeconds", keepDelayActive ? std::clamp(captureDelaySeconds, 0, 60) : 0);
 

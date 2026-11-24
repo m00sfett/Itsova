@@ -5,8 +5,10 @@
 #include "annotations/inlinetexteditor.h"
 #include "annotations/overlayexport.h"
 #include "app.h"
+#include "colorformat.h"
 #include "exportdialog.h"
 #include "imageoutput.h"
+#include "pixelloupe.h"
 #include "screens.h"
 #include "selectiongeometry.h"
 #include "shortcutmanager.h"
@@ -172,7 +174,14 @@ CaptureSession::CaptureSession(App *app, Purpose purpose)
     , app_(app)
     , purpose_(purpose)
     , annotationController_(&annotations_, this)
+    , transientHintTimer_(new QTimer(this))
 {
+    transientHintTimer_->setSingleShot(true);
+    transientHintTimer_->setInterval(2500);
+    connect(transientHintTimer_, &QTimer::timeout, this, [this] {
+        transientHint_.clear();
+        changed();
+    });
 }
 
 CaptureSession::~CaptureSession()
@@ -309,6 +318,12 @@ bool CaptureSession::canSwitchToLive() const
 QImage CaptureSession::frame(const QString &connector) const
 {
     return frozen_ ? frames_.value(connector).image : QImage();
+}
+
+qreal CaptureSession::frameScale(const QString &connector) const
+{
+    const qreal scale = frames_.value(connector).scale;
+    return scale > 0.0 ? scale : 1.0;
 }
 
 SelectionModel &CaptureSession::selections()
@@ -449,6 +464,145 @@ bool CaptureSession::isDragging() const
     return dragging_;
 }
 
+bool CaptureSession::dragLoupeActive() const
+{
+    return dragLoupeActive_;
+}
+
+QPoint CaptureSession::dragCursorGlobal() const
+{
+    return dragCursorGlobal_;
+}
+
+void CaptureSession::setDragLoupe(bool active, const QPoint &globalPos)
+{
+    dragLoupeActive_ = active;
+    if (active) {
+        dragCursorGlobal_ = globalPos;
+    }
+}
+
+bool CaptureSession::colorPickerActive() const
+{
+    return colorPickerActive_;
+}
+
+void CaptureSession::setColorPickerActive(bool active)
+{
+    if (purpose_ != Purpose::Print) {
+        return;
+    }
+    if (colorPickerActive_ == active) {
+        return;
+    }
+    if (active) {
+        if (annotationController_.isEditingText()) {
+            annotationController_.requestCommitActiveText(false);
+        }
+        transientHint_.clear();
+        transientHintTimer_->stop();
+        if (!desktopBounds_.contains(pickerCursorGlobal_)) {
+            pickerCursorGlobal_ = QCursor::pos();
+        }
+        if (!desktopBounds_.isEmpty()) {
+            pickerCursorGlobal_.setX(
+                std::clamp(pickerCursorGlobal_.x(), desktopBounds_.left(), desktopBounds_.right()));
+            pickerCursorGlobal_.setY(
+                std::clamp(pickerCursorGlobal_.y(), desktopBounds_.top(), desktopBounds_.bottom()));
+        }
+        colorPickerActive_ = true;
+        if (!frozen_) {
+            setFrozen(true);
+            return;
+        }
+    } else {
+        colorPickerActive_ = false;
+    }
+    changed();
+}
+
+QPoint CaptureSession::pickerCursorGlobal() const
+{
+    return pickerCursorGlobal_;
+}
+
+void CaptureSession::setPickerCursorGlobal(const QPoint &globalPos)
+{
+    QPoint clamped = globalPos;
+    if (!desktopBounds_.isEmpty()) {
+        clamped.setX(std::clamp(clamped.x(), desktopBounds_.left(), desktopBounds_.right()));
+        clamped.setY(std::clamp(clamped.y(), desktopBounds_.top(), desktopBounds_.bottom()));
+    }
+    if (pickerCursorGlobal_ != clamped) {
+        pickerCursorGlobal_ = clamped;
+        changed();
+    }
+}
+
+void CaptureSession::cycleColorFormat()
+{
+    store().colorPickerFormat = nextColorFormat(store().colorPickerFormat);
+    app_->saveSettings();
+    changed();
+}
+
+void CaptureSession::pickColorAt(const QPoint &globalPos, bool applyToTool)
+{
+    if (purpose_ != Purpose::Print) {
+        return;
+    }
+    setPickerCursorGlobal(globalPos);
+    const ScreenInfo *target = nullptr;
+    for (const ScreenInfo &s : std::as_const(screens_)) {
+        if (s.geometry.contains(pickerCursorGlobal_)) {
+            target = &s;
+            break;
+        }
+    }
+    if (!target && !screens_.isEmpty()) {
+        target = &screens_.first();
+    }
+    QColor sampled;
+    if (target) {
+        const CaptureResult cap = frames_.value(target->connector);
+        if (!cap.image.isNull()) {
+            const qreal scale = cap.scale > 0.0 ? cap.scale : 1.0;
+            const QPoint nativePx = logicalToNativePixel(
+                QPointF(pickerCursorGlobal_), QPointF(target->geometry.topLeft()), scale, cap.image.size());
+            sampled = sampleNativePixel(cap.image, nativePx);
+        }
+    }
+    colorPickerActive_ = false;
+    if (sampled.isValid()) {
+        const QString formatted = formatColor(sampled, store().colorPickerFormat);
+        if (QGuiApplication::clipboard()) {
+            QGuiApplication::clipboard()->setText(formatted);
+        }
+        if (applyToTool) {
+            switch (annotationController_.tool()) {
+            case ToolKind::Highlighter:
+                annotationController_.setHighlighterColor(sampled);
+                break;
+            case ToolKind::Text:
+                annotationController_.setTextColor(sampled);
+                break;
+            case ToolKind::Redact:
+                annotationController_.setRedactionColor(sampled);
+                break;
+            default:
+                annotationController_.setStrokeColor(sampled);
+                break;
+            }
+            persistAnnotationSettings();
+            transientHint_ = tr("Applied %1 and copied to clipboard").arg(formatted);
+        } else {
+            transientHint_ = tr("Copied %1 to clipboard").arg(formatted);
+        }
+        transientHintTimer_->start();
+    }
+    changed();
+}
+
 int CaptureSession::hoveredSelectionId() const
 {
     return hoveredSelectionId_;
@@ -547,8 +701,15 @@ void CaptureSession::dismissAreaPanels()
 
 QString CaptureSession::hint() const
 {
+    if (colorPickerActive_) {
+        return tr("Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape "
+                  "exits.");
+    }
     if (dragging_) {
         return tr("Shift keeps a square, Alt grows from the centre, Space repositions while dragging.");
+    }
+    if (!transientHint_.isEmpty()) {
+        return transientHint_;
     }
     if (annotationController_.isEditingText()) {
         return tr("Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.");
@@ -1647,6 +1808,13 @@ void CaptureOverlay::buildTopBar()
         connect(annotateButton_, &QToolButton::clicked, this, [this](bool on) { session_->setMarkupVisible(on); });
         row->addWidget(annotateButton_);
 
+        pickColorButton_ = barButton(panel, QStringLiteral("color-picker"), tr("Pick Color"),
+                                     tr("Sample pixel colors with a magnified loupe (I)"));
+        pickColorButton_->setCheckable(true);
+        connect(pickColorButton_, &QToolButton::clicked, this,
+                [this](bool on) { session_->setColorPickerActive(on); });
+        row->addWidget(pickColorButton_);
+
         auto *editInWindow = barButton(panel, QStringLiteral("document-edit"), tr("Edit in Window"),
                                        tr("Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)"));
         connect(editInWindow, &QToolButton::clicked, this, [this] { session_->editInWindow(screen_.connector); });
@@ -1746,7 +1914,8 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         keys.removeFirst();
         keys.removeFirst();
     } else {
-        keys.insert(2, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
+        keys.insert(2, {tr("I"), tr("Pick pixel color (Tab cycles format, Alt+Click applies to markup)")});
+        keys.insert(3, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
     }
     section(tr("Keys"), keys);
     return panel;
@@ -2176,6 +2345,9 @@ void CaptureOverlay::refresh()
         if (annotateButton_) {
             annotateButton_->setChecked(session_->markupVisible());
         }
+        if (pickColorButton_) {
+            pickColorButton_->setChecked(session_->colorPickerActive());
+        }
         if (delayButton_) {
             const int delay = session_->captureDelaySeconds();
             delayButton_->setText(delay > 0 ? tr("Delay: %1 s").arg(delay) : tr("Delay"));
@@ -2247,6 +2419,14 @@ void CaptureOverlay::placeActionBar()
     if (markupPanel_ && !markupPanel_->isHidden()) {
         markupPanel_->raise();
     }
+}
+
+bool CaptureOverlay::focusNextPrevChild(bool next)
+{
+    if (session_->colorPickerActive()) {
+        return false;
+    }
+    return QWidget::focusNextPrevChild(next);
 }
 
 QRect CaptureOverlay::closeButtonGlobal(const QRect &globalRect) const
@@ -2427,6 +2607,27 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             painter.drawEllipse(handle, handleRadius, handleRadius);
         }
     }
+
+    if (session_->colorPickerActive() && frozen && screen_.geometry.contains(session_->pickerCursorGlobal())) {
+        const QPoint localCursor = session_->pickerCursorGlobal() - screen_.geometry.topLeft();
+        const QPoint nativePx = logicalToNativePixel(QPointF(localCursor), QPointF(0.0, 0.0),
+                                                     session_->frameScale(screen_.connector), background.size());
+        PixelLoupe::paintColorPickerLoupe(painter, localCursor, area, pal, background, nativePx,
+                                          session_->store().colorPickerFormat, true);
+    } else if (session_->dragLoupeActive() && screen_.geometry.contains(session_->dragCursorGlobal())) {
+        if (const Selection *sel = model.active()) {
+            const QPoint localCursor = session_->dragCursorGlobal() - screen_.geometry.topLeft();
+            if (frozen && session_->store().showSelectionLoupe) {
+                const QPoint nativePx = logicalToNativePixel(
+                    QPointF(localCursor), QPointF(0.0, 0.0), session_->frameScale(screen_.connector), background.size());
+                PixelLoupe::paintSelectionLoupe(painter, localCursor, area, pal, background, nativePx,
+                                                session_->dragCursorGlobal(), sel->rect.size());
+            } else {
+                PixelLoupe::paintDimensionPill(painter, localCursor, area, pal, session_->dragCursorGlobal(),
+                                               sel->rect.size());
+            }
+        }
+    }
 }
 
 Qt::Edges CaptureOverlay::edgesAt(const QRect &rect, const QPoint &pos) const
@@ -2467,6 +2668,10 @@ Qt::Edges CaptureOverlay::edgesAt(const QRect &rect, const QPoint &pos) const
 
 void CaptureOverlay::updateCursor(const QPoint &globalPos)
 {
+    if (session_->colorPickerActive()) {
+        setCursor(Qt::CrossCursor);
+        return;
+    }
     if (closeButtonAt(globalPos)) {
         setCursor(Qt::PointingHandCursor);
         return;
@@ -2520,6 +2725,16 @@ void CaptureOverlay::updateCursor(const QPoint &globalPos)
 void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 {
     const QPoint globalPos = toGlobalPoint(event->position().toPoint());
+    lastPosition_ = globalPos;
+    if (session_->colorPickerActive()) {
+        if (event->button() == Qt::RightButton) {
+            session_->setColorPickerActive(false);
+        } else if (event->button() == Qt::LeftButton) {
+            session_->pickColorAt(globalPos, event->modifiers().testFlag(Qt::AltModifier));
+        }
+        updateCursor(globalPos);
+        return;
+    }
     if (event->button() == Qt::RightButton) {
         // Right click deletes the topmost annotation under pointer first, else the crop rectangle.
         if (drag_ == Drag::None) {
@@ -2600,6 +2815,12 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
     const QPoint step = globalPos - lastPosition_;
     lastPosition_ = globalPos;
 
+    if (session_->colorPickerActive()) {
+        session_->setPickerCursorGlobal(globalPos);
+        updateCursor(globalPos);
+        return;
+    }
+
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
         session_->annotationController().mouseMove(toGlobalLogical(event->position()), event->modifiers());
         return;
@@ -2676,6 +2897,7 @@ void CaptureOverlay::applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers mo
     } else {
         return;
     }
+    session_->setDragLoupe(drag_ == Drag::Create || drag_ == Drag::Resize, globalPos);
     session_->changed();
 }
 
@@ -2685,6 +2907,9 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
     const QPoint globalPos = toGlobalPoint(event->position().toPoint());
+    if (session_->colorPickerActive()) {
+        return;
+    }
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
         session_->annotationController().mouseRelease(toGlobalLogical(event->position()), Qt::LeftButton,
                                                       event->modifiers());
@@ -2695,6 +2920,7 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
     SelectionModel &model = session_->selections();
     const Drag drag = std::exchange(drag_, Drag::None);
     spaceHeld_ = false;
+    session_->setDragLoupe(false);
     session_->setDragging(false);
     if (drag == Drag::Pending) {
         if (pendingId_) {
@@ -2839,6 +3065,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         if (event->key() == Qt::Key_Escape) {
             const Drag aborted = std::exchange(drag_, Drag::None);
             spaceHeld_ = false;
+            session_->setDragLoupe(false);
             session_->setDragging(false);
             if (aborted == Drag::Create) {
                 model.remove(dragId_);
@@ -2859,8 +3086,55 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     const bool plainKey = !modifiers.testFlag(Qt::ControlModifier) && !modifiers.testFlag(Qt::AltModifier)
                        && !modifiers.testFlag(Qt::MetaModifier);
 
+    if (session_->colorPickerActive()) {
+        if (event->key() == Qt::Key_Tab) {
+            session_->cycleColorFormat();
+            event->accept();
+            return;
+        }
+        if (event->key() == Qt::Key_Escape || (plainKey && !event->isAutoRepeat() && event->key() == Qt::Key_I)) {
+            session_->setColorPickerActive(false);
+            updateCursor(lastPosition_);
+            event->accept();
+            return;
+        }
+        if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+            session_->pickColorAt(session_->pickerCursorGlobal(), modifiers.testFlag(Qt::AltModifier));
+            updateCursor(lastPosition_);
+            event->accept();
+            return;
+        }
+        const int pickerStep = modifiers.testFlag(Qt::ShiftModifier) ? 10 : 1;
+        QPoint pickerDelta;
+        switch (event->key()) {
+        case Qt::Key_Left:
+            pickerDelta = {-pickerStep, 0};
+            break;
+        case Qt::Key_Right:
+            pickerDelta = {pickerStep, 0};
+            break;
+        case Qt::Key_Up:
+            pickerDelta = {0, -pickerStep};
+            break;
+        case Qt::Key_Down:
+            pickerDelta = {0, pickerStep};
+            break;
+        default:
+            event->accept();
+            return;
+        }
+        session_->setPickerCursorGlobal(session_->pickerCursorGlobal() + pickerDelta);
+        event->accept();
+        return;
+    }
+
     if (session_->purpose() == CaptureSession::Purpose::Print && plainKey && !event->isAutoRepeat()) {
         switch (event->key()) {
+        case Qt::Key_I:
+            session_->setPickerCursorGlobal(lastPosition_);
+            session_->setColorPickerActive(true);
+            updateCursor(lastPosition_);
+            return;
         case Qt::Key_A:
             session_->activateMarkupTool(ToolKind::Arrow);
             return;

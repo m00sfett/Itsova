@@ -228,6 +228,14 @@ PlasmoidItem {
                     }
                 }
                 PlasmaComponents3.ToolButton {
+                    icon.name: "color-picker"
+                    display: PlasmaComponents3.AbstractButton.IconOnly
+                    text: i18n("Pick Color")
+                    PlasmaComponents3.ToolTip.text: text
+                    PlasmaComponents3.ToolTip.visible: hovered
+                    onClicked: root.afterClose(() => root.call("PickColor"))
+                }
+                PlasmaComponents3.ToolButton {
                     icon.name: "list-add"
                     text: i18n("Add Area")
                     onClicked: root.afterClose(() => root.call("AddArea"))

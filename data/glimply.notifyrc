@@ -31,3 +31,9 @@ Name=Partial capture
 Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
 Action=Popup
 Urgency=Low
+
+[Event/colorPicked]
+Name=Color copied
+Comment=A sampled screen color was copied to the clipboard
+Action=Popup
+Urgency=Low

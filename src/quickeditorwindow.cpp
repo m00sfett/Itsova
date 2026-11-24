@@ -152,6 +152,21 @@ void QuickEditorWindow::buildUi()
     copyAction_->setToolTip(tr("Copy flattened image to clipboard (Ctrl+C)"));
     connect(copyAction_, &QAction::triggered, this, &QuickEditorWindow::copyToClipboard);
 
+    fileBar->addSeparator();
+
+    pickColorAction_ = fileBar->addAction(QIcon::fromTheme(QStringLiteral("color-picker")), tr("Pick Color"));
+    pickColorAction_->setCheckable(true);
+    pickColorAction_->setToolTip(
+        tr("Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color."));
+    connect(pickColorAction_, &QAction::toggled, this, [this](bool on) {
+        if (canvas_) {
+            canvas_->setColorPickerActive(on);
+            if (on) {
+                canvas_->setFocus();
+            }
+        }
+    });
+
     auto *closeAction = new QAction(this);
     closeAction->setShortcut(QKeySequence::Close);
     connect(closeAction, &QAction::triggered, this, &QWidget::close);
@@ -298,6 +313,41 @@ void QuickEditorWindow::wireSignals()
     });
     connect(applyCropButton_, &QPushButton::clicked, canvas_, &AnnotationCanvas::applyActiveCrop);
     connect(cancelCropButton_, &QPushButton::clicked, canvas_, &AnnotationCanvas::cancelActiveCrop);
+
+    canvas_->setColorFormat(store_.colorPickerFormat);
+    connect(canvas_, &AnnotationCanvas::colorPickerActiveChanged, pickColorAction_, &QAction::setChecked);
+    connect(canvas_, &AnnotationCanvas::colorFormatChanged, this, [this](ColorFormat fmt) {
+        store_.colorPickerFormat = fmt;
+        Q_EMIT settingsModified();
+    });
+    connect(canvas_, &AnnotationCanvas::colorPicked, this,
+            [this](const QColor &color, const QString &formatted, bool applyToTool) {
+                if (QGuiApplication::clipboard()) {
+                    QGuiApplication::clipboard()->setText(formatted);
+                }
+                if (applyToTool) {
+                    AnnotationController *ctrl = canvas_->controller();
+                    switch (ctrl->tool()) {
+                    case ToolKind::Highlighter:
+                        ctrl->setHighlighterColor(color);
+                        break;
+                    case ToolKind::Text:
+                        ctrl->setTextColor(color);
+                        break;
+                    case ToolKind::Redact:
+                        ctrl->setRedactionColor(color);
+                        break;
+                    default:
+                        ctrl->setStrokeColor(color);
+                        break;
+                    }
+                    ctrl->writeSettings(store_.annotations);
+                    Q_EMIT settingsModified();
+                    showTransientStatus(tr("Applied %1 and copied to clipboard").arg(formatted));
+                } else {
+                    showTransientStatus(tr("Copied %1 to clipboard").arg(formatted));
+                }
+            });
 
     connect(hScroll_, &QScrollBar::valueChanged, this, [this](int value) {
         if (syncingBars_) {
@@ -566,10 +616,15 @@ void QuickEditorWindow::copyToClipboard()
 
 void QuickEditorWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_C && event->modifiers() == Qt::ControlModifier
-        && !canvas_->controller()->isEditingText()) {
-        if (!qobject_cast<QLineEdit *>(focusWidget()) && !qobject_cast<QPlainTextEdit *>(focusWidget())) {
+    if (!canvas_->controller()->isEditingText() && !qobject_cast<QLineEdit *>(focusWidget())
+        && !qobject_cast<QPlainTextEdit *>(focusWidget())) {
+        if (event->key() == Qt::Key_C && event->modifiers() == Qt::ControlModifier) {
             copyToClipboard();
+            event->accept();
+            return;
+        }
+        if (event->key() == Qt::Key_I && event->modifiers() == Qt::NoModifier && !event->isAutoRepeat()) {
+            canvas_->setColorPickerActive(!canvas_->isColorPickerActive());
             event->accept();
             return;
         }

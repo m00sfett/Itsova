@@ -1,6 +1,7 @@
 #pragma once
 
 #include "annotations/annotationsettings.h"
+#include "colorformat.h"
 #include "imageoutput.h"
 
 #include <QHash>
@@ -74,6 +75,7 @@ struct Group
 // Ids of built-in targets.
 [[nodiscard]] QString screenTargetId(const QString &connector);
 [[nodiscard]] QString allMonitorsTargetId();
+[[nodiscard]] QString colorPickerTargetId();
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 
@@ -107,6 +109,8 @@ public:
     bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
+    bool showSelectionLoupe = true;
+    ColorFormat colorPickerFormat = ColorFormat::Hex;
 
     AnnotationSettings annotations;
     ExportOptions exportOptions;
