@@ -185,6 +185,7 @@ void TargetStore::load(const KConfig &config)
     std::stable_sort(groups.begin(), groups.end(), [&](const Group &a, const Group &b) {
         return groupOrder.indexOf(a.id) < groupOrder.indexOf(b.id);
     });
+    annotations.load(config);
 }
 
 void TargetStore::save(KConfig &config) const
@@ -251,6 +252,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("AreaOrder", areaOrder);
     general.deleteEntry("RegionOrder");
     general.writeEntry("GroupOrder", groupOrder);
+    annotations.save(config);
     config.sync();
 }
 

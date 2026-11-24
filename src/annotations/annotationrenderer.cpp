@@ -38,9 +38,10 @@ void drawBarbedArrow(QPainter &painter, const QPointF &start, const QPointF &end
 
     const QPointF base(end.x() - ux * headLength, end.y() - uy * headLength);
     const QPointF notch(base.x() + ux * notchOffset, base.y() + uy * notchOffset);
-    const QPointF shaftEnd(end.x() - ux * (headLength * 0.72), end.y() - uy * (headLength * 0.72));
+    const qreal shaftStop = std::max(headLength * 0.72, strokeWidth * 0.5 + 2.0);
+    const QPointF shaftEnd(end.x() - ux * shaftStop, end.y() - uy * shaftStop);
 
-    if (len > headLength * 0.72) {
+    if (len > shaftStop) {
         QPen pen(color, strokeWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         painter.setPen(pen);
         painter.setBrush(Qt::NoBrush);
@@ -82,8 +83,7 @@ void drawHighlighterStroke(QPainter &painter, const QRectF &logicalClipRect, con
     {
         QPainter bp(&strokeBuffer);
         bp.setRenderHint(QPainter::Antialiasing);
-        bp.translate(-worldBox.topLeft());
-        bp.setWorldTransform(world, true);
+        bp.setWorldTransform(world * QTransform::fromTranslate(-worldBox.left(), -worldBox.top()));
 
         QColor opaque = item.color;
         opaque.setAlpha(255);

@@ -2,6 +2,7 @@
 
 #include "annotationdocument.h"
 #include "annotationitem.h"
+#include "annotationsettings.h"
 
 #include <QColor>
 #include <QObject>
@@ -35,6 +36,10 @@ public:
 
     void setBounds(const QRectF &logicalBounds);
     [[nodiscard]] QRectF bounds() const;
+
+    void applySettings(const AnnotationSettings &settings);
+    void writeSettings(AnnotationSettings &settings) const;
+    [[nodiscard]] const AnnotationSettings &settings() const;
 
     // Active tool style defaults.
     [[nodiscard]] QColor strokeColor() const;
@@ -104,16 +109,7 @@ private:
     QRectF bounds_;
 
     // Tool defaults.
-    QColor strokeColor_ = QColor(0xE5, 0x39, 0x35);
-    QColor highlighterColor_ = QColor(0xFD, 0xD8, 0x35);
-    qreal strokeWidth_ = 4.0;
-    qreal highlighterWidth_ = 20.0;
-    ShapeFillMode fillMode_ = ShapeFillMode::Outline;
-    qreal fillOpacity_ = 0.25;
-    SpotlightShape spotlightShape_ = SpotlightShape::Rectangle;
-    qreal dimOpacity_ = 0.65;
-    RedactionMode redactionMode_ = RedactionMode::Solid;
-    QColor redactionColor_ = QColor(0x00, 0x00, 0x00);
+    AnnotationSettings settings_;
     int redactionStrength_ = 16;
 
     // Active gesture state.
