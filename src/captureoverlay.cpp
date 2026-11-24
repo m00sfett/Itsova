@@ -74,16 +74,6 @@ constexpr int frozenDim = 140;
 // Live: lighter, so a video underneath stays watchable.
 constexpr int liveDim = 70;
 
-QRect clampToArea(QRect rect, const QSize &area)
-{
-    rect = rect.normalized();
-    rect.setWidth(std::min(rect.width(), area.width()));
-    rect.setHeight(std::min(rect.height(), area.height()));
-    rect.moveLeft(std::clamp(rect.left(), 0, area.width() - rect.width()));
-    rect.moveTop(std::clamp(rect.top(), 0, area.height() - rect.height()));
-    return rect;
-}
-
 // A floating panel in the window colours of the desktop theme, with a soft shadow.
 class OverlayPanel : public QWidget
 {
@@ -204,6 +194,7 @@ void CaptureSession::start()
     for (const ScreenInfo &screen : std::as_const(screens_)) {
         desktopBounds = desktopBounds.united(screen.geometry);
     }
+    desktopBounds_ = desktopBounds;
     annotationController_.setCropToolEnabled(false);
     annotationController_.setBounds(QRectF(desktopBounds));
     annotationController_.applySettings(store().annotations);
@@ -453,6 +444,107 @@ void CaptureSession::setDragging(bool dragging)
     }
 }
 
+bool CaptureSession::isDragging() const
+{
+    return dragging_;
+}
+
+int CaptureSession::hoveredSelectionId() const
+{
+    return hoveredSelectionId_;
+}
+
+void CaptureSession::setHoveredSelectionId(int id)
+{
+    if (hoveredSelectionId_ != id) {
+        hoveredSelectionId_ = id;
+        changed();
+    }
+}
+
+QRect CaptureSession::desktopBounds() const
+{
+    return desktopBounds_;
+}
+
+QList<QRect> CaptureSession::screenRects() const
+{
+    QList<QRect> rects;
+    rects.reserve(screens_.size());
+    for (const ScreenInfo &screen : screens_) {
+        rects.append(screen.geometry);
+    }
+    return rects;
+}
+
+QList<ScreenInfo> CaptureSession::intersectingScreens(const QRect &globalRect) const
+{
+    return glimply::intersectingScreens(screens_, globalRect);
+}
+
+QStringList CaptureSession::intersectingConnectors(const QRect &globalRect) const
+{
+    QStringList connectors;
+    for (const ScreenInfo &screen : screens_) {
+        if (!screen.geometry.intersected(globalRect).isEmpty()) {
+            connectors.append(screen.connector);
+        }
+    }
+    return connectors;
+}
+
+QString CaptureSession::actionBarConnector(const Selection &selection) const
+{
+    const QRect &r = selection.rect;
+    for (const QPoint &pt : {r.bottomRight(), r.bottomLeft(), r.topRight(), r.topLeft()}) {
+        for (const ScreenInfo &screen : screens_) {
+            if (screen.geometry.contains(pt)) {
+                return screen.connector;
+            }
+        }
+    }
+    QString bestConnector = screens_.isEmpty() ? QString() : screens_.first().connector;
+    qint64 bestArea = -1;
+    for (const ScreenInfo &screen : screens_) {
+        const QRect overlap = screen.geometry.intersected(r);
+        if (!overlap.isEmpty()) {
+            const qint64 area = qint64(overlap.width()) * overlap.height();
+            if (area > bestArea) {
+                bestArea = area;
+                bestConnector = screen.connector;
+            }
+        }
+    }
+    return bestConnector;
+}
+
+void CaptureSession::showAreaPanel()
+{
+    const Selection *active = selections_.active();
+    if (!active) {
+        return;
+    }
+    const QString target = actionBarConnector(*active);
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay && overlay->connector() == target) {
+            overlay->openAreaPanel();
+            return;
+        }
+    }
+    if (!overlays_.isEmpty() && overlays_.first()) {
+        overlays_.first()->openAreaPanel();
+    }
+}
+
+void CaptureSession::dismissAreaPanels()
+{
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay) {
+            overlay->closeAreaPanel();
+        }
+    }
+}
+
 QString CaptureSession::hint() const
 {
     if (dragging_) {
@@ -623,22 +715,47 @@ QStringList CaptureSession::writeOutputs(const QList<RenderedOutput> &outputs, Q
     return paths;
 }
 
-QImage CaptureSession::selectionImage(const Selection &selection, QString *error) const
+QImage CaptureSession::cropSelectionImage(const Selection &selection, bool includeAnnotations, qreal *outScale,
+                                            QString *error) const
 {
-    const CaptureResult frame = frames_.value(selection.connector);
-    if (frame.image.isNull()) {
-        *error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(selection.connector) : frame.error;
+    const QList<ScreenInfo> hit = intersectingScreens(selection.rect);
+    if (hit.isEmpty()) {
+        if (error) {
+            *error = tr("Selection does not overlap any connected monitor.");
+        }
         return {};
     }
-    const QImage cropped = cropLogicalArea(frame.image, selection.rect, frame.scale, error);
-    if (cropped.isNull() || annotations_.isEmpty()) {
+
+    QImage cropped;
+    qreal scale = 1.0;
+    if (hit.size() == 1 && hit.first().geometry.contains(selection.rect)) {
+        const ScreenInfo &screen = hit.first();
+        const CaptureResult frame = frames_.value(screen.connector);
+        if (frame.image.isNull()) {
+            if (error) {
+                *error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(screen.connector)
+                                               : frame.error;
+            }
+            return {};
+        }
+        cropped = cropLogicalArea(frame.image, selection.rect.translated(-screen.geometry.topLeft()), frame.scale, error);
+        scale = frame.scale > 0.0 ? frame.scale : 1.0;
+    } else {
+        cropped = composeMonitorsCrop(hit, frames_, selection.rect, &scale, error);
+    }
+
+    if (outScale) {
+        *outScale = scale;
+    }
+    if (!includeAnnotations || cropped.isNull() || annotations_.isEmpty()) {
         return cropped;
     }
-    const ScreenInfo *screen = screenFor(selection.connector);
-    const QRectF globalLogical = screen ? QRectF(selection.rect.translated(screen->geometry.topLeft()))
-                                        : QRectF(selection.rect);
-    const qreal scale = frame.scale > 0.0 ? frame.scale : 1.0;
-    return renderAnnotatedCrop(cropped, globalLogical, scale, annotations_);
+    return renderAnnotatedCrop(cropped, QRectF(selection.rect), scale, annotations_);
+}
+
+QImage CaptureSession::selectionImage(const Selection &selection, QString *error) const
+{
+    return cropSelectionImage(selection, true, nullptr, error);
 }
 
 void CaptureSession::removePrintSnapshotIfRedacted()
@@ -673,8 +790,10 @@ void CaptureSession::save(const QString &preferredConnector)
     }
     QStringList connectors;
     for (const Selection &selection : selections_.stack()) {
-        if (!connectors.contains(selection.connector)) {
-            connectors.append(selection.connector);
+        for (const QString &conn : intersectingConnectors(selection.rect)) {
+            if (!connectors.contains(conn)) {
+                connectors.append(conn);
+            }
         }
     }
     withFrames(connectors, [this] {
@@ -753,7 +872,8 @@ void CaptureSession::copy(const QString &preferredConnector)
         return;
     }
     const Selection selection = *active;
-    withFrames({selection.connector}, [this, selection] {
+    const QStringList connectors = intersectingConnectors(selection.rect);
+    withFrames(connectors, [this, selection] {
         QString error;
         const QImage image = selectionImage(selection, &error);
         if (image.isNull()) {
@@ -776,7 +896,11 @@ void CaptureSession::saveAs()
     }
     QStringList connectors;
     for (const Selection &selection : selections_.stack()) {
-        connectors.append(selection.connector);
+        for (const QString &conn : intersectingConnectors(selection.rect)) {
+            if (!connectors.contains(conn)) {
+                connectors.append(conn);
+            }
+        }
     }
     // The file dialog needs the screen; the frames are taken before the overlays step aside.
     const bool wasFrozen = frozen_;
@@ -872,12 +996,10 @@ QString CaptureSession::saveAsAreas(const QString &name, const QKeySequence &sho
     const int clampedDelay = std::clamp(delaySeconds, 0, 60);
     QStringList areaIds;
     for (const Selection &selection : ordered) {
-        const auto screen = std::find_if(screens_.cbegin(), screens_.cend(),
-                                         [&](const ScreenInfo &s) { return s.connector == selection.connector; });
-        if (screen == screens_.cend()) {
+        if (intersectingScreens(selection.rect).isEmpty()) {
             continue;
         }
-        Area &area = targets.addArea(*screen, selection.rect);
+        Area &area = targets.addAreaForGlobalRect(screens_, selection.rect);
         if (ordered.size() == 1) {
             area.name = trimmed;
             area.delaySeconds = clampedDelay;
@@ -927,7 +1049,7 @@ void CaptureSession::editInWindow(const QString &preferredConnector)
 
     if (hasSelection) {
         chosenSelection = *active;
-        connectors.append(chosenSelection.connector);
+        connectors = intersectingConnectors(chosenSelection.rect);
     } else {
         if (screens_.isEmpty()) {
             return;
@@ -958,17 +1080,11 @@ void CaptureSession::editInWindow(const QString &preferredConnector)
         QString baseToken;
 
         if (hasSelection) {
-            const CaptureResult frame = frames_.value(chosenSelection.connector);
-            if (frame.image.isNull()) {
-                error = frame.error.isEmpty() ? tr("Monitor %1 could not be captured.").arg(chosenSelection.connector)
-                                              : frame.error;
-            } else {
-                rawImage = cropLogicalArea(frame.image, chosenSelection.rect, frame.scale, &error);
-                scale = frame.scale > 0.0 ? frame.scale : 1.0;
-                const ScreenInfo *screen = screenFor(chosenSelection.connector);
-                globalOrigin = screen ? (screen->geometry.topLeft() + chosenSelection.rect.topLeft())
-                                      : chosenSelection.rect.topLeft();
-                clipBounds = QRectF(globalOrigin, QSizeF(chosenSelection.rect.size()));
+            rawImage = cropSelectionImage(chosenSelection, false, &scale, &error);
+            if (!rawImage.isNull()) {
+                scale = scale > 0.0 ? scale : 1.0;
+                globalOrigin = chosenSelection.rect.topLeft();
+                clipBounds = QRectF(chosenSelection.rect);
                 baseToken = QStringLiteral("selection");
             }
         } else if (allMonitors) {
@@ -1077,6 +1193,9 @@ void CaptureSession::captureTarget(const QString &id)
 {
     const TriggerPlan plan = planTrigger(store(), id, screens_);
     if (plan.outputs.isEmpty()) {
+        if (!plan.partialNotifications.isEmpty()) {
+            app_->notifyPartialCapture(tr("Area not captured"), plan.partialNotifications);
+        }
         finish({}, {}, plan.errors);
         return;
     }
@@ -1089,6 +1208,10 @@ void CaptureSession::captureTarget(const QString &id)
             } else {
                 validOutputs.append(output);
             }
+        }
+        if (!plan.partialNotifications.isEmpty()) {
+            app_->notifyPartialCapture(validOutputs.isEmpty() ? tr("Area not captured") : tr("Partial capture"),
+                                       plan.partialNotifications);
         }
         const QImage clipboard = validOutputs.isEmpty() ? QImage() : validOutputs.first().image;
         finishWith(writeOutputs(validOutputs, &errors), clipboard, errors, plan.displayName);
@@ -1104,8 +1227,22 @@ void CaptureSession::addTarget(const QString &id)
         areaIds = {id};
     }
     for (const QString &areaId : std::as_const(areaIds)) {
-        if (const Area *area = store().area(areaId); area && isConnected(area->connector)) {
-            selections_.add(area->connector, area->rect);
+        const Area *area = store().area(areaId);
+        if (!area) {
+            continue;
+        }
+        if (area->isCrossMonitor()) {
+            const bool anyConnected = std::any_of(area->monitors.cbegin(), area->monitors.cend(),
+                                                  [&](const AreaMonitorBinding &b) { return isConnected(b.connector); });
+            if (!anyConnected) {
+                continue;
+            }
+            const QRect clamped = area->rect.intersected(desktopBounds_);
+            if (!clamped.isEmpty()) {
+                selections_.add(clamped);
+            }
+        } else if (const ScreenInfo *s = screenFor(area->connector)) {
+            selections_.add(area->rect.translated(s->geometry.topLeft()));
         }
     }
     highlights_.clear();
@@ -1327,7 +1464,7 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
         }
     }
     overlays_.clear();
-    if (purpose_ == Purpose::Print || !title.isEmpty() || !errors.isEmpty()) {
+    if (!paths.isEmpty() || !title.isEmpty() || !errors.isEmpty()) {
         app_->notifySaved(title, paths, errors);
     }
     Q_EMIT finished();
@@ -1338,6 +1475,7 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
 CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen)
     : session_(session)
     , screen_(screen)
+    , lastPosition_(screen.geometry.topLeft())
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
     setWindowTitle(tr("glimply capture on %1").arg(session->monitorName(screen.connector)));
@@ -1398,6 +1536,16 @@ void CaptureOverlay::stopInlineTextEdit()
     if (textEditor_ && !textEditor_->isHidden()) {
         textEditor_->hide();
     }
+}
+
+QPoint CaptureOverlay::toGlobalPoint(const QPoint &localPos) const
+{
+    return localPos + screen_.geometry.topLeft();
+}
+
+QRect CaptureOverlay::toLocalRect(const QRect &globalRect) const
+{
+    return globalRect.translated(-screen_.geometry.topLeft());
 }
 
 QPointF CaptureOverlay::toGlobalLogical(const QPointF &localPos) const
@@ -1738,6 +1886,9 @@ void CaptureOverlay::fillAreasMenu()
         if (!area) {
             return {};
         }
+        if (area->isCrossMonitor()) {
+            return {{area->rect, area->name}};
+        }
         const QScreen *screen = findScreen(area->connector);
         if (!screen) {
             return {};
@@ -1745,12 +1896,20 @@ void CaptureOverlay::fillAreasMenu()
         return {{area->rect.translated(screen->geometry().topLeft()), area->name}};
     };
 
+    const auto areaAvailable = [&](const Area &area) {
+        if (area.isCrossMonitor()) {
+            return std::any_of(area.monitors.cbegin(), area.monitors.cend(),
+                               [&](const AreaMonitorBinding &b) { return session_->isConnected(b.connector); });
+        }
+        return session_->isConnected(area.connector);
+    };
+
     for (const Group &group : store.groups) {
         QList<CaptureSession::Highlight> outline;
         bool available = false;
         for (const QString &member : group.targetIds) {
             outline += outlineOf(member);
-            if (const Area *area = store.area(member); area && session_->isConnected(area->connector)) {
+            if (const Area *area = store.area(member); area && areaAvailable(*area)) {
                 available = true;
             }
         }
@@ -1760,8 +1919,7 @@ void CaptureOverlay::fillAreasMenu()
         menu->addSeparator();
     }
     for (const Area &area : store.areas) {
-        addRow(area.id, QStringLiteral("select-rectangular"), area.name, session_->isConnected(area.connector),
-               outlineOf(area.id));
+        addRow(area.id, QStringLiteral("select-rectangular"), area.name, areaAvailable(area), outlineOf(area.id));
     }
 }
 
@@ -1813,7 +1971,7 @@ void CaptureOverlay::buildActionBar()
         area->setFlat(false);
         area->setDefault(true);
     }
-    connect(area, &QPushButton::clicked, this, &CaptureOverlay::showAreaPanel);
+    connect(area, &QPushButton::clicked, this, &CaptureOverlay::openAreaPanel);
     row->addWidget(area);
     auto *more = actionButton(actionButtons_, QStringLiteral("list-add"), tr("Add Rectangle"),
                               tr("Draw another rectangle, also over an existing one"));
@@ -1838,7 +1996,14 @@ void CaptureOverlay::showActionButtons()
     setFocus();
 }
 
-void CaptureOverlay::showAreaPanel()
+void CaptureOverlay::closeAreaPanel()
+{
+    if (areaPanel_) {
+        showActionButtons();
+    }
+}
+
+void CaptureOverlay::openAreaPanel()
 {
     SelectionModel &model = session_->selections();
     const int count = model.count();
@@ -1869,7 +2034,9 @@ void CaptureOverlay::showAreaPanel()
     auto *name = new QLineEdit(areaPanel_);
     name->setMinimumWidth(260);
     if (count == 1) {
-        name->setText(store.nextAreaName(session_->monitorName(model.inDrawingOrder().first().connector)));
+        const QList<ScreenInfo> hit = session_->intersectingScreens(model.inDrawingOrder().first().rect);
+        const QString prefix = hit.size() == 1 ? store.monitorName(hit.first()) : QStringLiteral("area");
+        name->setText(store.nextAreaName(prefix));
     } else {
         int n = 1;
         while (!store.isNameAvailable(tr("Group %1").arg(n))) {
@@ -1990,10 +2157,10 @@ void CaptureOverlay::showAreaPanel()
     name->setFocus();
 }
 
-const Selection *CaptureOverlay::activeHere() const
+const Selection *CaptureOverlay::actionBarSelection() const
 {
     const Selection *active = session_->selections().active();
-    return active && active->connector == screen_.connector ? active : nullptr;
+    return active && session_->actionBarConnector(*active) == screen_.connector ? active : nullptr;
 }
 
 void CaptureOverlay::refresh()
@@ -2041,8 +2208,8 @@ void CaptureOverlay::refresh()
 
 void CaptureOverlay::placeActionBar()
 {
-    const Selection *active = activeHere();
-    if (!active || drag_ == Drag::Create || drag_ == Drag::Move || drag_ == Drag::Resize) {
+    const Selection *active = actionBarSelection();
+    if (!active || session_->isDragging() || drag_ == Drag::Create || drag_ == Drag::Move || drag_ == Drag::Resize) {
         actionBar_->hide();
         return;
     }
@@ -2053,20 +2220,21 @@ void CaptureOverlay::placeActionBar()
     }
     actionBar_->adjustSize();
     const QSize size = actionBar_->sizeHint();
-    const QRect rect = active->rect;
+    const QRect rect = toLocalRect(active->rect).intersected(QRect(QPoint(), this->size()));
+    const QRect anchorRect = rect.isEmpty() ? toLocalRect(active->rect) : rect;
     int topObstacleBottom = topBar_ ? topBar_->geometry().bottom() + 4 : 0;
     if (markupPanel_ && !markupPanel_->isHidden()) {
         topObstacleBottom = std::max(topObstacleBottom, markupPanel_->geometry().bottom() + 4);
     }
-    QPoint position(rect.right() + 1 - size.width(), rect.bottom() + 1 + barGap);
+    QPoint position(anchorRect.right() + 1 - size.width(), anchorRect.bottom() + 1 + barGap);
     if (position.y() + size.height() > height()) {
-        position.setY(rect.top() - barGap - size.height());
+        position.setY(anchorRect.top() - barGap - size.height());
         if (position.y() < topObstacleBottom && position.y() < 0) {
-            position.setY(rect.bottom() - size.height() - barGap);
+            position.setY(anchorRect.bottom() - size.height() - barGap);
         }
     }
     if (position.y() < 0) {
-        position.setY(rect.bottom() - size.height() - barGap);
+        position.setY(anchorRect.bottom() - size.height() - barGap);
     }
     position.setX(std::clamp(position.x(), 0, std::max(0, width() - size.width())));
     position.setY(std::clamp(position.y(), 0, std::max(0, height() - size.height())));
@@ -2081,25 +2249,28 @@ void CaptureOverlay::placeActionBar()
     }
 }
 
-QRect CaptureOverlay::closeButton(const QRect &rect) const
+QRect CaptureOverlay::closeButtonGlobal(const QRect &globalRect) const
 {
     QRect button(0, 0, closeButtonSize, closeButtonSize);
     // Inside the top right corner, clear of the corner handle; outside on small rectangles.
     constexpr int inset = 20;
-    if (rect.width() >= 3 * inset && rect.height() >= 3 * inset) {
-        button.moveCenter(QPoint(rect.right() - inset, rect.top() + inset));
+    if (globalRect.width() >= 3 * inset && globalRect.height() >= 3 * inset) {
+        button.moveCenter(QPoint(globalRect.right() - inset, globalRect.top() + inset));
     } else {
-        button.moveCenter(QPoint(rect.right() + closeButtonSize / 2 + 4, rect.top() - closeButtonSize / 2 - 4));
+        button.moveCenter(
+            QPoint(globalRect.right() + closeButtonSize / 2 + 4, globalRect.top() - closeButtonSize / 2 - 4));
     }
-    return clampToArea(button, size());
+    const QList<ScreenInfo> cornerScreens = session_->intersectingScreens(QRect(globalRect.topRight(), QSize(1, 1)));
+    const QRect bounds = cornerScreens.isEmpty() ? session_->desktopBounds() : cornerScreens.first().geometry;
+    return clampToBounds(button, bounds);
 }
 
-int CaptureOverlay::closeButtonAt(const QPoint &pos) const
+int CaptureOverlay::closeButtonAt(const QPoint &globalPos) const
 {
     const SelectionModel &model = session_->selections();
-    for (const int id : {model.activeId(), hoverId_}) {
+    for (const int id : {model.activeId(), session_->hoveredSelectionId()}) {
         const Selection *selection = model.find(id);
-        if (selection && selection->connector == screen_.connector && closeButton(selection->rect).contains(pos)) {
+        if (selection && closeButtonGlobal(selection->rect).contains(globalPos)) {
             return id;
         }
     }
@@ -2140,8 +2311,9 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
     if (!suppressBackdropDim) {
         QPainterPath holes;
         for (const Selection &selection : model.stack()) {
-            if (selection.connector == screen_.connector) {
-                holes.addRect(selection.rect);
+            const QRect hole = toLocalRect(selection.rect).intersected(area);
+            if (!hole.isEmpty()) {
+                holes.addRect(hole);
             }
         }
         QPainterPath shade;
@@ -2164,19 +2336,21 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
 
     painter.setRenderHint(QPainter::Antialiasing);
     const bool numbered = model.count() > 1;
+    const int hoveredId = session_->hoveredSelectionId();
     for (const Selection &selection : model.stack()) {
-        if (selection.connector != screen_.connector) {
+        const QRect local = toLocalRect(selection.rect);
+        if (!local.intersects(area)) {
             continue;
         }
         const bool active = selection.id == model.activeId();
-        const QRectF frame(selection.rect);
+        const QRectF frame(local);
         painter.setBrush(Qt::NoBrush);
         if (active) {
             painter.setPen(QPen(accent, 2));
             painter.drawRect(frame.adjusted(1, 1, -1, -1));
         } else {
             // A hovered rectangle shows in the theme's negative colour: a right click deletes it.
-            const bool hovered = selection.id == hoverId_ && drag_ == Drag::None;
+            const bool hovered = selection.id == hoveredId && !session_->isDragging();
             painter.setPen(QPen(QColor(0, 0, 0, 120), 3));
             painter.drawRect(frame.adjusted(0.5, 0.5, -0.5, -0.5));
             painter.setPen(QPen(hovered ? negative : QColor(255, 255, 255, 200), hovered ? 2 : 1));
@@ -2197,14 +2371,16 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             painter.drawText(badge, Qt::AlignCenter, QString::number(number));
         }
 
-        if (active || selection.id == hoverId_) {
-            const QRect button = closeButton(selection.rect);
-            painter.setPen(QPen(QColor(0, 0, 0, 60), 1));
-            painter.setBrush(pal.color(QPalette::Window));
-            painter.drawEllipse(QRectF(button).adjusted(0.5, 0.5, -0.5, -0.5));
-            const QIcon icon = QIcon::fromTheme(QStringLiteral("window-close"));
-            const QRect iconRect(button.center() - QPoint(7, 7), QSize(16, 16));
-            icon.paint(&painter, iconRect.adjusted(1, 1, -1, -1));
+        if (active || selection.id == hoveredId) {
+            const QRect button = toLocalRect(closeButtonGlobal(selection.rect));
+            if (button.intersects(area)) {
+                painter.setPen(QPen(QColor(0, 0, 0, 60), 1));
+                painter.setBrush(pal.color(QPalette::Window));
+                painter.drawEllipse(QRectF(button).adjusted(0.5, 0.5, -0.5, -0.5));
+                const QIcon icon = QIcon::fromTheme(QStringLiteral("window-close"));
+                const QRect iconRect(button.center() - QPoint(7, 7), QSize(16, 16));
+                icon.paint(&painter, iconRect.adjusted(1, 1, -1, -1));
+            }
         }
 
         if (!active) {
@@ -2289,16 +2465,16 @@ Qt::Edges CaptureOverlay::edgesAt(const QRect &rect, const QPoint &pos) const
     return {};
 }
 
-void CaptureOverlay::updateCursor(const QPoint &pos)
+void CaptureOverlay::updateCursor(const QPoint &globalPos)
 {
-    if (closeButtonAt(pos)) {
+    if (closeButtonAt(globalPos)) {
         setCursor(Qt::PointingHandCursor);
         return;
     }
     if (session_->purpose() == CaptureSession::Purpose::Print) {
         AnnotationController &ctrl = session_->annotationController();
         const Qt::KeyboardModifiers mods = QGuiApplication::keyboardModifiers();
-        const QPointF gPos = toGlobalLogical(pos);
+        const QPointF gPos(globalPos);
         if (ctrl.isDragging() || ctrl.effectiveTool(mods) != ToolKind::Select) {
             setCursor(ctrl.cursorFor(gPos, mods, 8.0));
             return;
@@ -2310,9 +2486,9 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
             return;
         }
     }
-    const Selection *active = activeHere();
+    const Selection *active = session_->selections().active();
     if (active && !session_->forceNew()) {
-        const Qt::Edges edges = edgesAt(active->rect, pos);
+        const Qt::Edges edges = edgesAt(active->rect, globalPos);
         if (edges == (Qt::LeftEdge | Qt::TopEdge) || edges == (Qt::RightEdge | Qt::BottomEdge)) {
             setCursor(Qt::SizeFDiagCursor);
             return;
@@ -2329,12 +2505,12 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
             setCursor(Qt::SizeVerCursor);
             return;
         }
-        if (active->rect.contains(pos)) {
+        if (active->rect.contains(globalPos)) {
             setCursor(Qt::SizeAllCursor);
             return;
         }
     }
-    if (!session_->forceNew() && session_->selections().topmostAt(screen_.connector, pos)) {
+    if (!session_->forceNew() && session_->selections().topmostAt(globalPos)) {
         setCursor(Qt::PointingHandCursor);
         return;
     }
@@ -2343,23 +2519,23 @@ void CaptureOverlay::updateCursor(const QPoint &pos)
 
 void CaptureOverlay::mousePressEvent(QMouseEvent *event)
 {
+    const QPoint globalPos = toGlobalPoint(event->position().toPoint());
     if (event->button() == Qt::RightButton) {
         // Right click deletes the topmost annotation under pointer first, else the crop rectangle.
         if (drag_ == Drag::None) {
-            const QPoint pos = event->position().toPoint();
             if (session_->purpose() == CaptureSession::Purpose::Print
                 && !session_->annotationController().isDragging()) {
-                if (const int annId = session_->annotations().topmostHitAt(toGlobalLogical(pos))) {
+                if (const int annId = session_->annotations().topmostHitAt(toGlobalLogical(event->position()))) {
                     session_->annotations().removeItem(annId);
-                    updateCursor(pos);
+                    updateCursor(globalPos);
                     return;
                 }
             }
-            if (const int id = session_->selections().topmostAt(screen_.connector, pos)) {
+            if (const int id = session_->selections().topmostAt(globalPos)) {
                 session_->selections().remove(id);
-                hoverId_ = 0;
+                session_->setHoveredSelectionId(0);
                 session_->changed();
-                updateCursor(pos);
+                updateCursor(globalPos);
             }
         }
         return;
@@ -2367,9 +2543,7 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
-    if (areaPanel_) {
-        showActionButtons();
-    }
+    session_->dismissAreaPanels();
     if (session_->purpose() == CaptureSession::Purpose::Print
         && session_->annotationController().isEditingText()) {
         session_->annotationController().requestCommitActiveText(false);
@@ -2377,20 +2551,19 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
     }
 
     SelectionModel &model = session_->selections();
-    const QPoint pos = event->position().toPoint();
-    anchor_ = pos;
-    lastPosition_ = pos;
+    anchor_ = globalPos;
+    lastPosition_ = globalPos;
     spaceHeld_ = false;
 
     const bool selectTool = session_->purpose() != CaptureSession::Purpose::Print
                          || session_->annotationController().effectiveTool(event->modifiers()) == ToolKind::Select;
     if (selectTool) {
-        if (const int id = closeButtonAt(pos)) {
+        if (const int id = closeButtonAt(globalPos)) {
             model.remove(id);
-            hoverId_ = 0;
+            session_->setHoveredSelectionId(0);
             drag_ = Drag::None;
             session_->changed();
-            updateCursor(pos);
+            updateCursor(globalPos);
             return;
         }
     }
@@ -2402,30 +2575,30 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
         }
     }
 
-    const Selection *active = activeHere();
+    const Selection *active = model.active();
     if (active && !session_->forceNew()) {
         dragStartRect_ = active->rect;
         dragId_ = active->id;
-        if (const Qt::Edges edges = edgesAt(active->rect, pos)) {
+        if (const Qt::Edges edges = edgesAt(active->rect, globalPos)) {
             drag_ = Drag::Resize;
             dragEdges_ = edges;
             return;
         }
-        if (active->rect.contains(pos)) {
+        if (active->rect.contains(globalPos)) {
             drag_ = Drag::Move;
             return;
         }
     }
     // Decide on release (click) or on the first movement (drag).
     drag_ = Drag::Pending;
-    pendingId_ = session_->forceNew() ? 0 : model.topmostAt(screen_.connector, pos);
+    pendingId_ = session_->forceNew() ? 0 : model.topmostAt(globalPos);
 }
 
 void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
 {
-    const QPoint position = event->position().toPoint();
-    const QPoint step = position - lastPosition_;
-    lastPosition_ = position;
+    const QPoint globalPos = toGlobalPoint(event->position().toPoint());
+    const QPoint step = globalPos - lastPosition_;
+    lastPosition_ = globalPos;
 
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
         session_->annotationController().mouseMove(toGlobalLogical(event->position()), event->modifiers());
@@ -2437,61 +2610,73 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
             AnnotationController &ctrl = session_->annotationController();
             const bool annHit = ctrl.mouseMove(toGlobalLogical(event->position()), event->modifiers());
             if (annHit || ctrl.effectiveTool(event->modifiers()) != ToolKind::Select) {
-                if (hoverId_) {
-                    hoverId_ = 0;
-                    update();
-                }
-                updateCursor(position);
+                session_->setHoveredSelectionId(0);
+                updateCursor(globalPos);
                 return;
             }
         }
-        const int hover = session_->selections().topmostAt(screen_.connector, position);
-        if (hover != hoverId_) {
-            hoverId_ = hover;
-            update();
-        }
-        updateCursor(position);
+        session_->setHoveredSelectionId(session_->selections().topmostAt(globalPos));
+        updateCursor(globalPos);
         return;
     }
 
     if (drag_ == Drag::Pending) {
-        if ((position - anchor_).manhattanLength() < QApplication::startDragDistance()) {
+        if ((globalPos - anchor_).manhattanLength() < QApplication::startDragDistance()) {
             return;
         }
         drag_ = Drag::Create;
-        dragId_ = session_->selections().add(screen_.connector, QRect(anchor_, QSize(1, 1)));
+        dragId_ = session_->selections().add(QRect(anchor_, QSize(1, 1)));
         session_->setForceNew(false);
         session_->setDragging(true);
     } else if (drag_ == Drag::Move || drag_ == Drag::Resize) {
-        session_->setDragging(drag_ == Drag::Resize);
+        session_->setDragging(true);
     }
     if (spaceHeld_ && (drag_ == Drag::Create || drag_ == Drag::Resize)) {
-        anchor_.setX(std::clamp(anchor_.x() + step.x(), 0, width()));
-        anchor_.setY(std::clamp(anchor_.y() + step.y(), 0, height()));
+        const QRect bounds = session_->desktopBounds();
+        anchor_.setX(std::clamp(anchor_.x() + step.x(), bounds.left(), bounds.left() + bounds.width()));
+        anchor_.setY(std::clamp(anchor_.y() + step.y(), bounds.top(), bounds.top() + bounds.height()));
         if (drag_ == Drag::Resize) {
-            dragStartRect_ = clampToArea(dragStartRect_.translated(step), size());
+            dragStartRect_ = clampToBounds(dragStartRect_.translated(step), bounds);
         }
     }
-    applyDrag(position, event->modifiers());
+    applyDrag(globalPos, event->modifiers());
 }
 
-void CaptureOverlay::applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers)
+void CaptureOverlay::applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers)
 {
     const SelectionConstraints constraints{modifiers.testFlag(Qt::AltModifier),
                                            modifiers.testFlag(Qt::ShiftModifier)};
     SelectionModel &model = session_->selections();
-    const QSize bounds = size();
+    const QRect bounds = session_->desktopBounds();
+    const QList<QRect> screenRects = session_->screenRects();
     if (drag_ == Drag::Create) {
-        model.setRect(dragId_, drawnSelection(anchor_, position, constraints, bounds));
+        QPoint effectivePos = globalPos;
+        if (!spaceHeld_) {
+            const QPoint snapped = snapPointToMonitorEdges(globalPos, screenRects);
+            if (std::abs(snapped.x() - anchor_.x()) >= minimumAreaSize) {
+                effectivePos.setX(snapped.x());
+            }
+            if (std::abs(snapped.y() - anchor_.y()) >= minimumAreaSize) {
+                effectivePos.setY(snapped.y());
+            }
+        }
+        model.setRect(dragId_, drawnSelection(anchor_, effectivePos, constraints, bounds));
     } else if (drag_ == Drag::Move) {
-        model.setRect(dragId_, clampToArea(dragStartRect_.translated(position - anchor_), bounds));
+        QRect moved = clampToBounds(dragStartRect_.translated(globalPos - anchor_), bounds);
+        if (!spaceHeld_) {
+            moved = snapMovedRectToMonitorEdges(moved, screenRects, bounds);
+        }
+        model.setRect(dragId_, moved);
     } else if (drag_ == Drag::Resize) {
-        model.setRect(dragId_, resizedSelection(dragStartRect_, dragEdges_, position - anchor_, constraints, bounds));
+        QPoint delta = globalPos - anchor_;
+        if (!spaceHeld_) {
+            delta = snapResizeDeltaToMonitorEdges(dragStartRect_, dragEdges_, delta, screenRects);
+        }
+        model.setRect(dragId_, resizedSelection(dragStartRect_, dragEdges_, delta, constraints, bounds));
     } else {
         return;
     }
-    placeActionBar();
-    update();
+    session_->changed();
 }
 
 void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
@@ -2499,11 +2684,12 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() != Qt::LeftButton) {
         return;
     }
+    const QPoint globalPos = toGlobalPoint(event->position().toPoint());
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isDragging()) {
         session_->annotationController().mouseRelease(toGlobalLogical(event->position()), Qt::LeftButton,
                                                       event->modifiers());
         session_->persistAnnotationSettings();
-        updateCursor(event->position().toPoint());
+        updateCursor(globalPos);
         return;
     }
     SelectionModel &model = session_->selections();
@@ -2537,7 +2723,7 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
         }
     }
     session_->changed();
-    updateCursor(event->position().toPoint());
+    updateCursor(globalPos);
 }
 
 void CaptureOverlay::mouseDoubleClickEvent(QMouseEvent *event)
@@ -2552,13 +2738,14 @@ void CaptureOverlay::mouseDoubleClickEvent(QMouseEvent *event)
         }
     }
     SelectionModel &model = session_->selections();
-    if (const int id = model.topmostAt(screen_.connector, event->position().toPoint())) {
+    const QPoint globalPos = toGlobalPoint(event->position().toPoint());
+    if (const int id = model.topmostAt(globalPos)) {
         model.activate(id);
         if (session_->purpose() == CaptureSession::Purpose::Print) {
             session_->save(screen_.connector);
         } else {
             session_->changed();
-            showAreaPanel();
+            session_->showAreaPanel();
         }
     }
 }
@@ -2580,9 +2767,8 @@ void CaptureOverlay::focusOutEvent(QFocusEvent *event)
 
 void CaptureOverlay::leaveEvent(QEvent *event)
 {
-    if (hoverId_) {
-        hoverId_ = 0;
-        update();
+    if (drag_ == Drag::None) {
+        session_->setHoveredSelectionId(0);
     }
     if (session_->purpose() == CaptureSession::Purpose::Print) {
         session_->annotationController().clearHover();
@@ -2761,7 +2947,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         if (session_->purpose() == CaptureSession::Purpose::Print) {
             session_->save(screen_.connector);
         } else {
-            showAreaPanel();
+            session_->showAreaPanel();
         }
         return;
     case Qt::Key_Delete:
@@ -2787,12 +2973,13 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         QWidget::keyPressEvent(event);
         return;
     }
-    const Selection *active = activeHere();
+    const Selection *active = model.active();
     if (!active) {
         QWidget::keyPressEvent(event);
         return;
     }
-    model.setRect(active->id, steppedSelection(active->rect, delta, constraints, minimumAreaSize, size()));
+    model.setRect(active->id, steppedSelection(active->rect, delta, constraints, minimumAreaSize,
+                                               session_->desktopBounds()));
     session_->changed();
 }
 

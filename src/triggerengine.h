@@ -20,6 +20,7 @@ struct TriggerResult
     QStringList writtenPaths;
     QStringList errors;
     QStringList warnings;
+    QStringList partialNotifications;
     int capturedMonitors = 0;
 };
 

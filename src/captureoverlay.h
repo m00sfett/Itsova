@@ -73,6 +73,16 @@ public:
     [[nodiscard]] bool forceNew() const;
     void setForceNew(bool on);
     void setDragging(bool dragging);
+    [[nodiscard]] bool isDragging() const;
+    [[nodiscard]] int hoveredSelectionId() const;
+    void setHoveredSelectionId(int id);
+    [[nodiscard]] QRect desktopBounds() const;
+    [[nodiscard]] QList<QRect> screenRects() const;
+    [[nodiscard]] QList<ScreenInfo> intersectingScreens(const QRect &globalRect) const;
+    [[nodiscard]] QStringList intersectingConnectors(const QRect &globalRect) const;
+    [[nodiscard]] QString actionBarConnector(const Selection &selection) const;
+    void showAreaPanel();
+    void dismissAreaPanels();
     [[nodiscard]] QString hint() const;
     // Outlines shown while the user hovers an area or a window in a list (global logical rects).
     struct Highlight {
@@ -135,6 +145,8 @@ private:
     void finishWith(const QStringList &paths, const QImage &clipboardImage, const QStringList &errors,
                     const QString &displayName);
     void finish(const QString &title, const QStringList &paths, const QStringList &errors = {});
+    [[nodiscard]] QImage cropSelectionImage(const Selection &selection, bool includeAnnotations, qreal *outScale,
+                                          QString *error) const;
     [[nodiscard]] QImage selectionImage(const Selection &selection, QString *error) const;
 
     App *app_;
@@ -143,8 +155,10 @@ private:
     bool markupVisible_ = false;
     bool forceNew_ = false;
     bool dragging_ = false;
+    int hoveredSelectionId_ = 0;
     bool finished_ = false;
     bool switching_ = false; // Live to Frozen: overlays hidden while the frames are taken
+    QRect desktopBounds_;
     QList<ScreenInfo> screens_;
     QHash<QString, CaptureResult> frames_;
     SelectionModel selections_;
@@ -169,6 +183,8 @@ public:
     [[nodiscard]] InlineTextEditor *textEditor() const;
     void startInlineTextEdit(const AnnotationItem &item, bool isExisting);
     void stopInlineTextEdit();
+    void openAreaPanel();
+    void closeAreaPanel();
     void refresh();
 
 protected:
@@ -195,16 +211,17 @@ private:
     void fillAreasMenu();
     void fillWindowsMenu();
     void fillDelayMenu();
-    void applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers);
+    void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
-    void updateCursor(const QPoint &pos);
-    void saveArea();
+    void updateCursor(const QPoint &globalPos);
+    [[nodiscard]] QPoint toGlobalPoint(const QPoint &localPos) const;
+    [[nodiscard]] QRect toLocalRect(const QRect &globalRect) const;
     [[nodiscard]] QPointF toGlobalLogical(const QPointF &localPos) const;
-    [[nodiscard]] const Selection *activeHere() const;
-    [[nodiscard]] Qt::Edges edgesAt(const QRect &rect, const QPoint &pos) const;
-    [[nodiscard]] QRect closeButton(const QRect &rect) const;
-    // Rectangle whose delete button is under pos (active one, or the hovered one), or 0.
-    [[nodiscard]] int closeButtonAt(const QPoint &pos) const;
+    [[nodiscard]] const Selection *actionBarSelection() const;
+    [[nodiscard]] Qt::Edges edgesAt(const QRect &globalRect, const QPoint &globalPos) const;
+    [[nodiscard]] QRect closeButtonGlobal(const QRect &globalRect) const;
+    // Rectangle whose delete button is under globalPos (active one, or the hovered one), or 0.
+    [[nodiscard]] int closeButtonAt(const QPoint &globalPos) const;
 
     CaptureSession *session_;
     ScreenInfo screen_;
@@ -213,7 +230,6 @@ private:
     bool spaceHeld_ = false;
     int dragId_ = 0;
     int pendingId_ = 0;
-    int hoverId_ = 0;
     QPoint anchor_;
     QPoint lastPosition_;
     QRect dragStartRect_;

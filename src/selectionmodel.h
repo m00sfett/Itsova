@@ -22,6 +22,7 @@ class SelectionModel
 public:
     // Adds a rectangle on top and makes it active. Returns its id.
     int add(const QString &connector, const QRect &rect);
+    int add(const QRect &globalRect);
     void setRect(int id, const QRect &rect);
     void remove(int id);
     void clear();
@@ -45,6 +46,8 @@ public:
 
     // Topmost rectangle on connector that contains pos, or 0.
     [[nodiscard]] int topmostAt(const QString &connector, const QPoint &pos) const;
+    // Topmost global-coordinate rectangle that contains globalPos, or 0.
+    [[nodiscard]] int topmostAt(const QPoint &globalPos) const;
 
 private:
     QList<Selection> stack_;

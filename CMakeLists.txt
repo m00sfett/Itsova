@@ -149,6 +149,9 @@ if(BUILD_TESTING)
     add_executable(delaytest tests/delaytest.cpp)
     target_link_libraries(delaytest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME delay COMMAND delaytest)
+    add_executable(crossmonitortest tests/crossmonitortest.cpp)
+    target_link_libraries(crossmonitortest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME crossmonitor COMMAND crossmonitortest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "targets.h"
+
 #include <QImage>
 #include <QList>
 #include <QObject>
@@ -12,9 +14,9 @@ namespace glimply
 
 class AreaOverlay;
 
-// Setup-time selection of an area. Shows one overlay per monitor (or only on the monitor of an
-// existing area) with a frozen, dimmed picture of the screen. The user drags a rectangle on any
-// of them; Enter or a double click confirms, Escape cancels.
+// Setup-time selection of an area. Shows one overlay per connected monitor with a frozen, dimmed
+// picture of the screen. The user can drag across monitor edges; Enter or a double click
+// confirms, Escape cancels.
 class AreaSelector : public QObject
 {
     Q_OBJECT
@@ -23,16 +25,26 @@ public:
     explicit AreaSelector(QObject *parent = nullptr);
     ~AreaSelector() override;
 
-    // connector empty: every connected monitor. initial: monitor-local logical rectangle.
-    void start(const QString &connector = QString(), const QRect &initial = QRect());
+    // initialGlobalRect: global logical rectangle for editing an existing area, or invalid.
+    void start(const QRect &initialGlobalRect = QRect());
+
+    [[nodiscard]] QRect selection() const;
+    void setSelection(const QRect &globalRect);
+    void clearSelection();
+    [[nodiscard]] QString pillConnector() const;
+    [[nodiscard]] QList<ScreenInfo> screens() const;
 
 Q_SIGNALS:
-    void selected(const QString &connector, const QRect &rect);
+    void selected(const QRect &globalRect);
     void cancelled();
 
 private:
-    void finish(AreaOverlay *source, bool accepted);
+    void finish(bool accepted);
 
+    QList<ScreenInfo> screens_;
+    QRect desktopBounds_;
+    QList<QRect> screenRects_;
+    QRect selection_;
     QList<QPointer<AreaOverlay>> overlays_;
 };
 
@@ -41,7 +53,11 @@ class AreaOverlay : public QWidget
     Q_OBJECT
 
 public:
+    // Standalone single-monitor overlay constructor (used by unit tests).
     AreaOverlay(const QString &connector, const QSize &logicalSize, const QImage &background, const QRect &initial);
+    // Multi-monitor overlay constructor managed by AreaSelector.
+    AreaOverlay(AreaSelector *selector, const ScreenInfo &screen, const QRect &desktopBounds,
+                const QList<QRect> &screenRects, const QImage &background);
 
     [[nodiscard]] QString connector() const;
     [[nodiscard]] QRect selection() const;
@@ -66,15 +82,20 @@ private:
 
     void setSelection(const QRect &rect);
     // Updates the selection for the current drag; Alt draws from the centre, Shift keeps a square.
-    void applyDrag(const QPoint &position, Qt::KeyboardModifiers modifiers);
+    void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     // Redraws the drag when Shift, Alt, or Ctrl is pressed or released mid-drag.
     bool reapplyModifiers(QKeyEvent *event);
-    // Edges of the selection under pos: one edge near a side, two near a corner, none elsewhere.
-    [[nodiscard]] Qt::Edges edgesAt(const QPoint &pos) const;
-    void updateCursor(const QPoint &pos);
+    // Edges of the selection under globalPos: one edge near a side, two near a corner, none elsewhere.
+    [[nodiscard]] Qt::Edges edgesAt(const QPoint &globalPos) const;
+    void updateCursor(const QPoint &globalPos);
+    [[nodiscard]] QPoint toGlobalPoint(const QPoint &localPos) const;
+    [[nodiscard]] QRect toLocalRect(const QRect &globalRect) const;
 
+    AreaSelector *selector_ = nullptr;
     QString connector_;
-    QSize logicalSize_;
+    QRect screenGeometry_;
+    QRect desktopBounds_;
+    QList<QRect> screenRects_;
     QImage background_;
     QRect selection_;
     Drag drag_ = Drag::None;

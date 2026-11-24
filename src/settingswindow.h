@@ -63,7 +63,7 @@ private:
     void removeSelectedArea();
     // Assigns a shortcut; asks before taking it away from another glimply target.
     void assignShortcut(const QString &id, const QKeySequence &sequence, KKeySequenceWidget *editor);
-    void runSelector(const QString &connector, const QRect &initial, const QString &areaId);
+    void runSelector(const QRect &initialGlobalRect, const QString &areaId);
 
     App *app_;
     QPointer<AreaSelector> selector_;
@@ -84,6 +84,7 @@ private:
     QSpinBox *areaY_ = nullptr;
     QSpinBox *areaWidth_ = nullptr;
     QSpinBox *areaHeight_ = nullptr;
+    QLabel *geometryHint_ = nullptr;
     QLabel *areaWarning_ = nullptr;
     QCheckBox *targetCursor_ = nullptr;
     ExportOptionsWidget *targetExport_ = nullptr;

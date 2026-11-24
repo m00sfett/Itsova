@@ -16,6 +16,7 @@
 #include "shortcutmanager.h"
 #include "traycontroller.h"
 #include "triggerengine.h"
+#include "triggerplan.h"
 
 #include <KConfig>
 #include <KGlobalAccel>
@@ -216,10 +217,31 @@ QList<MenuTarget> App::menuTargets() const
                         !group.targetIds.isEmpty()});
     }
     for (const Area &area : store_.areas) {
-        const bool present = connected(area.connector);
-        targets.append({MenuTarget::Section::Area, area.id, area.name,
-                        present ? QString() : tr("%1 not connected").arg(area.connector),
-                        shortcuts_->shortcut(area.id), present});
+        if (area.isCrossMonitor()) {
+            int presentCount = 0;
+            QStringList missingConnectors;
+            for (const AreaMonitorBinding &binding : area.monitors) {
+                if (connected(binding.connector)) {
+                    ++presentCount;
+                } else {
+                    missingConnectors.append(binding.connector);
+                }
+            }
+            const bool available = presentCount > 0;
+            QString detail;
+            if (!available) {
+                detail = tr("Monitors not connected");
+            } else if (!missingConnectors.isEmpty()) {
+                detail = tr("Partial: %1 not connected").arg(missingConnectors.join(QStringLiteral(", ")));
+            }
+            targets.append(
+                {MenuTarget::Section::Area, area.id, area.name, detail, shortcuts_->shortcut(area.id), available});
+        } else {
+            const bool present = connected(area.connector);
+            targets.append({MenuTarget::Section::Area, area.id, area.name,
+                            present ? QString() : tr("%1 not connected").arg(area.connector),
+                            shortcuts_->shortcut(area.id), present});
+        }
     }
     for (const ScreenInfo &screen : screens) {
         const QString id = screenTargetId(screen.connector);
@@ -438,7 +460,12 @@ void App::executeTriggerNow(const QString &id)
 {
     TriggerPlan plan = planTrigger(store_, id, currentScreens());
     if (plan.outputs.isEmpty()) {
-        notifyError(tr("Nothing captured"), plan.errors);
+        if (!plan.partialNotifications.isEmpty()) {
+            notifyPartialCapture(tr("Area not captured"), plan.partialNotifications);
+        }
+        if (!plan.errors.isEmpty()) {
+            notifyError(tr("Nothing captured"), plan.errors);
+        }
         return;
     }
     engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
@@ -457,6 +484,15 @@ void App::onTriggerFinished(const TriggerResult &result)
     if (!result.warnings.isEmpty()) {
         notify(QStringLiteral("monitorChanged"), tr("Check area monitor"), result.warnings);
     }
+    if (!result.partialNotifications.isEmpty()) {
+        notifyPartialCapture(result.writtenPaths.isEmpty() ? tr("Area not captured") : tr("Partial capture"),
+                             result.partialNotifications);
+    }
+}
+
+void App::notifyPartialCapture(const QString &title, const QStringList &messages)
+{
+    notify(QStringLiteral("partialCapture"), title, messages);
 }
 
 void App::notify(const QString &eventId, const QString &title, const QStringList &messages)
@@ -470,8 +506,13 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
     if (haveEvents) {
         KNotification::event(eventId, title, text, QStringLiteral("io.github.m00sfett.glimply"));
     } else {
-        KNotification::event(eventId == QLatin1String("monitorChanged") ? KNotification::Warning : KNotification::Error,
-                             title, text);
+        KNotification::StandardEvent fallback = KNotification::Error;
+        if (eventId == QLatin1String("monitorChanged")) {
+            fallback = KNotification::Warning;
+        } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")) {
+            fallback = KNotification::Notification;
+        }
+        KNotification::event(fallback, title, text);
     }
 }
 
@@ -699,22 +740,42 @@ void App::editArea(const QString &areaId)
         window->editArea(areaId);
         return;
     }
+    QRect initialGlobal;
+    if (area->isCrossMonitor()) {
+        initialGlobal = area->rect;
+    } else if (const QScreen *screen = findScreen(area->connector)) {
+        initialGlobal = area->rect.translated(screen->geometry().topLeft());
+    }
     auto *selector = new AreaSelector(this);
     selector_ = selector;
-    connect(selector, &AreaSelector::selected, this, [this, selector, areaId](const QString &connector, const QRect &rect) {
+    connect(selector, &AreaSelector::selected, this, [this, selector, areaId](const QRect &globalRect) {
         selector->deleteLater();
         Area *edited = store_.area(areaId);
         if (!edited) {
             return;
         }
-        edited->rect = rect;
-        if (const QScreen *screen = findScreen(connector)) {
-            edited->monitorIdentity = screenInfo(screen).identity();
+        const QList<ScreenInfo> hit = intersectingScreens(currentScreens(), globalRect);
+        if (hit.isEmpty()) {
+            return;
+        }
+        if (hit.size() == 1 && hit.first().geometry.contains(globalRect)) {
+            edited->connector = hit.first().connector;
+            edited->monitorIdentity = hit.first().identity();
+            edited->monitors.clear();
+            edited->rect = globalRect.translated(-hit.first().geometry.topLeft());
+        } else {
+            edited->connector.clear();
+            edited->monitorIdentity.clear();
+            edited->monitors.clear();
+            for (const ScreenInfo &s : hit) {
+                edited->monitors.append({s.connector, s.identity()});
+            }
+            edited->rect = globalRect;
         }
         storeChanged();
     });
     connect(selector, &AreaSelector::cancelled, selector, &QObject::deleteLater);
-    selector->start(area->connector, area->rect);
+    selector->start(initialGlobal);
 }
 
 void App::applyAutostart()

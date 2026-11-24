@@ -34,7 +34,17 @@ struct ExportOverride
     bool operator==(const ExportOverride &) const = default;
 };
 
-// A fixed rectangle on one monitor, stored in logical coordinates relative to that monitor.
+struct AreaMonitorBinding
+{
+    QString connector;
+    QString monitorIdentity;
+
+    bool operator==(const AreaMonitorBinding &) const = default;
+};
+
+// A fixed rectangle: single-monitor areas store monitor-local coordinates in rect with connector
+// and monitorIdentity populated (monitors empty); cross-monitor areas store global logical
+// coordinates in rect with monitors populated (connector and monitorIdentity empty).
 struct Area
 {
     QString id; // stable, e.g. "area:<uuid>"; used as shortcut action id
@@ -42,9 +52,13 @@ struct Area
     QString connector;
     QString monitorIdentity; // ScreenInfo::identity() when the area was defined
     QRect rect;
+    QList<AreaMonitorBinding> monitors; // non-empty for cross-monitor areas
     bool includeCursor = false;
     int delaySeconds = 0;
     ExportOverride exportOverride;
+
+    [[nodiscard]] bool isCrossMonitor() const { return !monitors.isEmpty(); }
+    [[nodiscard]] QStringList involvedConnectors() const;
 };
 
 struct Group
@@ -139,6 +153,8 @@ public:
                                        const QStringList &reservedTokens = {}) const;
 
     Area &addArea(const ScreenInfo &screen, const QRect &rect);
+    Area &addCrossMonitorArea(const QList<ScreenInfo> &screens, const QRect &globalRect);
+    Area &addAreaForGlobalRect(const QList<ScreenInfo> &allScreens, const QRect &globalRect);
     Group &addGroup(const QString &name);
     // Removes an area or group and drops it from all groups.
     void remove(const QString &id);
