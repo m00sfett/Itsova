@@ -99,6 +99,7 @@ QMenu *TrayController::buildHistoryMenu(QMenu *parent)
             {"document-edit", tr("Edit in Window"), "edit"},
             {"edit-copy", tr("Copy"), "copy"},
             {"folder-open", tr("Show in Folder"), "folder"},
+            {"window-pin", tr("Pin to Screen"), "pin"},
         };
         for (const Item &item : items) {
             QAction *action = target->addAction(QIcon::fromTheme(QString::fromLatin1(item.icon)), item.text);
@@ -145,6 +146,12 @@ QMenu *TrayController::buildHistoryMenu(QMenu *parent)
     clear->setToolTip(tr("Clears the list; the image files stay where they are"));
     connect(clear, &QAction::triggered, this, &TrayController::clearHistoryRequested);
     return menu;
+}
+
+void TrayController::setPinState(int count, bool shown)
+{
+    pinCount_ = count;
+    pinsShown_ = shown;
 }
 
 void TrayController::setLastCaptureAvailable(bool available)
@@ -400,6 +407,18 @@ void TrayController::rebuildMenu()
     editLast->setEnabled(lastCaptureAvailable_);
     connect(editLast, &QAction::triggered, this, &TrayController::editLastCaptureRequested);
     add(buildHistoryMenu(menu_)->menuAction());
+    if (pinCount_ > 0) {
+        auto *pinsMenu = new QMenu(tr("Pins (%1)").arg(pinCount_), menu_);
+        pinsMenu->setIcon(QIcon::fromTheme(QStringLiteral("window-pin")));
+        QAction *show = pinsMenu->addAction(tr("Show Pins"));
+        show->setCheckable(true);
+        show->setChecked(pinsShown_);
+        connect(show, &QAction::toggled, this, &TrayController::pinsShownRequested);
+        pinsMenu->addSeparator();
+        QAction *removeAll = pinsMenu->addAction(QIcon::fromTheme(QStringLiteral("edit-delete")), tr("Remove All Pins…"));
+        connect(removeAll, &QAction::triggered, this, &TrayController::removeAllPinsRequested);
+        add(pinsMenu->menuAction());
+    }
     auto *openFolder = add(new QAction(QIcon::fromTheme(QStringLiteral("folder-pictures")), tr("Open Capture Folder"), menu_));
     connect(openFolder, &QAction::triggered, this, &TrayController::openFolderRequested);
     addSeparator();

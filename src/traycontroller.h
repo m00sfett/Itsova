@@ -43,6 +43,7 @@ public:
     explicit TrayController(TargetProvider provider, QObject *parent = nullptr);
 
     void setHistoryProvider(HistoryProvider provider);
+    void setPinState(int count, bool shown);
     void setLastCaptureAvailable(bool available);
     void setDelayState(int seconds, bool keepActive);
     void setCountdownState(bool active, int remainingSeconds);
@@ -70,6 +71,8 @@ Q_SIGNALS:
     // action as in App::historyAction; an empty path means every file of the entry.
     void historyActionRequested(const QString &action, const QString &entryId, const QString &path);
     void clearHistoryRequested();
+    void pinsShownRequested(bool shown);
+    void removeAllPinsRequested();
 
 private:
     void rebuildMenu();
@@ -86,6 +89,8 @@ private:
     QString statusText_;
     bool flashing_ = false;
     bool lastCaptureAvailable_ = false;
+    int pinCount_ = 0;
+    bool pinsShown_ = true;
     int delaySeconds_ = 0;
     bool keepDelayActive_ = false;
     bool countdownActive_ = false;

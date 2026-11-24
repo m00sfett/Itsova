@@ -233,6 +233,16 @@ QString colorPickerTargetId()
     return QStringLiteral("pick-color");
 }
 
+QString pinLastCaptureActionId()
+{
+    return QStringLiteral("pin-last-capture");
+}
+
+QString pinsToggleActionId()
+{
+    return QStringLiteral("pins-toggle");
+}
+
 bool isScreenTargetId(const QString &id)
 {
     return id.startsWith(QLatin1String(screenPrefix));

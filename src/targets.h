@@ -131,6 +131,9 @@ struct Group
 [[nodiscard]] QString screenTargetId(const QString &connector);
 [[nodiscard]] QString allMonitorsTargetId();
 [[nodiscard]] QString colorPickerTargetId();
+// Global shortcut actions for Pin-to-Screen (#28), unbound by default.
+[[nodiscard]] QString pinLastCaptureActionId();
+[[nodiscard]] QString pinsToggleActionId();
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 [[nodiscard]] QString intervalShortcutId(const QString &targetId);

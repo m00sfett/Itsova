@@ -25,6 +25,7 @@ add_executable(glimply
     src/colorpicker.cpp
     src/controlservice.cpp
     src/captureoverlay.cpp
+    src/pinmanager.cpp
     src/printkey.cpp
     src/settingswindow.cpp
     src/shortcutmanager.cpp
