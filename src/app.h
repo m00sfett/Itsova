@@ -37,6 +37,7 @@ class HookRunner;
 struct HookResult;
 class IntervalController;
 class PinManager;
+class TesseractOcrEngine;
 class ThumbnailCache;
 struct McpToolResponse;
 class QuickEditorWindow;
@@ -140,6 +141,13 @@ public:
     void pinImage(const QImage &image, const QRect &logicalRect = {});
     void pinLastCapture();
     void pinMoved(const QString &id, int x, int y);
+    // Text recognition (#27): recognizes the images in the given order, copies the joined text to
+    // the clipboard and reports the result in a notification.
+    void copyTextFromImages(const QList<QImage> &images);
+    // Opens the overlay in text mode: Enter copies the text of the selection instead of saving.
+    void startOcrSelection();
+    [[nodiscard]] TesseractOcrEngine &ocrEngine();
+    [[nodiscard]] QStringList ocrLanguages() const;
     void clearHistory();
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
@@ -180,6 +188,7 @@ private:
     IntervalController *intervals_;
     HookRunner *hooks_;
     PinManager *pins_ = nullptr;
+    std::shared_ptr<TesseractOcrEngine> ocr_;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;

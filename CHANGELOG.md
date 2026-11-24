@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.0] - Unreleased
+## [0.7.0] - 2026-11-24
 
 Daily-driver milestone: capture history, Pin-to-Screen and local text recognition.
 
@@ -20,6 +20,9 @@ Daily-driver milestone: capture history, Pin-to-Screen and local text recognitio
 - Pins survive restarts until you remove them (stored in `~/.local/share/glimply/pins/`), come back on their monitor (or on the primary monitor while it is unplugged), and are made invisible during every capture so they never end up in a screenshot.
 - Pin controls: drag to move, mouse wheel zooms in steps from 25 % to 400 %, Ctrl+wheel sets the opacity (20–100 %), double click resets to 100 %, Ctrl+C copies; the context menu offers *Copy*, *Edit in Window*, *Save As…*, zoom, opacity and *Remove Pin*. `Esc` or *Remove Pin* removes a pin with an *Undo* notification for 10 seconds.
 - Tray menu *Pins (N)*: *Show Pins* toggles all pins (remembered across restarts; also a global shortcut, unbound by default) and *Remove All Pins…* removes them after a confirmation.
+- Optional local text recognition (#27): *Copy Text* (`O` or the button in the capture overlay, `Ctrl+Alt+C` in the quick editor) recognizes the text of the selection (several rectangles in reading order, the whole monitor without a selection) and copies it to the clipboard, with a notification showing the start of the text. Annotations are ignored. A global shortcut *Copy text from a screen selection* (unbound by default) opens the overlay in a text mode where Enter copies text and no screenshot is saved.
+- `glimply capture <target> --ocr` prints the recognized text (one `== <name> ==` block per image for groups); JSON adds `text` per file plus `texts` and `text`. Without a backend the capture is still saved and the command exits with 1.
+- Text recognition uses the `tesseract` program when it is installed (image passed on stdin, no temporary files, 30 s timeout); glimply gains no build or runtime dependency. *Settings → General → Text recognition* shows whether it was found and lets you choose the languages (default: every installed language).
 
 ## [0.6.1] - 2026-11-24
 

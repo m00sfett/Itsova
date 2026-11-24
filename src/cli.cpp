@@ -1,5 +1,7 @@
 #include "cli.h"
 
+#include "ocrengine.h"
+
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusError>
@@ -151,6 +153,7 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  --stdout                            Stream raw encoded image bytes to stdout\n"
                                  "  --clipboard                         Copy captured image to clipboard\n"
                                  "  --no-save                           Do not save into the capture directory\n"
+                                 "  --ocr                               Print recognized text (needs tesseract)\n"
                                  "  --json                              Print JSON metadata\n"
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("list")) {
@@ -264,6 +267,8 @@ int handleCapture(const QStringList &args, CliBackend &backend, QIODevice &out, 
             req.clipboard = true;
         } else if (arg == QLatin1String("--no-save")) {
             req.noSave = true;
+        } else if (arg == QLatin1String("--ocr")) {
+            req.ocr = true;
         } else if (arg == QLatin1String("--json")) {
             jsonMode = true;
         } else if (arg.startsWith(QLatin1Char('-'))) {
@@ -275,6 +280,10 @@ int handleCapture(const QStringList &args, CliBackend &backend, QIODevice &out, 
 
     if (req.toStdout && jsonMode) {
         writeLine(err, CliText::tr("--stdout and --json cannot be used together."));
+        return 2;
+    }
+    if (req.toStdout && req.ocr) {
+        writeLine(err, CliText::tr("--stdout and --ocr cannot be used together."));
         return 2;
     }
     if (positionals.size() != 1) {
@@ -339,6 +348,29 @@ int handleCapture(const QStringList &args, CliBackend &backend, QIODevice &out, 
         obj.remove(QStringLiteral("stdoutFile"));
         obj.remove(QStringLiteral("tempStdoutFile"));
         writeJson(out, obj);
+        return req.ocr && !result.ocrError.isEmpty() ? 1 : 0;
+    }
+
+    if (req.ocr) {
+        if (!result.ocrError.isEmpty()) {
+            // The capture is saved; say where, then report why there is no text.
+            for (const CliCaptureFile &file : result.files) {
+                writeLine(out, file.path);
+            }
+            writeLine(err, result.ocrError);
+            return 1;
+        }
+        if (result.ocrTexts.size() == 1) {
+            if (!result.ocrTexts.first().text.isEmpty()) {
+                writeLine(out, result.ocrTexts.first().text);
+            }
+        } else {
+            QStringList blocks;
+            for (const CliOcrText &t : result.ocrTexts) {
+                blocks.append(QStringLiteral("== %1 ==\n%2").arg(t.label, t.text));
+            }
+            writeLine(out, blocks.join(QStringLiteral("\n\n")));
+        }
         return 0;
     }
 
@@ -880,6 +912,9 @@ QJsonObject captureRequestToJson(const CliCaptureRequest &request)
     obj.insert(QStringLiteral("toStdout"), request.toStdout);
     obj.insert(QStringLiteral("clipboard"), request.clipboard);
     obj.insert(QStringLiteral("noSave"), request.noSave);
+    if (request.ocr) {
+        obj.insert(QStringLiteral("ocr"), true);
+    }
     if (!request.triggerKind.isEmpty()) {
         obj.insert(QStringLiteral("triggerKind"), request.triggerKind);
     }
@@ -916,6 +951,7 @@ CliCaptureRequest captureRequestFromJson(const QJsonObject &obj, bool *ok)
     req.toStdout = obj.value(QStringLiteral("toStdout")).toBool(false);
     req.clipboard = obj.value(QStringLiteral("clipboard")).toBool(false);
     req.noSave = obj.value(QStringLiteral("noSave")).toBool(false);
+    req.ocr = obj.value(QStringLiteral("ocr")).toBool(false);
     req.triggerKind = obj.value(QStringLiteral("triggerKind")).toString();
     if (ok) {
         *ok = !req.target.isEmpty();
@@ -927,14 +963,18 @@ QJsonObject captureResultToJson(const CliCaptureResult &result)
 {
     QJsonArray filesArr;
     for (const CliCaptureFile &f : result.files) {
-        filesArr.append(QJsonObject{
+        QJsonObject file{
             {QStringLiteral("targetId"), f.targetId},
             {QStringLiteral("path"), f.path},
             {QStringLiteral("width"), f.width},
             {QStringLiteral("height"), f.height},
             {QStringLiteral("format"), f.format},
             {QStringLiteral("bytes"), f.bytes},
-        });
+        };
+        if (result.ocrRequested) {
+            file.insert(QStringLiteral("text"), f.text);
+        }
+        filesArr.append(file);
     }
     QJsonObject obj{
         {QStringLiteral("ok"), result.ok},
@@ -948,6 +988,19 @@ QJsonObject captureResultToJson(const CliCaptureResult &result)
     if (!result.stdoutFile.isEmpty()) {
         obj.insert(QStringLiteral("stdoutFile"), result.stdoutFile);
         obj.insert(QStringLiteral("tempStdoutFile"), result.tempStdoutFile);
+    }
+    if (result.ocrRequested) {
+        QJsonArray texts;
+        QStringList plain;
+        for (const CliOcrText &t : result.ocrTexts) {
+            texts.append(QJsonObject{{QStringLiteral("label"), t.label}, {QStringLiteral("text"), t.text}});
+            plain.append(t.text);
+        }
+        obj.insert(QStringLiteral("texts"), texts);
+        obj.insert(QStringLiteral("text"), joinOcrTexts(plain));
+        if (!result.ocrError.isEmpty()) {
+            obj.insert(QStringLiteral("ocrError"), result.ocrError);
+        }
     }
     return obj;
 }
@@ -963,6 +1016,12 @@ CliCaptureResult captureResultFromJson(const QJsonObject &obj)
     r.stdoutFile = obj.value(QStringLiteral("stdoutFile")).toString();
     r.tempStdoutFile = obj.value(QStringLiteral("tempStdoutFile")).toBool(false);
     r.error = obj.value(QStringLiteral("error")).toString();
+    r.ocrRequested = obj.contains(QStringLiteral("texts"));
+    r.ocrError = obj.value(QStringLiteral("ocrError")).toString();
+    for (const QJsonValue &v : obj.value(QStringLiteral("texts")).toArray()) {
+        r.ocrTexts.append({v.toObject().value(QStringLiteral("label")).toString(),
+                           v.toObject().value(QStringLiteral("text")).toString()});
+    }
     const QJsonArray arr = obj.value(QStringLiteral("files")).toArray();
     for (const QJsonValue &v : arr) {
         const QJsonObject fObj = v.toObject();
@@ -973,6 +1032,7 @@ CliCaptureResult captureResultFromJson(const QJsonObject &obj)
             fObj.value(QStringLiteral("height")).toInt(),
             fObj.value(QStringLiteral("format")).toString(),
             fObj.value(QStringLiteral("bytes")).toInteger(),
+            fObj.value(QStringLiteral("text")).toString(),
         });
     }
     return r;

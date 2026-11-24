@@ -134,6 +134,8 @@ struct Group
 // Global shortcut actions for Pin-to-Screen (#28), unbound by default.
 [[nodiscard]] QString pinLastCaptureActionId();
 [[nodiscard]] QString pinsToggleActionId();
+// Global shortcut that opens the overlay in text mode (#27), unbound by default.
+[[nodiscard]] QString ocrSelectionActionId();
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 [[nodiscard]] QString intervalShortcutId(const QString &targetId);
@@ -185,6 +187,8 @@ public:
     bool keepDelayActive = false;
     // Number of entries kept in the capture history (5..100).
     int historyLimit = 20;
+    // Text recognition languages (backend codes); empty = every installed language except osd.
+    QStringList ocrLanguages;
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();

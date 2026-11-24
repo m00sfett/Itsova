@@ -243,6 +243,11 @@ QString pinsToggleActionId()
     return QStringLiteral("pins-toggle");
 }
 
+QString ocrSelectionActionId()
+{
+    return QStringLiteral("ocr-selection");
+}
+
 bool isScreenTargetId(const QString &id)
 {
     return id.startsWith(QLatin1String(screenPrefix));
@@ -335,6 +340,7 @@ void TargetStore::load(const KConfig &config)
     }
     keepDelayActive = general.readEntry("KeepDelayActive", false);
     historyLimit = std::clamp(config.group(QStringLiteral("History")).readEntry("Limit", 20), 5, 100);
+    ocrLanguages = config.group(QStringLiteral("TextRecognition")).readEntry("Languages", QStringList());
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
@@ -522,6 +528,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);
     config.group(QStringLiteral("History")).writeEntry("Limit", std::clamp(historyLimit, 5, 100));
+    config.group(QStringLiteral("TextRecognition")).writeEntry("Languages", ocrLanguages);
     general.writeEntry("CaptureDelaySeconds", keepDelayActive ? std::clamp(captureDelaySeconds, 0, 60) : 0);
 
     config.deleteGroup(QStringLiteral("MonitorNames"));

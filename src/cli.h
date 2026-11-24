@@ -24,6 +24,13 @@ struct CliCaptureFile
     int height = 0;
     QString format;
     qint64 bytes = 0;
+    QString text; // recognized text with --ocr
+};
+
+struct CliOcrText
+{
+    QString label;
+    QString text;
 };
 
 struct CliCaptureRequest
@@ -39,6 +46,7 @@ struct CliCaptureRequest
     bool toStdout = false;
     bool clipboard = false;
     bool noSave = false;
+    bool ocr = false;
     QString triggerKind;
 };
 
@@ -53,6 +61,11 @@ struct CliCaptureResult
     QString stdoutFile;
     bool tempStdoutFile = false;
     QString error;
+    // --ocr: one text per captured image; ocrError is set when recognition failed or no backend
+    // is installed (the capture itself still succeeded).
+    bool ocrRequested = false;
+    QList<CliOcrText> ocrTexts;
+    QString ocrError;
 };
 
 struct CliResolveResult
