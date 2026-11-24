@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="ja" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -301,7 +300,7 @@
         <translation>墨消しの操作 #%1 には x、y、width &gt; 0、height &gt; 0 が必要です。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>操作 #%2 の注釈の種類「%1」はサポートされていません。</translation>
     </message>
     <message>
@@ -309,7 +308,7 @@
         <translation>注釈付き画像の描画に失敗しました。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>overwrite=true を指定せずに入力ファイル「%1」を上書きすることはできません。</translation>
     </message>
 </context>
@@ -951,7 +950,7 @@
         <translation>ゴミ箱に移動できませんでした: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>不明な操作「%1」です。</translation>
     </message>
     <message>
@@ -1059,7 +1058,7 @@
         <translation>キャプチャのカウントダウンは既に実行中です。</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>「window:」の後のウィンドウ指定は空にできません。</translation>
     </message>
     <message>
@@ -1147,19 +1146,19 @@
         <translation>MCP が %1 をキャプチャしました</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>サポートされていない画像形式「%1」です。</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>「quality」は 1 から 100 までの整数である必要があります。</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>「target」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>外部の MCP クライアントが「%1」（%2）をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1171,11 +1170,11 @@
         <translation>外部の MCP クライアントが、%5 上の (%3, %4) にある %1x%2 の範囲をキャプチャしようとしています。</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>「window_id」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>外部の MCP クライアントがウィンドウ「%1」をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1187,11 +1186,11 @@
         <translation>外部の MCP クライアントが最後のキャプチャ（%1）を読み取ろうとしています。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>外部の MCP クライアントが「%2」について %1 秒ごとのインターバルキャプチャを開始しようとしています。</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>「target」を指定するか、「all」: true を設定してください。</translation>
     </message>
     <message>
@@ -1199,15 +1198,15 @@
         <translation>annotate_image には空でない input_path と operations 配列が必要です。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>MCP の許可リストモードでは、input_path は glimply のキャプチャ用フォルダー内にある既存のファイルである必要があります。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>MCP の許可リストモードでは、output_path は glimply のキャプチャ用フォルダー内である必要があります。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>外部の MCP クライアントが「%1」（%2 件の操作）に注釈を付けようとしています。</translation>
     </message>
     <message>
@@ -2517,8 +2516,8 @@
         <translation>キャプチャ後のフックと外部の自動化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2601,7 +2600,7 @@
         <translation>画面上で選択…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>ディスプレイの左上隅を基準とした論理ピクセルです。キャプチャはディスプレイのネイティブ解像度で行われます。</translation>
     </message>
     <message>
@@ -2677,7 +2676,7 @@
         <translation>ディスプレイ全体での論理座標です。キャプチャは、交差するディスプレイを最も高いスケールで合成します。</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>この範囲のディスプレイはいずれも接続されていません。実行しても何も保存されません。</translation>
     </message>
     <message>
@@ -2862,27 +2861,27 @@
     </message>
     <message>
         <source>System default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>システムの既定 (%1)</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>言語:</translation>
     </message>
     <message>
         <source>glimply needs to restart to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>言語を切り替えるには glimply を再起動する必要があります。</translation>
     </message>
     <message>
         <source>Restart now</source>
-        <translation type="unfinished"></translation>
+        <translation>今すぐ再起動</translation>
     </message>
     <message>
         <source>The Plasma widget follows the Plasma language.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plasma ウィジェットは Plasma の言語に従います。</translation>
     </message>
     <message>
         <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply を自動的に再起動できませんでした。言語を切り替えるには、終了してから再度起動してください。</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
@@ -3537,8 +3536,8 @@
         <translation>--mode の値がありません。</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode には &apos;frozen&apos; または &apos;live&apos; を指定してください。</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode には 'frozen' または 'live' を指定してください。</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>

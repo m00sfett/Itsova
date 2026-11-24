@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="de" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -301,7 +300,7 @@
         <translation>Unkenntlichmachen-Vorgang #%1 benötigt x, y, Breite &gt; 0 und Höhe &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>Nicht unterstützter Anmerkungstyp „%1“ bei Vorgang #%2.</translation>
     </message>
     <message>
@@ -309,7 +308,7 @@
         <translation>Das Bild mit Anmerkungen konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>Die Eingabedatei „%1“ wird ohne overwrite=true nicht überschrieben.</translation>
     </message>
 </context>
@@ -954,7 +953,7 @@
         <translation>Die Datei konnte nicht in den Papierkorb verschoben werden: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>Unbekannte Aktion „%1“.</translation>
     </message>
     <message>
@@ -1062,7 +1061,7 @@
         <translation>Ein Countdown für ein Bildschirmfoto läuft bereits.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>Die Fensterangabe nach „window:“ darf nicht leer sein.</translation>
     </message>
     <message>
@@ -1150,19 +1149,19 @@
         <translation>MCP hat %1 aufgenommen</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>Nicht unterstütztes Bildformat „%1“.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>„quality“ muss eine ganze Zahl zwischen 1 und 100 sein.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>„target“ ist erforderlich.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>Ein externer MCP-Client möchte „%1“ (%2) aufnehmen.</translation>
     </message>
     <message>
@@ -1174,11 +1173,11 @@
         <translation>Ein externer MCP-Client möchte den Bereich %1x%2 bei (%3, %4) auf %5 aufnehmen.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>„window_id“ ist erforderlich.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>Ein externer MCP-Client möchte das Fenster „%1“ aufnehmen.</translation>
     </message>
     <message>
@@ -1190,11 +1189,11 @@
         <translation>Ein externer MCP-Client möchte das letzte Bildschirmfoto lesen (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>Ein externer MCP-Client möchte für „%2“ Intervallaufnahmen alle %1 s starten.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>„target“ angeben oder „all“ auf „true“ setzen.</translation>
     </message>
     <message>
@@ -1202,15 +1201,15 @@
         <translation>annotate_image benötigt einen nicht leeren input_path und ein operations-Array.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>Im Modus „MCP-Erlaubnisliste“ muss input_path eine vorhandene Datei im Ordner für Bildschirmfotos von glimply sein.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>Im Modus „MCP-Erlaubnisliste“ muss output_path im Ordner für Bildschirmfotos von glimply liegen.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>Ein externer MCP-Client möchte „%1“ (%2 Vorgang/Vorgänge) mit Anmerkungen versehen.</translation>
     </message>
     <message>
@@ -2527,8 +2526,8 @@
         <translation>Hooks nach dem Bildschirmfoto und externe Automatisierung</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2611,7 +2610,7 @@
         <translation>Auf dem Bildschirm auswählen…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Logische Pixel relativ zur oberen linken Ecke des Bildschirms. Bildschirmfotos verwenden die native Auflösung des Bildschirms.</translation>
     </message>
     <message>
@@ -2687,7 +2686,7 @@
         <translation>Globale logische Koordinaten über alle Bildschirme. Bildschirmfotos setzen die betroffenen Bildschirme mit der höchsten Skalierung zusammen.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Keiner der Bildschirme dieses Bereichs ist angeschlossen. Beim Auslösen wird nichts gespeichert.</translation>
     </message>
     <message>
@@ -2872,27 +2871,27 @@
     </message>
     <message>
         <source>System default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemstandard (%1)</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprache:</translation>
     </message>
     <message>
         <source>glimply needs to restart to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply muss neu gestartet werden, um die Sprache zu wechseln.</translation>
     </message>
     <message>
         <source>Restart now</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt neu starten</translation>
     </message>
     <message>
         <source>The Plasma widget follows the Plasma language.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Plasma-Widget folgt der Plasma-Sprache.</translation>
     </message>
     <message>
         <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply konnte sich nicht selbst neu starten. Beenden und starten Sie es erneut, um die Sprache zu wechseln.</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
@@ -3548,7 +3547,7 @@
         <translation>Wert für --mode fehlt.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <source>--mode must be 'frozen' or 'live'.</source>
         <translation>--mode muss „frozen“ oder „live“ sein.</translation>
     </message>
     <message>
