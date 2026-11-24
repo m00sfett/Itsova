@@ -1,5 +1,6 @@
 #pragma once
 
+#include "historystore.h"
 #include "intervalcontroller.h"
 
 #include <QKeySequence>
@@ -37,8 +38,11 @@ class TrayController : public QObject
 public:
     using TargetProvider = std::function<QList<MenuTarget>()>;
 
+    using HistoryProvider = std::function<QList<HistoryEntry>()>;
+
     explicit TrayController(TargetProvider provider, QObject *parent = nullptr);
 
+    void setHistoryProvider(HistoryProvider provider);
     void setLastCaptureAvailable(bool available);
     void setDelayState(int seconds, bool keepActive);
     void setCountdownState(bool active, int remainingSeconds);
@@ -63,13 +67,18 @@ Q_SIGNALS:
     void addAreaRequested();
     void pickColorRequested();
     void renameMonitorRequested(const QString &id);
+    // action as in App::historyAction; an empty path means every file of the entry.
+    void historyActionRequested(const QString &action, const QString &entryId, const QString &path);
+    void clearHistoryRequested();
 
 private:
     void rebuildMenu();
+    QMenu *buildHistoryMenu(QMenu *parent);
     void updateIcon();
     void updateToolTip();
 
     TargetProvider provider_;
+    HistoryProvider historyProvider_;
     KStatusNotifierItem *item_;
     QMenu *menu_;
     QTimer *blinkTimer_;

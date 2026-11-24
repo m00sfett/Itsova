@@ -120,6 +120,8 @@ private:
     QLineEdit *directory_ = nullptr;
     QLineEdit *template_ = nullptr;
     QLabel *templatePreview_ = nullptr;
+    QSpinBox *historyLimit_ = nullptr;
+    QLabel *historyFeedback_ = nullptr;
     ExportOptionsWidget *storageExport_ = nullptr;
     QCheckBox *autostart_ = nullptr;
     QCheckBox *usePrintKey_ = nullptr;

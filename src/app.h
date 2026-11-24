@@ -1,5 +1,6 @@
 #pragma once
 
+#include "historystore.h"
 #include "targets.h"
 
 #include <KSharedConfig>
@@ -8,6 +9,7 @@
 #include <QList>
 #include <QObject>
 #include <QPointer>
+#include <QSet>
 #include <QStringList>
 
 #include <functional>
@@ -16,6 +18,7 @@
 
 class QImage;
 class QJsonObject;
+class QTimer;
 
 namespace glimply
 {
@@ -33,6 +36,7 @@ class CountdownController;
 class HookRunner;
 struct HookResult;
 class IntervalController;
+class ThumbnailCache;
 struct McpToolResponse;
 class QuickEditorWindow;
 class ShortcutManager;
@@ -84,7 +88,9 @@ public:
     // Takes the Print key (on) or hands it back to its previous owner (off).
     void setUsePrintKey(bool on);
     // A capture was written: tray blink, status, "Open last capture".
-    void recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId = QString());
+    // triggerKind feeds the capture history ("interval" captures are not recorded there).
+    void recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId = QString(),
+                       const QString &triggerKind = QStringLiteral("manual"));
     // Removes a deleted path (for example a purged unredacted Print snapshot) from last-capture state.
     void forgetCapturePath(const QString &path);
     [[nodiscard]] CliResolveResult resolveTarget(const QString &query) const;
@@ -123,12 +129,21 @@ public:
                              std::function<void(const HookResult &)> onDone);
     [[nodiscard]] QList<MenuTarget> menuTargets() const;
 
+    // Capture history (#26). historyEntries() prunes files that are gone before returning.
+    [[nodiscard]] const QList<HistoryEntry> &historyEntries();
+    [[nodiscard]] QJsonArray historyJson();
+    // action: "open", "edit", "copy", "folder" or "trash". path must belong to the history entry;
+    // an empty path means every file of the entry. Returns an error message or an empty string.
+    QString historyAction(const QString &action, const QString &entryId, const QString &path);
+    void clearHistory();
+
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
 
 Q_SIGNALS:
     void targetsChanged();
     void intervalsChanged();
     void captured(bool success);
+    void historyChanged();
 
 private:
     void executeTriggerNow(const QString &id);
@@ -141,6 +156,10 @@ private:
     void attachEditorWindow(QuickEditorWindow *window);
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
+    void showInFolder(const QStringList &paths);
+    void pruneHistory();
+    void historyModified(bool sweepThumbnails);
+    void requestThumbnails();
 
     KSharedConfigPtr config_;
     TargetStore store_;
@@ -157,6 +176,10 @@ private:
     QPointer<CaptureSession> session_;
     QPointer<ColorPickerSession> colorPicker_;
     QList<QPointer<QuickEditorWindow>> editors_;
+    std::unique_ptr<HistoryStore> history_;
+    std::unique_ptr<ThumbnailCache> thumbnails_;
+    QSet<QString> thumbnailsPending_;
+    QTimer *historyChangedTimer_ = nullptr;
     QStringList lastPaths_;
     QString lastCaptureTargetId_;
     QString lastCaptureDisplayName_;

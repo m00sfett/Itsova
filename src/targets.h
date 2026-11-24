@@ -180,6 +180,8 @@ public:
     McpConfig mcp;
     int captureDelaySeconds = 0;
     bool keepDelayActive = false;
+    // Number of entries kept in the capture history (5..100).
+    int historyLimit = 20;
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();

@@ -8,6 +8,9 @@
 #include <QAction>
 #include <QEvent>
 #include <QApplication>
+#include <QDateTime>
+#include <QFileInfo>
+#include <QLocale>
 #include <QIcon>
 #include <QInputDialog>
 #include <QMenu>
@@ -64,6 +67,84 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     connect(menu_, &QMenu::aboutToShow, this, &TrayController::rebuildMenu);
     updateIcon();
     rebuildMenu();
+}
+
+void TrayController::setHistoryProvider(HistoryProvider provider)
+{
+    historyProvider_ = std::move(provider);
+}
+
+QMenu *TrayController::buildHistoryMenu(QMenu *parent)
+{
+    constexpr int maxTrayEntries = 10;
+    auto *menu = new QMenu(tr("Recent Captures"), parent);
+    menu->setIcon(QIcon::fromTheme(QStringLiteral("view-history")));
+    const QList<HistoryEntry> entries = historyProvider_ ? historyProvider_() : QList<HistoryEntry>();
+    if (entries.isEmpty()) {
+        QAction *empty = menu->addAction(tr("No recent captures"));
+        empty->setEnabled(false);
+        return menu;
+    }
+    const QDate today = QDate::currentDate();
+    const QLocale locale;
+    const auto addActions = [this](QMenu *target, const QString &entryId, const QString &path, bool group) {
+        struct Item
+        {
+            const char *icon;
+            QString text;
+            const char *action;
+        };
+        const QList<Item> items{
+            {"document-open", tr("Open"), "open"},
+            {"document-edit", tr("Edit in Window"), "edit"},
+            {"edit-copy", tr("Copy"), "copy"},
+            {"folder-open", tr("Show in Folder"), "folder"},
+        };
+        for (const Item &item : items) {
+            QAction *action = target->addAction(QIcon::fromTheme(QString::fromLatin1(item.icon)), item.text);
+            connect(action, &QAction::triggered, this, [this, entryId, path, name = QString::fromLatin1(item.action)] {
+                Q_EMIT historyActionRequested(name, entryId, path);
+            });
+        }
+        target->addSeparator();
+        QAction *trash = target->addAction(QIcon::fromTheme(QStringLiteral("user-trash")),
+                                           group ? tr("Move All to Trash") : tr("Move to Trash"));
+        connect(trash, &QAction::triggered, this,
+                [this, entryId, path] { Q_EMIT historyActionRequested(QStringLiteral("trash"), entryId, path); });
+    };
+    for (qsizetype i = 0; i < entries.size() && i < maxTrayEntries; ++i) {
+        const HistoryEntry &entry = entries.at(i);
+        const QString time = entry.timestamp.date() == today
+                                 ? locale.toString(entry.timestamp.time(), QLocale::ShortFormat)
+                                 : locale.toString(entry.timestamp, QLocale::ShortFormat);
+        const QString name = entry.targetName.isEmpty() ? QFileInfo(entry.files.first()).completeBaseName()
+                                                        : entry.targetName;
+        const QString label = entry.files.size() > 1
+                                  ? tr("%1 · %2 (%3)").arg(time, name).arg(entry.files.size())
+                                  : tr("%1 · %2").arg(time, name);
+        auto *entryMenu = new QMenu(label, menu);
+        if (entry.files.size() == 1) {
+            addActions(entryMenu, entry.id, entry.files.first(), false);
+        } else {
+            for (const QString &file : entry.files) {
+                auto *fileMenu = new QMenu(QFileInfo(file).fileName(), entryMenu);
+                addActions(fileMenu, entry.id, file, false);
+                entryMenu->addMenu(fileMenu);
+            }
+            entryMenu->addSeparator();
+            QAction *trashAll = entryMenu->addAction(QIcon::fromTheme(QStringLiteral("user-trash")),
+                                                     tr("Move All to Trash"));
+            connect(trashAll, &QAction::triggered, this, [this, id = entry.id] {
+                Q_EMIT historyActionRequested(QStringLiteral("trash"), id, QString());
+            });
+        }
+        menu->addMenu(entryMenu);
+    }
+    menu->addSeparator();
+    QAction *clear = menu->addAction(QIcon::fromTheme(QStringLiteral("edit-clear-history")), tr("Clear History"));
+    clear->setToolTip(tr("Clears the list; the image files stay where they are"));
+    connect(clear, &QAction::triggered, this, &TrayController::clearHistoryRequested);
+    return menu;
 }
 
 void TrayController::setLastCaptureAvailable(bool available)
@@ -318,6 +399,7 @@ void TrayController::rebuildMenu()
     auto *editLast = add(new QAction(QIcon::fromTheme(QStringLiteral("document-edit")), tr("Edit Last Capture"), menu_));
     editLast->setEnabled(lastCaptureAvailable_);
     connect(editLast, &QAction::triggered, this, &TrayController::editLastCaptureRequested);
+    add(buildHistoryMenu(menu_)->menuAction());
     auto *openFolder = add(new QAction(QIcon::fromTheme(QStringLiteral("folder-pictures")), tr("Open Capture Folder"), menu_));
     connect(openFolder, &QAction::triggered, this, &TrayController::openFolderRequested);
     addSeparator();
