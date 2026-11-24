@@ -1,3585 +1,3552 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="ru" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
     <message>
         <source>Crop image</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезать изображение</translation>
     </message>
 </context>
 <context>
     <name>AnnotationCommands</name>
     <message>
         <source>Add Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить аннотацию</translation>
     </message>
     <message>
         <source>Delete Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить аннотацию</translation>
     </message>
     <message>
         <source>Modify Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить аннотацию</translation>
     </message>
     <message>
         <source>Reorder Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить порядок аннотации</translation>
     </message>
 </context>
 <context>
     <name>CaptureService</name>
     <message>
         <source>KWin denied permission to capture the screen. Install glimply with its desktop entry to grant access to the KDE screenshot service.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin отклонил запрос на захват экрана. Установите glimply с файлом рабочего стола, чтобы получить доступ к службе снимков экрана KDE.</translation>
     </message>
     <message>
         <source>KWin timed out while capturing %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Истекло время ожидания KWin при захвате %1.</translation>
     </message>
     <message>
         <source>The window is no longer open.</source>
-        <translation type="unfinished"></translation>
+        <translation>Окно больше не открыто.</translation>
     </message>
     <message>
         <source>KWin could not capture %1 (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin не удалось захватить %1 (%2).</translation>
     </message>
     <message>
         <source>KWin returned invalid image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin вернул недопустимые данные изображения для %1.</translation>
     </message>
     <message>
         <source>Could not read the screenshot from KWin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось прочитать снимок экрана от KWin.</translation>
     </message>
     <message>
         <source>KWin returned incomplete image data for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>KWin вернул неполные данные изображения для %1.</translation>
     </message>
     <message>
         <source>Could not create the screenshot image for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать изображение снимка экрана для %1.</translation>
     </message>
     <message>
         <source>The KDE screenshot service is unavailable on the session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Служба снимков экрана KDE недоступна на шине сеанса.</translation>
     </message>
     <message>
         <source>Could not create the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать соединение для данных снимка экрана.</translation>
     </message>
     <message>
         <source>Could not prepare the connection for screenshot data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось подготовить соединение для данных снимка экрана.</translation>
     </message>
     <message>
         <source>There is not enough memory to capture %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недостаточно памяти для захвата %1.</translation>
     </message>
     <message>
         <source>Choose a monitor to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите экран для захвата.</translation>
     </message>
     <message>
         <source>monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>экран %1</translation>
     </message>
     <message>
         <source>Choose a window to capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите окно для захвата.</translation>
     </message>
     <message>
         <source>the window</source>
-        <translation type="unfinished"></translation>
+        <translation>окно</translation>
     </message>
 </context>
 <context>
     <name>ColorFormat</name>
     <message>
         <source>HEX</source>
-        <translation type="unfinished"></translation>
+        <translation>HEX</translation>
     </message>
     <message>
         <source>RGB</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB</translation>
     </message>
     <message>
         <source>HSL</source>
-        <translation type="unfinished"></translation>
+        <translation>HSL</translation>
     </message>
     <message>
         <source>HSV</source>
-        <translation type="unfinished"></translation>
+        <translation>HSV</translation>
     </message>
 </context>
 <context>
     <name>HookRunner</name>
     <message>
         <source>Hook command is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда хука пуста.</translation>
     </message>
     <message>
         <source>Could not parse hook command.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось разобрать команду хука.</translation>
     </message>
     <message>
         <source>Command timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Истекло время ожидания команды.</translation>
     </message>
     <message>
         <source>Exited with status %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершено с кодом %1.</translation>
     </message>
 </context>
 <context>
     <name>ImageOutput</name>
     <message>
         <source>PNG (lossless)</source>
-        <translation type="unfinished"></translation>
+        <translation>PNG (без потерь)</translation>
     </message>
     <message>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <source>WebP</source>
-        <translation type="unfinished"></translation>
+        <translation>WebP</translation>
     </message>
     <message>
         <source>AVIF</source>
-        <translation type="unfinished"></translation>
+        <translation>AVIF</translation>
     </message>
     <message>
         <source>JPEG XL</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG XL</translation>
     </message>
     <message>
         <source>TIFF</source>
-        <translation type="unfinished"></translation>
+        <translation>TIFF</translation>
     </message>
     <message>
         <source>BMP</source>
-        <translation type="unfinished"></translation>
+        <translation>BMP</translation>
     </message>
     <message>
         <source>QOI</source>
-        <translation type="unfinished"></translation>
+        <translation>QOI</translation>
     </message>
     <message>
         <source>No output device was provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не указано устройство вывода.</translation>
     </message>
     <message>
         <source>Cannot save an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно сохранить пустое изображение.</translation>
     </message>
     <message>
         <source>Could not encode image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось закодировать изображение.</translation>
     </message>
     <message>
         <source>Cannot estimate size of an empty image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно оценить размер пустого изображения.</translation>
     </message>
     <message>
         <source>Cannot create capture directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать каталог снимков: %1</translation>
     </message>
     <message>
         <source>The monitor capture is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Снимок экрана пуст.</translation>
     </message>
     <message>
         <source>The capture area or monitor scale is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимая область захвата или масштаб экрана.</translation>
     </message>
     <message>
         <source>The capture area is outside the monitor image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область захвата находится за пределами изображения экрана.</translation>
     </message>
     <message>
         <source>Could not allocate the cropped image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось выделить память для обрезанного изображения.</translation>
     </message>
     <message>
         <source>The capture directory is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог снимков пуст.</translation>
     </message>
     <message>
         <source>Cannot create a temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать временный файл снимка: %1</translation>
     </message>
     <message>
         <source>Cannot write temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось записать временный файл снимка: %1</translation>
     </message>
     <message>
         <source>Cannot finish temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось завершить временный файл снимка: %1</translation>
     </message>
     <message>
         <source>Cannot set permissions of temporary capture file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось задать права доступа для временного файла снимка: %1</translation>
     </message>
     <message>
         <source>Cannot publish capture file %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось опубликовать файл снимка %1: %2</translation>
     </message>
     <message>
         <source>No available filename remains for this capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не осталось доступных имён файлов для этого снимка.</translation>
     </message>
     <message>
         <source>The capture timestamp is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимая временная метка снимка.</translation>
     </message>
 </context>
 <context>
     <name>PixelLoupe</name>
     <message>
         <source>%1, %2 · %3 × %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Клик: копировать · Alt+клик: использовать · Tab: формат</translation>
     </message>
     <message>
         <source>Click: Copy · Tab: Format · Esc: Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Клик: копировать · Tab: формат · Esc: отмена</translation>
     </message>
 </context>
 <context>
     <name>ProgrammaticAnnotator</name>
     <message>
         <source>Input image path is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Требуется путь к входному изображению.</translation>
     </message>
     <message>
         <source>Input file does not exist: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Входной файл не существует: %1</translation>
     </message>
     <message>
         <source>Could not read input image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось прочитать входное изображение: %1</translation>
     </message>
     <message>
         <source>Requested export image format is not supported on this system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрошенный формат экспорта изображения не поддерживается в этой системе.</translation>
     </message>
     <message>
         <source>Operation #%1 must be a JSON object.</source>
-        <translation type="unfinished"></translation>
+        <translation>Операция #%1 должна быть объектом JSON.</translation>
     </message>
     <message>
         <source>Arrow operation #%1 requires x1, y1, x2, and y2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции стрелки #%1 требуются x1, y1, x2 и y2.</translation>
     </message>
     <message>
         <source>Shape operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции фигуры #%1 требуются x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
         <source>Stroke operation #%1 requires at least 2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции штриха #%1 требуется не менее 2 точек.</translation>
     </message>
     <message>
         <source>Text operation #%1 requires x, y, and non-empty text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции текста #%1 требуются x, y и непустой текст.</translation>
     </message>
     <message>
         <source>Step operation #%1 requires x and y.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции шага #%1 требуются x и y.</translation>
     </message>
     <message>
         <source>Spotlight operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции выделения #%1 требуются x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
         <source>Redact operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для операции скрытия #%1 требуются x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Неподдерживаемый тип аннотации «%1» в операции #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось отрисовать изображение с аннотациями.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation type="unfinished"></translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Отказ в перезаписи входного файла «%1» без overwrite=true.</translation>
     </message>
 </context>
 <context>
     <name>TriggerPlan</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один экран не подключён.</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран %1 не подключён.</translation>
     </message>
     <message>
         <source>The capture target no longer exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цель захвата больше не существует.</translation>
     </message>
     <message>
         <source>Area %1: a different monitor is connected to %2 than when the area was defined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1: к %2 подключён другой экран, чем при создании области.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer overlaps any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1 пропущена: она больше не пересекается ни с одним подключённым экраном.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: none of its monitors (%2) are connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1 не захвачена: ни один из её экранов (%2) не подключён.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: it does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1 не захвачена: она не пересекается ни с одним подключённым экраном.</translation>
     </message>
     <message>
         <source>%1 not connected — saved visible part of %2 on %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 не подключён — сохранена видимая часть %2 на %3.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: monitor %2 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1 пропущена: экран %2 не подключён.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer fits on monitor %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1 пропущена: она больше не помещается на экране %2.</translation>
     </message>
     <message>
         <source>Group %1 contains no targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Группа %1 не содержит целей.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Все экраны</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделение не пересекается ни с одним подключённым экраном.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось захватить экран %1 для объединённого изображения.</translation>
     </message>
     <message>
         <source>Invalid monitor scale for combined capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый масштаб экрана для объединённого захвата.</translation>
     </message>
     <message>
         <source>Selection size is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер выделения пуст.</translation>
     </message>
     <message>
         <source>There is not enough memory for the combined image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недостаточно памяти для объединённого изображения.</translation>
     </message>
     <message>
         <source>Area %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Область %1: %2</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось захватить экран %1.</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationCanvas</name>
     <message>
         <source>Bring to Front</source>
-        <translation type="unfinished"></translation>
+        <translation>На передний план</translation>
     </message>
     <message>
         <source>Send to Back</source>
-        <translation type="unfinished"></translation>
+        <translation>На задний план</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Дублировать</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
     <name>glimply::AnnotationToolbar</name>
     <message>
         <source>Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор / перемещение</translation>
     </message>
     <message>
         <source>Select, move, or resize annotations (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор, перемещение или изменение размера аннотаций (V)</translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезка</translation>
     </message>
     <message>
         <source>Crop image (C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезать изображение (C)</translation>
     </message>
     <message>
         <source>Arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>Стрелка</translation>
     </message>
     <message>
         <source>Draw arrow; hold Shift to snap angle (A)</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисовать стрелку; удерживайте Shift для привязки угла (A)</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямоугольник</translation>
     </message>
     <message>
         <source>Draw rectangle; Shift for square, Alt from center (R)</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисовать прямоугольник; Shift для квадрата, Alt от центра (R)</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation>Эллипс</translation>
     </message>
     <message>
         <source>Draw ellipse; Shift for circle, Alt from center (E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисовать эллипс; Shift для круга, Alt от центра (E)</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Перо</translation>
     </message>
     <message>
         <source>Freehand pen (B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Свободное перо (B)</translation>
     </message>
     <message>
         <source>Highlighter</source>
-        <translation type="unfinished"></translation>
+        <translation>Маркер</translation>
     </message>
     <message>
         <source>Multiply highlighter (M)</source>
-        <translation type="unfinished"></translation>
+        <translation>Маркер с умножением (M)</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <source>Add text annotation; click or drag box (T)</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить текстовую аннотацию; кликните или выделите область (T)</translation>
     </message>
     <message>
         <source>Step Counter</source>
-        <translation type="unfinished"></translation>
+        <translation>Счётчик шагов</translation>
     </message>
     <message>
         <source>Place numbered badge; drag to add pointer (N)</source>
-        <translation type="unfinished"></translation>
+        <translation>Разместить нумерованный значок; потяните для указателя (N)</translation>
     </message>
     <message>
         <source>Redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрыть</translation>
     </message>
     <message>
         <source>Irreversible redaction (X)</source>
-        <translation type="unfinished"></translation>
+        <translation>Необратимое скрытие (X)</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Прожектор</translation>
     </message>
     <message>
         <source>Highlight region and dim surroundings (S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделить область и затемнить окружение (S)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить (Ctrl+Z)</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <source>Redo (Ctrl+Shift+Z)</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить (Ctrl+Shift+Z)</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить</translation>
     </message>
     <message>
         <source>Color %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет %1</translation>
     </message>
     <message>
         <source>Choose custom color…</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать свой цвет…</translation>
     </message>
     <message>
         <source>Custom color</source>
-        <translation type="unfinished"></translation>
+        <translation>Свой цвет</translation>
     </message>
     <message>
         <source>Select Annotation Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор цвета аннотации</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина:</translation>
     </message>
     <message>
         <source>Stroke width</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина обводки</translation>
     </message>
     <message>
         <source>Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Контур</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>Заливка</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Непрозрачность:</translation>
     </message>
     <message>
         <source>Fill opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Непрозрачность заливки</translation>
     </message>
     <message>
         <source>Dim:</source>
-        <translation type="unfinished"></translation>
+        <translation>Затемнение:</translation>
     </message>
     <message>
         <source>Spotlight dim opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Непрозрачность затемнения прожектора</translation>
     </message>
     <message>
         <source>Font family</source>
-        <translation type="unfinished"></translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <source> pt</source>
-        <translation type="unfinished"></translation>
+        <translation> пт</translation>
     </message>
     <message>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер шрифта</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Полужирный</translation>
     </message>
     <message>
         <source>Bold (Ctrl+B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Полужирный (Ctrl+B)</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Курсив</translation>
     </message>
     <message>
         <source>Italic (Ctrl+I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Курсив (Ctrl+I)</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>По левому краю</translation>
     </message>
     <message>
         <source>Align Center</source>
-        <translation type="unfinished"></translation>
+        <translation>По центру</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>По правому краю</translation>
     </message>
     <message>
         <source>Plain</source>
-        <translation type="unfinished"></translation>
+        <translation>Обычный</translation>
     </message>
     <message>
         <source>Plain text without backing</source>
-        <translation type="unfinished"></translation>
+        <translation>Обычный текст без подложки</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Тень</translation>
     </message>
     <message>
         <source>Soft drop shadow for contrast</source>
-        <translation type="unfinished"></translation>
+        <translation>Мягкая тень для контраста</translation>
     </message>
     <message>
         <source>Contrasting glyph outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Контрастная обводка символов</translation>
     </message>
     <message>
         <source>Pill</source>
-        <translation type="unfinished"></translation>
+        <translation>Плашка</translation>
     </message>
     <message>
         <source>Filled contrast pill behind text</source>
-        <translation type="unfinished"></translation>
+        <translation>Контрастная плашка под текстом</translation>
     </message>
     <message>
         <source>Apply text (Esc or Ctrl+Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить текст (Esc или Ctrl+Enter)</translation>
     </message>
     <message>
         <source>Apply text</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить текст</translation>
     </message>
     <message>
         <source>Discard active text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить редактирование текста</translation>
     </message>
     <message>
         <source>Discard text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить правку текста</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
+        <translation>Сплошной</translation>
     </message>
     <message>
         <source>Solid Block — permanently replaces pixels (recommended for sensitive text).</source>
-        <translation type="unfinished"></translation>
+        <translation>Сплошной блок — навсегда заменяет пиксели (рекомендуется для конфиденциального текста).</translation>
     </message>
     <message>
         <source>Solid redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Сплошное скрытие</translation>
     </message>
     <message>
         <source>Pixelate</source>
-        <translation type="unfinished"></translation>
+        <translation>Пикселизация</translation>
     </message>
     <message>
         <source>Pixelate — coarse randomized blocks; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пикселизация — крупные случайные блоки; для строгой защиты текста используйте сплошной блок.</translation>
     </message>
     <message>
         <source>Pixelate redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрытие пикселизацией</translation>
     </message>
     <message>
         <source>Blur</source>
-        <translation type="unfinished"></translation>
+        <translation>Размытие</translation>
     </message>
     <message>
         <source>Blur — heavy visual obfuscation; use Solid Block for strict text secrecy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Размытие — сильное визуальное размытие; для строгой защиты текста используйте сплошной блок.</translation>
     </message>
     <message>
         <source>Blur redaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрытие размытием</translation>
     </message>
     <message>
         <source>Block:</source>
-        <translation type="unfinished"></translation>
+        <translation>Блок:</translation>
     </message>
     <message>
         <source>Redaction strength</source>
-        <translation type="unfinished"></translation>
+        <translation>Сила скрытия</translation>
     </message>
     <message>
         <source>%1 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 пикс.</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Радиус:</translation>
     </message>
 </context>
 <context>
     <name>glimply::App</name>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Истекло время ожидания хука (%1 мс).</translation>
     </message>
     <message>
         <source>Hook failed with exit code %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хук завершился с кодом %1.</translation>
     </message>
     <message>
         <source>Post-capture hook failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка хука после захвата</translation>
     </message>
     <message>
         <source>Post-capture hook failed (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка хука после захвата (%1)</translation>
     </message>
     <message>
         <source>Interval capture finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервальный захват завершён</translation>
     </message>
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Интервал для %1 остановлен после %n снимка.</numerusform><numerusform>Интервал для %1 остановлен после %n снимков.</numerusform><numerusform>Интервал для %1 остановлен после %n снимков.</numerusform></translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервальный захват остановлен</translation>
     </message>
     <message>
         <source>Recent capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Недавний снимок</translation>
     </message>
     <message>
         <source>Interval: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал: %1</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Все экраны</translation>
     </message>
     <message>
         <source>Pick screen color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать цвет с экрана</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить экран и выбрать (клавиша Print)</translation>
     </message>
     <message>
         <source>Capture group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять группу %1</translation>
     </message>
     <message>
         <source>Toggle interval for group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить интервал для группы %1</translation>
     </message>
     <message>
         <source>Capture area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять область %1</translation>
     </message>
     <message>
         <source>Toggle interval for area %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить интервал для области %1</translation>
     </message>
     <message>
         <source>Capture monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять экран %1</translation>
     </message>
     <message>
         <source>Toggle interval for monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить интервал для экрана %1</translation>
     </message>
     <message>
         <source>Capture all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять все экраны</translation>
     </message>
     <message>
         <source>Toggle interval for all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить интервал для всех экранов</translation>
     </message>
     <message>
         <source>Pin last capture to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепить последний снимок на экране</translation>
     </message>
     <message>
         <source>Show or hide pinned screenshots</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать или скрыть закреплённые снимки</translation>
     </message>
     <message>
         <source>Copy text from a screen selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать текст с выделенной области экрана</translation>
     </message>
     <message>
         <source>Monitors not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Экраны не подключены</translation>
     </message>
     <message>
         <source>Partial: %1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Частично: %1 не подключён</translation>
     </message>
     <message>
         <source>%1 not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 не подключён</translation>
     </message>
     <message>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран</translation>
     </message>
     <message>
         <source>Text recognition is not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Распознавание текста недоступно</translation>
     </message>
     <message>
         <source>Install tesseract and a language package, for example tesseract-data-eng, then try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Установите tesseract и языковой пакет, например tesseract-data-eng, затем повторите попытку.</translation>
     </message>
     <message>
         <source>Text recognition failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка распознавания текста</translation>
     </message>
     <message>
         <source>No text recognized</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст не распознан</translation>
     </message>
     <message>
         <source>The clipboard was left unchanged.</source>
-        <translation type="unfinished"></translation>
+        <translation>Буфер обмена остался без изменений.</translation>
     </message>
     <message>
         <source>Text copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст скопирован</translation>
     </message>
     <message>
         <source>Could not start interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось запустить интервал</translation>
     </message>
     <message>
         <source>Color copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет скопирован</translation>
     </message>
     <message>
         <source>%1 copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 скопирован в буфер обмена</translation>
     </message>
     <message>
         <source>Last capture: %1 at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Последний снимок: %1 в %2</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <source>Capture failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка захвата</translation>
     </message>
     <message numerus="yes">
         <source>and %n more</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>и ещё %n</numerusform><numerusform>и ещё %n</numerusform><numerusform>и ещё %n</numerusform></translation>
     </message>
     <message>
         <source>Screenshot saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Снимок экрана сохранён</translation>
     </message>
     <message numerus="yes">
         <source>%n screenshots saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Сохранён %n снимок</numerusform><numerusform>Сохранено %n снимка</numerusform><numerusform>Сохранено %n снимков</numerusform></translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <source>Show Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать файлы</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать в папке</translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Область не захвачена</translation>
     </message>
     <message>
         <source>Nothing captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Ничего не захвачено</translation>
     </message>
     <message>
         <source>Capture incomplete</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват не завершён</translation>
     </message>
     <message>
         <source>Check area monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверьте экран области</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Частичный захват</translation>
     </message>
     <message>
         <source>This capture is no longer in the history.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этого снимка больше нет в истории.</translation>
     </message>
     <message>
         <source>This file does not belong to the capture.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот файл не принадлежит снимку.</translation>
     </message>
     <message>
         <source>The file was moved or deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл был перемещён или удалён.</translation>
     </message>
     <message>
         <source>Could not read %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось прочитать %1: %2</translation>
     </message>
     <message>
         <source>Image copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение скопировано</translation>
     </message>
     <message>
         <source>%1 copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 скопирован в буфер обмена</translation>
     </message>
     <message>
         <source>Moved to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Перемещено в корзину</translation>
     </message>
     <message>
         <source>Could not move to the trash: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось переместить в корзину: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown action "%1".</source>
+        <translation>Неизвестное действие «%1».</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Нечего закреплять</translation>
     </message>
     <message>
         <source>There is no recent capture file to pin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет недавнего файла снимка для закрепления.</translation>
     </message>
     <message>
         <source>Save Pinned Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить закреплённый снимок</translation>
     </message>
     <message>
         <source>Could not save the pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить закреплённый снимок</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепление</translation>
     </message>
     <message>
         <source>No capture to edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет снимка для редактирования</translation>
     </message>
     <message>
         <source>The most recent screenshot file is missing or was moved.</source>
-        <translation type="unfinished"></translation>
+        <translation>Последний файл снимка отсутствует или был перемещён.</translation>
     </message>
     <message>
         <source>Could not open image</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось открыть изображение</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран %1 не подключён.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите имя, которое можно использовать в имени файла.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» уже используется другой целью или группой.</translation>
     </message>
     <message>
         <source>Only areas, groups and monitors can be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать можно только области, группы и экраны.</translation>
     </message>
     <message>
         <source>Name for monitor %1 (leave empty for %1):</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя для экрана %1 (оставьте пустым для %1):</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать экран</translation>
     </message>
     <message>
         <source>Target query is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос цели пуст.</translation>
     </message>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один экран не подключён.</translation>
     </message>
     <message>
         <source>Monitor “%1” was not found or is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран «%1» не найден или не подключён.</translation>
     </message>
     <message>
         <source>Target “%1” matches multiple targets.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос «%1» соответствует нескольким целям.</translation>
     </message>
     <message>
         <source>Target “%1” was not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цель «%1» не найдена.</translation>
     </message>
     <message>
         <source>Area width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина и высота области должны быть положительными.</translation>
     </message>
     <message>
         <source>Area name cannot be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя области нельзя использовать в имени файла.</translation>
     </message>
     <message>
         <source>Monitor “%1” is not connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран «%1» не подключён.</translation>
     </message>
     <message>
         <source>Rectangle lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямоугольник выходит за пределы экрана %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Global rectangle does not intersect any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальный прямоугольник не пересекается ни с одним подключённым экраном.</translation>
     </message>
     <message>
         <source>Invalid overlay mode: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый режим оверлея: %1</translation>
     </message>
     <message>
         <source>A capture countdown is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратный отсчёт захвата уже запущен.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation type="unfinished"></translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Указатель окна после 'window:' не может быть пустым.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни одно открытое окно не соответствует «%1».</translation>
     </message>
     <message>
         <source>Window query “%1” matches multiple open windows.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос окна «%1» соответствует нескольким открытым окнам.</translation>
     </message>
     <message>
         <source>Invalid region specification (expected region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое описание региона (ожидается region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region geometry (expected &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимая геометрия региона (ожидается &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region coordinate value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение координаты региона.</translation>
     </message>
     <message>
         <source>Region width and height must be positive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина и высота региона должны быть положительными.</translation>
     </message>
     <message>
         <source>Region lies outside monitor %1 (%2×%3).</source>
-        <translation type="unfinished"></translation>
+        <translation>Регион выходит за пределы экрана %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цель недоступна.</translation>
     </message>
     <message>
         <source>Groups produce multiple images and cannot be written to a single --out path, --stdout, or --clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>Группы создают несколько изображений и не могут быть записаны в один путь --out, --stdout или --clipboard.</translation>
     </message>
     <message>
         <source>Window capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка захвата окна.</translation>
     </message>
     <message>
         <source>Text recognition needs tesseract. Install tesseract and a language package such as tesseract-data-eng.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для распознавания текста нужен tesseract. Установите tesseract и языковой пакет, например tesseract-data-eng.</translation>
     </message>
     <message>
         <source>Capture countdown was cancelled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратный отсчёт захвата отменён.</translation>
     </message>
     <message>
         <source>Autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>Автозапуск</translation>
     </message>
     <message>
         <source>Could not remove %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось удалить %1.</translation>
     </message>
     <message>
         <source>Could not write %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось записать %1.</translation>
     </message>
     <message>
         <source>Could not read saved image for inline MCP output: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось прочитать сохранённое изображение для встроенного вывода MCP: %1</translation>
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый JSON аргументов инструмента MCP: %1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос MCP отклонён пользователем или истекло время ожидания.</translation>
     </message>
     <message>
         <source>glimply is shutting down.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply завершает работу.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка захвата.</translation>
     </message>
     <message>
         <source>MCP captured %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MCP захватил %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Неподдерживаемый формат изображения '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' должно быть целым числом от 1 до 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'target' is required.</source>
+        <translation>Требуется 'target'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Внешний клиент MCP хочет захватить «%1» (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
-        <translation type="unfinished"></translation>
+        <translation>capture_region требует monitor, x, y, width и height.</translation>
     </message>
     <message>
         <source>An external MCP client wants to capture region %1x%2 at (%3, %4) on %5.</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний клиент MCP хочет захватить регион %1x%2 в (%3, %4) на %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation type="unfinished"></translation>
+        <source>'window_id' is required.</source>
+        <translation>Требуется 'window_id'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Внешний клиент MCP хочет захватить окно «%1».</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
-        <translation type="unfinished"></translation>
+        <translation>В этом сеансе glimply ещё не записано ни одного снимка.</translation>
     </message>
     <message>
         <source>An external MCP client wants to read the last capture (%1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний клиент MCP хочет прочитать последний снимок (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Внешний клиент MCP хочет запустить интервальный захват каждые %1 с для «%2».</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation type="unfinished"></translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Укажите 'target' или задайте 'all': true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
-        <translation type="unfinished"></translation>
+        <translation>annotate_image требует непустой input_path и массив operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <translation>В режиме белого списка MCP input_path должен быть существующим файлом в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
-        <translation type="unfinished"></translation>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <translation>В режиме белого списка MCP output_path должен находиться в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation type="unfinished"></translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Внешний клиент MCP хочет добавить аннотации к «%1» (операций: %2).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный инструмент MCP: %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
     <message>
         <source>Select an area on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите область на %1</translation>
     </message>
     <message>
         <source>Drag inside to move, edges or corners to resize. Shift: square, Alt: from centre, Space while dragging: reposition. Enter confirms, Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетащите внутри для перемещения, за края или углы для изменения размера. Shift: квадрат, Alt: от центра, Space при перетаскивании: сдвиг. Enter подтверждает, Escape отменяет.</translation>
     </message>
     <message>
         <source>Drag to select an area across one or more monitors. Shift: square, Alt: from centre, Space while dragging: reposition. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Потяните, чтобы выбрать область на одном или нескольких экранах. Shift: квадрат, Alt: от центра, Space при перетаскивании: сдвиг. Escape отменяет.</translation>
     </message>
     <message>
         <source>%1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 в %3, %4</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureOverlay</name>
     <message>
         <source>glimply capture on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват glimply на %1</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Замороженный</translation>
     </message>
     <message>
         <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывает момент нажатия клавиши. Снимки вырезаются из этого кадра. (Space)</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Живой</translation>
     </message>
     <message>
         <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывает движение на экране, например видео. Снимок делается при сохранении. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот экран</translation>
     </message>
     <message>
         <source>Capture all of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять весь %1</translation>
     </message>
     <message>
         <source>All Monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Все экраны</translation>
     </message>
     <message>
         <source>Capture every monitor in one picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять все экраны на одном изображении</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Окно</translation>
     </message>
     <message>
         <source>Capture one window, also when it is covered or minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять одно окно, даже если оно перекрыто или свёрнуто</translation>
     </message>
     <message>
         <source>Areas</source>
-        <translation type="unfinished"></translation>
+        <translation>Области</translation>
     </message>
     <message>
         <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять сохранённую область или группу либо добавить её как прямоугольник</translation>
     </message>
     <message>
         <source>Add a saved area or group as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить сохранённую область или группу как прямоугольник</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка</translation>
     </message>
     <message>
         <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить снимок после обратного отсчёта, чтобы меню оставались открытыми</translation>
     </message>
     <message>
         <source>Annotate</source>
-        <translation type="unfinished"></translation>
+        <translation>Аннотировать</translation>
     </message>
     <message>
         <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать или скрыть инструменты разметки (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать цвет</translation>
     </message>
     <message>
         <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Взять цвет пикселя с помощью лупы (I)</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в окне</translation>
     </message>
     <message>
         <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в окне быстрого редактора для обрезки, масштаба и точной правки (Ctrl+E)</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Справка</translation>
     </message>
     <message>
         <source>Show or hide the controls (F1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать или скрыть элементы управления (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <source>Keep the full screenshot and open the settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить полный снимок и открыть настройки</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <source>Keep the full screenshot and close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить полный снимок и закрыть (Escape)</translation>
     </message>
     <message>
         <source>Cancel (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетащить</translation>
     </message>
     <message>
         <source>Draw a rectangle (or active markup tool)</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисовать прямоугольник (или активный инструмент разметки)</translation>
     </message>
     <message>
         <source>Drag inside / edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Потянуть внутри / за край</translation>
     </message>
     <message>
         <source>Move / resize the active rectangle or annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить / изменить размер активного прямоугольника или аннотации</translation>
     </message>
     <message>
         <source>Shift / Alt while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift / Alt при перетаскивании</translation>
     </message>
     <message>
         <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Квадрат или шаг 15° / от центра или дубликат</translation>
     </message>
     <message>
         <source>Space while dragging</source>
-        <translation type="unfinished"></translation>
+        <translation>Space при перетаскивании</translation>
     </message>
     <message>
         <source>Reposition shape or selection live</source>
-        <translation type="unfinished"></translation>
+        <translation>Сдвинуть фигуру или выделение на лету</translation>
     </message>
     <message>
         <source>Ctrl in markup tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl в инструменте разметки</translation>
     </message>
     <message>
         <source>Temporarily switch to Select / Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Временно переключиться на Выбор / перемещение</translation>
     </message>
     <message>
         <source>Click / Right-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Клик / Правый клик</translation>
     </message>
     <message>
         <source>Activate / delete topmost annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Активировать / удалить верхнюю аннотацию или прямоугольник</translation>
     </message>
     <message>
         <source>Double-click</source>
-        <translation type="unfinished"></translation>
+        <translation>Двойной клик</translation>
     </message>
     <message>
         <source>Edit text annotation or save rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить текстовую аннотацию или сохранить прямоугольник</translation>
     </message>
     <message>
         <source>Save rectangle as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить прямоугольник как область</translation>
     </message>
     <message>
         <source>Click, nothing drawn</source>
-        <translation type="unfinished"></translation>
+        <translation>Клик, ничего не нарисовано</translation>
     </message>
     <message>
         <source>Capture this monitor (before annotating)</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять этот экран (до начала разметки)</translation>
     </message>
     <message>
         <source>Mouse</source>
-        <translation type="unfinished"></translation>
+        <translation>Мышь</translation>
     </message>
     <message>
         <source>V / A R E B M T N X S</source>
-        <translation type="unfinished"></translation>
+        <translation>V / A R E B M T N X S</translation>
     </message>
     <message>
         <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор / Стрелка Прямоуг. Эллипс Перо Маркер Текст Шаг Скрытие Прожектор</translation>
     </message>
     <message>
         <source>Selection modifiers work on all monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Модификаторы выделения работают на всех экранах</translation>
     </message>
     <message>
         <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
     </message>
     <message>
         <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер кисти или шрифта  ·  Отменить / Повторить</translation>
     </message>
     <message>
         <source>Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Space</translation>
     </message>
     <message>
         <source>Switch between Frozen and Live (when idle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить «Замороженный» и «Живой» (в покое)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Стрелки / Shift+Стрелки</translation>
     </message>
     <message>
         <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation type="unfinished"></translation>
+        <translation>Сдвинуть активную аннотацию или прямоугольник на 1 пикс. / 10 пикс.</translation>
     </message>
     <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Стрелки / Ctrl+Стрелки</translation>
     </message>
     <message>
         <source>Resize from centre / resize square</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить размер от центра / квадратом</translation>
     </message>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <source>Save selection or annotated screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить выделение или экран с аннотациями</translation>
     </message>
     <message>
         <source>Save as area</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как область</translation>
     </message>
     <message>
         <source>Delete / Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete / Backspace</translation>
     </message>
     <message>
         <source>Delete active annotation or rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить активную аннотацию или прямоугольник</translation>
     </message>
     <message>
         <source>Escape</source>
-        <translation type="unfinished"></translation>
+        <translation>Escape</translation>
     </message>
     <message>
         <source>Commit text, step back, or close</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить текст, шаг назад или закрыть</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
         <source>Show or hide this help</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать или скрыть эту справку</translation>
     </message>
     <message>
         <source>I</source>
-        <translation type="unfinished"></translation>
+        <translation>I</translation>
     </message>
     <message>
         <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation type="unfinished"></translation>
+        <translation>Взять цвет пикселя (Tab меняет формат, Alt+клик применяет к разметке)</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Open selection or screen in Quick Editor window</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть выделение или экран в окне быстрого редактора</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>P</translation>
     </message>
     <message>
         <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепить выделение на экране (по одному закреплению на прямоугольник)</translation>
     </message>
     <message>
         <source>O</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <source>Copy the text of the selection (needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать текст выделения (нужен tesseract)</translation>
     </message>
     <message>
         <source>Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Клавиши</translation>
     </message>
     <message>
         <source>No windows found</source>
-        <translation type="unfinished"></translation>
+        <translation>Окна не найдены</translation>
     </message>
     <message>
         <source>%1 (minimized)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (свёрнуто)</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Без задержки</translation>
     </message>
     <message>
         <source>Retake in %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить через %1 с</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Задать свою задержку…</translation>
     </message>
     <message>
         <source>Retake Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка повтора</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Секунды:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять задержку активной</translation>
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранённых областей пока нет. Нарисуйте прямоугольник и выберите «Сохранить как область».</translation>
     </message>
     <message>
         <source>%1    %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1    %2</translation>
     </message>
     <message>
         <source>Capture now</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять сейчас</translation>
     </message>
     <message>
         <source>Add as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить как прямоугольник</translation>
     </message>
     <message>
         <source>Add as a rectangle to adjust it</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить как прямоугольник для настройки</translation>
     </message>
     <message>
         <source>Add %1 as a rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить %1 как прямоугольник</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить в папку снимков и скопировать в буфер обмена (Enter)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <source>Copy to the clipboard only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать текст</translation>
     </message>
     <message>
         <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation type="unfinished"></translation>
+        <translation>Распознать текст и скопировать в буфер обмена (O)</translation>
     </message>
     <message>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепить</translation>
     </message>
     <message>
         <source>Keep the selection on screen above other windows (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Удерживать выделение на экране поверх других окон (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как…</translation>
     </message>
     <message>
         <source>Choose where to save</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать место сохранения</translation>
     </message>
     <message>
         <source>Open markup tools to draw or redact</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть инструменты разметки для рисования или скрытия</translation>
     </message>
     <message>
         <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть выделение и аннотации в окне быстрого редактора (Ctrl+E)</translation>
     </message>
     <message>
         <source>Save as Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как область</translation>
     </message>
     <message>
         <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Запомнить этот прямоугольник для повторного захвата одним кликом или горячей клавишей</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить прямоугольник</translation>
     </message>
     <message>
         <source>Draw another rectangle, also over an existing one</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисовать ещё один прямоугольник, в том числе поверх существующего</translation>
     </message>
     <message>
         <source>Close (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть (Escape)</translation>
     </message>
     <message>
         <source>Combine into a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Объединить в группу</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Группа %1</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша:</translation>
     </message>
     <message>
         <source>Area capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка захвата области</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Другая…</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка:</translation>
     </message>
     <message>
         <source>Area Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка области</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <source>The shortcut is optional and works in every application. You can also capture the area from the glimply widget.</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша необязательна и работает в любом приложении. Область также можно снять из виджета glimply.</translation>
     </message>
     <message>
         <source>Save Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить область</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas as a group</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Сохранить %n область как группу</numerusform><numerusform>Сохранить %n области как группу</numerusform><numerusform>Сохранить %n областей как группу</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Одна горячая клавиша одновременно снимает %n область, каждую в свой файл.</numerusform><numerusform>Одна горячая клавиша одновременно снимает %n области, каждую в свой файл.</numerusform><numerusform>Одна горячая клавиша одновременно снимает %n областей, каждую в свой файл.</numerusform></translation>
     </message>
     <message>
         <source>Save Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить группу</translation>
     </message>
     <message numerus="yes">
         <source>Save %n areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Сохранить %n область</numerusform><numerusform>Сохранить %n области</numerusform><numerusform>Сохранить %n областей</numerusform></translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Каждый прямоугольник станет отдельной областью с автоматическим именем. Вы сможете переименовать их и назначить горячие клавиши позже в виджете или настройках.</translation>
     </message>
     <message numerus="yes">
         <source>Save %n Areas</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Сохранить %n область</numerusform><numerusform>Сохранить %n области</numerusform><numerusform>Сохранить %n областей</numerusform></translation>
     </message>
     <message>
         <source>Clear or undo annotations to return to Live mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистите или отмените аннотации, чтобы вернуться в живой режим</translation>
     </message>
     <message>
         <source>Delay: %1 s</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка: %1 с</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::CaptureSession</name>
     <message>
         <source>No monitor is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ни один экран не подключён.</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Все экраны</translation>
     </message>
     <message>
         <source>The screen could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось захватить экран.</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Применено %1 и скопировано в буфер обмена</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопировано %1 в буфер обмена</translation>
     </message>
     <message>
         <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Клик — копировать цвет, Alt+клик — применить к активному инструменту разметки, Tab — сменить формат, Escape — выход.</translation>
     </message>
     <message>
         <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift сохраняет квадрат, Alt растит от центра, Space сдвигает при перетаскивании.</translation>
     </message>
     <message>
         <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите текст, перетащите за край рамки для перемещения; Escape или Ctrl+Enter применяет.</translation>
     </message>
     <message>
         <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation type="unfinished"></translation>
+        <translation>Потяните для рисования (Ctrl — временный выбор; Shift — привязка, Alt — от центра, Space — сдвиг; V — возврат).</translation>
     </message>
     <message>
         <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисуйте следующий прямоугольник в любом месте, в том числе поверх другого.</translation>
     </message>
     <message>
         <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter сохраняет снимок с аннотациями, или сначала выделите область обрезки. Escape закрывает.</translation>
     </message>
     <message>
         <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделите прямоугольник, кликните по экрану для его захвата или откройте «Аннотировать». Escape сохранит полный снимок.</translation>
     </message>
     <message>
         <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделите прямоугольник для новой области. Escape отменяет.</translation>
     </message>
     <message>
         <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Кликните по прямоугольнику для изменения или нарисуйте новый.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетащите внутри для перемещения, за края для изменения размера. Потяните в другом месте для нового прямоугольника. Enter сохраняет.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перетащите внутри для перемещения, за края для изменения размера. Потяните в другом месте для нового прямоугольника.</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделение не пересекается ни с одним подключённым экраном.</translation>
     </message>
     <message>
         <source>Monitor %1 could not be captured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось захватить экран %1.</translation>
     </message>
     <message>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделение</translation>
     </message>
     <message>
         <source>Copied to the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
         <source>Pinned to the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Закреплено на экране</translation>
     </message>
     <message>
         <source>Could not write %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось записать %1: %2</translation>
     </message>
     <message>
         <source>Draw a rectangle first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сначала нарисуйте прямоугольник.</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите имя, которое можно использовать в имени файла.</translation>
     </message>
     <message>
         <source>“%1” is already used by another area or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» уже используется другой областью или группой.</translation>
     </message>
     <message>
         <source>Area “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Область «%1» сохранена</translation>
     </message>
     <message>
         <source>Group “%1” saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Группа «%1» сохранена</translation>
     </message>
     <message numerus="yes">
         <source>%n areas saved</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Сохранена %n область</numerusform><numerusform>Сохранено %n области</numerusform><numerusform>Сохранено %n областей</numerusform></translation>
     </message>
     <message>
         <source>Area not captured</source>
-        <translation type="unfinished"></translation>
+        <translation>Область не захвачена</translation>
     </message>
     <message>
         <source>Partial capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Частичный захват</translation>
     </message>
     <message>
         <source>Retake</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить</translation>
     </message>
     <message>
         <source>Unredacted Screenshot Exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Существует нескрытый снимок экрана</translation>
     </message>
     <message>
         <source>The full screenshot saved when you pressed Print does not include your redactions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Полный снимок экрана, сохранённый при нажатии Print, не содержит вашего скрытия.</translation>
     </message>
     <message>
         <source>Delete the unredacted file (%1) from disk, keep it, or return to editing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить нескрытый файл (%1) с диска, оставить его или вернуться к редактированию?</translation>
     </message>
     <message>
         <source>Delete Unredacted Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить нескрытый снимок</translation>
     </message>
     <message>
         <source>Keep Full Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Оставить полный снимок</translation>
     </message>
     <message>
         <source>Back to Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Вернуться к оверлею</translation>
     </message>
     <message>
         <source>Unredacted screenshot deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Нескрытый снимок удалён</translation>
     </message>
 </context>
 <context>
     <name>glimply::ColorPickerOverlay</name>
     <message>
         <source>Pick color on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать цвет на %1</translation>
     </message>
 </context>
 <context>
     <name>glimply::ControlService</name>
     <message>
         <source>%1 · %2 × %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 at %4, %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 в %4, %5</translation>
     </message>
     <message>
         <source>No targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет целей</translation>
     </message>
     <message>
         <source>%1 × %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>One image of every monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Одно изображение всех экранов</translation>
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый JSON запроса захвата.</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
-        <translation type="unfinished"></translation>
+        <translation>В запросе захвата отсутствует допустимая цель или формат.</translation>
     </message>
 </context>
 <context>
     <name>glimply::CountdownBanner</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват через %1 с…</translation>
     </message>
     <message>
         <source>Capturing %1 in %2 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват %1 через %2 с…</translation>
     </message>
 </context>
 <context>
     <name>glimply::ExportDialog</name>
     <message>
         <source>Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображения (%1)</translation>
     </message>
     <message>
         <source>All files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Все файлы (*)</translation>
     </message>
     <message>
         <source>Save Screenshot As</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить снимок экрана как</translation>
     </message>
     <message>
         <source>Destination file path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к файлу назначения</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Обзор…</translation>
     </message>
     <message>
         <source>File:</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл:</translation>
     </message>
     <message>
         <source>Image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат изображения</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат:</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Качество:</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Без потерь</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Уровень сжатия или качества</translation>
     </message>
     <message>
         <source>Compression or quality value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение сжатия или качества</translation>
     </message>
     <message>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Недоступно</translation>
     </message>
     <message>
         <source>Calculating…</source>
-        <translation type="unfinished"></translation>
+        <translation>Вычисление…</translation>
     </message>
     <message>
         <source>Estimated size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидаемый размер:</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжатие:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>≈ %1</source>
-        <translation type="unfinished"></translation>
+        <translation>≈ %1</translation>
     </message>
     <message>
         <source>Choose Destination File</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать файл назначения</translation>
     </message>
 </context>
 <context>
     <name>glimply::HookRunner</name>
     <message>
         <source>Could not create a temporary directory for testing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать временный каталог для проверки.</translation>
     </message>
 </context>
 <context>
     <name>glimply::IntervalController</name>
     <message>
         <source>Invalid interval target.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимая цель интервала.</translation>
     </message>
     <message>
         <source>The capture target is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цель захвата недоступна.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервальный захват для «%1» остановлен: осталось менее 100 МБ свободного места на диске.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервальный захват для «%1» остановлен: цель больше недоступна.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервальный захват для «%1» остановлен: %2</translation>
     </message>
 </context>
 <context>
     <name>glimply::McpConfirmDialog</name>
     <message>
         <source>Allow MCP Capture?</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешить захват MCP?</translation>
     </message>
     <message>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Отклонить</translation>
     </message>
     <message>
         <source>Allow Once</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешить один раз</translation>
     </message>
     <message>
         <source>Auto-denying in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоотклонение через %1 с…</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить все закрепления</translation>
     </message>
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>Удалить %n закрепление навсегда?</numerusform><numerusform>Удалить %n закрепления навсегда?</numerusform><numerusform>Удалить %n закреплений навсегда?</numerusform></translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Их изображения будут удалены. Снимки, сохранённые в папке снимков, не будут затронуты.</translation>
     </message>
     <message>
         <source>Remove Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить закрепления</translation>
     </message>
     <message>
         <source>Pin removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепление удалено</translation>
     </message>
     <message>
         <source>The pinned screenshot was removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Закреплённый снимок экрана удалён.</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить</translation>
     </message>
 </context>
 <context>
     <name>glimply::PinWindow</name>
     <message>
         <source>Pinned screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Закреплённый снимок экрана</translation>
     </message>
     <message>
         <source>Opacity %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Непрозрачность %1</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в окне</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как…</translation>
     </message>
     <message>
         <source>Zoom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштаб (%1)</translation>
     </message>
     <message>
         <source>Opacity (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Непрозрачность (%1)</translation>
     </message>
     <message>
         <source>Remove Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить закрепление</translation>
     </message>
 </context>
 <context>
     <name>glimply::QuickEditorWindow</name>
     <message>
         <source>Could not open image file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось открыть файл изображения.</translation>
     </message>
     <message>
         <source>The captured image is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Захваченное изображение пусто.</translation>
     </message>
     <message>
         <source>Editor Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Действия редактора</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <source>Save changes cleanly to file without altering the clipboard (Ctrl+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить изменения в файл без изменения буфера обмена (Ctrl+S)</translation>
     </message>
     <message>
         <source>Save Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить копию</translation>
     </message>
     <message>
         <source>Save a new edited copy alongside the original without overwriting (Ctrl+Alt+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить новую отредактированную копию рядом с оригиналом без перезаписи (Ctrl+Alt+S)</translation>
     </message>
     <message>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить как…</translation>
     </message>
     <message>
         <source>Choose a new file path (Ctrl+Shift+S)</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать новый путь к файлу (Ctrl+Shift+S)</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <source>Copy flattened image to clipboard (Ctrl+C)</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать сведённое изображение в буфер обмена (Ctrl+C)</translation>
     </message>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать текст</translation>
     </message>
     <message>
         <source>Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)</source>
-        <translation type="unfinished"></translation>
+        <translation>Распознать текст изображения и скопировать его (Ctrl+Alt+C, нужен tesseract)</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепить на экране</translation>
     </message>
     <message>
         <source>Keep the current image on screen above other windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Удерживать текущее изображение на экране поверх других окон</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать цвет</translation>
     </message>
     <message>
         <source>Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color.</source>
-        <translation type="unfinished"></translation>
+        <translation>Взять цвета пикселей с изображения (I). Tab меняет формат, Alt+клик задаёт цвет разметки.</translation>
     </message>
     <message>
         <source>Drag on canvas to select crop area</source>
-        <translation type="unfinished"></translation>
+        <translation>Потяните по холсту для выбора области обрезки</translation>
     </message>
     <message>
         <source>Apply Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить обрезку</translation>
     </message>
     <message>
         <source>Crop image cleanly to selection (Enter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезать изображение по выделению (Enter)</translation>
     </message>
     <message>
         <source>Cancel Crop</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить обрезку</translation>
     </message>
     <message>
         <source>Exit crop mode (Escape)</source>
-        <translation type="unfinished"></translation>
+        <translation>Выйти из режима обрезки (Escape)</translation>
     </message>
     <message>
         <source>Zoom out (Ctrl+-)</source>
-        <translation type="unfinished"></translation>
+        <translation>Уменьшить (Ctrl+-)</translation>
     </message>
     <message>
         <source>Zoom out</source>
-        <translation type="unfinished"></translation>
+        <translation>Уменьшить</translation>
     </message>
     <message>
         <source>Zoom preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Предустановка масштаба</translation>
     </message>
     <message>
         <source>Zoom level (Ctrl+0 Fit, Ctrl+1 100%, Ctrl/Alt+Wheel)</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштаб (Ctrl+0 Вписать, Ctrl+1 100%, Ctrl/Alt+Колесо)</translation>
     </message>
     <message>
         <source>Fit in Window (Ctrl+0)</source>
-        <translation type="unfinished"></translation>
+        <translation>Вписать в окно (Ctrl+0)</translation>
     </message>
     <message>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <source>Zoom in (Ctrl++)</source>
-        <translation type="unfinished"></translation>
+        <translation>Увеличить (Ctrl++)</translation>
     </message>
     <message>
         <source>Zoom in</source>
-        <translation type="unfinished"></translation>
+        <translation>Увеличить</translation>
     </message>
     <message>
         <source>Applied %1 and copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Применено %1 и скопировано в буфер обмена</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопировано %1 в буфер обмена</translation>
     </message>
     <message>
         <source>Untitled capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Снимок без названия</translation>
     </message>
     <message>
         <source>%1[*] — glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*] — glimply</translation>
     </message>
     <message>
         <source>100%</source>
-        <translation type="unfinished"></translation>
+        <translation>100%</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 × %2 пикс.</translation>
     </message>
     <message>
         <source>Crop: %1 × %2 at %3, %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезка: %1 × %2 в %3, %4</translation>
     </message>
     <message>
         <source>Nothing to save.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нечего сохранять.</translation>
     </message>
     <message>
         <source>Save Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка сохранения</translation>
     </message>
     <message>
         <source>Could not save %1:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить %1:
+%2</translation>
     </message>
     <message>
         <source>Saved %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранено: %1</translation>
     </message>
     <message>
         <source>Save Copy Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка сохранения копии</translation>
     </message>
     <message>
         <source>Saved copy as %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Копия сохранена как %1</translation>
     </message>
     <message>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Несохранённые изменения</translation>
     </message>
     <message>
         <source>Save changes to “%1” before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить изменения в «%1» перед закрытием?</translation>
     </message>
     <message>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Отклонить</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
     <name>glimply::SettingsWindow</name>
     <message>
         <source>Export image format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат экспорта изображения</translation>
     </message>
     <message>
         <source>Lossless</source>
-        <translation type="unfinished"></translation>
+        <translation>Без потерь</translation>
     </message>
     <message>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Качество:</translation>
     </message>
     <message>
         <source>Compression or quality level</source>
-        <translation type="unfinished"></translation>
+        <translation>Уровень сжатия или качества</translation>
     </message>
     <message>
         <source>Use default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>По умолчанию (%1)</translation>
     </message>
     <message>
         <source>Compression:</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжатие:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>Каждые</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> с</translation>
     </message>
     <message>
         <source>Interval duration in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Длительность интервала в секундах</translation>
     </message>
     <message>
         <source>Only save when changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять только при изменении</translation>
     </message>
     <message>
         <source>Stop after:</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановить после:</translation>
     </message>
     <message>
         <source>No capture limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Без ограничения снимков</translation>
     </message>
     <message>
         <source> captures</source>
-        <translation type="unfinished"></translation>
+        <translation> снимков</translation>
     </message>
     <message>
         <source>Maximum captures per interval run</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимум снимков за один интервальный запуск</translation>
     </message>
     <message>
         <source>No time limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Без ограничения времени</translation>
     </message>
     <message>
         <source> min</source>
-        <translation type="unfinished"></translation>
+        <translation> мин</translation>
     </message>
     <message>
         <source>Maximum interval duration in minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная длительность интервала в минутах</translation>
     </message>
     <message>
         <source>Post-capture hook mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим хука после захвата</translation>
     </message>
     <message>
         <source>Use global hook setting</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать глобальную настройку хука</translation>
     </message>
     <message>
         <source>Custom command</source>
-        <translation type="unfinished"></translation>
+        <translation>Своя команда</translation>
     </message>
     <message>
         <source>Disable hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключить хук</translation>
     </message>
     <message>
         <source>/path/to/script %f</source>
-        <translation type="unfinished"></translation>
+        <translation>/path/to/script %f</translation>
     </message>
     <message>
         <source>Custom hook command</source>
-        <translation type="unfinished"></translation>
+        <translation>Своя команда хука</translation>
     </message>
     <message>
         <source>Custom hook timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайм-аут своего хука</translation>
     </message>
     <message>
         <source>Configure glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроить glimply</translation>
     </message>
     <message>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Цели</translation>
     </message>
     <message>
         <source>Areas and monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Области и экраны</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Группы</translation>
     </message>
     <message>
         <source>Capture several targets with one shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Снимать несколько целей одной горячей клавишей</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Хранилище</translation>
     </message>
     <message>
         <source>Where captures are saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Куда сохраняются снимки</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Общие</translation>
     </message>
     <message>
         <source>Automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматизация</translation>
     </message>
     <message>
         <source>Post-capture hooks and external automation</source>
-        <translation type="unfinished"></translation>
+        <translation>Хуки после захвата и внешняя автоматизация</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
-        <translation type="unfinished"></translation>
+        <translation>roteson.de</translation>
     </message>
     <message>
         <source>R²W² Development · glimply on GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation>R²W² Development · glimply на GitHub</translation>
     </message>
     <message>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>Цель</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить область…</translation>
     </message>
     <message>
         <source>Drag a rectangle on any monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Нарисуйте прямоугольник на любом экране</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <source>Also used in the file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Также используется в имени файла.</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя:</translation>
     </message>
     <message>
         <source>Monitor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран:</translation>
     </message>
     <message>
         <source>X: </source>
-        <translation type="unfinished"></translation>
+        <translation>X: </translation>
     </message>
     <message>
         <source>Left edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Левый край</translation>
     </message>
     <message>
         <source>Y: </source>
-        <translation type="unfinished"></translation>
+        <translation>Y: </translation>
     </message>
     <message>
         <source>Top edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Верхний край</translation>
     </message>
     <message>
         <source>Width: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина: </translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина</translation>
     </message>
     <message>
         <source>Height: </source>
-        <translation type="unfinished"></translation>
+        <translation>Высота: </translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Высота</translation>
     </message>
     <message>
         <source>Select on Screen…</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать на экране…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
-        <translation type="unfinished"></translation>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <translation>Логические пиксели относительно верхнего левого угла экрана. Снимки используют родное разрешение экрана.</translation>
     </message>
     <message>
         <source>Position and size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Позиция и размер:</translation>
     </message>
     <message>
         <source>Include the mouse pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Включать указатель мыши</translation>
     </message>
     <message>
         <source>Pointer:</source>
-        <translation type="unfinished"></translation>
+        <translation>Указатель:</translation>
     </message>
     <message>
         <source>Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет</translation>
     </message>
     <message>
         <source>Capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка захвата</translation>
     </message>
     <message>
         <source>Delay:</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка:</translation>
     </message>
     <message>
         <source>Interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал:</translation>
     </message>
     <message>
         <source>Hook:</source>
-        <translation type="unfinished"></translation>
+        <translation>Хук:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша:</translation>
     </message>
     <message>
         <source>Interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша переключения интервала</translation>
     </message>
     <message>
         <source>Interval shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша интервала:</translation>
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальная: работает в любом приложении. Также можно изменить в параметрах системы.</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (не подключён)</translation>
     </message>
     <message>
         <source>All monitors</source>
-        <translation type="unfinished"></translation>
+        <translation>Все экраны</translation>
     </message>
     <message>
         <source>Also used in file names and for new areas on this monitor. Leave empty for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Также используется в именах файлов и для новых областей на этом экране. Оставьте пустым для %1.</translation>
     </message>
     <message>
         <source>Cross-monitor (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Межэкранная (%1)</translation>
     </message>
     <message>
         <source>Global logical coordinates across monitors. Captures compose intersected monitors at the highest scale.</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальные логические координаты по всем экранам. Снимки объединяют пересечённые экраны с наибольшим масштабом.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
-        <translation type="unfinished"></translation>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <translation>Ни один из экранов этой области не подключён. При запуске ничего не сохраняется.</translation>
     </message>
     <message>
         <source>This area no longer overlaps any connected monitor. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта область больше не пересекается ни с одним подключённым экраном. Настройте её или выберите заново.</translation>
     </message>
     <message>
         <source>%1 not connected. Triggering saves the visible part on %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 не подключён. При запуске сохраняется видимая часть на %2.</translation>
     </message>
     <message>
         <source>A different monitor is connected to %1 than when this area was defined (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>К %1 подключён другой экран, чем при создании этой области (%2).</translation>
     </message>
     <message>
         <source>One image of all monitors in their current arrangement, at the highest scale. Gaps are transparent.</source>
-        <translation type="unfinished"></translation>
+        <translation>Одно изображение всех экранов в их текущем расположении с наибольшим масштабом. Промежутки прозрачны.</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 (logical)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 × %3 (логич.)</translation>
     </message>
     <message>
         <source>%1 · not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · не подключён</translation>
     </message>
     <message>
         <source>The monitor is not connected. This area is skipped when triggered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран не подключён. Эта область пропускается при запуске.</translation>
     </message>
     <message>
         <source>The area no longer fits on this monitor and is skipped when triggered. Adjust it or select it again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область больше не помещается на этом экране и пропускается при запуске. Настройте её или выберите заново.</translation>
     </message>
     <message>
         <source>Monitor %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Экран %1</translation>
     </message>
     <message>
         <source>Enter a name that can be used in a file name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите имя, которое можно использовать в имени файла.</translation>
     </message>
     <message>
         <source>“%1” is already used by another target or group.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» уже используется другой целью или группой.</translation>
     </message>
     <message>
         <source>Remove Area</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить область</translation>
     </message>
     <message>
         <source>Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are kept.</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить область «%1»? Её горячая клавиша будет очищена, а сама область удалена из всех групп. Сохранённые снимки сохранятся.</translation>
     </message>
     <message>
         <source>Shortcut Already in Use</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша уже используется</translation>
     </message>
     <message>
         <source>%1 is already assigned to “%2”. Move it to “%3”?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 уже назначена для «%2». Перенести на «%3»?</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить группу</translation>
     </message>
     <message>
         <source>Group name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя группы</translation>
     </message>
     <message>
         <source>Targets in this group</source>
-        <translation type="unfinished"></translation>
+        <translation>Цели в этой группе</translation>
     </message>
     <message>
         <source>Targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Цели:</translation>
     </message>
     <message>
         <source>Each monitor is captured once per trigger, so all files show the same moment and share one timestamp.</source>
-        <translation type="unfinished"></translation>
+        <translation>Каждый экран снимается один раз за запуск, поэтому все файлы показывают один момент и имеют общую метку времени.</translation>
     </message>
     <message>
         <source>Applies to every target of this group, regardless of their own setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Применяется ко всем целям этой группы независимо от их собственных настроек.</translation>
     </message>
     <message>
         <source>Used when this group is triggered, unless a member target sets its own format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Используется при запуске этой группы, если участник не задаёт свой формат.</translation>
     </message>
     <message>
         <source>Group capture delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка захвата группы</translation>
     </message>
     <message>
         <source>Group shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша группы</translation>
     </message>
     <message>
         <source>Group interval toggle shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша интервала группы</translation>
     </message>
     <message>
         <source>Group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Группа %1</translation>
     </message>
     <message>
         <source>Remove Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить группу</translation>
     </message>
     <message>
         <source>Remove group “%1”? Its targets stay; only the group and its shortcut are removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить группу «%1»? Её цели останутся; удалятся только группа и её горячая клавиша.</translation>
     </message>
     <message>
         <source>%1 (cross-monitor: %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (межэкранная: %2)</translation>
     </message>
     <message>
         <source>%1 (area on %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (область на %2)</translation>
     </message>
     <message>
         <source>Enter a name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите имя.</translation>
     </message>
     <message>
         <source>Capture folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка снимков</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Обзор…</translation>
     </message>
     <message>
         <source>Folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка:</translation>
     </message>
     <message>
         <source>All captures go into this folder, without subfolders. Leave empty for the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Все снимки сохраняются в эту папку без подпапок. Оставьте пустым для значения по умолчанию.</translation>
     </message>
     <message>
         <source>File name template</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаблон имени файла</translation>
     </message>
     <message>
         <source>File name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя файла:</translation>
     </message>
     <message>
         <source>Example:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пример:</translation>
     </message>
     <message>
         <source>Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target name). The file extension matches the chosen format. Existing files are never overwritten: a number is appended instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>Подстановки: {date} (ГГГГ-ММ-ДД), {time} (ЧЧ-ММ-СС), {area} (имя цели). Расширение соответствует выбранному формату. Существующие файлы не перезаписываются: к имени добавляется номер.</translation>
     </message>
     <message>
         <source>Number of recent captures to keep</source>
-        <translation type="unfinished"></translation>
+        <translation>Сколько недавних снимков хранить</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить историю</translation>
     </message>
     <message>
         <source>Recent captures:</source>
-        <translation type="unfinished"></translation>
+        <translation>Недавние снимки:</translation>
     </message>
     <message>
         <source>Shown in the widget and the tray menu. Interval captures are not listed. Clearing the list never deletes image files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показываются в виджете и меню трея. Интервальные снимки не включаются. Очистка списка не удаляет файлы изображений.</translation>
     </message>
     <message>
         <source>History cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>История очищена</translation>
     </message>
     <message>
         <source>Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка снимков</translation>
     </message>
     <message>
         <source>System default (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Системный по умолчанию (%1)</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Язык:</translation>
     </message>
     <message>
         <source>glimply needs to restart to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>Для смены языка требуется перезапуск glimply.</translation>
     </message>
     <message>
         <source>Restart now</source>
-        <translation type="unfinished"></translation>
+        <translation>Перезапустить сейчас</translation>
     </message>
     <message>
         <source>The Plasma widget follows the Plasma language.</source>
-        <translation type="unfinished"></translation>
+        <translation>Виджет Plasma использует язык Plasma.</translation>
     </message>
     <message>
         <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply не смог перезапуститься сам. Закройте и запустите его снова для смены языка.</translation>
     </message>
     <message>
         <source>Start glimply when I log in</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускать glimply при входе в систему</translation>
     </message>
     <message>
         <source>Startup:</source>
-        <translation type="unfinished"></translation>
+        <translation>Автозапуск:</translation>
     </message>
     <message>
         <source>Shortcuts only work while glimply is running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячие клавиши работают только пока запущен glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать клавишу Print для glimply</translation>
     </message>
     <message>
         <source>Print key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Клавиша Print:</translation>
     </message>
     <message>
         <source>Print saves all monitors right away. Turning this off gives the Print key back to the application that had it before, usually Spectacle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Print сразу сохраняет все экраны. Отключение вернёт клавишу Print прежнему приложению, обычно Spectacle.</translation>
     </message>
     <message>
         <source>Open the selection overlay after saving</source>
-        <translation type="unfinished"></translation>
+        <translation>Открывать оверлей выделения после сохранения</translation>
     </message>
     <message>
         <source>After Print:</source>
-        <translation type="unfinished"></translation>
+        <translation>После Print:</translation>
     </message>
     <message>
         <source>In the overlay you can cut the screenshot down to rectangles, a monitor or a window. Without it, Print only saves the full screenshot.</source>
-        <translation type="unfinished"></translation>
+        <translation>В оверлее можно обрезать снимок до прямоугольников, экрана или окна. Без него Print просто сохраняет полный снимок.</translation>
     </message>
     <message>
         <source>Last used</source>
-        <translation type="unfinished"></translation>
+        <translation>Последний использованный</translation>
     </message>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Замороженный</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation type="unfinished"></translation>
+        <translation>Живой</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим оверлея:</translation>
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation type="unfinished"></translation>
+        <translation>«Замороженный» показывает момент нажатия Print. «Живой» не останавливает видео и снимает при сохранении. Space переключает режим в любой момент.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять сразу после отпускания мыши</translation>
     </message>
     <message>
         <source>Selection:</source>
-        <translation type="unfinished"></translation>
+        <translation>Выделение:</translation>
     </message>
     <message>
         <source>Skips the buttons: drawing one rectangle saves it right away.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пропускает кнопки: нарисованный прямоугольник сразу сохраняется.</translation>
     </message>
     <message>
         <source>Show magnifier loupe while selecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать лупу при выделении</translation>
     </message>
     <message>
         <source>Loupe:</source>
-        <translation type="unfinished"></translation>
+        <translation>Лупа:</translation>
     </message>
     <message>
         <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывает увеличенный фрагмент 11 × 11 пикселей при перетаскивании или изменении размера замороженного выделения.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша пипетки</translation>
     </message>
     <message>
         <source>Pick color shortcut:</source>
-        <translation type="unfinished"></translation>
+        <translation>Горячая клавиша цвета:</translation>
     </message>
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальная клавиша для открытия пипетки цвета пикселя в любом месте.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
-        <translation type="unfinished"></translation>
+        <translation>Распознавание текста:</translation>
     </message>
     <message>
         <source>Text recognition languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Языки распознавания текста</translation>
     </message>
     <message>
         <source>Languages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Языки:</translation>
     </message>
     <message>
         <source>Not installed. Install the tesseract package and a language package, for example tesseract-data-eng, to copy text from captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не установлен. Установите пакет tesseract и языковой пакет, например tesseract-data-eng, чтобы копировать текст со снимков.</translation>
     </message>
     <message>
         <source>glimply works the same without it; Copy Text then explains what is missing.</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply работает так же и без него; «Копировать текст» подскажет, чего не хватает.</translation>
     </message>
     <message>
         <source>%1 found</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдено: %1</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Copy Text uses the checked languages; with none checked it uses all of them.</source>
-        <translation type="unfinished"></translation>
+        <translation>«Копировать текст» использует отмеченные языки; если ничего не отмечено, используются все.</translation>
     </message>
     <message>
         <source>English is not installed (package tesseract-data-eng).</source>
-        <translation type="unfinished"></translation>
+        <translation>Английский не установлен (пакет tesseract-data-eng).</translation>
     </message>
     <message>
         <source>Post-Capture Command Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда хука после захвата</translation>
     </message>
     <message>
         <source>Run a command after saving captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполнять команду после сохранения снимков</translation>
     </message>
     <message>
         <source>Post-capture command</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда после захвата</translation>
     </message>
     <message>
         <source>Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда:</translation>
     </message>
     <message>
         <source>Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell features.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполняется напрямую без оболочки. Передайте %f для путей к файлам или читайте GLIMPLY_FILE, GLIMPLY_FILES, GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT и GLIMPLY_TIMESTAMP. Для конвейеров используйте скрипт.</translation>
     </message>
     <message>
         <source>Hook timeout in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайм-аут хука в секундах</translation>
     </message>
     <message>
         <source>Timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайм-аут:</translation>
     </message>
     <message>
         <source>Run hooks on interval captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускать хуки при интервальном захвате</translation>
     </message>
     <message>
         <source>Intervals:</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервалы:</translation>
     </message>
     <message>
         <source>Test Hook</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверить хук</translation>
     </message>
     <message>
         <source>Local MCP Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Локальный сервер MCP</translation>
     </message>
     <message>
         <source>Enable local MCP server (stdio only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить локальный сервер MCP (только stdio)</translation>
     </message>
     <message>
         <source>MCP access scope</source>
-        <translation type="unfinished"></translation>
+        <translation>Область доступа MCP</translation>
     </message>
     <message>
         <source>Allowlist only (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Только белый список (рекомендуется)</translation>
     </message>
     <message>
         <source>Confirm every capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтверждать каждый захват</translation>
     </message>
     <message>
         <source>Full session access</source>
-        <translation type="unfinished"></translation>
+        <translation>Полный доступ к сеансу</translation>
     </message>
     <message>
         <source>Access scope:</source>
-        <translation type="unfinished"></translation>
+        <translation>Область доступа:</translation>
     </message>
     <message>
         <source>Only checked areas and groups can be listed or captured over MCP:</source>
-        <translation type="unfinished"></translation>
+        <translation>Через MCP можно просматривать и снимать только отмеченные области и группы:</translation>
     </message>
     <message>
         <source>MCP allowed targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешённые цели MCP</translation>
     </message>
     <message>
         <source>No areas or groups yet — add one to allow MCP captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Областей и групп пока нет — добавьте хотя бы одну для захвата через MCP.</translation>
     </message>
     <message>
         <source>Allowed targets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешённые цели:</translation>
     </message>
     <message>
         <source>Warning: Connected local MCP clients can capture any screen, region, or window without confirmation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение: подключённые локальные клиенты MCP смогут снимать любой экран, область или окно без подтверждения.</translation>
     </message>
     <message>
         <source>Show a passive notification on MCP captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать пассивное уведомление при захвате MCP</translation>
     </message>
     <message>
         <source>Notifications:</source>
-        <translation type="unfinished"></translation>
+        <translation>Уведомления:</translation>
     </message>
     <message>
         <source>MCP stdio launch command</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда запуска MCP stdio</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <source>Add this command in a local MCP client (Claude Code, Codex, Cursor). Runs strictly on stdin/stdout with no network port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавьте эту команду в локальный клиент MCP (Claude Code, Codex, Cursor). Работает строго через stdin/stdout без сетевого порта.</translation>
     </message>
     <message>
         <source>Running test hook…</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполнение тестового хука…</translation>
     </message>
     <message>
         <source>Hook succeeded (exit 0, %1 ms).</source>
-        <translation type="unfinished"></translation>
+        <translation>Хук выполнен (код 0, %1 мс).</translation>
     </message>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Истекло время ожидания хука (%1 мс).</translation>
     </message>
     <message>
         <source>Hook failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка хука: %1</translation>
     </message>
     <message>
         <source>Copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопировано</translation>
     </message>
     <message>
         <source>%1 (area)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (область)</translation>
     </message>
     <message>
         <source>%1 (group)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (группа)</translation>
     </message>
 </context>
 <context>
     <name>glimply::TrayController</name>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <source>glimply</source>
-        <translation type="unfinished"></translation>
+        <translation>glimply</translation>
     </message>
     <message>
         <source>Recent Captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Недавние снимки</translation>
     </message>
     <message>
         <source>No recent captures</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет недавних снимков</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <source>Edit in Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в окне</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <source>Show in Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать в папке</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепить на экране</translation>
     </message>
     <message>
         <source>Move All to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить все в корзину</translation>
     </message>
     <message>
         <source>Move to Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить в корзину</translation>
     </message>
     <message>
         <source>%1 · %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2 (%3)</translation>
     </message>
     <message>
         <source>%1 · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить историю</translation>
     </message>
     <message>
         <source>Clears the list; the image files stay where they are</source>
-        <translation type="unfinished"></translation>
+        <translation>Очищает список; файлы изображений остаются на месте</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват через %1 с…</translation>
     </message>
     <message>
         <source>%1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2 с)</translation>
     </message>
     <message>
         <source>Intervals active: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Активных интервалов: %1</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить отсчёт (%1 с)</translation>
     </message>
     <message>
         <source>Stop Interval: %1 (%2 saved)</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановить интервал: %1 (сохранено: %2)</translation>
     </message>
     <message>
         <source>Stop All Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановить все интервалы</translation>
     </message>
     <message>
         <source>%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>No areas yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Областей пока нет</translation>
     </message>
     <message>
         <source>Rename Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать экран</translation>
     </message>
     <message>
         <source>%1…</source>
-        <translation type="unfinished"></translation>
+        <translation>%1…</translation>
     </message>
     <message>
         <source>Add Area…</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить область…</translation>
     </message>
     <message>
         <source>Pick Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать цвет</translation>
     </message>
     <message>
         <source>Delay (%1 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка (%1 с)</translation>
     </message>
     <message>
         <source>Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка</translation>
     </message>
     <message>
         <source>No delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Без задержки</translation>
     </message>
     <message numerus="yes">
         <source>%n seconds</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>
+            <numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform></translation>
     </message>
     <message>
         <source>Custom…</source>
-        <translation type="unfinished"></translation>
+        <translation>Другая…</translation>
     </message>
     <message>
         <source>Capture Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка захвата</translation>
     </message>
     <message>
         <source>Seconds:</source>
-        <translation type="unfinished"></translation>
+        <translation>Секунды:</translation>
     </message>
     <message>
         <source>Keep delay active</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять задержку активной</translation>
     </message>
     <message>
         <source>Intervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервалы</translation>
     </message>
     <message>
         <source>Stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановить %1</translation>
     </message>
     <message>
         <source>Start %1 (%2 s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустить %1 (%2 с)</translation>
     </message>
     <message>
         <source>Open Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть последний снимок</translation>
     </message>
     <message>
         <source>Edit Last Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать последний снимок</translation>
     </message>
     <message>
         <source>Pins (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрепления (%1)</translation>
     </message>
     <message>
         <source>Show Pins</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать закрепления</translation>
     </message>
     <message>
         <source>Remove All Pins…</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить все закрепления…</translation>
     </message>
     <message>
         <source>Open Capture Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть папку снимков</translation>
     </message>
     <message>
         <source>Configure glimply…</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроить glimply…</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выход</translation>
     </message>
 </context>
 <context>
     <name>glimply::cli</name>
     <message>
         <source>Could not connect to the D-Bus session bus.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось подключиться к шине сеанса D-Bus.</translation>
     </message>
     <message>
         <source>Unexpected D-Bus reply calling %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданный ответ D-Bus при вызове %1.</translation>
     </message>
     <message>
         <source>Invalid JSON reply from glimply daemon: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый ответ JSON от демона glimply: %1</translation>
     </message>
     <message>
         <source>Missing value for --format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --format.</translation>
     </message>
     <message>
         <source>Unsupported image format: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неподдерживаемый формат изображения: %1</translation>
     </message>
     <message>
         <source>Missing value for --quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --quality.</translation>
     </message>
     <message>
         <source>Quality must be an integer between 1 and 100.</source>
-        <translation type="unfinished"></translation>
+        <translation>Качество должно быть целым числом от 1 до 100.</translation>
     </message>
     <message>
         <source>Missing value for --png-compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --png-compression.</translation>
     </message>
     <message>
         <source>PNG compression must be between 0 and 9.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжатие PNG должно быть от 0 до 9.</translation>
     </message>
     <message>
         <source>Missing value for --delay.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --delay.</translation>
     </message>
     <message>
         <source>Delay must be between 0 and 60 seconds.</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка должна быть от 0 до 60 секунд.</translation>
     </message>
     <message>
         <source>Missing path for --out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует путь для --out.</translation>
     </message>
     <message>
         <source>Unknown option: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный параметр: %1</translation>
     </message>
     <message>
         <source>--stdout and --json cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout и --json нельзя использовать вместе.</translation>
     </message>
     <message>
         <source>--stdout and --ocr cannot be used together.</source>
-        <translation type="unfinished"></translation>
+        <translation>--stdout и --ocr нельзя использовать вместе.</translation>
     </message>
     <message>
         <source>Expected exactly one capture target.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидалась ровно одна цель захвата.</translation>
     </message>
     <message>
         <source>Capture failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка захвата.</translation>
     </message>
     <message>
         <source>Could not read captured image bytes for --stdout.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось прочитать байты захваченного изображения для --stdout.</translation>
     </message>
     <message>
         <source>Failed reading image stream.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка чтения потока изображения.</translation>
     </message>
     <message>
         <source>Copied %1 to clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 скопирован в буфер обмена.</translation>
     </message>
     <message>
         <source>Captured %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Захвачено: %1.</translation>
     </message>
     <message>
         <source>Missing value for --kind.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --kind.</translation>
     </message>
     <message>
         <source>Invalid --kind value: %1 (expected targets, monitors, or windows).</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение --kind: %1 (ожидается targets, monitors или windows).</translation>
     </message>
     <message>
         <source>Missing value for --name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --name.</translation>
     </message>
     <message>
         <source>Missing value for --monitor.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --monitor.</translation>
     </message>
     <message>
         <source>Missing value for --rect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --rect.</translation>
     </message>
     <message>
         <source>Invalid rectangle %1 (expected X,Y,W,H with W&gt;0, H&gt;0).</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимый прямоугольник %1 (ожидается X,Y,W,H с W&gt;0, H&gt;0).</translation>
     </message>
     <message>
         <source>Opened interactive area selector.</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыт интерактивный выбор области.</translation>
     </message>
     <message>
         <source>Expected an area ID or name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидался идентификатор или имя области.</translation>
     </message>
     <message>
         <source>“%1” is not an area.</source>
-        <translation type="unfinished"></translation>
+        <translation>«%1» не является областью.</translation>
     </message>
     <message>
         <source>Opened editor for area %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыт редактор для области %1.</translation>
     </message>
     <message>
         <source>Usage: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Использование: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Renamed %1 to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 переименовано в %2.</translation>
     </message>
     <message>
         <source>Usage: glimply area remove &lt;id-or-name&gt; [--json]</source>
-        <translation type="unfinished"></translation>
+        <translation>Использование: glimply area remove &lt;id-or-name&gt; [--json]</translation>
     </message>
     <message>
         <source>Built-in targets cannot be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Встроенные цели нельзя удалить.</translation>
     </message>
     <message>
         <source>Removed %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалено: %1.</translation>
     </message>
     <message>
         <source>Unknown area subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная подкоманда area: %1</translation>
     </message>
     <message>
         <source>--seconds must be between 1 and 86400.</source>
-        <translation type="unfinished"></translation>
+        <translation>--seconds должно быть от 1 до 86400.</translation>
     </message>
     <message>
         <source>--max-captures must be between 0 and 100000.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-captures должно быть от 0 до 100000.</translation>
     </message>
     <message>
         <source>--max-minutes must be between 0 and 10080.</source>
-        <translation type="unfinished"></translation>
+        <translation>--max-minutes должно быть от 0 до 10080.</translation>
     </message>
     <message>
         <source>Expected exactly one target to start an interval for.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидалась ровно одна цель для запуска интервала.</translation>
     </message>
     <message>
         <source>Started interval capture for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запущен интервальный захват для %1.</translation>
     </message>
     <message>
         <source>Do not pass a target name together with --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не передавайте имя цели вместе с --all.</translation>
     </message>
     <message>
         <source>Specify a target or --all.</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите цель или --all.</translation>
     </message>
     <message>
         <source>Stopped all active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Все активные интервалы остановлены.</translation>
     </message>
     <message>
         <source>Stopped interval for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал для %1 остановлен.</translation>
     </message>
     <message>
         <source>No active intervals.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет активных интервалов.</translation>
     </message>
     <message>
         <source>Unknown interval subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная подкоманда interval: %1</translation>
     </message>
     <message>
         <source>Missing value for --mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение для --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation type="unfinished"></translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode должен быть 'frozen' или 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
-        <translation type="unfinished"></translation>
+        <translation>--delay должно быть от 0 до 60.</translation>
     </message>
     <message>
         <source>--limit expects a positive number.</source>
-        <translation type="unfinished"></translation>
+        <translation>--limit ожидает положительное число.</translation>
     </message>
     <message>
         <source>No recent captures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет недавних снимков.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует подкоманда.</translation>
     </message>
     <message>
         <source>Unknown subcommand: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная подкоманда: %1</translation>
     </message>
 </context>
 <context>
@@ -3594,19 +3561,27 @@ Scriptable CLI subcommands:
   interval           Start, stop, or inspect interval captures
   overlay            Open the interactive capture overlay
   mcp                Run the local stdio MCP server (disabled by default)</source>
-        <translation type="unfinished"></translation>
+        <translation>Лёгкий инструмент KDE для снимков экрана и аннотаций
+
+Подкоманды CLI для сценариев:
+  capture &lt;target&gt;   Снять область, группу, экран, все экраны или окно
+  list               Показать настроенные цели, экраны или открытые окна
+  area               Добавить, изменить, переименовать или удалить области
+  interval           Запустить, остановить или проверить интервальный захват
+  overlay            Открыть интерактивный оверлей захвата
+  mcp                Запустить локальный сервер MCP stdio (отключён по умолчанию)</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл(ы) изображений для открытия в окне быстрого редактора.</translation>
     </message>
     <message>
         <source>Open an image file in the Quick Editor window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть файл изображения в окне быстрого редактора.</translation>
     </message>
     <message>
         <source>Release the Print key shortcut and exit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Освободить горячую клавишу Print и выйти.</translation>
     </message>
 </context>
 </TS>
