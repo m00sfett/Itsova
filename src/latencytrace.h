@@ -20,7 +20,7 @@ struct LatencySample
     qint64 pixelsUs = -1; // frames of all monitors in memory
     qint64 overlayUs = -1; // first overlay frame painted
     qint64 fileUs = -1; // full screenshot written
-    int pinWaitMs = 0;
+    qint64 pinWaitUs = 0; // waiting for the compositor to show transparent pins
     int monitors = 0;
 
     [[nodiscard]] QJsonObject toJson() const;
@@ -57,7 +57,7 @@ public:
     [[nodiscard]] static qint64 nowUs();
     static void begin(int monitors);
     static void notePress(qint64 timestampMs);
-    static void setPinWait(int ms);
+    static void setPinWait(qint64 us);
     static void mark(Stage stage);
     [[nodiscard]] static bool reached(Stage stage);
     // The last samples, oldest first, including the running one.

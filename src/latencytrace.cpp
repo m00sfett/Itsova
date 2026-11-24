@@ -69,7 +69,7 @@ QJsonObject LatencySample::toJson() const
         {QStringLiteral("pixelsUs"), optionalValue(pixelsUs)},
         {QStringLiteral("overlayUs"), optionalValue(overlayUs)},
         {QStringLiteral("fileUs"), optionalValue(fileUs)},
-        {QStringLiteral("pinWaitMs"), pinWaitMs},
+        {QStringLiteral("pinWaitUs"), pinWaitUs},
         {QStringLiteral("monitors"), monitors},
     };
 }
@@ -82,7 +82,7 @@ LatencySample LatencySample::fromJson(const QJsonObject &object)
     sample.pixelsUs = optionalRead(object, QStringLiteral("pixelsUs"));
     sample.overlayUs = optionalRead(object, QStringLiteral("overlayUs"));
     sample.fileUs = optionalRead(object, QStringLiteral("fileUs"));
-    sample.pinWaitMs = object.value(QStringLiteral("pinWaitMs")).toInt();
+    sample.pinWaitUs = std::max<qint64>(0, optionalRead(object, QStringLiteral("pinWaitUs")));
     sample.monitors = object.value(QStringLiteral("monitors")).toInt();
     return sample;
 }
@@ -167,12 +167,12 @@ void LatencyTrace::notePress(qint64 timestampMs)
     s.pendingPress = std::make_pair(timestampMs, now);
 }
 
-void LatencyTrace::setPinWait(int ms)
+void LatencyTrace::setPinWait(qint64 us)
 {
     State &s = state();
     const std::lock_guard lock(s.mutex);
     if (s.running && !s.samples.isEmpty()) {
-        s.samples.last().pinWaitMs = ms;
+        s.samples.last().pinWaitUs = us;
     }
 }
 

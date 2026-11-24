@@ -55,7 +55,7 @@ private Q_SLOTS:
     void marksArePerStageAndFirstWins()
     {
         LatencyTrace::begin(2);
-        LatencyTrace::setPinWait(25);
+        LatencyTrace::setPinWait(25'000);
         LatencyTrace::mark(LatencyTrace::Stage::Request);
         LatencyTrace::mark(LatencyTrace::Stage::Pixels);
         const QJsonObject first = LatencyTrace::report().last().toObject();
@@ -65,7 +65,7 @@ private Q_SLOTS:
         QVERIFY(LatencyTrace::reached(LatencyTrace::Stage::Pixels));
         QVERIFY(!LatencyTrace::reached(LatencyTrace::Stage::File));
         QVERIFY(second.value(QStringLiteral("fileUs")).isNull());
-        QCOMPARE(second.value(QStringLiteral("pinWaitMs")).toInt(), 25);
+        QCOMPARE(second.value(QStringLiteral("pinWaitUs")).toInteger(), 25'000);
         QCOMPARE(second.value(QStringLiteral("monitors")).toInt(), 2);
     }
 

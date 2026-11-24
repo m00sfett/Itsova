@@ -8,6 +8,7 @@
 #include <QPointer>
 #include <QRect>
 
+#include <functional>
 #include <memory>
 
 class QTimer;
@@ -41,9 +42,11 @@ public:
     // Called by the KWin script when the user moved a pin.
     void pinMoved(const QString &id, int x, int y);
 
-    // Captures: beginCapture() makes visible pins transparent and returns how long to wait before
-    // grabbing frames (0 when nothing had to be hidden); every call needs a matching endCapture().
-    [[nodiscard]] int beginCapture();
+    // Captures: beginCapture() makes the pins transparent and calls ready once the compositor shows
+    // the transparent frames of all visible pins (Wayland frame callback), at the latest after a
+    // fallback timeout; synchronously when nothing had to be hidden or the pins already are. ready
+    // is dropped when context is destroyed first. Every call needs a matching endCapture() (#67).
+    void beginCapture(QObject *context, std::function<void()> ready);
     void endCapture();
 
 Q_SIGNALS:

@@ -64,7 +64,6 @@
 #include <QSet>
 #include <QStandardPaths>
 #include <QTemporaryFile>
-#include <QThread>
 #include <QTimer>
 #include <QUrl>
 #include <QtConcurrent>
@@ -88,8 +87,6 @@ App::App(QObject *parent)
                  std::optional<TriggerEngine::FrameMap> prev,
                  std::function<void(TriggerResult, TriggerEngine::FrameMap)> done) {
               // Pins turn transparent for the tick so they never end up in a capture (#28).
-              const int wait = pins_->beginCapture();
-    LatencyTrace::setPinWait(wait);
               auto run = [this, plan, dir, tmpl, prev, done]() {
                   engine_->runIntervalTick(plan, dir, tmpl, prev,
                                            [this, done](TriggerResult result, TriggerEngine::FrameMap frames) {
@@ -97,11 +94,7 @@ App::App(QObject *parent)
                                                done(std::move(result), std::move(frames));
                                            });
               };
-              if (wait > 0) {
-                  QTimer::singleShot(wait, this, run);
-              } else {
-                  run();
-              }
+              pins_->beginCapture(this, run);
           },
           this))
     , hooks_(new HookRunner(this))
@@ -464,7 +457,7 @@ void App::startPrintNow(std::optional<bool> forcedFrozen, bool forceOverlay)
     session->setForceShowOverlay(forceOverlay);
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
-    startWithPinsHidden(session, [session] { session->start(); });
+    startWithPinsHidden(session, [session] { session->start(); }, true);
 }
 
 void App::noteShortcutPressed(const QString &component, const QString &action, qlonglong timestamp)
@@ -544,16 +537,17 @@ void App::copyTextFromImages(const QList<QImage> &images)
     }));
 }
 
-void App::startWithPinsHidden(QObject *owner, std::function<void()> start)
+void App::startWithPinsHidden(QObject *owner, std::function<void()> start, bool recordLatency)
 {
     // Pins stay transparent for as long as the overlay or picker exists (#28).
-    const int wait = pins_->beginCapture();
     connect(owner, &QObject::destroyed, this, [this] { pins_->endCapture(); });
-    if (wait > 0) {
-        QTimer::singleShot(wait, owner, std::move(start));
-    } else {
+    const qint64 sinceUs = LatencyTrace::nowUs();
+    pins_->beginCapture(owner, [start = std::move(start), sinceUs, recordLatency] {
+        if (recordLatency) {
+            LatencyTrace::setPinWait(LatencyTrace::nowUs() - sinceUs);
+        }
         start();
-    }
+    });
 }
 
 bool App::isCountdownActive() const
@@ -831,14 +825,9 @@ void App::executeTriggerNow(const QString &id)
         }
         return;
     }
-    const int wait = pins_->beginCapture();
-    if (wait > 0) {
-        QTimer::singleShot(wait, this, [this, plan = std::move(plan)]() mutable {
-            engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
-        });
-        return;
-    }
-    engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
+    pins_->beginCapture(this, [this, plan = std::move(plan)]() mutable {
+        engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
+    });
 }
 
 void App::onTriggerFinished(const TriggerResult &result)
@@ -1747,137 +1736,136 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                     }
                 });
 
-        const int pinWait = pins_->beginCapture();
         const std::shared_ptr<const OcrEngine> ocrEngine = request.ocr ? ocr_ : nullptr;
         const QStringList ocrLangs = request.ocr ? ocrLanguages() : QStringList();
-        watcher->setFuture(QtConcurrent::run([=] {
-            if (pinWait > 0) {
-                QThread::msleep(pinWait); // let the compositor drop the now transparent pins
-            }
-            WorkerOutput out;
-            out.cliResult.targetId = resolvedTargetId;
-            out.cliResult.displayName = plan.displayName;
-            out.cliResult.timestamp = timestamp.toString(Qt::ISODate);
+        // The worker starts once the compositor shows the now transparent pins.
+        pins_->beginCapture(watcher, [=] {
+            watcher->setFuture(QtConcurrent::run([=] {
+                WorkerOutput out;
+                out.cliResult.targetId = resolvedTargetId;
+                out.cliResult.displayName = plan.displayName;
+                out.cliResult.timestamp = timestamp.toString(Qt::ISODate);
 
-            QList<RenderedOutput> outputs;
-            if (isWindowCapture) {
-                const CaptureResult cr = CaptureService::captureWindow(targetWindow.handle, plan.includeCursor);
-                if (cr.image.isNull()) {
-                    out.cliResult.exitCode = 1;
-                    out.cliResult.error = cr.error.isEmpty() ? App::tr("Window capture failed.") : cr.error;
-                    return out;
-                }
-                outputs.append({windowToken(targetWindow), cr.image, {}, windowOpts, resolvedTargetId});
-            } else {
-                QHash<QString, CaptureResult> frames;
-                std::mutex framesMutex;
-                QtConcurrent::blockingMap(plan.connectors, [&](const QString &connector) {
-                    CaptureResult frame = CaptureService::captureScreen(connector, plan.includeCursor);
-                    const std::lock_guard lock(framesMutex);
-                    frames.insert(connector, std::move(frame));
-                });
-                outputs = renderOutputs(plan, frames);
-            }
-
-            const OutputWriter writer(directory, filenameTemplate);
-            for (const RenderedOutput &rendered : std::as_const(outputs)) {
-                if (rendered.image.isNull()) {
-                    out.cliResult.exitCode = 1;
-                    out.cliResult.error = rendered.error;
-                    return out;
-                }
-                if (out.clipboardImage.isNull()) {
-                    out.clipboardImage = rendered.image;
+                QList<RenderedOutput> outputs;
+                if (isWindowCapture) {
+                    const CaptureResult cr = CaptureService::captureWindow(targetWindow.handle, plan.includeCursor);
+                    if (cr.image.isNull()) {
+                        out.cliResult.exitCode = 1;
+                        out.cliResult.error = cr.error.isEmpty() ? App::tr("Window capture failed.") : cr.error;
+                        return out;
+                    }
+                    outputs.append({windowToken(targetWindow), cr.image, {}, windowOpts, resolvedTargetId});
+                } else {
+                    QHash<QString, CaptureResult> frames;
+                    std::mutex framesMutex;
+                    QtConcurrent::blockingMap(plan.connectors, [&](const QString &connector) {
+                        CaptureResult frame = CaptureService::captureScreen(connector, plan.includeCursor);
+                        const std::lock_guard lock(framesMutex);
+                        frames.insert(connector, std::move(frame));
+                    });
+                    outputs = renderOutputs(plan, frames);
                 }
 
-                if (request.noSave) {
-                    if (request.toStdout) {
-                        QByteArray encoded;
-                        QBuffer buf(&encoded);
-                        buf.open(QIODevice::WriteOnly);
-                        QString encErr;
-                        if (!encodeImageToDevice(&buf, rendered.image, rendered.exportOptions, &encErr)) {
-                            out.cliResult.exitCode = 1;
-                            out.cliResult.error = encErr;
-                            return out;
-                        }
-                        const QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
-                        const QString tmpBase = runtimeDir.isEmpty() ? QDir::tempPath() : runtimeDir;
-                        QTemporaryFile tmp(
-                            QDir(tmpBase).filePath(QStringLiteral("glimply-stdout-XXXXXX.%1")
-                                                       .arg(canonicalExtension(rendered.exportOptions.format))));
-                        tmp.setAutoRemove(false);
-                        if (!tmp.open()) {
-                            out.cliResult.exitCode = 1;
-                            out.cliResult.error = tmp.errorString();
-                            return out;
-                        }
-                        tmp.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
-                        if (tmp.write(encoded) != encoded.size() || !tmp.flush()) {
-                            out.cliResult.exitCode = 1;
-                            out.cliResult.error = tmp.errorString();
+                const OutputWriter writer(directory, filenameTemplate);
+                for (const RenderedOutput &rendered : std::as_const(outputs)) {
+                    if (rendered.image.isNull()) {
+                        out.cliResult.exitCode = 1;
+                        out.cliResult.error = rendered.error;
+                        return out;
+                    }
+                    if (out.clipboardImage.isNull()) {
+                        out.clipboardImage = rendered.image;
+                    }
+
+                    if (request.noSave) {
+                        if (request.toStdout) {
+                            QByteArray encoded;
+                            QBuffer buf(&encoded);
+                            buf.open(QIODevice::WriteOnly);
+                            QString encErr;
+                            if (!encodeImageToDevice(&buf, rendered.image, rendered.exportOptions, &encErr)) {
+                                out.cliResult.exitCode = 1;
+                                out.cliResult.error = encErr;
+                                return out;
+                            }
+                            const QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+                            const QString tmpBase = runtimeDir.isEmpty() ? QDir::tempPath() : runtimeDir;
+                            QTemporaryFile tmp(
+                                QDir(tmpBase).filePath(QStringLiteral("glimply-stdout-XXXXXX.%1")
+                                                           .arg(canonicalExtension(rendered.exportOptions.format))));
+                            tmp.setAutoRemove(false);
+                            if (!tmp.open()) {
+                                out.cliResult.exitCode = 1;
+                                out.cliResult.error = tmp.errorString();
+                                return out;
+                            }
+                            tmp.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+                            if (tmp.write(encoded) != encoded.size() || !tmp.flush()) {
+                                out.cliResult.exitCode = 1;
+                                out.cliResult.error = tmp.errorString();
+                                tmp.close();
+                                QFile::remove(tmp.fileName());
+                                return out;
+                            }
+                            out.cliResult.stdoutFile = tmp.fileName();
+                            out.cliResult.tempStdoutFile = true;
                             tmp.close();
-                            QFile::remove(tmp.fileName());
-                            return out;
                         }
-                        out.cliResult.stdoutFile = tmp.fileName();
-                        out.cliResult.tempStdoutFile = true;
-                        tmp.close();
+                        continue;
                     }
-                    continue;
+
+                    QString savedPath;
+                    QString writeErr;
+                    bool wrote = false;
+                    if (!request.outPath.isEmpty()) {
+                        const QString absOut = QFileInfo(request.outPath).absoluteFilePath();
+                        wrote = writeImageToFile(absOut, rendered.image, rendered.exportOptions, &writeErr);
+                        savedPath = absOut;
+                    } else {
+                        wrote = writer.writeImage(rendered.image, rendered.token, timestamp, rendered.exportOptions,
+                                                  &savedPath, &writeErr);
+                    }
+                    if (!wrote) {
+                        out.cliResult.exitCode = 1;
+                        out.cliResult.error = writeErr;
+                        return out;
+                    }
+                    out.writtenPaths.append(savedPath);
+                    out.cliResult.files.append({rendered.targetId, savedPath, rendered.image.width(),
+                                                rendered.image.height(),
+                                                formatConfigKey(rendered.exportOptions.format), QFileInfo(savedPath).size(),
+                                                QString()});
+                    if (request.toStdout && out.cliResult.stdoutFile.isEmpty()) {
+                        out.cliResult.stdoutFile = savedPath;
+                        out.cliResult.tempStdoutFile = false;
+                    }
                 }
 
-                QString savedPath;
-                QString writeErr;
-                bool wrote = false;
-                if (!request.outPath.isEmpty()) {
-                    const QString absOut = QFileInfo(request.outPath).absoluteFilePath();
-                    wrote = writeImageToFile(absOut, rendered.image, rendered.exportOptions, &writeErr);
-                    savedPath = absOut;
-                } else {
-                    wrote = writer.writeImage(rendered.image, rendered.token, timestamp, rendered.exportOptions,
-                                              &savedPath, &writeErr);
-                }
-                if (!wrote) {
-                    out.cliResult.exitCode = 1;
-                    out.cliResult.error = writeErr;
-                    return out;
-                }
-                out.writtenPaths.append(savedPath);
-                out.cliResult.files.append({rendered.targetId, savedPath, rendered.image.width(),
-                                            rendered.image.height(),
-                                            formatConfigKey(rendered.exportOptions.format), QFileInfo(savedPath).size(),
-                                            QString()});
-                if (request.toStdout && out.cliResult.stdoutFile.isEmpty()) {
-                    out.cliResult.stdoutFile = savedPath;
-                    out.cliResult.tempStdoutFile = false;
-                }
-            }
-
-            if (request.ocr) {
-                out.cliResult.ocrRequested = true;
-                if (!ocrEngine || !ocrEngine->available()) {
-                    out.cliResult.ocrError = App::tr("Text recognition needs tesseract. Install tesseract and a "
-                                                     "language package such as tesseract-data-eng.");
-                } else {
-                    for (qsizetype i = 0; i < outputs.size(); ++i) {
-                        const OcrResult text = ocrEngine->recognize(outputs.at(i).image, ocrLangs);
-                        if (!text.ok) {
-                            out.cliResult.ocrError = text.error;
-                            break;
-                        }
-                        out.cliResult.ocrTexts.append({outputs.at(i).token, text.text});
-                        if (i < out.cliResult.files.size()) {
-                            out.cliResult.files[i].text = text.text;
+                if (request.ocr) {
+                    out.cliResult.ocrRequested = true;
+                    if (!ocrEngine || !ocrEngine->available()) {
+                        out.cliResult.ocrError = App::tr("Text recognition needs tesseract. Install tesseract and a "
+                                                         "language package such as tesseract-data-eng.");
+                    } else {
+                        for (qsizetype i = 0; i < outputs.size(); ++i) {
+                            const OcrResult text = ocrEngine->recognize(outputs.at(i).image, ocrLangs);
+                            if (!text.ok) {
+                                out.cliResult.ocrError = text.error;
+                                break;
+                            }
+                            out.cliResult.ocrTexts.append({outputs.at(i).token, text.text});
+                            if (i < out.cliResult.files.size()) {
+                                out.cliResult.files[i].text = text.text;
+                            }
                         }
                     }
                 }
-            }
 
-            out.cliResult.ok = true;
-            out.cliResult.exitCode = 0;
-            return out;
-        }));
+                out.cliResult.ok = true;
+                out.cliResult.exitCode = 0;
+                return out;
+            }));
+        });
     };
 
     if (request.delaySeconds > 0) {

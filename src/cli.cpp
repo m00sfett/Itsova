@@ -1348,6 +1348,7 @@ static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice
         {QStringLiteral("pixels"), &LatencySample::pixelsUs},
         {QStringLiteral("overlay"), &LatencySample::overlayUs},
         {QStringLiteral("file"), &LatencySample::fileUs},
+        {QStringLiteral("pins"), &LatencySample::pinWaitUs},
     };
     auto statsFor = [&](Field field) {
         QList<qint64> values;
@@ -1376,7 +1377,7 @@ static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice
     for (const auto &column : columns) {
         header.append(column.first);
     }
-    header << QStringLiteral("pins") << QStringLiteral("monitors");
+    header << QStringLiteral("monitors");
     writeLine(out, header.join(QLatin1Char('\t')));
     int index = 0;
     for (const LatencySample &sample : std::as_const(samples)) {
@@ -1384,7 +1385,7 @@ static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice
         for (const auto &column : columns) {
             row.append(formatMs(sample.*(column.second)));
         }
-        row << QString::number(sample.pinWaitMs) << QString::number(sample.monitors);
+        row << QString::number(sample.monitors);
         writeLine(out, row.join(QLatin1Char('\t')));
     }
     for (const QString &label : {QStringLiteral("median"), QStringLiteral("p95"), QStringLiteral("max")}) {

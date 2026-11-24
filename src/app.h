@@ -180,7 +180,8 @@ private:
     void pruneHistory();
     void savePinImageAs(const QImage &image);
     // Makes pins transparent, then calls start; pins come back when owner is destroyed.
-    void startWithPinsHidden(QObject *owner, std::function<void()> start);
+    // recordLatency: the wait for the pins counts into the running Print latency trace (#67).
+    void startWithPinsHidden(QObject *owner, std::function<void()> start, bool recordLatency = false);
     void historyModified(bool sweepThumbnails);
     void requestThumbnails();
 
