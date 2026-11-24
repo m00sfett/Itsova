@@ -1,12 +1,15 @@
 #include "controlservice.h"
 
 #include "app.h"
+#include "cli.h"
 #include "intervalcontroller.h"
 #include "screens.h"
 #include "shortcutmanager.h"
 #include "traycontroller.h"
 #include "triggerengine.h"
+#include "windowlist.h"
 
+#include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusServiceWatcher>
@@ -100,6 +103,7 @@ QString ControlService::Targets() const
         } else if (kind == QLatin1String("all")) {
             detail = tr("One image of every monitor");
         }
+        const IntervalConfig intervalCfg = store.targetIntervalConfig(target.id);
         targets.append(QJsonObject{
             {QStringLiteral("targetId"), target.id},
             {QStringLiteral("kind"), kind},
@@ -108,7 +112,10 @@ QString ControlService::Targets() const
             {QStringLiteral("shortcut"), target.shortcut.toString(QKeySequence::NativeText)},
             {QStringLiteral("available"), target.available},
             {QStringLiteral("intervalActive"), target.intervalActive},
-            {QStringLiteral("intervalSeconds"), target.intervalSeconds},
+            {QStringLiteral("intervalSeconds"), intervalCfg.seconds},
+            {QStringLiteral("intervalMaxCaptures"), intervalCfg.maxCaptures},
+            {QStringLiteral("intervalMaxMinutes"), intervalCfg.maxMinutes},
+            {QStringLiteral("intervalOnlyWhenChanged"), intervalCfg.onlyWhenChanged},
         });
     }
     return QString::fromUtf8(QJsonDocument(targets).toJson(QJsonDocument::Compact));
@@ -241,6 +248,110 @@ void ControlService::StopInterval(const QString &id)
 void ControlService::StopAllIntervals()
 {
     app_->stopAllIntervals();
+}
+
+QString ControlService::CaptureSync(const QString &requestJson)
+{
+    QJsonParseError parseErr{};
+    const QJsonDocument doc = QJsonDocument::fromJson(requestJson.toUtf8(), &parseErr);
+    if (parseErr.error != QJsonParseError::NoError || !doc.isObject()) {
+        CliCaptureResult bad;
+        bad.ok = false;
+        bad.exitCode = 2;
+        bad.error = tr("Invalid capture request JSON.");
+        return QString::fromUtf8(QJsonDocument(captureResultToJson(bad)).toJson(QJsonDocument::Compact));
+    }
+
+    bool ok = false;
+    const CliCaptureRequest request = captureRequestFromJson(doc.object(), &ok);
+    if (!ok) {
+        CliCaptureResult bad;
+        bad.ok = false;
+        bad.exitCode = 2;
+        bad.error = tr("Capture request is missing a valid target or format.");
+        return QString::fromUtf8(QJsonDocument(captureResultToJson(bad)).toJson(QJsonDocument::Compact));
+    }
+
+    if (!calledFromDBus()) {
+        return {};
+    }
+
+    setDelayedReply(true);
+    const QDBusMessage msg = message();
+    const QDBusConnection bus = connection();
+    app_->captureAsync(request, [msg, bus](const CliCaptureResult &result) {
+        const QString json =
+            QString::fromUtf8(QJsonDocument(captureResultToJson(result)).toJson(QJsonDocument::Compact));
+        bus.send(msg.createReply(json));
+    });
+    return {};
+}
+
+QString ControlService::ListMonitors() const
+{
+    const TargetStore &store = app_->store();
+    QJsonArray array;
+    for (const ScreenInfo &screen : currentScreens()) {
+        array.append(QJsonObject{
+            {QStringLiteral("connector"), screen.connector},
+            {QStringLiteral("name"), store.monitorName(screen)},
+            {QStringLiteral("identity"), screen.identity()},
+            {QStringLiteral("targetId"), screenTargetId(screen.connector)},
+            {QStringLiteral("x"), screen.geometry.x()},
+            {QStringLiteral("y"), screen.geometry.y()},
+            {QStringLiteral("width"), screen.geometry.width()},
+            {QStringLiteral("height"), screen.geometry.height()},
+        });
+    }
+    return QString::fromUtf8(QJsonDocument(array).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::ListWindows() const
+{
+    QJsonArray array;
+    for (const WindowInfo &win : listWindows(QCoreApplication::applicationPid())) {
+        array.append(QJsonObject{
+            {QStringLiteral("handle"), win.handle},
+            {QStringLiteral("caption"), win.caption},
+            {QStringLiteral("appName"), win.appName},
+            {QStringLiteral("iconName"), win.iconName},
+            {QStringLiteral("x"), win.geometry.x()},
+            {QStringLiteral("y"), win.geometry.y()},
+            {QStringLiteral("width"), win.geometry.width()},
+            {QStringLiteral("height"), win.geometry.height()},
+            {QStringLiteral("minimized"), win.minimized},
+        });
+    }
+    return QString::fromUtf8(QJsonDocument(array).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::LastCaptureInfo() const
+{
+    return QString::fromUtf8(QJsonDocument(app_->lastCaptureInfo()).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::ResolveTarget(const QString &query) const
+{
+    const CliResolveResult res = app_->resolveTarget(query);
+    return QString::fromUtf8(QJsonDocument(QJsonObject{
+                                               {QStringLiteral("ok"), res.ok},
+                                               {QStringLiteral("targetId"), res.targetId},
+                                               {QStringLiteral("kind"), res.kind},
+                                               {QStringLiteral("name"), res.name},
+                                               {QStringLiteral("error"), res.error},
+                                           })
+                                 .toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::AddAreaRect(const QString &name, const QString &connector, int x, int y, int width, int height)
+{
+    return QString::fromUtf8(
+        QJsonDocument(app_->addAreaRect(name, connector, QRect(x, y, width, height))).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::OpenOverlay(const QString &mode, int delaySeconds)
+{
+    return app_->openOverlay(mode, delaySeconds);
 }
 
 void ControlService::RegisterWidget()

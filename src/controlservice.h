@@ -48,6 +48,14 @@ public Q_SLOTS:
                                        bool onlyWhenChanged);
     Q_SCRIPTABLE void StopInterval(const QString &id);
     Q_SCRIPTABLE void StopAllIntervals();
+    Q_SCRIPTABLE QString CaptureSync(const QString &requestJson);
+    Q_SCRIPTABLE QString ListMonitors() const;
+    Q_SCRIPTABLE QString ListWindows() const;
+    Q_SCRIPTABLE QString LastCaptureInfo() const;
+    Q_SCRIPTABLE QString ResolveTarget(const QString &query) const;
+    Q_SCRIPTABLE QString AddAreaRect(const QString &name, const QString &connector, int x, int y, int width,
+                                     int height);
+    Q_SCRIPTABLE QString OpenOverlay(const QString &mode, int delaySeconds);
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 
