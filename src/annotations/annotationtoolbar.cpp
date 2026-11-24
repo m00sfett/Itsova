@@ -1,7 +1,10 @@
 #include "annotationtoolbar.h"
 
+#include "annotationtextlayout.h"
+
 #include <QButtonGroup>
 #include <QColorDialog>
+#include <QFontComboBox>
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -10,6 +13,7 @@
 #include <QPixmap>
 #include <QPolygonF>
 #include <QSlider>
+#include <QSpinBox>
 #include <QToolButton>
 #include <QUndoStack>
 #include <QVBoxLayout>
@@ -207,6 +211,7 @@ AnnotationToolbar::AnnotationToolbar(AnnotationController *controller, QWidget *
         ToolKind::Ellipse,
         ToolKind::Pen,
         ToolKind::Highlighter,
+        ToolKind::Text,
         ToolKind::Step,
         ToolKind::Spotlight,
     });
@@ -214,6 +219,9 @@ AnnotationToolbar::AnnotationToolbar(AnnotationController *controller, QWidget *
     if (controller_) {
         connect(controller_, &AnnotationController::toolChanged, this, &AnnotationToolbar::syncFromState);
         connect(controller_, &AnnotationController::styleChanged, this, &AnnotationToolbar::syncFromState);
+        connect(controller_, &AnnotationController::textEditStarted, this, &AnnotationToolbar::syncFromState);
+        connect(controller_, &AnnotationController::textEditFinished, this, &AnnotationToolbar::syncFromState);
+        connect(controller_, &AnnotationController::textEditStyleUpdated, this, &AnnotationToolbar::syncFromState);
         if (AnnotationDocument *doc = controller_->document()) {
             connect(doc, &AnnotationDocument::selectionChanged, this, &AnnotationToolbar::syncFromState);
             connect(doc, &AnnotationDocument::changed, this, &AnnotationToolbar::syncFromState);
@@ -272,7 +280,7 @@ void AnnotationToolbar::buildUi()
     addTool(ToolKind::Ellipse, tr("Ellipse"), tr("Draw ellipse; Shift for circle, Alt from center (E)"));
     addTool(ToolKind::Pen, tr("Pen"), tr("Freehand pen (B)"));
     addTool(ToolKind::Highlighter, tr("Highlighter"), tr("Multiply highlighter (M)"));
-    addTool(ToolKind::Text, tr("Text"), tr("Add text annotation (T)"));
+    addTool(ToolKind::Text, tr("Text"), tr("Add text annotation; click or drag box (T)"));
     addTool(ToolKind::Step, tr("Step Counter"), tr("Place numbered badge; drag to add pointer (N)"));
     addTool(ToolKind::Redact, tr("Redact"), tr("Irreversible redaction (X)"));
     addTool(ToolKind::Spotlight, tr("Spotlight"), tr("Highlight region and dim surroundings (S)"));
@@ -480,6 +488,193 @@ void AnnotationToolbar::buildUi()
     connect(spotlightDimSlider_, &QSlider::valueChanged, this, &AnnotationToolbar::applySpotlightDimChoice);
     row2->addWidget(spotlightGroup_);
 
+    // Text controls (Text tool / selected TextItem / active inline text edit).
+    textGroup_ = new QWidget(propertyBar_);
+    auto *textLayout = new QHBoxLayout(textGroup_);
+    textLayout->setContentsMargins(0, 0, 0, 0);
+    textLayout->setSpacing(3);
+
+    fontCombo_ = new QFontComboBox(textGroup_);
+    fontCombo_->setMaximumWidth(150);
+    fontCombo_->setAccessibleName(tr("Font family"));
+    fontCombo_->setFocusPolicy(Qt::ClickFocus);
+    textLayout->addWidget(fontCombo_);
+    connect(fontCombo_, &QFontComboBox::currentFontChanged, this, [this](const QFont &f) {
+        if (updating_ || !controller_) {
+            return;
+        }
+        controller_->setFontFamily(f.family());
+        applyTextChange([&](AnnotationItem &it) { it.font.setFamily(f.family()); }, 9);
+    });
+
+    fontSizeSpin_ = new QSpinBox(textGroup_);
+    fontSizeSpin_->setRange(10, 72);
+    fontSizeSpin_->setSingleStep(2);
+    fontSizeSpin_->setSuffix(tr(" pt"));
+    fontSizeSpin_->setAccessibleName(tr("Font size"));
+    fontSizeSpin_->setFocusPolicy(Qt::ClickFocus);
+    textLayout->addWidget(fontSizeSpin_);
+    connect(fontSizeSpin_, &QSpinBox::valueChanged, this, [this](int pt) {
+        if (updating_ || !controller_) {
+            return;
+        }
+        controller_->setFontPointSize(pt);
+        applyTextChange([pt](AnnotationItem &it) { it.font.setPointSize(pt); }, 10);
+    });
+
+    const auto makeTextFormatBtn = [&](const QString &name, const QString &tip,
+                                       const std::function<void(QPainter &)> &draw) {
+        auto *b = new QToolButton(textGroup_);
+        b->setIcon(makeVectorIcon(ink, draw));
+        b->setIconSize(QSize(16, 16));
+        b->setAccessibleName(name);
+        b->setToolTip(tip);
+        b->setCheckable(true);
+        b->setAutoRaise(true);
+        b->setFocusPolicy(Qt::NoFocus);
+        return b;
+    };
+
+    boldButton_ = makeTextFormatBtn(tr("Bold"), tr("Bold (Ctrl+B)"), [&](QPainter &p) {
+        QFont f = p.font();
+        f.setBold(true);
+        f.setPixelSize(13);
+        p.setFont(f);
+        p.drawText(QRectF(0, 0, 18, 18), Qt::AlignCenter, QStringLiteral("B"));
+    });
+    textLayout->addWidget(boldButton_);
+    connect(boldButton_, &QToolButton::clicked, this, [this](bool checked) {
+        if (updating_ || !controller_) {
+            return;
+        }
+        controller_->setFontBold(checked);
+        applyTextChange([checked](AnnotationItem &it) { it.font.setBold(checked); }, 11);
+    });
+
+    italicButton_ = makeTextFormatBtn(tr("Italic"), tr("Italic (Ctrl+I)"), [&](QPainter &p) {
+        QFont f = p.font();
+        f.setItalic(true);
+        f.setPixelSize(13);
+        p.setFont(f);
+        p.drawText(QRectF(0, 0, 18, 18), Qt::AlignCenter, QStringLiteral("I"));
+    });
+    textLayout->addWidget(italicButton_);
+    connect(italicButton_, &QToolButton::clicked, this, [this](bool checked) {
+        if (updating_ || !controller_) {
+            return;
+        }
+        controller_->setFontItalic(checked);
+        applyTextChange([checked](AnnotationItem &it) { it.font.setItalic(checked); }, 12);
+    });
+
+    auto *alignGroup = new QButtonGroup(textGroup_);
+    alignGroup->setExclusive(true);
+    const auto addAlign = [&](Qt::Alignment align, const QString &theme, const QString &name,
+                              const std::function<void(QPainter &)> &draw) {
+        auto *b = new QToolButton(textGroup_);
+        b->setIcon(QIcon::fromTheme(theme, makeVectorIcon(ink, draw)));
+        b->setIconSize(QSize(16, 16));
+        b->setAccessibleName(name);
+        b->setToolTip(name);
+        b->setCheckable(true);
+        b->setAutoRaise(true);
+        b->setFocusPolicy(Qt::NoFocus);
+        alignGroup->addButton(b);
+        textLayout->addWidget(b);
+        connect(b, &QToolButton::clicked, this, [this, align] {
+            if (updating_ || !controller_) {
+                return;
+            }
+            controller_->setTextAlignment(align);
+            applyTextChange([align](AnnotationItem &it) { it.textAlignment = align; }, 13);
+        });
+        return b;
+    };
+    alignLeftButton_ = addAlign(Qt::AlignLeft, QStringLiteral("format-justify-left"), tr("Align Left"),
+                                [](QPainter &p) {
+                                    p.drawLine(3, 5, 14, 5);
+                                    p.drawLine(3, 9, 11, 9);
+                                    p.drawLine(3, 13, 14, 13);
+                                });
+    alignCenterButton_ = addAlign(Qt::AlignHCenter, QStringLiteral("format-justify-center"), tr("Align Center"),
+                                  [](QPainter &p) {
+                                      p.drawLine(3, 5, 15, 5);
+                                      p.drawLine(5, 9, 13, 9);
+                                      p.drawLine(3, 13, 15, 13);
+                                  });
+    alignRightButton_ = addAlign(Qt::AlignRight, QStringLiteral("format-justify-right"), tr("Align Right"),
+                                 [](QPainter &p) {
+                                     p.drawLine(4, 5, 15, 5);
+                                     p.drawLine(7, 9, 15, 9);
+                                     p.drawLine(4, 13, 15, 13);
+                                 });
+
+    textLayout->addWidget(makeVerticalRule(textGroup_));
+
+    auto *legGroup = new QButtonGroup(textGroup_);
+    legGroup->setExclusive(true);
+    const auto addLeg = [&](TextLegibility leg, const QString &label, const QString &tip) {
+        auto *b = new QToolButton(textGroup_);
+        b->setText(label);
+        b->setToolTip(tip);
+        b->setAccessibleName(tip);
+        b->setCheckable(true);
+        b->setAutoRaise(true);
+        b->setFocusPolicy(Qt::NoFocus);
+        legGroup->addButton(b);
+        textLayout->addWidget(b);
+        connect(b, &QToolButton::clicked, this, [this, leg] {
+            if (updating_ || !controller_) {
+                return;
+            }
+            controller_->setTextLegibility(leg);
+            applyTextChange([leg](AnnotationItem &it) { it.legibility = leg; }, 14);
+        });
+        return b;
+    };
+    legNoneButton_ = addLeg(TextLegibility::None, tr("Plain"), tr("Plain text without backing"));
+    legShadowButton_ = addLeg(TextLegibility::Shadow, tr("Shadow"), tr("Soft drop shadow for contrast"));
+    legOutlineButton_ = addLeg(TextLegibility::Outline, tr("Outline"), tr("Contrasting glyph outline"));
+    legPillButton_ = addLeg(TextLegibility::Pill, tr("Pill"), tr("Filled contrast pill behind text"));
+
+    textActionBox_ = new QWidget(textGroup_);
+    auto *actLayout = new QHBoxLayout(textActionBox_);
+    actLayout->setContentsMargins(4, 0, 0, 0);
+    actLayout->setSpacing(2);
+    applyTextButton_ = new QToolButton(textActionBox_);
+    applyTextButton_->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply"),
+                                               makeVectorIcon(ink, [](QPainter &p) {
+                                                   p.drawPolyline(QPolygonF{{3.5, 9.5}, {7.5, 13.5}, {14.5, 5.0}});
+                                               })));
+    applyTextButton_->setToolTip(tr("Apply text (Esc or Ctrl+Enter)"));
+    applyTextButton_->setAccessibleName(tr("Apply text"));
+    applyTextButton_->setAutoRaise(true);
+    applyTextButton_->setFocusPolicy(Qt::NoFocus);
+    connect(applyTextButton_, &QToolButton::clicked, this, [this] {
+        if (controller_) {
+            controller_->requestCommitActiveText(true);
+        }
+    });
+    cancelTextButton_ = new QToolButton(textActionBox_);
+    cancelTextButton_->setIcon(QIcon::fromTheme(QStringLiteral("dialog-cancel"),
+                                                makeVectorIcon(ink, [](QPainter &p) {
+                                                    p.drawLine(4, 4, 14, 14);
+                                                    p.drawLine(14, 4, 4, 14);
+                                                })));
+    cancelTextButton_->setToolTip(tr("Discard active text edit"));
+    cancelTextButton_->setAccessibleName(tr("Discard text edit"));
+    cancelTextButton_->setAutoRaise(true);
+    cancelTextButton_->setFocusPolicy(Qt::NoFocus);
+    connect(cancelTextButton_, &QToolButton::clicked, this, [this] {
+        if (controller_) {
+            controller_->requestCancelActiveText();
+        }
+    });
+    actLayout->addWidget(applyTextButton_);
+    actLayout->addWidget(cancelTextButton_);
+    textLayout->addWidget(textActionBox_);
+    row2->addWidget(textGroup_);
+
     row2->addStretch();
     root->addWidget(propertyBar_);
 }
@@ -512,6 +707,23 @@ QList<QToolButton *> AnnotationToolbar::swatchButtons() const { return swatchBut
 QToolButton *AnnotationToolbar::customColorButton() const { return customColorButton_; }
 QToolButton *AnnotationToolbar::undoButton() const { return undoButton_; }
 QToolButton *AnnotationToolbar::redoButton() const { return redoButton_; }
+QToolButton *AnnotationToolbar::applyTextButton() const { return applyTextButton_; }
+QToolButton *AnnotationToolbar::cancelTextButton() const { return cancelTextButton_; }
+
+QToolButton *AnnotationToolbar::legibilityButton(TextLegibility legibility) const
+{
+    switch (legibility) {
+    case TextLegibility::None:
+        return legNoneButton_;
+    case TextLegibility::Shadow:
+        return legShadowButton_;
+    case TextLegibility::Outline:
+        return legOutlineButton_;
+    case TextLegibility::Pill:
+        return legPillButton_;
+    }
+    return nullptr;
+}
 
 bool AnnotationToolbar::isPropertyBarVisible() const { return !propertyBar_->isHidden(); }
 bool AnnotationToolbar::isColorGroupVisible() const { return !propertyBar_->isHidden() && !colorGroup_->isHidden(); }
@@ -519,11 +731,17 @@ bool AnnotationToolbar::isSizeGroupVisible() const { return !propertyBar_->isHid
 bool AnnotationToolbar::isFillGroupVisible() const { return !propertyBar_->isHidden() && !fillGroup_->isHidden(); }
 bool AnnotationToolbar::isFillOpacityVisible() const { return isFillGroupVisible() && !fillOpacityBox_->isHidden(); }
 bool AnnotationToolbar::isSpotlightGroupVisible() const { return !propertyBar_->isHidden() && !spotlightGroup_->isHidden(); }
+bool AnnotationToolbar::isTextGroupVisible() const { return !propertyBar_->isHidden() && !textGroup_->isHidden(); }
+bool AnnotationToolbar::isTextActionBoxVisible() const { return isTextGroupVisible() && !textActionBox_->isHidden(); }
 
 bool AnnotationToolbar::activeTargetKind(ItemKind *outKind) const
 {
     if (!controller_) {
         return false;
+    }
+    if (controller_->isEditingText()) {
+        *outKind = ItemKind::Text;
+        return true;
     }
     if (AnnotationDocument *doc = controller_->document()) {
         if (const AnnotationItem *sel = doc->selectedItem()) {
@@ -603,7 +821,10 @@ void AnnotationToolbar::syncFromState()
     }
     propertyBar_->show();
 
-    const AnnotationItem *sel = controller_->document() ? controller_->document()->selectedItem() : nullptr;
+    const AnnotationItem *editingDraft = controller_->activeTextDraft();
+    const AnnotationItem *sel = editingDraft
+        ? editingDraft
+        : (controller_->document() ? controller_->document()->selectedItem() : nullptr);
 
     const bool showColor = kind != ItemKind::Spotlight
                         && !(kind == ItemKind::Redact
@@ -612,11 +833,13 @@ void AnnotationToolbar::syncFromState()
                        || kind == ItemKind::Pen || kind == ItemKind::Highlighter || kind == ItemKind::Step;
     const bool showFill = kind == ItemKind::Rectangle || kind == ItemKind::Ellipse;
     const bool showSpotlight = kind == ItemKind::Spotlight;
+    const bool showText = kind == ItemKind::Text;
 
     colorGroup_->setVisible(showColor);
     sizeGroup_->setVisible(showSize);
     fillGroup_->setVisible(showFill);
     spotlightGroup_->setVisible(showSpotlight);
+    textGroup_->setVisible(showText);
 
     if (showColor) {
         QColor activeColor = controller_->strokeColor();
@@ -626,6 +849,8 @@ void AnnotationToolbar::syncFromState()
             activeColor = controller_->highlighterColor();
         } else if (kind == ItemKind::Redact) {
             activeColor = controller_->redactionColor();
+        } else if (kind == ItemKind::Text) {
+            activeColor = controller_->textColor();
         }
         updateSwatchIcons(activeColor);
     }
@@ -664,6 +889,31 @@ void AnnotationToolbar::syncFromState()
         spotlightDimLabel_->setText(tr("%1%").arg(pct));
     }
 
+    if (showText) {
+        const QFont font = sel ? resolvedAnnotationFont(*sel)
+                               : QFont(controller_->fontFamily().isEmpty() ? fontCombo_->currentFont().family()
+                                                                           : controller_->fontFamily());
+        const int pt = sel && sel->font.pointSize() > 0 ? sel->font.pointSize() : controller_->fontPointSize();
+        const bool bold = sel ? sel->font.bold() : controller_->fontBold();
+        const bool italic = sel ? sel->font.italic() : controller_->fontItalic();
+        const Qt::Alignment align = sel ? sel->textAlignment : controller_->textAlignment();
+        const TextLegibility leg = sel ? sel->legibility : controller_->textLegibility();
+
+        fontCombo_->setCurrentFont(font);
+        fontSizeSpin_->setValue(std::clamp(pt, 10, 72));
+        boldButton_->setChecked(bold);
+        italicButton_->setChecked(italic);
+        alignLeftButton_->setChecked(align.testFlag(Qt::AlignLeft) || (!align.testFlag(Qt::AlignHCenter)
+                                                                       && !align.testFlag(Qt::AlignRight)));
+        alignCenterButton_->setChecked(align.testFlag(Qt::AlignHCenter));
+        alignRightButton_->setChecked(align.testFlag(Qt::AlignRight));
+        legNoneButton_->setChecked(leg == TextLegibility::None);
+        legShadowButton_->setChecked(leg == TextLegibility::Shadow);
+        legOutlineButton_->setChecked(leg == TextLegibility::Outline);
+        legPillButton_->setChecked(leg == TextLegibility::Pill);
+        textActionBox_->setVisible(controller_->isEditingText());
+    }
+
     updating_ = false;
 }
 
@@ -680,8 +930,17 @@ void AnnotationToolbar::applyColorChoice(const QColor &color)
         controller_->setHighlighterColor(color);
     } else if (kind == ItemKind::Redact) {
         controller_->setRedactionColor(color);
+    } else if (kind == ItemKind::Text) {
+        controller_->setTextColor(color);
     } else {
         controller_->setStrokeColor(color);
+    }
+    if (kind == ItemKind::Text) {
+        applyTextChange([color](AnnotationItem &it) {
+            it.color = color;
+            it.color.setAlpha(255);
+        }, 3);
+        return;
     }
     if (AnnotationDocument *doc = controller_->document()) {
         if (const AnnotationItem *sel = doc->selectedItem()) {
@@ -808,6 +1067,32 @@ void AnnotationToolbar::applySpotlightDimChoice(int percent)
         controller_->writeSettings(*settings_);
         Q_EMIT settingsModified();
     }
+}
+
+void AnnotationToolbar::applyTextChange(const std::function<void(AnnotationItem &)> &mutateItem, int mergeKey)
+{
+    if (!controller_) {
+        return;
+    }
+    if (controller_->isEditingText()) {
+        if (const AnnotationItem *draft = controller_->activeTextDraft()) {
+            AnnotationItem updated = *draft;
+            mutateItem(updated);
+            controller_->updateActiveTextDraft(updated);
+        }
+    } else if (AnnotationDocument *doc = controller_->document()) {
+        if (const AnnotationItem *sel = doc->selectedItem(); sel && sel->kind == ItemKind::Text) {
+            AnnotationItem after = *sel;
+            mutateItem(after);
+            after.rect.setSize(measureAnnotationText(after));
+            doc->commitModification(*sel, after, mergeKey);
+        }
+    }
+    if (settings_) {
+        controller_->writeSettings(*settings_);
+        Q_EMIT settingsModified();
+    }
+    syncFromState();
 }
 
 } // namespace glimply

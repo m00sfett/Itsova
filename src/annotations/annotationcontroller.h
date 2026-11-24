@@ -65,6 +65,35 @@ public:
     [[nodiscard]] int redactionStrength() const;
     void setRedactionStrength(int strength);
 
+    // Text defaults (#14).
+    [[nodiscard]] QString fontFamily() const;
+    void setFontFamily(const QString &family);
+    [[nodiscard]] int fontPointSize() const;
+    void setFontPointSize(int pt);
+    [[nodiscard]] bool fontBold() const;
+    void setFontBold(bool on);
+    [[nodiscard]] bool fontItalic() const;
+    void setFontItalic(bool on);
+    [[nodiscard]] Qt::Alignment textAlignment() const;
+    void setTextAlignment(Qt::Alignment alignment);
+    [[nodiscard]] TextLegibility textLegibility() const;
+    void setTextLegibility(TextLegibility legibility);
+    [[nodiscard]] QColor textColor() const;
+    void setTextColor(const QColor &color);
+
+    // Inline text editing lifecycle (#14).
+    [[nodiscard]] bool isEditingText() const;
+    [[nodiscard]] int editingTextItemId() const;
+    [[nodiscard]] const AnnotationItem *activeTextDraft() const;
+    [[nodiscard]] AnnotationItem buildTextItemTemplate(const QPointF &logicalTopLeft,
+                                                         qreal paragraphWidth = 0.0) const;
+    void beginTextEdit(const AnnotationItem &item, bool isExisting);
+    void updateActiveTextDraft(const AnnotationItem &item);
+    void commitTextEdit(bool switchToSelect = true);
+    void cancelTextEdit();
+    void requestCommitActiveText(bool switchToSelect = true);
+    void requestCancelActiveText();
+
     // Live UI state queries.
     [[nodiscard]] int hoveredId() const;
     [[nodiscard]] bool isDragging() const;
@@ -77,6 +106,7 @@ public:
                     qreal grabTolerance = 8.0);
     bool mouseMove(const QPointF &logicalPos, Qt::KeyboardModifiers mods);
     bool mouseRelease(const QPointF &logicalPos, Qt::MouseButton button, Qt::KeyboardModifiers mods);
+    bool mouseDoubleClick(const QPointF &logicalPos, Qt::MouseButton button, Qt::KeyboardModifiers mods);
     bool keyPress(QKeyEvent *event);
     bool keyRelease(QKeyEvent *event);
     void cancelActiveGesture();
@@ -87,12 +117,17 @@ Q_SIGNALS:
     void styleChanged();
     void previewChanged();
     void cursorChanged();
-    void textActivationRequested(const QPointF &logicalPos);
+    void textEditStarted(const glimply::AnnotationItem &item, bool isExisting);
+    void textEditStyleUpdated(const glimply::AnnotationItem &item);
+    void textEditCommitRequested(bool switchToSelect);
+    void textEditCancelRequested();
+    void textEditFinished();
 
 private:
     enum class DragMode {
         None,
         Create,
+        CreateTextBox,
         Move,
         ResizeHandle,
         DuplicateMove,
@@ -111,6 +146,12 @@ private:
     // Tool defaults.
     AnnotationSettings settings_;
     int redactionStrength_ = 16;
+
+    // Inline text editing state.
+    bool editingText_ = false;
+    bool editingExistingText_ = false;
+    AnnotationItem textBefore_;
+    AnnotationItem textCurrent_;
 
     // Active gesture state.
     DragMode dragMode_ = DragMode::None;

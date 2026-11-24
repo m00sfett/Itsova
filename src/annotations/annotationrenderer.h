@@ -29,6 +29,7 @@ void paintAnnotationOverlay(QPainter &painter,
                             const AnnotationItem *draftItem = nullptr,
                             const QImage *nativeBackdrop = nullptr,
                             qreal backdropScale = 1.0,
-                            const QPointF &backdropLogicalOrigin = {});
+                            const QPointF &backdropLogicalOrigin = {},
+                            int hiddenItemId = 0);
 
 } // namespace glimply

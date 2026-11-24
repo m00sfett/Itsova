@@ -1,7 +1,9 @@
 #include "annotationcontroller.h"
 
 #include "annotationgeometry.h"
+#include "annotationtextlayout.h"
 
+#include <QGuiApplication>
 #include <QKeyEvent>
 #include <QRandomGenerator>
 
@@ -91,6 +93,9 @@ void AnnotationController::setDocument(AnnotationDocument *document)
     if (doc_ == document) {
         return;
     }
+    if (editingText_) {
+        requestCancelActiveText();
+    }
     cancelActiveGesture();
     doc_ = document;
     hoveredId_ = 0;
@@ -112,6 +117,9 @@ void AnnotationController::setTool(ToolKind tool)
     if (tool == ToolKind::Crop && !cropToolEnabled_) {
         tool = ToolKind::Select;
     }
+    if (editingText_ && tool != ToolKind::Text) {
+        requestCommitActiveText(false);
+    }
     if (tool_ == tool) {
         return;
     }
@@ -128,7 +136,7 @@ void AnnotationController::setTool(ToolKind tool)
 ToolKind AnnotationController::effectiveTool(Qt::KeyboardModifiers mods) const
 {
     if (dragMode_ == DragMode::None && mods.testFlag(Qt::ControlModifier) && tool_ != ToolKind::Select
-        && tool_ != ToolKind::Crop) {
+        && tool_ != ToolKind::Crop && tool_ != ToolKind::Text) {
         return ToolKind::Select;
     }
     return tool_;
@@ -292,6 +300,227 @@ void AnnotationController::setRedactionStrength(int strength)
     }
 }
 
+QString AnnotationController::fontFamily() const { return settings_.fontFamily; }
+void AnnotationController::setFontFamily(const QString &family)
+{
+    if (settings_.fontFamily != family) {
+        settings_.fontFamily = family;
+        if (editingText_) {
+            textCurrent_.font.setFamily(family);
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+int AnnotationController::fontPointSize() const { return settings_.fontPointSize; }
+void AnnotationController::setFontPointSize(int pt)
+{
+    const int clamped = std::clamp(pt, 10, 72);
+    if (settings_.fontPointSize != clamped) {
+        settings_.fontPointSize = clamped;
+        if (editingText_) {
+            textCurrent_.font.setPointSize(clamped);
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+bool AnnotationController::fontBold() const { return settings_.fontBold; }
+void AnnotationController::setFontBold(bool on)
+{
+    if (settings_.fontBold != on) {
+        settings_.fontBold = on;
+        if (editingText_) {
+            textCurrent_.font.setBold(on);
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+bool AnnotationController::fontItalic() const { return settings_.fontItalic; }
+void AnnotationController::setFontItalic(bool on)
+{
+    if (settings_.fontItalic != on) {
+        settings_.fontItalic = on;
+        if (editingText_) {
+            textCurrent_.font.setItalic(on);
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+Qt::Alignment AnnotationController::textAlignment() const { return settings_.textAlignment; }
+void AnnotationController::setTextAlignment(Qt::Alignment alignment)
+{
+    if (settings_.textAlignment != alignment) {
+        settings_.textAlignment = alignment;
+        if (editingText_) {
+            textCurrent_.textAlignment = alignment;
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+TextLegibility AnnotationController::textLegibility() const { return settings_.textLegibility; }
+void AnnotationController::setTextLegibility(TextLegibility legibility)
+{
+    if (settings_.textLegibility != legibility) {
+        settings_.textLegibility = legibility;
+        if (editingText_) {
+            textCurrent_.legibility = legibility;
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+QColor AnnotationController::textColor() const { return settings_.textColor; }
+void AnnotationController::setTextColor(const QColor &color)
+{
+    QColor opaque = color;
+    opaque.setAlpha(255);
+    if (settings_.textColor != opaque) {
+        settings_.textColor = opaque;
+        if (editingText_) {
+            textCurrent_.color = opaque;
+            Q_EMIT textEditStyleUpdated(textCurrent_);
+        }
+        Q_EMIT styleChanged();
+    }
+}
+
+bool AnnotationController::isEditingText() const { return editingText_; }
+int AnnotationController::editingTextItemId() const { return (editingText_ && editingExistingText_) ? textBefore_.id : 0; }
+const AnnotationItem *AnnotationController::activeTextDraft() const { return editingText_ ? &textCurrent_ : nullptr; }
+
+AnnotationItem AnnotationController::buildTextItemTemplate(const QPointF &logicalTopLeft, qreal paragraphWidth) const
+{
+    AnnotationItem item;
+    item.kind = ItemKind::Text;
+    item.paragraphMode = paragraphWidth >= 60.0;
+    item.rect = QRectF(logicalTopLeft, QSizeF(item.paragraphMode ? paragraphWidth : 80.0, 28.0));
+    item.color = settings_.textColor;
+    QFont font = settings_.fontFamily.isEmpty() && QGuiApplication::instance()
+        ? QGuiApplication::font()
+        : QFont(settings_.fontFamily);
+    font.setPointSize(settings_.fontPointSize);
+    font.setBold(settings_.fontBold);
+    font.setItalic(settings_.fontItalic);
+    item.font = font;
+    item.textAlignment = settings_.textAlignment;
+    item.legibility = settings_.textLegibility;
+    return item;
+}
+
+void AnnotationController::beginTextEdit(const AnnotationItem &item, bool isExisting)
+{
+    if (editingText_) {
+        commitTextEdit(false);
+    }
+    editingText_ = true;
+    editingExistingText_ = isExisting;
+    textBefore_ = item;
+    textCurrent_ = item;
+    if (doc_ && isExisting) {
+        doc_->select(item.id);
+    } else if (doc_) {
+        doc_->clearSelection();
+    }
+    Q_EMIT textEditStarted(textCurrent_, editingExistingText_);
+    Q_EMIT previewChanged();
+    Q_EMIT styleChanged();
+}
+
+void AnnotationController::updateActiveTextDraft(const AnnotationItem &item)
+{
+    if (!editingText_) {
+        return;
+    }
+    textCurrent_ = item;
+    settings_.fontFamily = item.font.family();
+    if (item.font.pointSize() > 0) {
+        settings_.fontPointSize = std::clamp(item.font.pointSize(), 10, 72);
+    }
+    settings_.fontBold = item.font.bold();
+    settings_.fontItalic = item.font.italic();
+    settings_.textAlignment = item.textAlignment;
+    settings_.textLegibility = item.legibility;
+    settings_.textColor = item.color;
+    Q_EMIT textEditStyleUpdated(textCurrent_);
+    Q_EMIT styleChanged();
+}
+
+void AnnotationController::commitTextEdit(bool switchToSelect)
+{
+    if (!editingText_) {
+        return;
+    }
+    editingText_ = false;
+    AnnotationItem finalized = textCurrent_;
+    const bool existing = editingExistingText_;
+    editingExistingText_ = false;
+
+    if (doc_) {
+        if (finalized.text.trimmed().isEmpty()) {
+            if (existing) {
+                doc_->removeItem(textBefore_.id);
+            }
+        } else {
+            finalized.rect.setSize(measureAnnotationText(finalized));
+            if (existing) {
+                if (!itemsEquivalent(textBefore_, finalized)) {
+                    doc_->commitModification(textBefore_, finalized);
+                }
+                doc_->select(textBefore_.id);
+            } else {
+                finalized.id = 0;
+                doc_->addItem(std::move(finalized));
+            }
+        }
+    }
+
+    if (switchToSelect && tool_ != ToolKind::Select) {
+        tool_ = ToolKind::Select;
+        Q_EMIT toolChanged(tool_);
+    }
+    Q_EMIT textEditFinished();
+    Q_EMIT previewChanged();
+    Q_EMIT styleChanged();
+    Q_EMIT cursorChanged();
+}
+
+void AnnotationController::cancelTextEdit()
+{
+    if (!editingText_) {
+        return;
+    }
+    editingText_ = false;
+    editingExistingText_ = false;
+    Q_EMIT textEditFinished();
+    Q_EMIT previewChanged();
+    Q_EMIT styleChanged();
+    Q_EMIT cursorChanged();
+}
+
+void AnnotationController::requestCommitActiveText(bool switchToSelect)
+{
+    if (editingText_) {
+        Q_EMIT textEditCommitRequested(switchToSelect);
+    }
+}
+
+void AnnotationController::requestCancelActiveText()
+{
+    if (editingText_) {
+        Q_EMIT textEditCancelRequested();
+    }
+}
+
 int AnnotationController::hoveredId() const { return hoveredId_; }
 bool AnnotationController::isDragging() const { return dragMode_ != DragMode::None; }
 const AnnotationItem *AnnotationController::draftItem() const { return hasDraft_ ? &draftItem_ : nullptr; }
@@ -394,7 +623,25 @@ bool AnnotationController::mousePress(const QPointF &logicalPos, Qt::MouseButton
     }
 
     if (active == ToolKind::Text) {
-        Q_EMIT textActivationRequested(clampPoint(logicalPos));
+        if (editingText_) {
+            requestCommitActiveText(false);
+        }
+        const int hitId = doc_->topmostHitAt(logicalPos);
+        if (const AnnotationItem *hit = doc_->findItem(hitId); hit && hit->kind == ItemKind::Text) {
+            beginTextEdit(*hit, true);
+            return true;
+        }
+        doc_->clearSelection();
+        const QPointF startPos = clampPoint(logicalPos);
+        anchor_ = startPos;
+        lastPos_ = startPos;
+        dragMode_ = DragMode::CreateTextBox;
+        hasDraft_ = true;
+        draftItem_ = AnnotationItem{};
+        draftItem_.kind = ItemKind::Text;
+        draftItem_.rect = QRectF(startPos, QSizeF(0.0, 0.0));
+        Q_EMIT previewChanged();
+        Q_EMIT cursorChanged();
         return true;
     }
 
@@ -495,6 +742,12 @@ void AnnotationController::applyDrag(const QPointF &logicalPos, Qt::KeyboardModi
         return;
     }
 
+    if (dragMode_ == DragMode::CreateTextBox) {
+        const QPointF cur = clampPoint(logicalPos);
+        draftItem_.rect = constrainedBox(anchor_, cur, DrawModifiers{false, drawMods.fromCenter}, bounds_);
+        return;
+    }
+
     if (dragMode_ == DragMode::Create) {
         const QPointF cur = clampPoint(logicalPos);
         if (spaceHeld_) {
@@ -570,6 +823,18 @@ bool AnnotationController::mouseRelease(const QPointF &logicalPos, Qt::MouseButt
     const DragMode mode = std::exchange(dragMode_, DragMode::None);
     spaceHeld_ = false;
 
+    if (mode == DragMode::CreateTextBox) {
+        const QRectF box = draftItem_.rect.normalized();
+        hasDraft_ = false;
+        draftItem_ = {};
+        const qreal dragDist = std::hypot(logicalPos.x() - anchor_.x(), logicalPos.y() - anchor_.y());
+        const bool isParagraph = dragDist >= 8.0 && box.width() >= 12.0;
+        const AnnotationItem tpl = buildTextItemTemplate(isParagraph ? box.topLeft() : anchor_,
+                                                           isParagraph ? std::max(60.0, box.width()) : 0.0);
+        beginTextEdit(tpl, false);
+        return true;
+    }
+
     if (mode == DragMode::Create) {
         AnnotationItem finalized = std::move(draftItem_);
         hasDraft_ = false;
@@ -631,6 +896,20 @@ bool AnnotationController::mouseRelease(const QPointF &logicalPos, Qt::MouseButt
     return true;
 }
 
+bool AnnotationController::mouseDoubleClick(const QPointF &logicalPos, Qt::MouseButton button,
+                                            Qt::KeyboardModifiers mods)
+{
+    if (!doc_ || button != Qt::LeftButton || effectiveTool(mods) != ToolKind::Select) {
+        return false;
+    }
+    const int hitId = doc_->topmostHitAt(logicalPos);
+    if (const AnnotationItem *hit = doc_->findItem(hitId); hit && hit->kind == ItemKind::Text) {
+        beginTextEdit(*hit, true);
+        return true;
+    }
+    return false;
+}
+
 bool AnnotationController::reapplyModifiers(QKeyEvent *event)
 {
     const int key = event->key();
@@ -650,7 +929,17 @@ void AnnotationController::stepActiveSize(int direction)
 {
     const AnnotationItem *sel = doc_ ? doc_->selectedItem() : nullptr;
     const ItemKind targetKind = sel ? sel->kind : itemKindForTool(tool_);
-    if (targetKind == ItemKind::Highlighter) {
+    if (targetKind == ItemKind::Text) {
+        const int basePt = sel && sel->font.pointSize() > 0 ? sel->font.pointSize() : settings_.fontPointSize;
+        const int nextPt = std::clamp(basePt + direction * 2, 10, 72);
+        setFontPointSize(nextPt);
+        if (sel && sel->kind == ItemKind::Text) {
+            AnnotationItem after = *sel;
+            after.font.setPointSize(nextPt);
+            after.rect.setSize(measureAnnotationText(after));
+            doc_->commitModification(*sel, after, /*mergeKey=*/2);
+        }
+    } else if (targetKind == ItemKind::Highlighter) {
         const qreal next = std::clamp((sel ? sel->strokeWidth : settings_.highlighterWidth) + direction * 4.0,
                                       8.0, 48.0);
         setHighlighterWidth(next);
@@ -687,6 +976,9 @@ bool AnnotationController::keyPress(QKeyEvent *event)
 {
     if (!event) {
         return false;
+    }
+    if (editingText_) {
+        return true;
     }
     reapplyModifiers(event);
 
@@ -855,6 +1147,9 @@ bool AnnotationController::keyRelease(QKeyEvent *event)
 {
     if (!event) {
         return false;
+    }
+    if (editingText_) {
+        return true;
     }
     reapplyModifiers(event);
     if (event->key() == Qt::Key_Space && spaceHeld_) {

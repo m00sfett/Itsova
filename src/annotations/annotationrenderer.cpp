@@ -1,6 +1,7 @@
 #include "annotationrenderer.h"
 
 #include "annotationgeometry.h"
+#include "annotationtextlayout.h"
 
 #include <QFontMetricsF>
 #include <QPainterPath>
@@ -197,18 +198,9 @@ void drawNonSpotlightItem(QPainter &painter, const QRectF &logicalClipRect, cons
     case ItemKind::Redact:
         drawRedactItem(painter, item);
         break;
-    case ItemKind::Text: {
-        if (item.text.isEmpty()) {
-            break;
-        }
-        painter.save();
-        painter.setFont(item.font);
-        painter.setPen(item.color);
-        const int flags = int(item.textAlignment) | Qt::TextWordWrap;
-        painter.drawText(item.rect.normalized(), flags, item.text);
-        painter.restore();
+    case ItemKind::Text:
+        drawAnnotationText(painter, item);
         break;
-    }
     case ItemKind::Spotlight:
         break;
     }
@@ -319,7 +311,7 @@ QImage renderAnnotatedCrop(const QImage &nativeCrop, const QRectF &logicalCropRe
 
 void paintAnnotationOverlay(QPainter &painter, const QRectF &logicalViewportRect, const AnnotationDocument &document,
                             const QColor &accentColor, int hoveredId, const AnnotationItem *draftItem,
-                            const QImage *, qreal, const QPointF &)
+                            const QImage *, qreal, const QPointF &, int hiddenItemId)
 {
     if (!logicalViewportRect.isValid()) {
         return;
@@ -331,10 +323,24 @@ void paintAnnotationOverlay(QPainter &painter, const QRectF &logicalViewportRect
     QList<const AnnotationItem *> refs;
     refs.reserve(document.count() + (draftItem ? 1 : 0));
     for (const AnnotationItem &item : document.items()) {
+        if (hiddenItemId > 0 && item.id == hiddenItemId) {
+            continue;
+        }
         refs.append(&item);
     }
     if (draftItem) {
-        refs.append(draftItem);
+        if (draftItem->kind == ItemKind::Text && draftItem->text.isEmpty()) {
+            const QRectF r = draftItem->rect.normalized();
+            if (!r.isEmpty()) {
+                QPen pen(accentColor, 1.5, Qt::DashLine);
+                pen.setCosmetic(true);
+                painter.setPen(pen);
+                painter.setBrush(Qt::NoBrush);
+                painter.drawRect(r);
+            }
+        } else {
+            refs.append(draftItem);
+        }
     }
     renderFourStagePipeline(painter, logicalViewportRect, refs);
 

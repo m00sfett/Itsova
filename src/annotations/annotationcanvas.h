@@ -11,6 +11,8 @@
 namespace glimply
 {
 
+class InlineTextEditor;
+
 // Reusable interactive vector canvas widget displaying an image and managing annotations through
 // AnnotationController. Shared by CaptureOverlay workflows and QuickEditorWindow.
 class AnnotationCanvas : public QWidget
@@ -39,12 +41,14 @@ public:
     [[nodiscard]] QPointF logicalToWidget(const QPointF &logicalPos) const;
 
     [[nodiscard]] QImage renderExport() const;
+    [[nodiscard]] InlineTextEditor *textEditor() const;
 
 protected:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
@@ -58,6 +62,7 @@ private:
     AnnotationDocument *ownedDoc_ = nullptr;
     AnnotationDocument *doc_ = nullptr;
     AnnotationController *controller_ = nullptr;
+    InlineTextEditor *textEditor_ = nullptr;
     qreal zoom_ = 1.0;
     QPointF panOffset_;
     QPointF lastWidgetPos_;

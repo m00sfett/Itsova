@@ -1,5 +1,7 @@
 #include "annotationgeometry.h"
 
+#include "annotationtextlayout.h"
+
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -228,7 +230,8 @@ AnnotationItem applyHandleDrag(const AnnotationItem &startItem, AnnotationHandle
         break;
     case ItemKind::Text:
         if (handle == AnnotationHandle::Left || handle == AnnotationHandle::Right) {
-            item.rect = resizedBox(startItem.rect, handle, delta, DrawModifiers{false, mods.fromCenter}, 40.0);
+            item.rect = resizedBox(startItem.rect, handle, delta, DrawModifiers{false, mods.fromCenter}, 60.0);
+            item.rect.setSize(measureAnnotationText(item));
         }
         break;
     case ItemKind::Pen:

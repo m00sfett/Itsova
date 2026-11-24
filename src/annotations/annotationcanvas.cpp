@@ -1,7 +1,9 @@
 #include "annotationcanvas.h"
 
 #include "annotationrenderer.h"
+#include "inlinetexteditor.h"
 
+#include <QApplication>
 #include <QFocusEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
@@ -18,12 +20,36 @@ AnnotationCanvas::AnnotationCanvas(QWidget *parent)
     , ownedDoc_(new AnnotationDocument(this))
     , doc_(ownedDoc_)
     , controller_(new AnnotationController(doc_, this))
+    , textEditor_(new InlineTextEditor(this))
 {
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
     connect(doc_, &AnnotationDocument::changed, this, qOverload<>(&QWidget::update));
     connect(controller_, &AnnotationController::previewChanged, this, qOverload<>(&QWidget::update));
     connect(controller_, &AnnotationController::cursorChanged, this, &AnnotationCanvas::refreshCursor);
+
+    connect(controller_, &AnnotationController::textEditStarted, this,
+            [this](const AnnotationItem &item, bool isExisting) {
+                textEditor_->startEditing(item, isExisting, zoom_, panOffset_);
+            });
+    connect(controller_, &AnnotationController::textEditStyleUpdated, textEditor_, &InlineTextEditor::updateStyle);
+    connect(controller_, &AnnotationController::textEditCommitRequested, textEditor_, &InlineTextEditor::commit);
+    connect(controller_, &AnnotationController::textEditCancelRequested, textEditor_, &InlineTextEditor::cancel);
+
+    connect(textEditor_, &InlineTextEditor::draftChanged, controller_, &AnnotationController::updateActiveTextDraft);
+    connect(textEditor_, &InlineTextEditor::styleToggled, this, [this](const AnnotationItem &item) {
+        controller_->updateActiveTextDraft(item);
+    });
+    connect(textEditor_, &InlineTextEditor::committed, this,
+            [this](const AnnotationItem &item, bool, bool switchToSelect) {
+                controller_->updateActiveTextDraft(item);
+                controller_->commitTextEdit(switchToSelect);
+                setFocus(Qt::OtherFocusReason);
+            });
+    connect(textEditor_, &InlineTextEditor::cancelled, this, [this](int) {
+        controller_->cancelTextEdit();
+        setFocus(Qt::OtherFocusReason);
+    });
 }
 
 void AnnotationCanvas::setImage(const QImage &image, qreal scale)
@@ -64,6 +90,9 @@ void AnnotationCanvas::setDocument(AnnotationDocument *document)
     if (doc_ == next) {
         return;
     }
+    if (controller_->isEditingText()) {
+        textEditor_->cancel();
+    }
     disconnect(doc_, &AnnotationDocument::changed, this, qOverload<>(&QWidget::update));
     doc_ = next;
     connect(doc_, &AnnotationDocument::changed, this, qOverload<>(&QWidget::update));
@@ -81,11 +110,17 @@ AnnotationController *AnnotationCanvas::controller() const
     return controller_;
 }
 
+InlineTextEditor *AnnotationCanvas::textEditor() const
+{
+    return textEditor_;
+}
+
 void AnnotationCanvas::setZoom(qreal zoom)
 {
     const qreal clamped = std::clamp(zoom, 0.1, 16.0);
     if (!qFuzzyCompare(zoom_, clamped)) {
         zoom_ = clamped;
+        textEditor_->setViewTransform(zoom_, panOffset_);
         refreshCursor();
         update();
     }
@@ -100,6 +135,7 @@ void AnnotationCanvas::setPanOffset(const QPointF &offset)
 {
     if (panOffset_ != offset) {
         panOffset_ = offset;
+        textEditor_->setViewTransform(zoom_, panOffset_);
         update();
     }
 }
@@ -152,12 +188,17 @@ void AnnotationCanvas::paintEvent(QPaintEvent *)
 
     paintAnnotationOverlay(painter, logicalRect, *doc_, palette().color(QPalette::Highlight),
                            controller_->hoveredId(), controller_->draftItem(), &image_, imageScale_,
-                           QPointF(0.0, 0.0));
+                           QPointF(0.0, 0.0), controller_->editingTextItemId());
 }
 
 void AnnotationCanvas::mousePressEvent(QMouseEvent *event)
 {
     lastWidgetPos_ = event->position();
+    if (controller_->isEditingText() && event->button() == Qt::LeftButton) {
+        textEditor_->commit(false);
+        event->accept();
+        return;
+    }
     if (controller_->mousePress(widgetToLogical(event->position()), event->button(), event->modifiers(),
                                 8.0 / zoom_)) {
         event->accept();
@@ -186,6 +227,16 @@ void AnnotationCanvas::mouseReleaseEvent(QMouseEvent *event)
     QWidget::mouseReleaseEvent(event);
 }
 
+void AnnotationCanvas::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    lastWidgetPos_ = event->position();
+    if (controller_->mouseDoubleClick(widgetToLogical(event->position()), event->button(), event->modifiers())) {
+        event->accept();
+        return;
+    }
+    QWidget::mouseDoubleClickEvent(event);
+}
+
 void AnnotationCanvas::keyPressEvent(QKeyEvent *event)
 {
     if (controller_->keyPress(event)) {
@@ -206,6 +257,10 @@ void AnnotationCanvas::keyReleaseEvent(QKeyEvent *event)
 
 void AnnotationCanvas::focusOutEvent(QFocusEvent *event)
 {
+    if (QWidget *focused = QApplication::focusWidget(); focused && textEditor_->isAncestorOf(focused)) {
+        QWidget::focusOutEvent(event);
+        return;
+    }
     controller_->cancelActiveGesture();
     QWidget::focusOutEvent(event);
 }
