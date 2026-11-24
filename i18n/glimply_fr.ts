@@ -2871,6 +2871,30 @@
         <translation>Dossier de captures</translation>
     </message>
     <message>
+        <source>System default (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>glimply needs to restart to switch the language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restart now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Plasma widget follows the Plasma language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Start glimply when I log in</source>
         <translation>Démarrer glimply à l&apos;ouverture de session</translation>
     </message>

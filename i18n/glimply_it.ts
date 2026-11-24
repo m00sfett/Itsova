@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="it" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -30,11 +31,11 @@
     <name>CaptureService</name>
     <message>
         <source>KWin denied permission to capture the screen. Install glimply with its desktop entry to grant access to the KDE screenshot service.</source>
-        <translation>KWin ha negato l'autorizzazione ad acquisire lo schermo. Installa glimply con la sua voce del desktop per concedere l'accesso al servizio di schermate KDE.</translation>
+        <translation>KWin ha negato l&apos;autorizzazione ad acquisire lo schermo. Installa glimply con la sua voce del desktop per concedere l&apos;accesso al servizio di schermate KDE.</translation>
     </message>
     <message>
         <source>KWin timed out while capturing %1.</source>
-        <translation>Tempo scaduto per KWin durante l'acquisizione di %1.</translation>
+        <translation>Tempo scaduto per KWin durante l&apos;acquisizione di %1.</translation>
     </message>
     <message>
         <source>The window is no longer open.</source>
@@ -58,7 +59,7 @@
     </message>
     <message>
         <source>Could not create the screenshot image for %1.</source>
-        <translation>Impossibile creare l'immagine della schermata per %1.</translation>
+        <translation>Impossibile creare l&apos;immagine della schermata per %1.</translation>
     </message>
     <message>
         <source>The KDE screenshot service is unavailable on the session bus.</source>
@@ -171,15 +172,15 @@
     </message>
     <message>
         <source>Cannot save an empty image.</source>
-        <translation>Impossibile salvare un'immagine vuota.</translation>
+        <translation>Impossibile salvare un&apos;immagine vuota.</translation>
     </message>
     <message>
         <source>Could not encode image.</source>
-        <translation>Impossibile codificare l'immagine.</translation>
+        <translation>Impossibile codificare l&apos;immagine.</translation>
     </message>
     <message>
         <source>Cannot estimate size of an empty image.</source>
-        <translation>Impossibile stimare le dimensioni di un'immagine vuota.</translation>
+        <translation>Impossibile stimare le dimensioni di un&apos;immagine vuota.</translation>
     </message>
     <message>
         <source>Cannot create capture directory: %1</source>
@@ -191,15 +192,15 @@
     </message>
     <message>
         <source>The capture area or monitor scale is invalid.</source>
-        <translation>L'area di acquisizione o la scala dello schermo non è valida.</translation>
+        <translation>L&apos;area di acquisizione o la scala dello schermo non è valida.</translation>
     </message>
     <message>
         <source>The capture area is outside the monitor image.</source>
-        <translation>L'area di acquisizione è fuori dall'immagine dello schermo.</translation>
+        <translation>L&apos;area di acquisizione è fuori dall&apos;immagine dello schermo.</translation>
     </message>
     <message>
         <source>Could not allocate the cropped image.</source>
-        <translation>Impossibile allocare l'immagine ritagliata.</translation>
+        <translation>Impossibile allocare l&apos;immagine ritagliata.</translation>
     </message>
     <message>
         <source>The capture directory is empty.</source>
@@ -253,7 +254,7 @@
     <name>ProgrammaticAnnotator</name>
     <message>
         <source>Input image path is required.</source>
-        <translation>Il percorso dell'immagine di input è obbligatorio.</translation>
+        <translation>Il percorso dell&apos;immagine di input è obbligatorio.</translation>
     </message>
     <message>
         <source>Input file does not exist: %1</source>
@@ -261,7 +262,7 @@
     </message>
     <message>
         <source>Could not read input image: %1</source>
-        <translation>Impossibile leggere l'immagine di input: %1</translation>
+        <translation>Impossibile leggere l&apos;immagine di input: %1</translation>
     </message>
     <message>
         <source>Requested export image format is not supported on this system.</source>
@@ -269,46 +270,46 @@
     </message>
     <message>
         <source>Operation #%1 must be a JSON object.</source>
-        <translation>L'operazione #%1 deve essere un oggetto JSON.</translation>
+        <translation>L&apos;operazione #%1 deve essere un oggetto JSON.</translation>
     </message>
     <message>
         <source>Arrow operation #%1 requires x1, y1, x2, and y2.</source>
-        <translation>L'operazione freccia #%1 richiede x1, y1, x2 e y2.</translation>
+        <translation>L&apos;operazione freccia #%1 richiede x1, y1, x2 e y2.</translation>
     </message>
     <message>
         <source>Shape operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation>L'operazione forma #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
+        <translation>L&apos;operazione forma #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
         <source>Stroke operation #%1 requires at least 2 points.</source>
-        <translation>L'operazione tratto #%1 richiede almeno 2 punti.</translation>
+        <translation>L&apos;operazione tratto #%1 richiede almeno 2 punti.</translation>
     </message>
     <message>
         <source>Text operation #%1 requires x, y, and non-empty text.</source>
-        <translation>L'operazione testo #%1 richiede x, y e un testo non vuoto.</translation>
+        <translation>L&apos;operazione testo #%1 richiede x, y e un testo non vuoto.</translation>
     </message>
     <message>
         <source>Step operation #%1 requires x and y.</source>
-        <translation>L'operazione passaggio #%1 richiede x e y.</translation>
+        <translation>L&apos;operazione passaggio #%1 richiede x e y.</translation>
     </message>
     <message>
         <source>Spotlight operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation>L'operazione riflettore #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
+        <translation>L&apos;operazione riflettore #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
         <source>Redact operation #%1 requires x, y, width &gt; 0, height &gt; 0.</source>
-        <translation>L'operazione oscura #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
+        <translation>L&apos;operazione oscura #%1 richiede x, y, larghezza &gt; 0 e altezza &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>Tipo di annotazione «%1» non supportato all'operazione #%2.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>Tipo di annotazione «%1» non supportato all&apos;operazione #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
-        <translation>Impossibile generare l'immagine annotata.</translation>
+        <translation>Impossibile generare l&apos;immagine annotata.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
         <translation>Rifiuto di sovrascrivere il file di input «%1» senza overwrite=true.</translation>
     </message>
 </context>
@@ -324,23 +325,23 @@
     </message>
     <message>
         <source>The capture target no longer exists.</source>
-        <translation>L'obiettivo dell'acquisizione non esiste più.</translation>
+        <translation>L&apos;obiettivo dell&apos;acquisizione non esiste più.</translation>
     </message>
     <message>
         <source>Area %1: a different monitor is connected to %2 than when the area was defined.</source>
-        <translation>Area %1: sul connettore %2 è collegato un altro schermo rispetto a quando l'area è stata definita.</translation>
+        <translation>Area %1: sul connettore %2 è collegato un altro schermo rispetto a quando l&apos;area è stata definita.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer overlaps any connected monitor.</source>
-        <translation>L'area %1 è stata saltata: non si sovrappone più a nessuno schermo collegato.</translation>
+        <translation>L&apos;area %1 è stata saltata: non si sovrappone più a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: none of its monitors (%2) are connected.</source>
-        <translation>L'area %1 non è stata acquisita: nessuno dei suoi schermi (%2) è collegato.</translation>
+        <translation>L&apos;area %1 non è stata acquisita: nessuno dei suoi schermi (%2) è collegato.</translation>
     </message>
     <message>
         <source>Area %1 was not captured: it does not overlap any connected monitor.</source>
-        <translation>L'area %1 non è stata acquisita: non si sovrappone a nessuno schermo collegato.</translation>
+        <translation>L&apos;area %1 non è stata acquisita: non si sovrappone a nessuno schermo collegato.</translation>
     </message>
     <message>
         <source>%1 not connected — saved visible part of %2 on %3.</source>
@@ -348,11 +349,11 @@
     </message>
     <message>
         <source>Area %1 was skipped: monitor %2 is not connected.</source>
-        <translation>L'area %1 è stata saltata: lo schermo %2 non è collegato.</translation>
+        <translation>L&apos;area %1 è stata saltata: lo schermo %2 non è collegato.</translation>
     </message>
     <message>
         <source>Area %1 was skipped: it no longer fits on monitor %2.</source>
-        <translation>L'area %1 è stata saltata: non rientra più nello schermo %2.</translation>
+        <translation>L&apos;area %1 è stata saltata: non rientra più nello schermo %2.</translation>
     </message>
     <message>
         <source>Group %1 contains no targets.</source>
@@ -368,11 +369,11 @@
     </message>
     <message>
         <source>Monitor %1 could not be captured for the combined image.</source>
-        <translation>Impossibile acquisire lo schermo %1 per l'immagine combinata.</translation>
+        <translation>Impossibile acquisire lo schermo %1 per l&apos;immagine combinata.</translation>
     </message>
     <message>
         <source>Invalid monitor scale for combined capture.</source>
-        <translation>Scala dello schermo non valida per l'acquisizione combinata.</translation>
+        <translation>Scala dello schermo non valida per l&apos;acquisizione combinata.</translation>
     </message>
     <message>
         <source>Selection size is empty.</source>
@@ -380,7 +381,7 @@
     </message>
     <message>
         <source>There is not enough memory for the combined image.</source>
-        <translation>Memoria insufficiente per l'immagine combinata.</translation>
+        <translation>Memoria insufficiente per l&apos;immagine combinata.</translation>
     </message>
     <message>
         <source>Area %1: %2</source>
@@ -434,7 +435,7 @@
     </message>
     <message>
         <source>Draw arrow; hold Shift to snap angle (A)</source>
-        <translation>Disegna una freccia; tieni premuto Shift per bloccare l'angolo (A)</translation>
+        <translation>Disegna una freccia; tieni premuto Shift per bloccare l&apos;angolo (A)</translation>
     </message>
     <message>
         <source>Rectangle</source>
@@ -450,7 +451,7 @@
     </message>
     <message>
         <source>Draw ellipse; Shift for circle, Alt from center (E)</source>
-        <translation>Disegna un'ellisse; Shift per un cerchio, Alt dal centro (E)</translation>
+        <translation>Disegna un&apos;ellisse; Shift per un cerchio, Alt dal centro (E)</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -498,7 +499,7 @@
     </message>
     <message>
         <source>Highlight region and dim surroundings (S)</source>
-        <translation>Evidenzia l'area e oscura il resto (S)</translation>
+        <translation>Evidenzia l&apos;area e oscura il resto (S)</translation>
     </message>
     <message>
         <source>Undo (Ctrl+Z)</source>
@@ -530,7 +531,7 @@
     </message>
     <message>
         <source>Select Annotation Color</source>
-        <translation>Seleziona colore dell'annotazione</translation>
+        <translation>Seleziona colore dell&apos;annotazione</translation>
     </message>
     <message>
         <source>Width:</source>
@@ -690,7 +691,7 @@
     </message>
     <message>
         <source>Redaction strength</source>
-        <translation>Intensità dell'oscuramento</translation>
+        <translation>Intensità dell&apos;oscuramento</translation>
     </message>
     <message>
         <source>%1 px</source>
@@ -709,11 +710,11 @@
     <name>glimply::App</name>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation>Timeout dell'hook dopo %1 ms.</translation>
+        <translation>Timeout dell&apos;hook dopo %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed with exit code %1.</source>
-        <translation>L'hook non è riuscito con codice di uscita %1.</translation>
+        <translation>L&apos;hook non è riuscito con codice di uscita %1.</translation>
     </message>
     <message>
         <source>Post-capture hook failed</source>
@@ -730,7 +731,9 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>Intervallo per %1 interrotto dopo %n schermata.</numerusform><numerusform>Intervallo per %1 interrotto dopo %n schermate.</numerusform></translation>
+            <numerusform>Intervallo per %1 interrotto dopo %n schermata.</numerusform>
+            <numerusform>Intervallo per %1 interrotto dopo %n schermate.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -770,7 +773,7 @@
     </message>
     <message>
         <source>Toggle interval for area %1</source>
-        <translation>Attiva/disattiva intervallo per l'area %1</translation>
+        <translation>Attiva/disattiva intervallo per l&apos;area %1</translation>
     </message>
     <message>
         <source>Capture monitor %1</source>
@@ -790,7 +793,7 @@
     </message>
     <message>
         <source>Pin last capture to the screen</source>
-        <translation>Fissa l'ultima schermata sullo schermo</translation>
+        <translation>Fissa l&apos;ultima schermata sullo schermo</translation>
     </message>
     <message>
         <source>Show or hide pinned screenshots</source>
@@ -842,7 +845,7 @@
     </message>
     <message>
         <source>Could not start interval</source>
-        <translation>Impossibile avviare l'intervallo</translation>
+        <translation>Impossibile avviare l&apos;intervallo</translation>
     </message>
     <message>
         <source>Color copied</source>
@@ -867,7 +870,9 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>e %n altro</numerusform><numerusform>e altri %n</numerusform></translation>
+            <numerusform>e %n altro</numerusform>
+            <numerusform>e altri %n</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +881,9 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>%n schermata salvata</numerusform><numerusform>%n schermate salvate</numerusform></translation>
+            <numerusform>%n schermata salvata</numerusform>
+            <numerusform>%n schermate salvate</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -908,7 +915,7 @@
     </message>
     <message>
         <source>Check area monitor</source>
-        <translation>Controlla schermo dell'area</translation>
+        <translation>Controlla schermo dell&apos;area</translation>
     </message>
     <message>
         <source>Partial capture</source>
@@ -947,7 +954,7 @@
         <translation>Impossibile spostare nel cestino: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>Azione sconosciuta «%1».</translation>
     </message>
     <message>
@@ -956,7 +963,7 @@
     </message>
     <message>
         <source>There is no recent capture file to pin.</source>
-        <translation>Non c'è alcun file di schermata recente da fissare.</translation>
+        <translation>Non c&apos;è alcun file di schermata recente da fissare.</translation>
     </message>
     <message>
         <source>Save Pinned Screenshot</source>
@@ -980,7 +987,7 @@
     </message>
     <message>
         <source>Could not open image</source>
-        <translation>Impossibile aprire l'immagine</translation>
+        <translation>Impossibile aprire l&apos;immagine</translation>
     </message>
     <message>
         <source>Monitor %1 is not connected.</source>
@@ -1008,7 +1015,7 @@
     </message>
     <message>
         <source>Target query is empty.</source>
-        <translation>La ricerca dell'obiettivo è vuota.</translation>
+        <translation>La ricerca dell&apos;obiettivo è vuota.</translation>
     </message>
     <message>
         <source>No monitor is connected.</source>
@@ -1020,7 +1027,7 @@
     </message>
     <message>
         <source>Target “%1” matches multiple targets.</source>
-        <translation>L'obiettivo «%1» corrisponde a più obiettivi.</translation>
+        <translation>L&apos;obiettivo «%1» corrisponde a più obiettivi.</translation>
     </message>
     <message>
         <source>Target “%1” was not found.</source>
@@ -1028,11 +1035,11 @@
     </message>
     <message>
         <source>Area width and height must be positive.</source>
-        <translation>Larghezza e altezza dell'area devono essere positive.</translation>
+        <translation>Larghezza e altezza dell&apos;area devono essere positive.</translation>
     </message>
     <message>
         <source>Area name cannot be used in a file name.</source>
-        <translation>Il nome dell'area non può essere usato in un nome di file.</translation>
+        <translation>Il nome dell&apos;area non può essere usato in un nome di file.</translation>
     </message>
     <message>
         <source>Monitor “%1” is not connected.</source>
@@ -1052,10 +1059,10 @@
     </message>
     <message>
         <source>A capture countdown is already running.</source>
-        <translation>Un conto alla rovescia per l'acquisizione è già in corso.</translation>
+        <translation>Un conto alla rovescia per l&apos;acquisizione è già in corso.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
         <translation>Lo specificatore della finestra dopo «window:» non può essere vuoto.</translation>
     </message>
     <message>
@@ -1068,27 +1075,27 @@
     </message>
     <message>
         <source>Invalid region specification (expected region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation>Specifica dell'area non valida (atteso region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
+        <translation>Specifica dell&apos;area non valida (atteso region:&lt;monitor&gt;:&lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region geometry (expected &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</source>
-        <translation>Geometria dell'area non valida (atteso &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
+        <translation>Geometria dell&apos;area non valida (atteso &lt;x&gt;,&lt;y&gt;,&lt;w&gt;,&lt;h&gt;).</translation>
     </message>
     <message>
         <source>Invalid region coordinate value.</source>
-        <translation>Valore delle coordinate dell'area non valido.</translation>
+        <translation>Valore delle coordinate dell&apos;area non valido.</translation>
     </message>
     <message>
         <source>Region width and height must be positive.</source>
-        <translation>Larghezza e altezza dell'area devono essere positive.</translation>
+        <translation>Larghezza e altezza dell&apos;area devono essere positive.</translation>
     </message>
     <message>
         <source>Region lies outside monitor %1 (%2×%3).</source>
-        <translation>L'area è fuori dallo schermo %1 (%2×%3).</translation>
+        <translation>L&apos;area è fuori dallo schermo %1 (%2×%3).</translation>
     </message>
     <message>
         <source>Target is not available.</source>
-        <translation>L'obiettivo non è disponibile.</translation>
+        <translation>L&apos;obiettivo non è disponibile.</translation>
     </message>
     <message>
         <source>Groups produce multiple images and cannot be written to a single --out path, --stdout, or --clipboard.</source>
@@ -1104,7 +1111,7 @@
     </message>
     <message>
         <source>Capture countdown was cancelled.</source>
-        <translation>Il conto alla rovescia dell'acquisizione è stato annullato.</translation>
+        <translation>Il conto alla rovescia dell&apos;acquisizione è stato annullato.</translation>
     </message>
     <message>
         <source>Autostart</source>
@@ -1120,7 +1127,7 @@
     </message>
     <message>
         <source>Could not read saved image for inline MCP output: %1</source>
-        <translation>Impossibile leggere l'immagine salvata per l'output MCP incorporato: %1</translation>
+        <translation>Impossibile leggere l&apos;immagine salvata per l&apos;output MCP incorporato: %1</translation>
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
@@ -1128,7 +1135,7 @@
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
-        <translation>La richiesta MCP è stata negata dall'utente o è scaduta.</translation>
+        <translation>La richiesta MCP è stata negata dall&apos;utente o è scaduta.</translation>
     </message>
     <message>
         <source>glimply is shutting down.</source>
@@ -1143,19 +1150,19 @@
         <translation>MCP ha acquisito %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
+        <source>Unsupported image format &apos;%1&apos;.</source>
         <translation>Formato immagine «%1» non supportato.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
         <translation>«quality» deve essere un numero intero tra 1 e 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
+        <source>&apos;target&apos; is required.</source>
         <translation>«target» è obbligatorio.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>Un client MCP esterno vuole acquisire «%1» (%2).</translation>
     </message>
     <message>
@@ -1164,14 +1171,14 @@
     </message>
     <message>
         <source>An external MCP client wants to capture region %1x%2 at (%3, %4) on %5.</source>
-        <translation>Un client MCP esterno vuole acquisire l'area %1x%2 in (%3, %4) su %5.</translation>
+        <translation>Un client MCP esterno vuole acquisire l&apos;area %1x%2 in (%3, %4) su %5.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
+        <source>&apos;window_id&apos; is required.</source>
         <translation>«window_id» è obbligatorio.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>Un client MCP esterno vuole acquisire la finestra «%1».</translation>
     </message>
     <message>
@@ -1180,14 +1187,14 @@
     </message>
     <message>
         <source>An external MCP client wants to read the last capture (%1).</source>
-        <translation>Un client MCP esterno vuole leggere l'ultima schermata (%1).</translation>
+        <translation>Un client MCP esterno vuole leggere l&apos;ultima schermata (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>Un client MCP esterno vuole avviare acquisizioni a intervalli ogni %1 s per «%2».</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
         <translation>Specifica «target» oppure imposta «all»: true.</translation>
     </message>
     <message>
@@ -1195,15 +1202,15 @@
         <translation>annotate_image richiede un input_path non vuoto e un array operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>In modalità Elenco consentiti di MCP, input_path deve essere un file esistente nella cartella delle schermate di glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>In modalità Elenco consentiti di MCP, output_path deve trovarsi nella cartella delle schermate di glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>Un client MCP esterno vuole annotare «%1» (%2 operazioni).</translation>
     </message>
     <message>
@@ -1215,15 +1222,15 @@
     <name>glimply::AreaOverlay</name>
     <message>
         <source>Select an area on %1</source>
-        <translation>Seleziona un'area su %1</translation>
+        <translation>Seleziona un&apos;area su %1</translation>
     </message>
     <message>
         <source>Drag inside to move, edges or corners to resize. Shift: square, Alt: from centre, Space while dragging: reposition. Enter confirms, Escape cancels.</source>
-        <translation>Trascina all'interno per spostare, sui bordi o sugli angoli per ridimensionare. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Enter conferma, Escape annulla.</translation>
+        <translation>Trascina all&apos;interno per spostare, sui bordi o sugli angoli per ridimensionare. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Enter conferma, Escape annulla.</translation>
     </message>
     <message>
         <source>Drag to select an area across one or more monitors. Shift: square, Alt: from centre, Space while dragging: reposition. Escape cancels.</source>
-        <translation>Trascina per selezionare un'area su uno o più schermi. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Escape annulla.</translation>
+        <translation>Trascina per selezionare un&apos;area su uno o più schermi. Shift: quadrato, Alt: dal centro, Space durante il trascinamento: riposiziona. Escape annulla.</translation>
     </message>
     <message>
         <source>%1 × %2 at %3, %4</source>
@@ -1266,7 +1273,7 @@
     </message>
     <message>
         <source>Capture every monitor in one picture</source>
-        <translation>Acquisisci ogni schermo in un'unica immagine</translation>
+        <translation>Acquisisci ogni schermo in un&apos;unica immagine</translation>
     </message>
     <message>
         <source>Window</source>
@@ -1282,11 +1289,11 @@
     </message>
     <message>
         <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Acquisisci un'area o un gruppo salvato, oppure aggiungilo come rettangolo</translation>
+        <translation>Acquisisci un&apos;area o un gruppo salvato, oppure aggiungilo come rettangolo</translation>
     </message>
     <message>
         <source>Add a saved area or group as a rectangle</source>
-        <translation>Aggiungi un'area o un gruppo salvato come rettangolo</translation>
+        <translation>Aggiungi un&apos;area o un gruppo salvato come rettangolo</translation>
     </message>
     <message>
         <source>Delay</source>
@@ -1310,7 +1317,7 @@
     </message>
     <message>
         <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Campiona i colori dei pixel con una lente d'ingrandimento (I)</translation>
+        <translation>Campiona i colori dei pixel con una lente d&apos;ingrandimento (I)</translation>
     </message>
     <message>
         <source>Edit in Window</source>
@@ -1318,7 +1325,7 @@
     </message>
     <message>
         <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Apri nella finestra dell'Editor rapido per ritagliare, ingrandire e modificare nel dettaglio (Ctrl+E)</translation>
+        <translation>Apri nella finestra dell&apos;Editor rapido per ritagliare, ingrandire e modificare nel dettaglio (Ctrl+E)</translation>
     </message>
     <message>
         <source>Help</source>
@@ -1358,11 +1365,11 @@
     </message>
     <message>
         <source>Drag inside / edge</source>
-        <translation>Trascina all'interno / sul bordo</translation>
+        <translation>Trascina all&apos;interno / sul bordo</translation>
     </message>
     <message>
         <source>Move / resize the active rectangle or annotation</source>
-        <translation>Sposta / ridimensiona il rettangolo o l'annotazione attiva</translation>
+        <translation>Sposta / ridimensiona il rettangolo o l&apos;annotazione attiva</translation>
     </message>
     <message>
         <source>Shift / Alt while dragging</source>
@@ -1394,7 +1401,7 @@
     </message>
     <message>
         <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Attiva / elimina l'annotazione o il rettangolo in primo piano</translation>
+        <translation>Attiva / elimina l&apos;annotazione o il rettangolo in primo piano</translation>
     </message>
     <message>
         <source>Double-click</source>
@@ -1402,7 +1409,7 @@
     </message>
     <message>
         <source>Edit text annotation or save rectangle</source>
-        <translation>Modifica l'annotazione di testo o salva il rettangolo</translation>
+        <translation>Modifica l&apos;annotazione di testo o salva il rettangolo</translation>
     </message>
     <message>
         <source>Save rectangle as area</source>
@@ -1454,7 +1461,7 @@
     </message>
     <message>
         <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Sposta l'annotazione o il rettangolo attivo di 1 px / 10 px</translation>
+        <translation>Sposta l&apos;annotazione o il rettangolo attivo di 1 px / 10 px</translation>
     </message>
     <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
@@ -1482,7 +1489,7 @@
     </message>
     <message>
         <source>Delete active annotation or rectangle</source>
-        <translation>Elimina l'annotazione o il rettangolo attivo</translation>
+        <translation>Elimina l&apos;annotazione o il rettangolo attivo</translation>
     </message>
     <message>
         <source>Escape</source>
@@ -1510,7 +1517,7 @@
     </message>
     <message>
         <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Seleziona colore del pixel (Tab cambia formato, Alt+clic applica all'annotazione)</translation>
+        <translation>Seleziona colore del pixel (Tab cambia formato, Alt+clic applica all&apos;annotazione)</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
@@ -1518,7 +1525,7 @@
     </message>
     <message>
         <source>Open selection or screen in Quick Editor window</source>
-        <translation>Apri selezione o schermo nella finestra dell'Editor rapido</translation>
+        <translation>Apri selezione o schermo nella finestra dell&apos;Editor rapido</translation>
     </message>
     <message>
         <source>P</source>
@@ -1642,7 +1649,7 @@
     </message>
     <message>
         <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Apri selezione e annotazioni nella finestra dell'Editor rapido (Ctrl+E)</translation>
+        <translation>Apri selezione e annotazioni nella finestra dell&apos;Editor rapido (Ctrl+E)</translation>
     </message>
     <message>
         <source>Save as Area</source>
@@ -1682,7 +1689,7 @@
     </message>
     <message>
         <source>Area capture delay</source>
-        <translation>Ritardo di acquisizione dell'area</translation>
+        <translation>Ritardo di acquisizione dell&apos;area</translation>
     </message>
     <message>
         <source>None</source>
@@ -1691,7 +1698,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
+            <numerusform>%n secondo</numerusform>
+            <numerusform>%n secondi</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1711,7 +1720,7 @@
     </message>
     <message>
         <source>The shortcut is optional and works in every application. You can also capture the area from the glimply widget.</source>
-        <translation>La scorciatoia è facoltativa e funziona in ogni applicazione. Puoi anche acquisire l'area dal widget di glimply.</translation>
+        <translation>La scorciatoia è facoltativa e funziona in ogni applicazione. Puoi anche acquisire l&apos;area dal widget di glimply.</translation>
     </message>
     <message>
         <source>Save Area</source>
@@ -1720,12 +1729,16 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>Salva %n area come gruppo</numerusform><numerusform>Salva %n aree come gruppo</numerusform></translation>
+            <numerusform>Salva %n area come gruppo</numerusform>
+            <numerusform>Salva %n aree come gruppo</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Una scorciatoia acquisisce %n area nello stesso momento, ciascuna nel proprio file.</numerusform><numerusform>Una scorciatoia acquisisce tutte le %n aree nello stesso momento, ciascuna nel proprio file.</numerusform></translation>
+            <numerusform>Una scorciatoia acquisisce %n area nello stesso momento, ciascuna nel proprio file.</numerusform>
+            <numerusform>Una scorciatoia acquisisce tutte le %n aree nello stesso momento, ciascuna nel proprio file.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,16 +1747,20 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>Salva %n area</numerusform><numerusform>Salva %n aree</numerusform></translation>
+            <numerusform>Salva %n area</numerusform>
+            <numerusform>Salva %n aree</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
-        <translation>Ogni rettangolo diventa un'area con un nome automatico. Puoi rinominarle e assegnare loro scorciatoie in seguito nel widget o nelle impostazioni.</translation>
+        <translation>Ogni rettangolo diventa un&apos;area con un nome automatico. Puoi rinominarle e assegnare loro scorciatoie in seguito nel widget o nelle impostazioni.</translation>
     </message>
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>Salva %n area</numerusform><numerusform>Salva %n aree</numerusform></translation>
+            <numerusform>Salva %n area</numerusform>
+            <numerusform>Salva %n aree</numerusform>
+        </translation>
     </message>
     <message>
         <source>Clear or undo annotations to return to Live mode</source>
@@ -1818,11 +1835,11 @@
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Trascina all'interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo. Enter salva.</translation>
+        <translation>Trascina all&apos;interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo. Enter salva.</translation>
     </message>
     <message>
         <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Trascina all'interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo.</translation>
+        <translation>Trascina all&apos;interno per spostare, sui bordi per ridimensionare. Trascina altrove per un altro rettangolo.</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1858,7 +1875,7 @@
     </message>
     <message>
         <source>“%1” is already used by another area or group.</source>
-        <translation>«%1» è già usato da un'altra area o gruppo.</translation>
+        <translation>«%1» è già usato da un&apos;altra area o gruppo.</translation>
     </message>
     <message>
         <source>Area “%1” saved</source>
@@ -1871,7 +1888,9 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>%n area salvata</numerusform><numerusform>%n aree salvate</numerusform></translation>
+            <numerusform>%n area salvata</numerusform>
+            <numerusform>%n aree salvate</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -1907,7 +1926,7 @@
     </message>
     <message>
         <source>Back to Overlay</source>
-        <translation>Torna all'overlay</translation>
+        <translation>Torna all&apos;overlay</translation>
     </message>
     <message>
         <source>Unredacted screenshot deleted</source>
@@ -1945,7 +1964,7 @@
     </message>
     <message>
         <source>One image of every monitor</source>
-        <translation>Un'immagine per ogni schermo</translation>
+        <translation>Un&apos;immagine per ogni schermo</translation>
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
@@ -2061,11 +2080,11 @@
     <name>glimply::IntervalController</name>
     <message>
         <source>Invalid interval target.</source>
-        <translation>Obiettivo dell'intervallo non valido.</translation>
+        <translation>Obiettivo dell&apos;intervallo non valido.</translation>
     </message>
     <message>
         <source>The capture target is not available.</source>
-        <translation>L'obiettivo dell'acquisizione non è disponibile.</translation>
+        <translation>L&apos;obiettivo dell&apos;acquisizione non è disponibile.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
@@ -2073,7 +2092,7 @@
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
-        <translation>Acquisizione a intervalli per «%1» interrotta: l'obiettivo non è più disponibile.</translation>
+        <translation>Acquisizione a intervalli per «%1» interrotta: l&apos;obiettivo non è più disponibile.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: %2</source>
@@ -2084,7 +2103,7 @@
     <name>glimply::McpConfirmDialog</name>
     <message>
         <source>Allow MCP Capture?</source>
-        <translation>Consentire l'acquisizione tramite MCP?</translation>
+        <translation>Consentire l&apos;acquisizione tramite MCP?</translation>
     </message>
     <message>
         <source>Deny</source>
@@ -2108,7 +2127,9 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>Rimuovere definitivamente %n schermata fissata?</numerusform><numerusform>Rimuovere definitivamente %n schermate fissate?</numerusform></translation>
+            <numerusform>Rimuovere definitivamente %n schermata fissata?</numerusform>
+            <numerusform>Rimuovere definitivamente %n schermate fissate?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2174,11 +2195,11 @@
     </message>
     <message>
         <source>The captured image is empty.</source>
-        <translation>L'immagine acquisita è vuota.</translation>
+        <translation>L&apos;immagine acquisita è vuota.</translation>
     </message>
     <message>
         <source>Editor Actions</source>
-        <translation>Azioni dell'editor</translation>
+        <translation>Azioni dell&apos;editor</translation>
     </message>
     <message>
         <source>Save</source>
@@ -2194,7 +2215,7 @@
     </message>
     <message>
         <source>Save a new edited copy alongside the original without overwriting (Ctrl+Alt+S)</source>
-        <translation>Salva una nuova copia modificata accanto all'originale senza sovrascriverlo (Ctrl+Alt+S)</translation>
+        <translation>Salva una nuova copia modificata accanto all&apos;originale senza sovrascriverlo (Ctrl+Alt+S)</translation>
     </message>
     <message>
         <source>Save As…</source>
@@ -2210,7 +2231,7 @@
     </message>
     <message>
         <source>Copy flattened image to clipboard (Ctrl+C)</source>
-        <translation>Copia l'immagine appiattita negli appunti (Ctrl+C)</translation>
+        <translation>Copia l&apos;immagine appiattita negli appunti (Ctrl+C)</translation>
     </message>
     <message>
         <source>Copy Text</source>
@@ -2218,7 +2239,7 @@
     </message>
     <message>
         <source>Recognize the text of the image and copy it (Ctrl+Alt+C, needs tesseract)</source>
-        <translation>Riconosci il testo dell'immagine e copialo (Ctrl+Alt+C, richiede tesseract)</translation>
+        <translation>Riconosci il testo dell&apos;immagine e copialo (Ctrl+Alt+C, richiede tesseract)</translation>
     </message>
     <message>
         <source>Pin to Screen</source>
@@ -2226,7 +2247,7 @@
     </message>
     <message>
         <source>Keep the current image on screen above other windows</source>
-        <translation>Mantieni l'immagine corrente sullo schermo sopra le altre finestre</translation>
+        <translation>Mantieni l&apos;immagine corrente sullo schermo sopra le altre finestre</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -2234,11 +2255,11 @@
     </message>
     <message>
         <source>Sample pixel colors from the image (I). Tab cycles format, Alt+Click sets markup color.</source>
-        <translation>Campiona i colori dei pixel dell'immagine (I). Tab cambia formato, Alt+clic imposta il colore dell'annotazione.</translation>
+        <translation>Campiona i colori dei pixel dell&apos;immagine (I). Tab cambia formato, Alt+clic imposta il colore dell&apos;annotazione.</translation>
     </message>
     <message>
         <source>Drag on canvas to select crop area</source>
-        <translation>Trascina sulla tela per selezionare l'area di ritaglio</translation>
+        <translation>Trascina sulla tela per selezionare l&apos;area di ritaglio</translation>
     </message>
     <message>
         <source>Apply Crop</source>
@@ -2246,7 +2267,7 @@
     </message>
     <message>
         <source>Crop image cleanly to selection (Enter)</source>
-        <translation>Ritaglia l'immagine sulla selezione (Enter)</translation>
+        <translation>Ritaglia l&apos;immagine sulla selezione (Enter)</translation>
     </message>
     <message>
         <source>Cancel Crop</source>
@@ -2367,7 +2388,7 @@
     <name>glimply::SettingsWindow</name>
     <message>
         <source>Export image format</source>
-        <translation>Formato di esportazione dell'immagine</translation>
+        <translation>Formato di esportazione dell&apos;immagine</translation>
     </message>
     <message>
         <source>Lossless</source>
@@ -2403,7 +2424,7 @@
     </message>
     <message>
         <source>Interval duration in seconds</source>
-        <translation>Durata dell'intervallo in secondi</translation>
+        <translation>Durata dell&apos;intervallo in secondi</translation>
     </message>
     <message>
         <source>Only save when changed</source>
@@ -2423,7 +2444,7 @@
     </message>
     <message>
         <source>Maximum captures per interval run</source>
-        <translation>Numero massimo di schermate per esecuzione dell'intervallo</translation>
+        <translation>Numero massimo di schermate per esecuzione dell&apos;intervallo</translation>
     </message>
     <message>
         <source>No time limit</source>
@@ -2435,7 +2456,7 @@
     </message>
     <message>
         <source>Maximum interval duration in minutes</source>
-        <translation>Durata massima dell'intervallo in minuti</translation>
+        <translation>Durata massima dell&apos;intervallo in minuti</translation>
     </message>
     <message>
         <source>Post-capture hook mode</source>
@@ -2443,7 +2464,7 @@
     </message>
     <message>
         <source>Use global hook setting</source>
-        <translation>Usa impostazione globale dell'hook</translation>
+        <translation>Usa impostazione globale dell&apos;hook</translation>
     </message>
     <message>
         <source>Custom command</source>
@@ -2506,8 +2527,8 @@
         <translation>Hook post-acquisizione e automazione esterna</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,8 +2611,8 @@
         <translation>Seleziona sullo schermo…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
-        <translation>Pixel logici relativi all'angolo in alto a sinistra dello schermo. Le schermate usano la risoluzione nativa dello schermo.</translation>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <translation>Pixel logici relativi all&apos;angolo in alto a sinistra dello schermo. Le schermate usano la risoluzione nativa dello schermo.</translation>
     </message>
     <message>
         <source>Position and size:</source>
@@ -2635,11 +2656,11 @@
     </message>
     <message>
         <source>Interval toggle shortcut</source>
-        <translation>Scorciatoia per attivare/disattivare l'intervallo</translation>
+        <translation>Scorciatoia per attivare/disattivare l&apos;intervallo</translation>
     </message>
     <message>
         <source>Interval shortcut:</source>
-        <translation>Scorciatoia dell'intervallo:</translation>
+        <translation>Scorciatoia dell&apos;intervallo:</translation>
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
@@ -2666,24 +2687,24 @@
         <translation>Coordinate logiche globali su più schermi. Le schermate combinano gli schermi intersecati alla scala più alta.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
-        <translation>Nessuno degli schermi di quest'area è collegato. All'attivazione non viene salvato nulla.</translation>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <translation>Nessuno degli schermi di quest&apos;area è collegato. All&apos;attivazione non viene salvato nulla.</translation>
     </message>
     <message>
         <source>This area no longer overlaps any connected monitor. Adjust it or select it again.</source>
-        <translation>Quest'area non si sovrappone più a nessuno schermo collegato. Regolala o selezionala di nuovo.</translation>
+        <translation>Quest&apos;area non si sovrappone più a nessuno schermo collegato. Regolala o selezionala di nuovo.</translation>
     </message>
     <message>
         <source>%1 not connected. Triggering saves the visible part on %2.</source>
-        <translation>%1 non collegato. L'attivazione salva la parte visibile su %2.</translation>
+        <translation>%1 non collegato. L&apos;attivazione salva la parte visibile su %2.</translation>
     </message>
     <message>
         <source>A different monitor is connected to %1 than when this area was defined (%2).</source>
-        <translation>Sul connettore %1 è collegato un altro schermo rispetto a quando quest'area è stata definita (%2).</translation>
+        <translation>Sul connettore %1 è collegato un altro schermo rispetto a quando quest&apos;area è stata definita (%2).</translation>
     </message>
     <message>
         <source>One image of all monitors in their current arrangement, at the highest scale. Gaps are transparent.</source>
-        <translation>Un'unica immagine di tutti gli schermi nella disposizione attuale, alla scala più alta. Gli spazi vuoti sono trasparenti.</translation>
+        <translation>Un&apos;unica immagine di tutti gli schermi nella disposizione attuale, alla scala più alta. Gli spazi vuoti sono trasparenti.</translation>
     </message>
     <message>
         <source>%1 · %2 × %3 (logical)</source>
@@ -2695,11 +2716,11 @@
     </message>
     <message>
         <source>The monitor is not connected. This area is skipped when triggered.</source>
-        <translation>Lo schermo non è collegato. Quest'area viene saltata all'attivazione.</translation>
+        <translation>Lo schermo non è collegato. Quest&apos;area viene saltata all&apos;attivazione.</translation>
     </message>
     <message>
         <source>The area no longer fits on this monitor and is skipped when triggered. Adjust it or select it again.</source>
-        <translation>L'area non rientra più in questo schermo e viene saltata all'attivazione. Regolala o selezionala di nuovo.</translation>
+        <translation>L&apos;area non rientra più in questo schermo e viene saltata all&apos;attivazione. Regolala o selezionala di nuovo.</translation>
     </message>
     <message>
         <source>Monitor %1</source>
@@ -2719,7 +2740,7 @@
     </message>
     <message>
         <source>Remove area “%1”? Its shortcut is cleared and it is removed from all groups. Saved captures are kept.</source>
-        <translation>Rimuovere l'area «%1»? La sua scorciatoia viene cancellata e viene rimossa da tutti i gruppi. Le schermate salvate vengono conservate.</translation>
+        <translation>Rimuovere l&apos;area «%1»? La sua scorciatoia viene cancellata e viene rimossa da tutti i gruppi. Le schermate salvate vengono conservate.</translation>
     </message>
     <message>
         <source>Shortcut Already in Use</source>
@@ -2823,7 +2844,7 @@
     </message>
     <message>
         <source>Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target name). The file extension matches the chosen format. Existing files are never overwritten: a number is appended instead.</source>
-        <translation>Segnaposto: {date} (AAAA-MM-GG), {time} (HH-MM-SS), {area} (nome obiettivo). L'estensione del file corrisponde al formato scelto. I file esistenti non vengono mai sovrascritti: viene aggiunto un numero.</translation>
+        <translation>Segnaposto: {date} (AAAA-MM-GG), {time} (HH-MM-SS), {area} (nome obiettivo). L&apos;estensione del file corrisponde al formato scelto. I file esistenti non vengono mai sovrascritti: viene aggiunto un numero.</translation>
     </message>
     <message>
         <source>Number of recent captures to keep</source>
@@ -2839,7 +2860,7 @@
     </message>
     <message>
         <source>Shown in the widget and the tray menu. Interval captures are not listed. Clearing the list never deletes image files.</source>
-        <translation>Mostrate nel widget e nel menu del vassoio di sistema. Le acquisizioni a intervalli non vengono elencate. La cancellazione dell'elenco non elimina mai i file immagine.</translation>
+        <translation>Mostrate nel widget e nel menu del vassoio di sistema. Le acquisizioni a intervalli non vengono elencate. La cancellazione dell&apos;elenco non elimina mai i file immagine.</translation>
     </message>
     <message>
         <source>History cleared</source>
@@ -2850,8 +2871,32 @@
         <translation>Cartella delle acquisizioni</translation>
     </message>
     <message>
+        <source>System default (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Language:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>glimply needs to restart to switch the language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restart now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Plasma widget follows the Plasma language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>glimply could not restart itself. Quit and start it again to switch the language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Start glimply when I log in</source>
-        <translation>Avvia glimply all'accesso</translation>
+        <translation>Avvia glimply all&apos;accesso</translation>
     </message>
     <message>
         <source>Startup:</source>
@@ -2871,7 +2916,7 @@
     </message>
     <message>
         <source>Print saves all monitors right away. Turning this off gives the Print key back to the application that had it before, usually Spectacle.</source>
-        <translation>Print salva subito tutti gli schermi. Disattivando questa opzione, il tasto Print torna all'applicazione che lo usava prima, di solito Spectacle.</translation>
+        <translation>Print salva subito tutti gli schermi. Disattivando questa opzione, il tasto Print torna all&apos;applicazione che lo usava prima, di solito Spectacle.</translation>
     </message>
     <message>
         <source>Open the selection overlay after saving</source>
@@ -2903,7 +2948,7 @@
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation>Fermo mostra l'istante in cui hai premuto Print. Dal vivo lascia i video in riproduzione e acquisisce al salvataggio. Space cambia modalità nella sovrimpressione in qualsiasi momento.</translation>
+        <translation>Fermo mostra l&apos;istante in cui hai premuto Print. Dal vivo lascia i video in riproduzione e acquisisce al salvataggio. Space cambia modalità nella sovrimpressione in qualsiasi momento.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -2919,7 +2964,7 @@
     </message>
     <message>
         <source>Show magnifier loupe while selecting</source>
-        <translation>Mostra la lente d'ingrandimento durante la selezione</translation>
+        <translation>Mostra la lente d&apos;ingrandimento durante la selezione</translation>
     </message>
     <message>
         <source>Loupe:</source>
@@ -2927,7 +2972,7 @@
     </message>
     <message>
         <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Mostra un'anteprima ingrandita di 11 × 11 pixel nativi durante il trascinamento o il ridimensionamento di una selezione ferma.</translation>
+        <translation>Mostra un&apos;anteprima ingrandita di 11 × 11 pixel nativi durante il trascinamento o il ridimensionamento di una selezione ferma.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -2975,7 +3020,7 @@
     </message>
     <message>
         <source>English is not installed (package tesseract-data-eng).</source>
-        <translation>L'inglese non è installato (pacchetto tesseract-data-eng).</translation>
+        <translation>L&apos;inglese non è installato (pacchetto tesseract-data-eng).</translation>
     </message>
     <message>
         <source>Post-Capture Command Hook</source>
@@ -2999,7 +3044,7 @@
     </message>
     <message>
         <source>Hook timeout in seconds</source>
-        <translation>Timeout dell'hook in secondi</translation>
+        <translation>Timeout dell&apos;hook in secondi</translation>
     </message>
     <message>
         <source>Timeout:</source>
@@ -3087,7 +3132,7 @@
     </message>
     <message>
         <source>Running test hook…</source>
-        <translation>Esecuzione dell'hook di prova…</translation>
+        <translation>Esecuzione dell&apos;hook di prova…</translation>
     </message>
     <message>
         <source>Hook succeeded (exit 0, %1 ms).</source>
@@ -3095,7 +3140,7 @@
     </message>
     <message>
         <source>Hook timed out after %1 ms.</source>
-        <translation>Timeout dell'hook dopo %1 ms.</translation>
+        <translation>Timeout dell&apos;hook dopo %1 ms.</translation>
     </message>
     <message>
         <source>Hook failed: %1</source>
@@ -3174,7 +3219,7 @@
     </message>
     <message>
         <source>Clears the list; the image files stay where they are</source>
-        <translation>Cancella l'elenco; i file immagine restano dove sono</translation>
+        <translation>Cancella l&apos;elenco; i file immagine restano dove sono</translation>
     </message>
     <message>
         <source>Capturing in %1 s…</source>
@@ -3239,7 +3284,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
+            <numerusform>%n secondo</numerusform>
+            <numerusform>%n secondi</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3374,7 +3421,7 @@
     </message>
     <message>
         <source>Could not read captured image bytes for --stdout.</source>
-        <translation>Impossibile leggere i byte dell'immagine acquisita per --stdout.</translation>
+        <translation>Impossibile leggere i byte dell&apos;immagine acquisita per --stdout.</translation>
     </message>
     <message>
         <source>Failed reading image stream.</source>
@@ -3422,11 +3469,11 @@
     </message>
     <message>
         <source>“%1” is not an area.</source>
-        <translation>«%1» non è un'area.</translation>
+        <translation>«%1» non è un&apos;area.</translation>
     </message>
     <message>
         <source>Opened editor for area %1.</source>
-        <translation>Editor aperto per l'area %1.</translation>
+        <translation>Editor aperto per l&apos;area %1.</translation>
     </message>
     <message>
         <source>Usage: glimply area rename &lt;id-or-name&gt; &lt;new-name&gt; [--json]</source>
@@ -3501,8 +3548,8 @@
         <translation>Valore mancante per --mode.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode deve essere 'frozen' o 'live'.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode deve essere &apos;frozen&apos; o &apos;live&apos;.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3540,7 +3587,7 @@ Scriptable CLI subcommands:
         <translation>Strumento leggero per schermate e annotazioni di KDE
 
 Sottocomandi CLI programmabili:
-  capture &lt;target&gt;   Acquisisci un'area, un gruppo, uno schermo, tutti gli schermi o una finestra
+  capture &lt;target&gt;   Acquisisci un&apos;area, un gruppo, uno schermo, tutti gli schermi o una finestra
   list               Elenca obiettivi configurati, schermi o finestre aperte
   area               Aggiungi, modifica, rinomina o rimuovi aree salvate
   interval           Avvia, ferma o ispeziona acquisizioni a intervalli
@@ -3549,11 +3596,11 @@ Sottocomandi CLI programmabili:
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
-        <translation>File immagine da aprire nella finestra dell'Editor rapido.</translation>
+        <translation>File immagine da aprire nella finestra dell&apos;Editor rapido.</translation>
     </message>
     <message>
         <source>Open an image file in the Quick Editor window.</source>
-        <translation>Apri un file immagine nella finestra dell'Editor rapido.</translation>
+        <translation>Apri un file immagine nella finestra dell&apos;Editor rapido.</translation>
     </message>
     <message>
         <source>Release the Print key shortcut and exit.</source>
