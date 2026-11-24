@@ -1,24 +1,14 @@
 #include "mcppolicy.h"
 
-#include <QCoreApplication>
-
 namespace glimply
 {
-namespace
-{
 
-class McpPolicyText
-{
-    Q_DECLARE_TR_FUNCTIONS(McpPolicy)
-};
-
-} // namespace
-
+// Denial reasons go back to the MCP client and stay English whatever the UI language (#51).
 McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolName, const QString &resolvedTargetId)
 {
     if (!config.enabled) {
         return {McpDecision::Deny,
-                McpPolicyText::tr("MCP server access is disabled. Enable it in glimply Settings -> Automation -> "
+                QStringLiteral("MCP server access is disabled. Enable it in glimply Settings -> Automation -> "
                                   "Local MCP Server.")};
     }
 
@@ -36,7 +26,7 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
             || toolName == QLatin1String("start_interval") || toolName == QLatin1String("annotate_image")) {
             return {McpDecision::NeedsConfirm, {}};
         }
-        return {McpDecision::Deny, McpPolicyText::tr("Unknown MCP tool: %1").arg(toolName)};
+        return {McpDecision::Deny, QStringLiteral("Unknown MCP tool: %1").arg(toolName)};
     }
 
     // McpAccessMode::Allowlist
@@ -45,11 +35,11 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
     }
     if (toolName == QLatin1String("list_windows")) {
         return {McpDecision::Deny,
-                McpPolicyText::tr("Window listing is disabled while MCP access mode is set to Allowlist.")};
+                QStringLiteral("Window listing is disabled while MCP access mode is set to Allowlist.")};
     }
     if (toolName == QLatin1String("capture_region") || toolName == QLatin1String("capture_window")) {
         return {McpDecision::Deny,
-                McpPolicyText::tr("Arbitrary regions and windows are blocked in MCP Allowlist mode. Choose explicitly "
+                QStringLiteral("Arbitrary regions and windows are blocked in MCP Allowlist mode. Choose explicitly "
                                   "allowlisted targets or change access scope in glimply Settings -> Automation.")};
     }
     if (toolName == QLatin1String("annotate_image")) {
@@ -61,7 +51,7 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
             return {McpDecision::Allow, {}};
         }
         return {McpDecision::Deny,
-                McpPolicyText::tr("Target '%1' is not in the MCP allowlist. Approve it in glimply Settings -> "
+                QStringLiteral("Target '%1' is not in the MCP allowlist. Approve it in glimply Settings -> "
                                   "Automation -> Local MCP Server.")
                     .arg(resolvedTargetId)};
     }
@@ -70,10 +60,10 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
             return {McpDecision::Allow, {}};
         }
         return {McpDecision::Deny,
-                McpPolicyText::tr("The last capture is not from an allowlisted MCP target.")};
+                QStringLiteral("The last capture is not from an allowlisted MCP target.")};
     }
 
-    return {McpDecision::Deny, McpPolicyText::tr("Unknown MCP tool: %1").arg(toolName)};
+    return {McpDecision::Deny, QStringLiteral("Unknown MCP tool: %1").arg(toolName)};
 }
 
 } // namespace glimply

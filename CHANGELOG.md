@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - Unreleased
+
+Public release readiness: translations, packaging and documentation. The repository stays private until 1.0.0.
+
+### Added
+
+- Translation infrastructure (#51): the application uses Qt catalogs (`i18n/glimply_<lang>.ts`, compiled to `.qm` and installed to `share/glimply/translations`), the Plasma widget uses gettext catalogs (`plasmoid/po`, installed to `share/locale`). Catalogs exist for Arabic, Chinese (Simplified and Traditional), Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian and Vietnamese; English is the source language.
+- glimply picks its language from `[General] Language` in `glimplyrc` when set, else from the system language, else English. KDE and Qt dialogs follow the same language, so a window never mixes two languages. Right-to-left languages mirror the layout.
+- `scripts/update-translations.sh` refreshes all catalogs from the code; `scripts/check-translations.py` checks them (placeholders, accelerators, plural forms, untranslated entries) and runs as a CTest test. `i18n/glossary.md` holds the terminology and the words that are never translated.
+
+### Changed
+
+- MCP denial messages and `--json` CLI output stay English whatever the UI language; human-readable CLI messages follow it.
+- English plural forms are now correct where a count is shown ("1 capture", "3 seconds").
+
 ## [0.7.1] - 2026-11-24
 
 ### Fixed

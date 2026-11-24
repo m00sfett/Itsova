@@ -2372,9 +2372,9 @@ void CaptureOverlay::openAreaPanel()
     auto *delayCombo = new QComboBox(areaPanel_);
     delayCombo->setAccessibleName(tr("Area capture delay"));
     delayCombo->addItem(tr("None"), 0);
-    delayCombo->addItem(tr("3 seconds"), 3);
-    delayCombo->addItem(tr("5 seconds"), 5);
-    delayCombo->addItem(tr("10 seconds"), 10);
+    delayCombo->addItem(tr("%n seconds", nullptr, 3), 3);
+    delayCombo->addItem(tr("%n seconds", nullptr, 5), 5);
+    delayCombo->addItem(tr("%n seconds", nullptr, 10), 10);
     delayCombo->addItem(tr("Custom…"), -1);
     form->addRow(tr("Delay:"), delayCombo);
     auto lastDelayIdx = std::make_shared<int>(0);
@@ -2404,7 +2404,7 @@ void CaptureOverlay::openAreaPanel()
         }
         const QSignalBlocker block(delayCombo);
         const int insertAt = delayCombo->count() - 1;
-        delayCombo->insertItem(insertAt, tr("%1 seconds").arg(chosen), chosen);
+        delayCombo->insertItem(insertAt, tr("%n seconds", nullptr, chosen), chosen);
         delayCombo->setCurrentIndex(insertAt);
         *lastDelayIdx = insertAt;
     });

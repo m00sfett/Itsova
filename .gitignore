@@ -12,3 +12,6 @@ GEMINI.md
 .claude/
 /.idea/
 /.vscode/
+
+# Python bytecode
+__pycache__/
