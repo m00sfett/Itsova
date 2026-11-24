@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - Unreleased
+
+Overlay redesign and capture latency (milestone 0.9.0). The repository stays private until 1.0.0.
+
+### Added
+
+- Latency measurement (#67): every Print capture records how long it took from the key press (kglobalaccel timestamp) to the capture request, the pixels in memory, the first overlay frame and the written file. `glimply latency [--last N] [--json]` shows the last 50 captures with median, 95th percentile and maximum (D-Bus `Control.LatencyReport()`). `scripts/measure-latency.sh` measures a build in a nested, virtual KWin with a throw-away home, without touching the desktop session.
+
+### Changed
+
+- Faster Print overlay (#67): composing, encoding and writing the full screenshot now run in the background, so the overlay opens as soon as the pixels are captured. Measured in a nested KWin (median of 20): overlay after 16 ms instead of 75 ms with one 1920×1080 monitor, 26 ms instead of 143 ms with two. The file is still always written; actions that need it wait for it, and the clipboard and history follow once it is on disk.
+- Visible pins no longer delay every capture by a fixed 250 ms (#67): glimply waits until the compositor has shown the transparent pin frames (Wayland frame callback), at most 250 ms. Measured with one pin: pixels in memory after 11 ms instead of 257 ms; pins stay invisible in captures (checked in 20 of 20 captures against a control capture that shows the pin).
+
 ## [0.8.0] - Unreleased
 
 Public release readiness: translations, packaging and documentation. The repository stays private until 1.0.0.

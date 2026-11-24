@@ -108,6 +108,7 @@ glimply list [--kind targets|monitors|windows] [--json]
 glimply area add|edit|rename|remove ...
 glimply interval start|stop|status ...
 glimply history [--limit N] [--json]
+glimply latency [--last N] [--json]
 glimply -e <file>
 glimply mcp
 glimply --release-print-key
