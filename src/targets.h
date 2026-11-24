@@ -70,6 +70,22 @@ struct HookOverride
     bool operator==(const HookOverride &) const = default;
 };
 
+enum class McpAccessMode {
+    Allowlist,
+    ConfirmPerCapture,
+    FullSession,
+};
+
+struct McpConfig
+{
+    bool enabled = false;
+    McpAccessMode accessMode = McpAccessMode::Allowlist;
+    QStringList allowedTargetIds;
+    bool notifyOnCapture = true;
+
+    bool operator==(const McpConfig &) const = default;
+};
+
 struct AreaMonitorBinding
 {
     QString connector;
@@ -161,6 +177,7 @@ public:
     QHash<QString, IntervalConfig> builtInIntervals;
     HookConfig hook;
     QHash<QString, HookOverride> builtInHookOverrides;
+    McpConfig mcp;
     int captureDelaySeconds = 0;
     bool keepDelayActive = false;
 

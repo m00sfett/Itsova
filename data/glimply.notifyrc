@@ -49,3 +49,9 @@ Name=Post-capture hook failed
 Comment=A configured post-capture command exited with an error or timed out
 Action=Popup
 Urgency=Normal
+
+[Event/mcpCapture]
+Name=MCP capture executed
+Comment=An external local MCP client captured a screenshot
+Action=Popup
+Urgency=Low

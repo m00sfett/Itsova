@@ -129,7 +129,7 @@ private:
     QCheckBox *showSelectionLoupe_ = nullptr;
     KKeySequenceWidget *colorPickerShortcut_ = nullptr;
 
-    // Automation page (#24 hooks, #25 MCP added next)
+    // Automation page (#24 hooks, #25 MCP)
     QCheckBox *hookEnabled_ = nullptr;
     QWidget *hookDetails_ = nullptr;
     QLineEdit *hookCommand_ = nullptr;
@@ -137,6 +137,17 @@ private:
     QCheckBox *hookOnInterval_ = nullptr;
     QPushButton *testHookButton_ = nullptr;
     QLabel *hookTestStatus_ = nullptr;
+
+    QCheckBox *mcpEnabled_ = nullptr;
+    QWidget *mcpDetails_ = nullptr;
+    QComboBox *mcpAccessMode_ = nullptr;
+    QWidget *mcpAllowlistBox_ = nullptr;
+    QListWidget *mcpAllowlistList_ = nullptr;
+    QLabel *mcpAllowlistEmpty_ = nullptr;
+    QLabel *mcpFullWarning_ = nullptr;
+    QCheckBox *mcpNotify_ = nullptr;
+    QLineEdit *mcpCommandDisplay_ = nullptr;
+    QPushButton *mcpCopyButton_ = nullptr;
 };
 
 } // namespace glimply

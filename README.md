@@ -178,10 +178,29 @@ glimply overlay --mode live --delay 3
 
 Exit codes: `0` success, `1` capture/runtime error, `2` invalid arguments or group conflict, `3` target not found or unavailable.
 
-The session bus interface (`io.github.m00sfett.glimply`, `/Control`, `io.github.m00sfett.glimply.Control`) exposes `Targets`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `CaptureSync`, `Trigger`, `AddArea`, `AddAreaRect`, `EditArea`, `Rename`, `Remove`, `Intervals`, `StartInterval`, `StopInterval`, `StopAllIntervals`, `OpenOverlay`, `PickColor`, and signals `Changed`, `IntervalsChanged`, and `Captured`. Example:
+The session bus interface (`io.github.m00sfett.glimply`, `/Control`, `io.github.m00sfett.glimply.Control`) exposes `Targets`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `CaptureSync`, `McpDispatch`, `Trigger`, `AddArea`, `AddAreaRect`, `EditArea`, `Rename`, `Remove`, `Intervals`, `StartInterval`, `StopInterval`, `StopAllIntervals`, `OpenOverlay`, `PickColor`, and signals `Changed`, `IntervalsChanged`, and `Captured`. Example:
 
 ```sh
 busctl --user call io.github.m00sfett.glimply /Control io.github.m00sfett.glimply.Control Trigger s all
+```
+
+### Local MCP server (opt-in, stdio only)
+
+Under *Configure glimply… → Automation → Local MCP Server*, you can expose glimply to local MCP clients (Claude Code, Codex, Cursor) over JSON-RPC 2.0 on `stdin`/`stdout` with zero open network ports. MCP access is **disabled by default** and supports three scopes:
+
+- **Allowlist only (recommended):** Only checked areas and groups can be listed or captured; arbitrary windows/regions are blocked, and `annotate_image` is confined to glimply's capture folder.
+- **Confirm every capture:** Shows a topmost Breeze confirmation dialog (`Deny` default, 30 s auto-deny countdown) before capturing, reading the last image, starting an interval, or annotating.
+- **Full session access:** Unprompted capture access for trusted local automation sessions.
+
+Example client configuration (`mcpServers`):
+
+```json
+{
+  "glimply": {
+    "command": "glimply",
+    "args": ["mcp"]
+  }
+}
 ```
 
 ## Development

@@ -859,6 +859,9 @@ QJsonObject captureRequestToJson(const CliCaptureRequest &request)
     obj.insert(QStringLiteral("toStdout"), request.toStdout);
     obj.insert(QStringLiteral("clipboard"), request.clipboard);
     obj.insert(QStringLiteral("noSave"), request.noSave);
+    if (!request.triggerKind.isEmpty()) {
+        obj.insert(QStringLiteral("triggerKind"), request.triggerKind);
+    }
     return obj;
 }
 
@@ -892,6 +895,7 @@ CliCaptureRequest captureRequestFromJson(const QJsonObject &obj, bool *ok)
     req.toStdout = obj.value(QStringLiteral("toStdout")).toBool(false);
     req.clipboard = obj.value(QStringLiteral("clipboard")).toBool(false);
     req.noSave = obj.value(QStringLiteral("noSave")).toBool(false);
+    req.triggerKind = obj.value(QStringLiteral("triggerKind")).toString();
     if (ok) {
         *ok = !req.target.isEmpty();
     }
