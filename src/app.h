@@ -36,6 +36,7 @@ class CountdownController;
 class HookRunner;
 struct HookResult;
 class IntervalController;
+class PinManager;
 class ThumbnailCache;
 struct McpToolResponse;
 class QuickEditorWindow;
@@ -135,6 +136,10 @@ public:
     // action: "open", "edit", "copy", "folder" or "trash". path must belong to the history entry;
     // an empty path means every file of the entry. Returns an error message or an empty string.
     QString historyAction(const QString &action, const QString &entryId, const QString &path);
+    // Pin-to-Screen (#28). logicalRect is where the content was on screen (global, logical).
+    void pinImage(const QImage &image, const QRect &logicalRect = {});
+    void pinLastCapture();
+    void pinMoved(const QString &id, int x, int y);
     void clearHistory();
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
@@ -158,6 +163,9 @@ private:
     void notifyError(const QString &title, const QStringList &messages);
     void showInFolder(const QStringList &paths);
     void pruneHistory();
+    void savePinImageAs(const QImage &image);
+    // Makes pins transparent, then calls start; pins come back when owner is destroyed.
+    void startWithPinsHidden(QObject *owner, std::function<void()> start);
     void historyModified(bool sweepThumbnails);
     void requestThumbnails();
 
@@ -171,6 +179,7 @@ private:
     CountdownBanner *countdownBanner_;
     IntervalController *intervals_;
     HookRunner *hooks_;
+    PinManager *pins_ = nullptr;
     QPointer<QObject> settings_;
     QPointer<QObject> selector_;
     QPointer<CaptureSession> session_;

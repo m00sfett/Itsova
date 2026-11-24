@@ -168,6 +168,16 @@ void ControlService::ClearHistory()
     app_->clearHistory();
 }
 
+void ControlService::PinMoved(const QString &id, int x, int y)
+{
+    app_->pinMoved(id, x, y);
+}
+
+void ControlService::PinLastCapture()
+{
+    app_->pinLastCapture();
+}
+
 void ControlService::OpenLastCapture()
 {
     app_->openLastCapture();

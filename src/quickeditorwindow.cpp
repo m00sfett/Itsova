@@ -151,6 +151,20 @@ void QuickEditorWindow::buildUi()
     copyAction_->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyAction_->setToolTip(tr("Copy flattened image to clipboard (Ctrl+C)"));
     connect(copyAction_, &QAction::triggered, this, &QuickEditorWindow::copyToClipboard);
+    QAction *pinAction = fileBar->addAction(QIcon::fromTheme(QStringLiteral("window-pin")), tr("Pin to Screen"));
+    pinAction->setToolTip(tr("Keep the current image on screen above other windows"));
+    connect(pinAction, &QAction::triggered, this, [this] {
+        if (!valid_) {
+            return;
+        }
+        if (canvas_->controller()->isEditingText()) {
+            canvas_->controller()->requestCommitActiveText(false);
+        }
+        const QImage exported = canvas_->renderExport();
+        if (!exported.isNull()) {
+            Q_EMIT pinRequested(exported);
+        }
+    });
 
     fileBar->addSeparator();
 

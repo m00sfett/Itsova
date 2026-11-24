@@ -61,3 +61,9 @@ Name=Recent capture action
 Comment=A recent capture was copied or moved to the trash
 Action=Popup
 Urgency=Low
+
+[Event/pinRemoved]
+Name=Pin removed
+Comment=A pinned screenshot was removed and can still be restored for a few seconds
+Action=Popup
+Urgency=Low

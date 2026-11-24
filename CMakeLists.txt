@@ -25,6 +25,7 @@ add_executable(glimply
     src/colorpicker.cpp
     src/controlservice.cpp
     src/captureoverlay.cpp
+    src/pinmanager.cpp
     src/printkey.cpp
     src/settingswindow.cpp
     src/shortcutmanager.cpp
@@ -71,8 +72,10 @@ add_library(glimply_capture STATIC
     src/hookrunner.cpp
     src/imageoutput.cpp
     src/intervalcontroller.cpp
+    src/kwinpinscript.cpp
     src/mcppolicy.cpp
     src/mcpserver.cpp
+    src/pinstore.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
     src/selectionmodel.cpp
@@ -95,6 +98,7 @@ add_library(glimply_ui STATIC
     src/countdowntimer.cpp
     src/exportdialog.cpp
     src/mcpconfirmdialog.cpp
+    src/pinwindow.cpp
     src/pixelloupe.cpp
     src/quickeditorwindow.cpp
 )
@@ -184,6 +188,9 @@ if(BUILD_TESTING)
     add_executable(historytest tests/historytest.cpp)
     target_link_libraries(historytest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME history COMMAND historytest)
+    add_executable(pintest tests/pintest.cpp)
+    target_link_libraries(pintest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME pin COMMAND pintest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

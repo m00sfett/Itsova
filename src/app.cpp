@@ -13,6 +13,7 @@
 #include "mcpconfirmdialog.h"
 #include "mcppolicy.h"
 #include "mcpserver.h"
+#include "pinmanager.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
 #include "controlservice.h"
@@ -42,6 +43,7 @@
 #include <QDBusPendingCall>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QFile>
 #include <QFileInfo>
 #include <QFutureWatcher>
@@ -59,6 +61,7 @@
 #include <QSet>
 #include <QStandardPaths>
 #include <QTemporaryFile>
+#include <QThread>
 #include <QTimer>
 #include <QUrl>
 #include <QtConcurrent>
@@ -81,13 +84,35 @@ App::App(QObject *parent)
           [this](TriggerPlan plan, const QString &dir, const QString &tmpl,
                  std::optional<TriggerEngine::FrameMap> prev,
                  std::function<void(TriggerResult, TriggerEngine::FrameMap)> done) {
-              engine_->runIntervalTick(std::move(plan), dir, tmpl, std::move(prev), std::move(done));
+              // Pins turn transparent for the tick so they never end up in a capture (#28).
+              const int wait = pins_->beginCapture();
+              auto run = [this, plan, dir, tmpl, prev, done]() {
+                  engine_->runIntervalTick(plan, dir, tmpl, prev,
+                                           [this, done](TriggerResult result, TriggerEngine::FrameMap frames) {
+                                               pins_->endCapture();
+                                               done(std::move(result), std::move(frames));
+                                           });
+              };
+              if (wait > 0) {
+                  QTimer::singleShot(wait, this, run);
+              } else {
+                  run();
+              }
           },
           this))
     , hooks_(new HookRunner(this))
 {
     store_.load(*config_);
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+
+    pins_ = new PinManager(this);
+    connect(pins_, &PinManager::changed, this, [this] { tray_->setPinState(pins_->count(), pins_->pinsShown()); });
+    connect(pins_, &PinManager::copyRequested, this, [](const QImage &image) {
+        QGuiApplication::clipboard()->setImage(image);
+    });
+    connect(pins_, &PinManager::editRequested, this,
+            [this](const QImage &image) { openEditorFromCapture(image, 1.0, nullptr, QStringLiteral("pin")); });
+    connect(pins_, &PinManager::saveAsRequested, this, &App::savePinImageAs);
 
     history_ = std::make_unique<HistoryStore>(HistoryStore::defaultFilePath(), store_.historyLimit);
     thumbnails_ = std::make_unique<ThumbnailCache>();
@@ -191,6 +216,8 @@ App::App(QObject *parent)
                 }
             });
     connect(tray_, &TrayController::clearHistoryRequested, this, &App::clearHistory);
+    connect(tray_, &TrayController::pinsShownRequested, pins_, &PinManager::setPinsShown);
+    connect(tray_, &TrayController::removeAllPinsRequested, pins_, &PinManager::removeAllWithConfirmation);
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -203,6 +230,8 @@ App::App(QObject *parent)
     // The Plasma widget replaces the separate tray icon while it is loaded.
     control_ = new ControlService(this);
     connect(control_, &ControlService::widgetActiveChanged, tray_, &TrayController::setStandby);
+    // Pins report moves through /Control, so restore them once it is registered.
+    pins_->restore();
 
     syncShortcuts();
     migrateLegacyIds();
@@ -331,6 +360,8 @@ void App::syncShortcuts(const QStringList &deletedIds)
     entries.append({allMonitorsTargetId(), tr("Capture all monitors")});
     entries.append({intervalShortcutId(allMonitorsTargetId()), tr("Toggle interval for all monitors")});
     entries.append({colorPickerTargetId(), tr("Pick screen color")});
+    entries.append({pinLastCaptureActionId(), tr("Pin last capture to the screen")});
+    entries.append({pinsToggleActionId(), tr("Show or hide pinned screenshots")});
     shortcuts_->sync(entries, deletedIds);
 }
 
@@ -421,7 +452,19 @@ void App::startPrintNow(std::optional<bool> forcedFrozen, bool forceOverlay)
     session->setForceShowOverlay(forceOverlay);
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
-    session->start();
+    startWithPinsHidden(session, [session] { session->start(); });
+}
+
+void App::startWithPinsHidden(QObject *owner, std::function<void()> start)
+{
+    // Pins stay transparent for as long as the overlay or picker exists (#28).
+    const int wait = pins_->beginCapture();
+    connect(owner, &QObject::destroyed, this, [this] { pins_->endCapture(); });
+    if (wait > 0) {
+        QTimer::singleShot(wait, owner, std::move(start));
+    } else {
+        start();
+    }
 }
 
 bool App::isCountdownActive() const
@@ -525,7 +568,7 @@ void App::addArea()
     auto *session = new CaptureSession(this, CaptureSession::Purpose::DefineArea);
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
-    session->start();
+    startWithPinsHidden(session, [session] { session->start(); });
 }
 
 void App::startColorPicker()
@@ -539,7 +582,7 @@ void App::startColorPicker()
         notify(QStringLiteral("colorPicked"), tr("Color copied"), {tr("%1 copied to clipboard").arg(formatted)});
     });
     connect(picker, &ColorPickerSession::finished, picker, &QObject::deleteLater);
-    picker->start();
+    startWithPinsHidden(picker, [picker] { picker->start(); });
 }
 
 void App::recordCapture(const QStringList &paths, const QString &displayName, const QString &targetId,
@@ -667,6 +710,14 @@ void App::trigger(const QString &id)
         startColorPicker();
         return;
     }
+    if (id == pinLastCaptureActionId()) {
+        pinLastCapture();
+        return;
+    }
+    if (id == pinsToggleActionId()) {
+        pins_->setPinsShown(!pins_->pinsShown());
+        return;
+    }
     const int delay = store_.effectiveDelaySeconds(id);
     if (delay > 0) {
         runWithDelay(delay, targetLabel(store_, id), [this, id] { executeTriggerNow(id); });
@@ -687,11 +738,19 @@ void App::executeTriggerNow(const QString &id)
         }
         return;
     }
+    const int wait = pins_->beginCapture();
+    if (wait > 0) {
+        QTimer::singleShot(wait, this, [this, plan = std::move(plan)]() mutable {
+            engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
+        });
+        return;
+    }
     engine_->run(std::move(plan), store_.effectiveCaptureDirectory(), store_.effectiveFilenameTemplate());
 }
 
 void App::onTriggerFinished(const TriggerResult &result)
 {
+    pins_->endCapture();
     if (result.writtenPaths.isEmpty()) {
         Q_EMIT captured(false);
     } else {
@@ -833,6 +892,16 @@ QString App::historyAction(const QString &action, const QString &entryId, const 
         showInFolder(existing);
         return {};
     }
+    if (action == QLatin1String("pin")) {
+        QImageReader reader(existing.first());
+        reader.setAutoTransform(true);
+        const QImage image = reader.read();
+        if (image.isNull()) {
+            return tr("Could not read %1: %2").arg(QFileInfo(existing.first()).fileName(), reader.errorString());
+        }
+        pins_->pinImage(image);
+        return {};
+    }
     if (action == QLatin1String("copy")) {
         QImageReader reader(existing.first());
         reader.setAutoTransform(true);
@@ -865,6 +934,52 @@ QString App::historyAction(const QString &action, const QString &entryId, const 
         return {};
     }
     return tr("Unknown action \"%1\".").arg(action);
+}
+
+void App::pinImage(const QImage &image, const QRect &logicalRect)
+{
+    pins_->pinImage(image, logicalRect);
+}
+
+void App::pinLastCapture()
+{
+    for (const QString &path : std::as_const(lastPaths_)) {
+        QImageReader reader(path);
+        reader.setAutoTransform(true);
+        const QImage image = reader.read();
+        if (!image.isNull()) {
+            pins_->pinImage(image);
+            return;
+        }
+    }
+    notifyError(tr("Nothing to pin"), {tr("There is no recent capture file to pin.")});
+}
+
+void App::pinMoved(const QString &id, int x, int y)
+{
+    pins_->pinMoved(id, x, y);
+}
+
+void App::savePinImageAs(const QImage &image)
+{
+    const ExportOptions defaults = store_.exportOptions;
+    const QString suggested = QDir(store_.effectiveCaptureDirectory())
+                                  .filePath(filenameFor(store_.effectiveFilenameTemplate(), QStringLiteral("pin"),
+                                                        QDateTime::currentDateTime(), defaults.format));
+    const QString path = QFileDialog::getSaveFileName(nullptr, tr("Save Pinned Screenshot"), suggested);
+    if (path.isEmpty()) {
+        return;
+    }
+    ExportOptions options = defaults;
+    if (const std::optional<ImageFormat> format = imageFormatFromPath(path); format && isImageFormatSupported(*format)) {
+        options.format = *format;
+    }
+    QString error;
+    if (!writeImageToFile(path, image, options, &error)) {
+        notifyError(tr("Could not save the pinned screenshot"), {error});
+        return;
+    }
+    recordCapture({path}, tr("Pin"), QString(), QStringLiteral("editor"));
 }
 
 void App::clearHistory()
@@ -978,6 +1093,7 @@ void App::attachEditorWindow(QuickEditorWindow *window)
                                    fmt ? formatConfigKey(*fmt) : QStringLiteral("png"), QStringLiteral("editor"));
             });
     connect(window, &QuickEditorWindow::settingsModified, this, &App::saveSettings);
+    connect(window, &QuickEditorWindow::pinRequested, this, [this](const QImage &image) { pins_->pinImage(image); });
     editors_.append(window);
     window->show();
     window->raise();
@@ -1488,6 +1604,7 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
         auto *watcher = new QFutureWatcher<WorkerOutput>(this);
         connect(watcher, &QFutureWatcher<WorkerOutput>::finished, this,
                 [this, watcher, request, resolvedTargetId, plan, callback] {
+                    pins_->endCapture();
                     WorkerOutput out = watcher->result();
                     watcher->deleteLater();
                     if (out.cliResult.ok && request.clipboard && !out.clipboardImage.isNull()) {
@@ -1518,7 +1635,11 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                     }
                 });
 
+        const int pinWait = pins_->beginCapture();
         watcher->setFuture(QtConcurrent::run([=] {
+            if (pinWait > 0) {
+                QThread::msleep(pinWait); // let the compositor drop the now transparent pins
+            }
             WorkerOutput out;
             out.cliResult.targetId = resolvedTargetId;
             out.cliResult.displayName = plan.displayName;

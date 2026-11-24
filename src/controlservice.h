@@ -41,6 +41,9 @@ public Q_SLOTS:
     // action: open, edit, copy, folder, trash. Returns an error message or an empty string.
     Q_SCRIPTABLE QString HistoryAction(const QString &action, const QString &entryId, const QString &path);
     Q_SCRIPTABLE void ClearHistory();
+    // Pin-to-Screen (#28). PinMoved is called by the per-pin KWin script after the user moved a pin.
+    Q_SCRIPTABLE void PinMoved(const QString &id, int x, int y);
+    Q_SCRIPTABLE void PinLastCapture();
     Q_SCRIPTABLE void Configure(const QString &targetId);
     Q_SCRIPTABLE int DelaySeconds() const;
     Q_SCRIPTABLE bool KeepDelayActive() const;

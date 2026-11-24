@@ -1061,6 +1061,42 @@ void CaptureSession::copy(const QString &preferredConnector)
     });
 }
 
+void CaptureSession::pin()
+{
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+    if (selections_.isEmpty()) {
+        return;
+    }
+    QStringList connectors;
+    for (const Selection &selection : selections_.stack()) {
+        for (const QString &conn : intersectingConnectors(selection.rect)) {
+            if (!connectors.contains(conn)) {
+                connectors.append(conn);
+            }
+        }
+    }
+    withFrames(connectors, [this] {
+        QStringList errors;
+        int pinned = 0;
+        for (const Selection &selection : selections_.inDrawingOrder()) {
+            QString error;
+            const QImage image = selectionImage(selection, &error);
+            if (image.isNull()) {
+                errors.append(error);
+                continue;
+            }
+            // Pins carry the annotations and write no file or history entry (Q14, Q15).
+            app_->pinImage(image, selection.rect);
+            ++pinned;
+        }
+        removePrintSnapshotIfRedacted();
+        finish(pinned > 0 ? tr("Pinned to the screen") : QString(),
+               printPath_.isEmpty() ? QStringList() : QStringList{printPath_}, errors);
+    });
+}
+
 void CaptureSession::saveAs()
 {
     if (annotationController_.isEditingText()) {
@@ -1946,6 +1982,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
     } else {
         keys.insert(2, {tr("I"), tr("Pick pixel color (Tab cycles format, Alt+Click applies to markup)")});
         keys.insert(3, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
+        keys.insert(4, {tr("P"), tr("Pin the selection to the screen (one pin per rectangle)")});
     }
     section(tr("Keys"), keys);
     return panel;
@@ -2151,6 +2188,10 @@ void CaptureOverlay::buildActionBar()
                                   tr("Copy to the clipboard only"));
         connect(copy, &QPushButton::clicked, this, [this] { session_->copy(); });
         row->addWidget(copy);
+        auto *pin = actionButton(actionButtons_, QStringLiteral("window-pin"), tr("Pin"),
+                                 tr("Keep the selection on screen above other windows (P)"));
+        connect(pin, &QPushButton::clicked, this, [this] { session_->pin(); });
+        row->addWidget(pin);
         auto *saveAs = actionButton(actionButtons_, QStringLiteral("document-save-as"), tr("Save As…"),
                                     tr("Choose where to save"));
         connect(saveAs, &QPushButton::clicked, this, [this] { session_->saveAs(); });
@@ -3164,6 +3205,9 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             session_->setPickerCursorGlobal(lastPosition_);
             session_->setColorPickerActive(true);
             updateCursor(lastPosition_);
+            return;
+        case Qt::Key_P:
+            session_->pin();
             return;
         case Qt::Key_A:
             session_->activateMarkupTool(ToolKind::Arrow);

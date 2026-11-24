@@ -61,6 +61,8 @@ public Q_SLOTS:
 Q_SIGNALS:
     void savedToFile(const QString &filePath, const QString &displayName);
     void settingsModified();
+    // The user asked to pin the current (annotated) image to the screen.
+    void pinRequested(const QImage &image);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
