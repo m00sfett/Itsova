@@ -22,6 +22,7 @@ struct OutputSpec
     QString token; // filename token
     QString connector; // Area and Screen only
     QRect rect; // Area only, monitor-local logical coordinates
+    ExportOptions exportOptions;
 };
 
 // What one trigger (shortcut, menu, later a timer) has to do. Every involved monitor is captured
@@ -43,6 +44,7 @@ struct RenderedOutput
     QString token;
     QImage image;
     QString error;
+    ExportOptions exportOptions;
 };
 
 [[nodiscard]] TriggerPlan planTrigger(const TargetStore &store, const QString &triggerId,

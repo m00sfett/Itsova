@@ -81,10 +81,11 @@ add_library(glimply_ui STATIC
     src/annotations/annotationtoolbar.cpp
     src/annotations/inlinetexteditor.cpp
     src/areaselector.cpp
+    src/exportdialog.cpp
     src/quickeditorwindow.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
-target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n)
+target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n PRIVATE Qt6::Concurrent)
 
 # KWin grants access to org.kde.KWin.ScreenShot2 to the executable named in this desktop file, so
 # Exec must be the absolute installed path.
@@ -141,6 +142,9 @@ if(BUILD_TESTING)
     add_executable(quickeditortest tests/quickeditortest.cpp)
     target_link_libraries(quickeditortest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME quickeditor COMMAND quickeditortest)
+    add_executable(exporttest tests/exporttest.cpp)
+    target_link_libraries(exporttest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME export COMMAND exporttest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

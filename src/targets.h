@@ -1,6 +1,7 @@
 #pragma once
 
 #include "annotations/annotationsettings.h"
+#include "imageoutput.h"
 
 #include <QHash>
 #include <QList>
@@ -25,6 +26,14 @@ struct ScreenInfo
     [[nodiscard]] QString identity() const;
 };
 
+struct ExportOverride
+{
+    bool enabled = false;
+    ExportOptions options;
+
+    bool operator==(const ExportOverride &) const = default;
+};
+
 // A fixed rectangle on one monitor, stored in logical coordinates relative to that monitor.
 struct Area
 {
@@ -34,6 +43,7 @@ struct Area
     QString monitorIdentity; // ScreenInfo::identity() when the area was defined
     QRect rect;
     bool includeCursor = false;
+    ExportOverride exportOverride;
 };
 
 struct Group
@@ -42,6 +52,7 @@ struct Group
     QString name;
     QStringList targetIds;
     bool includeCursor = false;
+    ExportOverride exportOverride;
 };
 
 // Ids of built-in targets.
@@ -82,11 +93,17 @@ public:
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
 
     AnnotationSettings annotations;
+    ExportOptions exportOptions;
+    QHash<QString, ExportOverride> builtInExportOverrides;
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();
     [[nodiscard]] QString effectiveCaptureDirectory() const;
     [[nodiscard]] QString effectiveFilenameTemplate() const;
+    [[nodiscard]] ExportOverride targetExportOverride(const QString &targetId) const;
+    void setTargetExportOverride(const QString &targetId, const ExportOverride &overrideValue);
+    [[nodiscard]] ExportOptions effectiveExportOptions(const QString &targetId = QString(),
+                                                       const QString &groupId = QString()) const;
 
     void load(const KConfig &config);
     void save(KConfig &config) const;

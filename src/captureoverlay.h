@@ -32,6 +32,7 @@ class AnnotationToolbar;
 class App;
 class CaptureOverlay;
 class InlineTextEditor;
+struct RenderedOutput;
 
 // One Print key press (or one "Add Area") from start to the saved files. Owns the overlays (one
 // per monitor), the rectangles, vector annotations and the frames they are cut from.
@@ -124,6 +125,8 @@ private:
     void removePrintSnapshotIfRedacted();
     // Writes images that share one timestamp. Returns the written paths.
     QStringList write(const QList<QPair<QString, QImage>> &images, QStringList *errors);
+    QStringList write(const QList<QPair<QString, QImage>> &images, QStringList *errors, const ExportOptions &options);
+    QStringList writeOutputs(const QList<RenderedOutput> &outputs, QStringList *errors);
     // Ends the session with these files; they replace the full screenshot.
     void finishWith(const QStringList &paths, const QImage &clipboardImage, const QStringList &errors,
                     const QString &displayName);

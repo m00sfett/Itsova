@@ -24,6 +24,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScreen>
+#include <QSignalBlocker>
+#include <QSlider>
 #include <QSpinBox>
 #include <QSplitter>
 #include <QTimer>
@@ -32,12 +34,15 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include <functional>
+
 namespace glimply
 {
 namespace
 {
 
 constexpr int idRole = Qt::UserRole;
+constexpr int defaultFormatItemData = -1;
 // The settings window must be gone before the frozen screen picture is taken.
 constexpr int hideBeforeSelectDelayMs = 300;
 
@@ -73,6 +78,187 @@ QLabel *makeError(QWidget *parent)
 }
 
 } // namespace
+
+// Shared progressive-disclosure format/quality selector used by Storage (global default),
+// Targets (per-target override), and Groups (per-group override).
+class ExportOptionsWidget : public QWidget
+{
+public:
+    ExportOptionsWidget(bool allowDefault, QWidget *parent = nullptr)
+        : QWidget(parent)
+        , allowDefault_(allowDefault)
+    {
+        auto *layout = new QHBoxLayout(this);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(6);
+
+        formatCombo_ = new QComboBox(this);
+        formatCombo_->setAccessibleName(SettingsWindow::tr("Export image format"));
+        layout->addWidget(formatCombo_);
+
+        losslessCheck_ = new QCheckBox(SettingsWindow::tr("Lossless"), this);
+        layout->addWidget(losslessCheck_);
+
+        paramLabel_ = new QLabel(SettingsWindow::tr("Quality:"), this);
+        layout->addWidget(paramLabel_);
+
+        valueSpin_ = new QSpinBox(this);
+        valueSpin_->setKeyboardTracking(false);
+        valueSpin_->setAccessibleName(SettingsWindow::tr("Compression or quality level"));
+        layout->addWidget(valueSpin_);
+
+        if (!allowDefault_) {
+            layout->addStretch(1);
+        }
+
+        rebuildFormats(ImageFormat::Png);
+
+        connect(formatCombo_, &QComboBox::currentIndexChanged, this, [this] {
+            if (updating_) {
+                return;
+            }
+            const int data = formatCombo_->currentData().toInt();
+            if (data == defaultFormatItemData) {
+                overrideEnabled_ = false;
+            } else {
+                overrideEnabled_ = true;
+                options_.format = static_cast<ImageFormat>(data);
+            }
+            syncParamWidgets();
+            if (onChanged_) {
+                onChanged_();
+            }
+        });
+        connect(losslessCheck_, &QCheckBox::toggled, this, [this](bool on) {
+            if (updating_) {
+                return;
+            }
+            options_.lossless = on;
+            valueSpin_->setEnabled(!on);
+            if (onChanged_) {
+                onChanged_();
+            }
+        });
+        connect(valueSpin_, &QSpinBox::valueChanged, this, [this](int val) {
+            if (updating_) {
+                return;
+            }
+            if (options_.format == ImageFormat::Png) {
+                options_.pngCompression = val;
+            } else {
+                options_.quality = val;
+            }
+            if (onChanged_) {
+                onChanged_();
+            }
+        });
+    }
+
+    void setOnChanged(std::function<void()> callback)
+    {
+        onChanged_ = std::move(callback);
+    }
+
+    void setOptions(const ExportOptions &opts)
+    {
+        updating_ = true;
+        overrideEnabled_ = true;
+        options_ = opts;
+        rebuildFormats(opts.format);
+        formatCombo_->setCurrentIndex(formatCombo_->findData(int(opts.format)));
+        syncParamWidgets();
+        updating_ = false;
+    }
+
+    void setOverride(const ExportOverride &ov, ImageFormat globalFormat)
+    {
+        updating_ = true;
+        overrideEnabled_ = ov.enabled;
+        options_ = ov.options;
+        rebuildFormats(globalFormat);
+        const int targetData = ov.enabled ? int(ov.options.format) : defaultFormatItemData;
+        const int idx = formatCombo_->findData(targetData);
+        formatCombo_->setCurrentIndex(idx >= 0 ? idx : 0);
+        syncParamWidgets();
+        updating_ = false;
+    }
+
+    [[nodiscard]] ExportOptions options() const
+    {
+        return options_;
+    }
+
+    [[nodiscard]] ExportOverride overrideValue() const
+    {
+        return {overrideEnabled_, options_};
+    }
+
+private:
+    void rebuildFormats(ImageFormat globalFormat)
+    {
+        const QSignalBlocker blocker(formatCombo_);
+        formatCombo_->clear();
+        if (allowDefault_) {
+            formatCombo_->addItem(SettingsWindow::tr("Use default (%1)").arg(formatDisplayName(globalFormat)),
+                                  defaultFormatItemData);
+        }
+        for (const ImageFormat fmt : availableCuratedFormats()) {
+            formatCombo_->addItem(formatDisplayName(fmt), int(fmt));
+        }
+        if (overrideEnabled_ && formatCombo_->findData(int(options_.format)) < 0) {
+            formatCombo_->addItem(formatDisplayName(options_.format), int(options_.format));
+        }
+    }
+
+    void syncParamWidgets()
+    {
+        const bool showParams = !allowDefault_ || overrideEnabled_;
+        if (!showParams) {
+            losslessCheck_->hide();
+            paramLabel_->hide();
+            valueSpin_->hide();
+            return;
+        }
+        const QSignalBlocker blockLossless(losslessCheck_);
+        const QSignalBlocker blockSpin(valueSpin_);
+        if (options_.format == ImageFormat::Png) {
+            losslessCheck_->hide();
+            paramLabel_->setText(SettingsWindow::tr("Compression:"));
+            paramLabel_->show();
+            valueSpin_->show();
+            valueSpin_->setRange(0, 9);
+            valueSpin_->setSuffix(QString());
+            valueSpin_->setValue(options_.pngCompression >= 0 ? std::clamp(options_.pngCompression, 0, 9) : 6);
+            valueSpin_->setEnabled(true);
+        } else if (formatSupportsQuality(options_.format)) {
+            const bool hasLossless = formatSupportsLosslessToggle(options_.format);
+            losslessCheck_->setVisible(hasLossless);
+            losslessCheck_->setChecked(hasLossless && options_.lossless);
+            paramLabel_->setText(SettingsWindow::tr("Quality:"));
+            paramLabel_->show();
+            valueSpin_->show();
+            const int maxQ = hasLossless ? 99 : 100;
+            valueSpin_->setRange(1, maxQ);
+            valueSpin_->setSuffix(SettingsWindow::tr(" %"));
+            valueSpin_->setValue(std::clamp(options_.quality, 1, maxQ));
+            valueSpin_->setEnabled(!(hasLossless && options_.lossless));
+        } else {
+            losslessCheck_->hide();
+            paramLabel_->hide();
+            valueSpin_->hide();
+        }
+    }
+
+    bool allowDefault_ = false;
+    bool overrideEnabled_ = false;
+    bool updating_ = false;
+    ExportOptions options_;
+    QComboBox *formatCombo_ = nullptr;
+    QCheckBox *losslessCheck_ = nullptr;
+    QLabel *paramLabel_ = nullptr;
+    QSpinBox *valueSpin_ = nullptr;
+    std::function<void()> onChanged_;
+};
 
 SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     : KPageDialog(parent)
@@ -254,6 +440,9 @@ QWidget *SettingsWindow::createTargetsPage()
     targetCursor_ = new QCheckBox(tr("Include the mouse pointer"), targetDetails_);
     form->addRow(tr("Pointer:"), targetCursor_);
 
+    targetExport_ = new ExportOptionsWidget(true, targetDetails_);
+    form->addRow(tr("Format:"), targetExport_);
+
     targetShortcut_ = new KKeySequenceWidget(targetDetails_);
     targetShortcut_->setAccessibleName(tr("Shortcut"));
     targetShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -293,6 +482,16 @@ QWidget *SettingsWindow::createTargetsPage()
             }
         }
         app_->storeChanged();
+    });
+    targetExport_->setOnChanged([this] {
+        if (updating_) {
+            return;
+        }
+        const QString id = selectedTargetId();
+        if (!id.isEmpty()) {
+            app_->store().setTargetExportOverride(id, targetExport_->overrideValue());
+            app_->storeChanged();
+        }
     });
     connect(targetShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &sequence) {
         if (!updating_) {
@@ -441,6 +640,8 @@ void SettingsWindow::refreshTargetDetails()
 
     targetCursor_->setChecked(store.targetIncludesCursor(id));
     targetCursor_->setEnabled(isArea || screen || id == allMonitorsTargetId());
+    targetExport_->setOverride(store.targetExportOverride(id), store.exportOptions.format);
+    targetExport_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     targetShortcut_->setKeySequence(app_->shortcuts()->shortcut(id));
     targetShortcut_->setEnabled(isArea || screen || id == allMonitorsTargetId());
     updating_ = false;
@@ -701,6 +902,13 @@ QWidget *SettingsWindow::createGroupsPage()
     form->addRow(tr("Pointer:"), groupCursor_);
     form->addRow(QString(), makeHint(tr("Applies to every target of this group, regardless of their own setting."),
                                      groupDetails_));
+
+    groupExport_ = new ExportOptionsWidget(true, groupDetails_);
+    form->addRow(tr("Format:"), groupExport_);
+    form->addRow(QString(), makeHint(tr("Used when this group is triggered, unless a member target sets its own "
+                                        "format."),
+                                     groupDetails_));
+
     groupShortcut_ = new KKeySequenceWidget(groupDetails_);
     groupShortcut_->setAccessibleName(tr("Group shortcut"));
     groupShortcut_->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts
@@ -763,6 +971,12 @@ QWidget *SettingsWindow::createGroupsPage()
     connect(groupCursor_, &QCheckBox::toggled, this, [this](bool on) {
         if (Group *group = app_->store().group(selectedGroupId()); group && !updating_) {
             group->includeCursor = on;
+            app_->storeChanged();
+        }
+    });
+    groupExport_->setOnChanged([this] {
+        if (Group *group = app_->store().group(selectedGroupId()); group && !updating_) {
+            group->exportOverride = groupExport_->overrideValue();
             app_->storeChanged();
         }
     });
@@ -832,6 +1046,7 @@ void SettingsWindow::refreshGroupDetails()
         addMember(allMonitorsTargetId(), tr("All monitors"), QStringLiteral("video-display"));
     }
     groupCursor_->setChecked(group && group->includeCursor);
+    groupExport_->setOverride(group ? group->exportOverride : ExportOverride{}, app_->store().exportOptions.format);
     groupShortcut_->setKeySequence(group ? app_->shortcuts()->shortcut(group->id) : QKeySequence());
     updating_ = false;
 }
@@ -908,12 +1123,14 @@ QWidget *SettingsWindow::createStoragePage()
     template_->setPlaceholderText(TargetStore::defaultFilenameTemplate());
     template_->setAccessibleName(tr("File name template"));
     form->addRow(tr("File name:"), template_);
+    storageExport_ = new ExportOptionsWidget(false, page);
+    form->addRow(tr("Format:"), storageExport_);
     templatePreview_ = new QLabel(page);
     templatePreview_->setTextInteractionFlags(Qt::TextSelectableByMouse);
     form->addRow(tr("Example:"), templatePreview_);
     form->addRow(QString(), makeHint(tr("Placeholders: {date} (YYYY-MM-DD), {time} (HH-MM-SS), {area} (target "
-                                        "name). Captures are saved as PNG. Existing files are never overwritten: "
-                                        "a number is appended instead."),
+                                        "name). The file extension matches the chosen format. Existing files are "
+                                        "never overwritten: a number is appended instead."),
                                      page));
 
     const auto applyDirectory = [this] {
@@ -941,13 +1158,21 @@ QWidget *SettingsWindow::createStoragePage()
         }
         const QString text = template_->text().trimmed();
         templatePreview_->setText(filenameFor(text.isEmpty() ? TargetStore::defaultFilenameTemplate() : text,
-                                              QStringLiteral("DP-1-1"), QDateTime::currentDateTime()));
+                                              QStringLiteral("DP-1-1"), QDateTime::currentDateTime(),
+                                              app_->store().exportOptions.format));
     });
     connect(template_, &QLineEdit::editingFinished, this, [this] {
         if (!updating_) {
             app_->store().filenameTemplate = template_->text().trimmed();
             app_->storeChanged();
         }
+    });
+    storageExport_->setOnChanged([this] {
+        if (updating_) {
+            return;
+        }
+        app_->store().exportOptions = storageExport_->options();
+        app_->storeChanged();
     });
     return page;
 }
@@ -1029,8 +1254,10 @@ void SettingsWindow::refreshStorage()
     const TargetStore &store = app_->store();
     directory_->setText(store.captureDirectory);
     template_->setText(store.filenameTemplate);
+    storageExport_->setOptions(store.exportOptions);
     templatePreview_->setText(
-        filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime()));
+        filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime(),
+                    store.exportOptions.format));
     autostart_->setChecked(store.autostart);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);

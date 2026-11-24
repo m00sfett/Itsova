@@ -61,7 +61,7 @@ TriggerResult TriggerEngine::execute(const TriggerPlan &plan, const Capturer &ca
         }
         QString path;
         QString error;
-        if (writer.writeImage(output.image, output.token, timestamp, &path, &error)) {
+        if (writer.writeImage(output.image, output.token, timestamp, output.exportOptions, &path, &error)) {
             result.writtenPaths.append(path);
         } else {
             result.errors.append(error);

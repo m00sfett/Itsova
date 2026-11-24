@@ -28,6 +28,52 @@ QString migrateId(const QString &id)
         : id;
 }
 constexpr auto groupGroupPrefix = "Group ";
+constexpr auto exportOverrideGroupPrefix = "ExportOverride ";
+
+ExportOptions readExportOptions(const KConfigGroup &group, const QString &prefix, const ExportOptions &fallback = {})
+{
+    ExportOptions opts = fallback;
+    const QString fmtKey = group.readEntry(prefix + QStringLiteral("Format"), QString());
+    if (const std::optional<ImageFormat> parsed = imageFormatFromKey(fmtKey)) {
+        opts.format = *parsed;
+    }
+    opts.quality = std::clamp(group.readEntry(prefix + QStringLiteral("Quality"), fallback.quality), 1, 100);
+    const int pngComp = group.readEntry(prefix + QStringLiteral("PngCompression"), fallback.pngCompression);
+    opts.pngCompression = pngComp < 0 ? -1 : std::clamp(pngComp, 0, 9);
+    opts.lossless = group.readEntry(prefix + QStringLiteral("Lossless"), fallback.lossless);
+    return opts;
+}
+
+void writeExportOptions(KConfigGroup &group, const QString &prefix, const ExportOptions &opts)
+{
+    group.writeEntry(prefix + QStringLiteral("Format"), formatConfigKey(opts.format));
+    group.writeEntry(prefix + QStringLiteral("Quality"), std::clamp(opts.quality, 1, 100));
+    group.writeEntry(prefix + QStringLiteral("PngCompression"),
+                     opts.pngCompression < 0 ? -1 : std::clamp(opts.pngCompression, 0, 9));
+    group.writeEntry(prefix + QStringLiteral("Lossless"), opts.lossless);
+}
+
+ExportOverride readExportOverride(const KConfigGroup &group)
+{
+    ExportOverride ov;
+    ov.enabled = group.hasKey("ExportFormat");
+    if (ov.enabled) {
+        ov.options = readExportOptions(group, QStringLiteral("Export"));
+    }
+    return ov;
+}
+
+void writeExportOverride(KConfigGroup &group, const ExportOverride &ov)
+{
+    if (!ov.enabled) {
+        group.deleteEntry("ExportFormat");
+        group.deleteEntry("ExportQuality");
+        group.deleteEntry("ExportPngCompression");
+        group.deleteEntry("ExportLossless");
+        return;
+    }
+    writeExportOptions(group, QStringLiteral("Export"), ov.options);
+}
 
 QString newId(const char *prefix)
 {
@@ -105,8 +151,10 @@ void TargetStore::load(const KConfig &config)
     areas.clear();
     migratedIds.clear();
     groups.clear();
+    builtInExportOverrides.clear();
 
     const KConfigGroup general = config.group(QStringLiteral("General"));
+    exportOptions = readExportOptions(config.group(QStringLiteral("Export")), QString());
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
     autostartInitialized = general.hasKey("Autostart");
@@ -157,6 +205,7 @@ void TargetStore::load(const KConfig &config)
             area.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
             area.rect = entry.readEntry("Rect", QRect());
             area.includeCursor = entry.readEntry("IncludeCursor", false);
+            area.exportOverride = readExportOverride(entry);
             if (!area.id.isEmpty() && !area.name.isEmpty() && !area.connector.isEmpty()) {
                 areas.append(area);
             }
@@ -168,8 +217,17 @@ void TargetStore::load(const KConfig &config)
                 group.targetIds.append(migrateId(target));
             }
             group.includeCursor = entry.readEntry("IncludeCursor", false);
+            group.exportOverride = readExportOverride(entry);
             if (!group.id.isEmpty() && !group.name.isEmpty()) {
                 groups.append(group);
+            }
+        } else if (name.startsWith(QLatin1String(exportOverrideGroupPrefix))) {
+            const QString id = migrateId(name.mid(int(qstrlen(exportOverrideGroupPrefix))));
+            ExportOverride ov;
+            ov.enabled = true;
+            ov.options = readExportOptions(entry, QString());
+            if (!id.isEmpty()) {
+                builtInExportOverrides.insert(id, ov);
             }
         }
     }
@@ -192,10 +250,14 @@ void TargetStore::save(KConfig &config) const
 {
     for (const QString &name : config.groupList()) {
         if (name.startsWith(QLatin1String(areaGroupPrefix)) || name.startsWith(QLatin1String(legacyAreaGroupPrefix))
-            || name.startsWith(QLatin1String(groupGroupPrefix))) {
+            || name.startsWith(QLatin1String(groupGroupPrefix))
+            || name.startsWith(QLatin1String(exportOverrideGroupPrefix))) {
             config.deleteGroup(name);
         }
     }
+
+    KConfigGroup exportGroup = config.group(QStringLiteral("Export"));
+    writeExportOptions(exportGroup, QString(), exportOptions);
 
     KConfigGroup general = config.group(QStringLiteral("General"));
     general.writeEntry("CaptureDirectory", captureDirectory);
@@ -239,6 +301,7 @@ void TargetStore::save(KConfig &config) const
         entry.writeEntry("MonitorIdentity", area.monitorIdentity);
         entry.writeEntry("Rect", area.rect);
         entry.writeEntry("IncludeCursor", area.includeCursor);
+        writeExportOverride(entry, area.exportOverride);
         areaOrder.append(area.id);
     }
     QStringList groupOrder;
@@ -247,7 +310,14 @@ void TargetStore::save(KConfig &config) const
         entry.writeEntry("Name", group.name);
         entry.writeEntry("Targets", group.targetIds);
         entry.writeEntry("IncludeCursor", group.includeCursor);
+        writeExportOverride(entry, group.exportOverride);
         groupOrder.append(group.id);
+    }
+    for (auto it = builtInExportOverrides.cbegin(); it != builtInExportOverrides.cend(); ++it) {
+        if (it.value().enabled) {
+            KConfigGroup entry = config.group(QLatin1String(exportOverrideGroupPrefix) + it.key());
+            writeExportOptions(entry, QString(), it.value().options);
+        }
     }
     general.writeEntry("AreaOrder", areaOrder);
     general.deleteEntry("RegionOrder");
@@ -361,9 +431,56 @@ void TargetStore::remove(const QString &id)
 {
     areas.removeIf([&](const Area &r) { return r.id == id; });
     groups.removeIf([&](const Group &g) { return g.id == id; });
+    builtInExportOverrides.remove(id);
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
     }
+}
+
+ExportOverride TargetStore::targetExportOverride(const QString &targetId) const
+{
+    if (const Area *r = area(targetId)) {
+        return r->exportOverride;
+    }
+    if (const Group *g = group(targetId)) {
+        return g->exportOverride;
+    }
+    return builtInExportOverrides.value(targetId);
+}
+
+void TargetStore::setTargetExportOverride(const QString &targetId, const ExportOverride &overrideValue)
+{
+    if (Area *r = area(targetId)) {
+        r->exportOverride = overrideValue;
+        return;
+    }
+    if (Group *g = group(targetId)) {
+        g->exportOverride = overrideValue;
+        return;
+    }
+    if (overrideValue.enabled) {
+        builtInExportOverrides.insert(targetId, overrideValue);
+    } else {
+        builtInExportOverrides.remove(targetId);
+    }
+}
+
+ExportOptions TargetStore::effectiveExportOptions(const QString &targetId, const QString &groupId) const
+{
+    ExportOptions resolved = exportOptions;
+    if (const Group *g = groupId.isEmpty() ? nullptr : group(groupId); g && g->exportOverride.enabled) {
+        resolved = g->exportOverride.options;
+    }
+    if (!targetId.isEmpty()) {
+        const ExportOverride targetOv = targetExportOverride(targetId);
+        if (targetOv.enabled) {
+            resolved = targetOv.options;
+        }
+    }
+    if (!isImageFormatSupported(resolved.format)) {
+        resolved.format = ImageFormat::Png;
+    }
+    return resolved;
 }
 
 bool TargetStore::targetIncludesCursor(const QString &targetId) const

@@ -33,8 +33,10 @@ void addConnector(TriggerPlan &plan, const QString &connector)
     }
 }
 
-void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const QString &targetId, TriggerPlan &plan)
+void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const QString &targetId, TriggerPlan &plan,
+               const QString &groupId = QString())
 {
+    const ExportOptions exportOptions = store.effectiveExportOptions(targetId, groupId);
     if (targetId == allMonitorsTargetId()) {
         if (screens.isEmpty()) {
             plan.errors.append(PlanText::tr("No monitor is connected."));
@@ -43,7 +45,7 @@ void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const
         for (const ScreenInfo &screen : screens) {
             addConnector(plan, screen.connector);
         }
-        plan.outputs.append({OutputSpec::Kind::AllMonitors, targetId, allMonitorsTargetId(), {}, {}});
+        plan.outputs.append({OutputSpec::Kind::AllMonitors, targetId, allMonitorsTargetId(), {}, {}, exportOptions});
         return;
     }
 
@@ -55,7 +57,7 @@ void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const
         }
         addConnector(plan, connector);
         plan.outputs.append({OutputSpec::Kind::Screen, targetId, store.monitorName(*findScreen(screens, connector)),
-                             connector, {}});
+                             connector, {}, exportOptions});
         return;
     }
 
@@ -82,7 +84,7 @@ void addTarget(const TargetStore &store, const QList<ScreenInfo> &screens, const
                                  .arg(area->name, area->connector));
     }
     addConnector(plan, area->connector);
-    plan.outputs.append({OutputSpec::Kind::Area, targetId, area->name, area->connector, area->rect});
+    plan.outputs.append({OutputSpec::Kind::Area, targetId, area->name, area->connector, area->rect, exportOptions});
 }
 
 } // namespace
@@ -100,7 +102,7 @@ TriggerPlan planTrigger(const TargetStore &store, const QString &triggerId, cons
         for (const QString &targetId : group->targetIds) {
             if (!seen.contains(targetId) && !store.group(targetId)) {
                 seen.insert(targetId);
-                addTarget(store, screens, targetId, plan);
+                addTarget(store, screens, targetId, plan, group->id);
             }
         }
         if (group->targetIds.isEmpty()) {
@@ -180,7 +182,7 @@ QList<RenderedOutput> renderOutputs(const TriggerPlan &plan, const QHash<QString
 {
     QList<RenderedOutput> rendered;
     for (const OutputSpec &output : plan.outputs) {
-        RenderedOutput result{output.token, {}, {}};
+        RenderedOutput result{output.token, {}, {}, output.exportOptions};
         if (output.kind == OutputSpec::Kind::AllMonitors) {
             result.image = composeAllMonitors(plan.screens, frames, &result.error);
         } else {
