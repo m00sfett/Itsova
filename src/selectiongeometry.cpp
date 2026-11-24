@@ -194,4 +194,174 @@ QRect steppedSelection(const QRect &rect, const QPoint &step, SelectionConstrain
     return QRect((doubledX - side) / 2, top, side, side);
 }
 
+QRect clampToBounds(QRect rect, const QRect &bounds)
+{
+    rect = rect.normalized();
+    if (bounds.isEmpty()) {
+        return rect;
+    }
+    rect.setWidth(std::min(rect.width(), bounds.width()));
+    rect.setHeight(std::min(rect.height(), bounds.height()));
+    rect.moveLeft(std::clamp(rect.left(), bounds.left(), bounds.left() + bounds.width() - rect.width()));
+    rect.moveTop(std::clamp(rect.top(), bounds.top(), bounds.top() + bounds.height() - rect.height()));
+    return rect;
+}
+
+QRect drawnSelection(const QPoint &anchor, const QPoint &position, SelectionConstraints constraints, const QRect &bounds)
+{
+    if (bounds.isEmpty()) {
+        return {};
+    }
+    const QPoint origin = bounds.topLeft();
+    return drawnSelection(anchor - origin, position - origin, constraints, bounds.size()).translated(origin);
+}
+
+QRect resizedSelection(const QRect &start, Qt::Edges edges, const QPoint &delta, SelectionConstraints constraints,
+                       const QRect &bounds)
+{
+    if (bounds.isEmpty()) {
+        return {};
+    }
+    const QPoint origin = bounds.topLeft();
+    return resizedSelection(start.translated(-origin), edges, delta, constraints, bounds.size()).translated(origin);
+}
+
+QRect steppedSelection(const QRect &rect, const QPoint &step, SelectionConstraints constraints, int minimum,
+                       const QRect &bounds)
+{
+    if (bounds.isEmpty()) {
+        return rect;
+    }
+    const QPoint origin = bounds.topLeft();
+    return steppedSelection(rect.translated(-origin), step, constraints, minimum, bounds.size()).translated(origin);
+}
+
+namespace
+{
+
+int snapAxisCoordinate(int value, const QList<int> &candidates, int threshold)
+{
+    if (threshold <= 0 || candidates.isEmpty()) {
+        return value;
+    }
+    int bestValue = value;
+    int bestDistance = threshold + 1;
+    for (const int candidate : candidates) {
+        const int dist = std::abs(value - candidate);
+        if (dist < bestDistance) {
+            bestDistance = dist;
+            bestValue = candidate;
+        }
+    }
+    return bestDistance <= threshold ? bestValue : value;
+}
+
+} // namespace
+
+QPoint snapPointToMonitorEdges(const QPoint &pos, const QList<QRect> &screenRects, int threshold)
+{
+    if (threshold <= 0 || screenRects.isEmpty()) {
+        return pos;
+    }
+    QList<int> xEdges;
+    QList<int> yEdges;
+    xEdges.reserve(screenRects.size() * 2);
+    yEdges.reserve(screenRects.size() * 2);
+    for (const QRect &screen : screenRects) {
+        xEdges.append(screen.left());
+        xEdges.append(screen.left() + screen.width());
+        yEdges.append(screen.top());
+        yEdges.append(screen.top() + screen.height());
+    }
+    return QPoint(snapAxisCoordinate(pos.x(), xEdges, threshold), snapAxisCoordinate(pos.y(), yEdges, threshold));
+}
+
+QPoint snapResizeDeltaToMonitorEdges(const QRect &start, Qt::Edges edges, const QPoint &delta,
+                                     const QList<QRect> &screenRects, int threshold)
+{
+    if (threshold <= 0 || screenRects.isEmpty()) {
+        return delta;
+    }
+    QList<int> xEdges;
+    QList<int> yEdges;
+    xEdges.reserve(screenRects.size() * 2);
+    yEdges.reserve(screenRects.size() * 2);
+    for (const QRect &screen : screenRects) {
+        xEdges.append(screen.left());
+        xEdges.append(screen.left() + screen.width());
+        yEdges.append(screen.top());
+        yEdges.append(screen.top() + screen.height());
+    }
+
+    QPoint out = delta;
+    if (edges & Qt::LeftEdge) {
+        const int targetX = start.left() + delta.x();
+        out.rx() += snapAxisCoordinate(targetX, xEdges, threshold) - targetX;
+    } else if (edges & Qt::RightEdge) {
+        const int targetX = start.left() + start.width() + delta.x();
+        out.rx() += snapAxisCoordinate(targetX, xEdges, threshold) - targetX;
+    }
+    if (edges & Qt::TopEdge) {
+        const int targetY = start.top() + delta.y();
+        out.ry() += snapAxisCoordinate(targetY, yEdges, threshold) - targetY;
+    } else if (edges & Qt::BottomEdge) {
+        const int targetY = start.top() + start.height() + delta.y();
+        out.ry() += snapAxisCoordinate(targetY, yEdges, threshold) - targetY;
+    }
+    return out;
+}
+
+QRect snapMovedRectToMonitorEdges(const QRect &rect, const QList<QRect> &screenRects, const QRect &desktopBounds,
+                                  int threshold)
+{
+    QRect out = clampToBounds(rect, desktopBounds);
+    if (threshold <= 0 || screenRects.isEmpty()) {
+        return out;
+    }
+    int bestDx = 0;
+    int bestXDist = threshold + 1;
+    int bestDy = 0;
+    int bestYDist = threshold + 1;
+
+    const int left = out.left();
+    const int right = out.left() + out.width();
+    const int top = out.top();
+    const int bottom = out.top() + out.height();
+
+    for (const QRect &screen : screenRects) {
+        const int sLeft = screen.left();
+        const int sRight = screen.left() + screen.width();
+        for (const int edgeX : {sLeft, sRight}) {
+            if (const int d = std::abs(left - edgeX); d < bestXDist) {
+                bestXDist = d;
+                bestDx = edgeX - left;
+            }
+            if (const int d = std::abs(right - edgeX); d < bestXDist) {
+                bestXDist = d;
+                bestDx = edgeX - right;
+            }
+        }
+        const int sTop = screen.top();
+        const int sBottom = screen.top() + screen.height();
+        for (const int edgeY : {sTop, sBottom}) {
+            if (const int d = std::abs(top - edgeY); d < bestYDist) {
+                bestYDist = d;
+                bestDy = edgeY - top;
+            }
+            if (const int d = std::abs(bottom - edgeY); d < bestYDist) {
+                bestYDist = d;
+                bestDy = edgeY - bottom;
+            }
+        }
+    }
+
+    if (bestXDist <= threshold) {
+        out.translate(bestDx, 0);
+    }
+    if (bestYDist <= threshold) {
+        out.translate(0, bestDy);
+    }
+    return clampToBounds(out, desktopBounds);
+}
+
 } // namespace glimply

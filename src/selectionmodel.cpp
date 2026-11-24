@@ -13,6 +13,11 @@ int SelectionModel::add(const QString &connector, const QRect &rect)
     return id;
 }
 
+int SelectionModel::add(const QRect &globalRect)
+{
+    return add(QString(), globalRect);
+}
+
 void SelectionModel::setRect(int id, const QRect &rect)
 {
     for (Selection &selection : stack_) {
@@ -108,6 +113,11 @@ int SelectionModel::topmostAt(const QString &connector, const QPoint &pos) const
         }
     }
     return 0;
+}
+
+int SelectionModel::topmostAt(const QPoint &globalPos) const
+{
+    return topmostAt(QString(), globalPos);
 }
 
 } // namespace glimply

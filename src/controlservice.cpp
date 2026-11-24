@@ -64,12 +64,24 @@ QString ControlService::Targets() const
         QString detail = target.detail;
         const TargetStore &store = app_->store();
         if (const Area *area = store.area(target.id); area && detail.isEmpty()) {
-            detail = tr("%1 · %2 × %3 at %4, %5")
-                         .arg(monitorName(store, area->connector))
-                         .arg(area->rect.width())
-                         .arg(area->rect.height())
-                         .arg(area->rect.x())
-                         .arg(area->rect.y());
+            if (area->isCrossMonitor()) {
+                QStringList names;
+                names.reserve(area->monitors.size());
+                for (const AreaMonitorBinding &binding : area->monitors) {
+                    names.append(monitorName(store, binding.connector));
+                }
+                detail = tr("%1 · %2 × %3")
+                             .arg(names.join(QStringLiteral(" + ")))
+                             .arg(area->rect.width())
+                             .arg(area->rect.height());
+            } else {
+                detail = tr("%1 · %2 × %3 at %4, %5")
+                             .arg(monitorName(store, area->connector))
+                             .arg(area->rect.width())
+                             .arg(area->rect.height())
+                             .arg(area->rect.x())
+                             .arg(area->rect.y());
+            }
         } else if (const Group *group = store.group(target.id)) {
             QStringList names;
             for (const QString &member : group->targetIds) {

@@ -94,6 +94,21 @@ QString ScreenInfo::identity() const
     return parts.join(QLatin1Char(' '));
 }
 
+QStringList Area::involvedConnectors() const
+{
+    if (isCrossMonitor()) {
+        QStringList connectors;
+        connectors.reserve(monitors.size());
+        for (const AreaMonitorBinding &binding : monitors) {
+            if (!binding.connector.isEmpty() && !connectors.contains(binding.connector)) {
+                connectors.append(binding.connector);
+            }
+        }
+        return connectors;
+    }
+    return connector.isEmpty() ? QStringList{} : QStringList{connector};
+}
+
 QString screenTargetId(const QString &connector)
 {
     return QLatin1String(screenPrefix) + connector;
@@ -212,13 +227,26 @@ void TargetStore::load(const KConfig &config)
                 migratedIds.insert(storedId, area.id);
             }
             area.name = entry.readEntry("Name", QString());
-            area.connector = entry.readEntry("Connector", QString());
-            area.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
             area.rect = entry.readEntry("Rect", QRect());
+            if (entry.readEntry("CrossMonitor", false)) {
+                const int monitorCount = std::max(0, entry.readEntry("MonitorCount", 0));
+                for (int i = 0; i < monitorCount; ++i) {
+                    const QString monConn = entry.readEntry(QStringLiteral("Monitor%1Connector").arg(i), QString());
+                    const QString monId = entry.readEntry(QStringLiteral("Monitor%1Identity").arg(i), QString());
+                    if (!monConn.isEmpty()) {
+                        area.monitors.append({monConn, monId});
+                    }
+                }
+            } else {
+                area.connector = entry.readEntry("Connector", QString());
+                area.monitorIdentity = entry.readEntry("MonitorIdentity", QString());
+            }
             area.includeCursor = entry.readEntry("IncludeCursor", false);
             area.delaySeconds = std::clamp(entry.readEntry("DelaySeconds", 0), 0, 60);
             area.exportOverride = readExportOverride(entry);
-            if (!area.id.isEmpty() && !area.name.isEmpty() && !area.connector.isEmpty()) {
+            const bool validSingle = !area.isCrossMonitor() && !area.connector.isEmpty();
+            const bool validCross = area.isCrossMonitor() && !area.monitors.isEmpty() && area.rect.isValid();
+            if (!area.id.isEmpty() && !area.name.isEmpty() && (validSingle || validCross)) {
                 areas.append(area);
             }
         } else if (name.startsWith(QLatin1String(groupGroupPrefix))) {
@@ -322,8 +350,17 @@ void TargetStore::save(KConfig &config) const
     for (const Area &area : areas) {
         KConfigGroup entry = config.group(QLatin1String(areaGroupPrefix) + area.id);
         entry.writeEntry("Name", area.name);
-        entry.writeEntry("Connector", area.connector);
-        entry.writeEntry("MonitorIdentity", area.monitorIdentity);
+        if (area.isCrossMonitor()) {
+            entry.writeEntry("CrossMonitor", true);
+            entry.writeEntry("MonitorCount", int(area.monitors.size()));
+            for (int i = 0; i < area.monitors.size(); ++i) {
+                entry.writeEntry(QStringLiteral("Monitor%1Connector").arg(i), area.monitors.at(i).connector);
+                entry.writeEntry(QStringLiteral("Monitor%1Identity").arg(i), area.monitors.at(i).monitorIdentity);
+            }
+        } else {
+            entry.writeEntry("Connector", area.connector);
+            entry.writeEntry("MonitorIdentity", area.monitorIdentity);
+        }
         entry.writeEntry("Rect", area.rect);
         entry.writeEntry("IncludeCursor", area.includeCursor);
         if (area.delaySeconds > 0) {
@@ -418,10 +455,17 @@ bool TargetStore::isNameAvailable(const QString &name, const QString &exceptId, 
         return false;
     }
     for (const Area &area : areas) {
-        if (area.id != exceptId
-            && (area.name.compare(trimmed, Qt::CaseInsensitive) == 0
-                || area.connector.compare(trimmed, Qt::CaseInsensitive) == 0)) {
+        if (area.id == exceptId) {
+            continue;
+        }
+        if (area.name.compare(trimmed, Qt::CaseInsensitive) == 0
+            || (!area.connector.isEmpty() && area.connector.compare(trimmed, Qt::CaseInsensitive) == 0)) {
             return false;
+        }
+        for (const AreaMonitorBinding &binding : area.monitors) {
+            if (binding.connector.compare(trimmed, Qt::CaseInsensitive) == 0) {
+                return false;
+            }
         }
     }
     for (const Group &group : groups) {
@@ -447,6 +491,36 @@ Area &TargetStore::addArea(const ScreenInfo &screen, const QRect &rect)
     area.rect = rect;
     areas.append(area);
     return areas.last();
+}
+
+Area &TargetStore::addCrossMonitorArea(const QList<ScreenInfo> &screens, const QRect &globalRect)
+{
+    Area area;
+    area.id = newId(areaIdPrefix);
+    area.name = nextAreaName(QStringLiteral("area"));
+    area.rect = globalRect;
+    for (const ScreenInfo &screen : screens) {
+        area.monitors.append({screen.connector, screen.identity()});
+    }
+    areas.append(area);
+    return areas.last();
+}
+
+Area &TargetStore::addAreaForGlobalRect(const QList<ScreenInfo> &allScreens, const QRect &globalRect)
+{
+    QList<ScreenInfo> hit;
+    for (const ScreenInfo &screen : allScreens) {
+        if (!screen.geometry.intersected(globalRect).isEmpty()) {
+            hit.append(screen);
+        }
+    }
+    if (hit.size() == 1 && hit.first().geometry.contains(globalRect)) {
+        return addArea(hit.first(), globalRect.translated(-hit.first().geometry.topLeft()));
+    }
+    if (hit.isEmpty() && !allScreens.isEmpty()) {
+        return addCrossMonitorArea({allScreens.first()}, globalRect);
+    }
+    return addCrossMonitorArea(hit, globalRect);
 }
 
 Group &TargetStore::addGroup(const QString &name)

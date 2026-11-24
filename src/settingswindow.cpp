@@ -4,7 +4,9 @@
 #include "imageoutput.h"
 #include "areaselector.h"
 #include "screens.h"
+#include "selectiongeometry.h"
 #include "shortcutmanager.h"
+#include "triggerplan.h"
 
 #include <KKeySequenceWidget>
 #include <KPageWidgetItem>
@@ -428,9 +430,10 @@ QWidget *SettingsWindow::createTargetsPage()
     reselectRow->addWidget(reselect);
     reselectRow->addStretch();
     geometryLayout->addLayout(reselectRow);
-    geometryLayout->addWidget(makeHint(tr("Logical pixels relative to the monitor's top left corner. Captures use "
-                                          "the monitor's native resolution."),
-                                       geometryRow_));
+    geometryHint_ = makeHint(tr("Logical pixels relative to the monitor's top left corner. Captures use "
+                                "the monitor's native resolution."),
+                             geometryRow_);
+    geometryLayout->addWidget(geometryHint_);
     form->addRow(tr("Position and size:"), geometryRow_);
     areaOnly_ << geometryRow_ << form->labelForField(geometryRow_);
 
@@ -469,7 +472,13 @@ QWidget *SettingsWindow::createTargetsPage()
     connect(areaName_, &QLineEdit::editingFinished, this, &SettingsWindow::renameArea);
     connect(reselect, &QPushButton::clicked, this, [this] {
         if (const Area *area = app_->store().area(selectedTargetId())) {
-            runSelector(area->connector, area->rect, area->id);
+            QRect initialGlobal;
+            if (area->isCrossMonitor()) {
+                initialGlobal = area->rect;
+            } else if (const QScreen *screen = findScreen(area->connector)) {
+                initialGlobal = area->rect.translated(screen->geometry().topLeft());
+            }
+            runSelector(initialGlobal, area->id);
         }
     });
     connect(targetCursor_, &QCheckBox::toggled, this, [this](bool on) {
@@ -532,7 +541,7 @@ void SettingsWindow::refreshTargets()
     }
     QStringList disconnected;
     for (const Area &area : store.areas) {
-        if (!connectors.contains(area.connector) && !disconnected.contains(area.connector)) {
+        if (!area.isCrossMonitor() && !connectors.contains(area.connector) && !disconnected.contains(area.connector)) {
             disconnected.append(area.connector);
         }
     }
@@ -546,7 +555,7 @@ void SettingsWindow::refreshTargets()
         item->setText(1, shortcuts->shortcut(id).toString(QKeySequence::NativeText));
         item->setData(0, idRole, id);
         for (const Area &area : store.areas) {
-            if (area.connector != connector) {
+            if (area.isCrossMonitor() || area.connector != connector) {
                 continue;
             }
             auto *child = new QTreeWidgetItem(item);
@@ -568,6 +577,17 @@ void SettingsWindow::refreshTargets()
     all->setIcon(0, QIcon::fromTheme(QStringLiteral("video-display")));
     all->setText(1, shortcuts->shortcut(allMonitorsTargetId()).toString(QKeySequence::NativeText));
     all->setData(0, idRole, allMonitorsTargetId());
+    for (const Area &area : store.areas) {
+        if (!area.isCrossMonitor()) {
+            continue;
+        }
+        auto *child = new QTreeWidgetItem(all);
+        child->setText(0, area.name);
+        child->setIcon(0, QIcon::fromTheme(QStringLiteral("transform-crop")));
+        child->setText(1, shortcuts->shortcut(area.id).toString(QKeySequence::NativeText));
+        child->setData(0, idRole, area.id);
+    }
+    all->setExpanded(true);
 
     selectTarget(current.isEmpty() && !store.areas.isEmpty() ? store.areas.first().id : current);
     if (!targetTree_->currentItem() && targetTree_->topLevelItemCount() > 0) {
@@ -594,6 +614,7 @@ void SettingsWindow::refreshTargetDetails()
     areaNameError_->hide();
     areaWarning_->hide();
 
+    const bool crossArea = isArea && area->isCrossMonitor();
     const QString connector = isArea ? area->connector : connectorFromScreenTargetId(id);
     const QScreen *screen = connector.isEmpty() ? nullptr : findScreen(connector);
     const bool isMonitor = !isArea && screen && isScreenTargetId(id);
@@ -607,54 +628,132 @@ void SettingsWindow::refreshTargetDetails()
                                       "for %1.")
                                        .arg(connector)
                                  : tr("Also used in the file name."));
-    if (id == allMonitorsTargetId()) {
-        targetTitle_->setText(tr("All monitors"));
-        monitorLabel_->setText(tr("One image of all monitors in their current arrangement, at the highest scale. "
-                                  "Gaps are transparent."));
-        monitorLabel_->setWordWrap(true);
-    } else if (screen) {
-        monitorLabel_->setWordWrap(false);
-        // Qt only reports the integer buffer scale on Wayland, so the native size is not shown here.
-        monitorLabel_->setText(tr("%1 · %2 × %3 (logical)")
-                                   .arg(connector)
-                                   .arg(screen->geometry().width())
-                                   .arg(screen->geometry().height()));
-    } else {
-        monitorLabel_->setText(tr("%1 · not connected").arg(connector));
-    }
-    if (isArea) {
+
+    const QList<ScreenInfo> allConnectedScreens = currentScreens();
+    bool targetAvailable = false;
+    if (crossArea) {
+        QStringList allNames;
+        QStringList connectedNames;
+        QStringList missingConnectors;
+        QString mismatchConnector;
+        QString mismatchIdentity;
+        int connectedBindings = 0;
+        for (const AreaMonitorBinding &binding : area->monitors) {
+            const auto it = std::find_if(allConnectedScreens.cbegin(), allConnectedScreens.cend(),
+                                         [&](const ScreenInfo &s) { return s.connector == binding.connector; });
+            if (it != allConnectedScreens.cend()) {
+                ++connectedBindings;
+                const QString mName = store.monitorName(*it);
+                allNames.append(mName);
+                if (!area->rect.intersected(it->geometry).isEmpty()) {
+                    connectedNames.append(mName);
+                }
+                if (mismatchConnector.isEmpty() && !binding.monitorIdentity.isEmpty() && !it->identity().isEmpty()
+                    && binding.monitorIdentity != it->identity()) {
+                    mismatchConnector = binding.connector;
+                    mismatchIdentity = binding.monitorIdentity;
+                }
+            } else {
+                allNames.append(binding.connector);
+                missingConnectors.append(binding.connector);
+            }
+        }
+        targetAvailable = !connectedNames.isEmpty();
         targetTitle_->setText(area->name);
         areaName_->setText(area->name);
-        const QSize bounds = screen ? screen->geometry().size() : QSize(100000, 100000);
-        areaX_->setMaximum(std::max(0, bounds.width() - 1));
-        areaY_->setMaximum(std::max(0, bounds.height() - 1));
-        areaWidth_->setMaximum(bounds.width());
-        areaHeight_->setMaximum(bounds.height());
+        monitorLabel_->setWordWrap(true);
+        monitorLabel_->setText(tr("Cross-monitor (%1)").arg(allNames.join(QStringLiteral(" + "))));
+        geometryHint_->setText(
+            tr("Global logical coordinates across monitors. Captures compose intersected monitors at the highest scale."));
+
+        QRect desktopBounds;
+        for (const ScreenInfo &s : allConnectedScreens) {
+            desktopBounds = desktopBounds.united(s.geometry);
+        }
+        areaX_->setRange(desktopBounds.isEmpty() ? -100000 : desktopBounds.left(),
+                         desktopBounds.isEmpty() ? 100000 : desktopBounds.left() + desktopBounds.width() - 1);
+        areaY_->setRange(desktopBounds.isEmpty() ? -100000 : desktopBounds.top(),
+                         desktopBounds.isEmpty() ? 100000 : desktopBounds.top() + desktopBounds.height() - 1);
+        areaWidth_->setMaximum(desktopBounds.isEmpty() ? 100000 : std::max(1, desktopBounds.width()));
+        areaHeight_->setMaximum(desktopBounds.isEmpty() ? 100000 : std::max(1, desktopBounds.height()));
         areaX_->setValue(area->rect.x());
         areaY_->setValue(area->rect.y());
         areaWidth_->setValue(area->rect.width());
         areaHeight_->setValue(area->rect.height());
-        geometryRow_->setEnabled(screen != nullptr);
-        if (!screen) {
-            areaWarning_->setText(tr("The monitor is not connected. This area is skipped when triggered."));
+        geometryRow_->setEnabled(!allConnectedScreens.isEmpty());
+
+        if (connectedBindings == 0) {
+            areaWarning_->setText(tr("None of this area's monitors are connected. Nothing is saved when triggered."));
             areaWarning_->show();
-        } else if (!QRect(QPoint(), screen->geometry().size()).contains(area->rect)) {
-            areaWarning_->setText(tr("The area no longer fits on this monitor and is skipped when triggered. "
-                                       "Adjust it or select it again."));
+        } else if (connectedNames.isEmpty()) {
+            areaWarning_->setText(
+                tr("This area no longer overlaps any connected monitor. Adjust it or select it again."));
             areaWarning_->show();
-        } else if (!area->monitorIdentity.isEmpty() && screenInfo(screen).identity() != area->monitorIdentity) {
-            areaWarning_->setText(tr("A different monitor is connected to %1 than when this area was defined "
-                                       "(%2).")
-                                        .arg(connector, area->monitorIdentity));
+        } else if (!missingConnectors.isEmpty()) {
+            areaWarning_->setText(tr("%1 not connected. Triggering saves the visible part on %2.")
+                                      .arg(missingConnectors.join(QStringLiteral(", ")),
+                                           connectedNames.join(QStringLiteral(", "))));
+            areaWarning_->show();
+        } else if (!mismatchConnector.isEmpty()) {
+            areaWarning_->setText(tr("A different monitor is connected to %1 than when this area was defined (%2).")
+                                      .arg(mismatchConnector, mismatchIdentity));
             areaWarning_->show();
         }
-    } else if (screen) {
-        const QString name = store.monitorName(screenInfo(screen));
-        targetTitle_->setText(tr("Monitor %1").arg(name));
-        areaName_->setText(name == connector ? QString() : name);
-    } else if (id != allMonitorsTargetId()) {
-        targetTitle_->setText(tr("Monitor %1").arg(connector));
+    } else {
+        targetAvailable = isArea || screen || id == allMonitorsTargetId();
+        if (id == allMonitorsTargetId()) {
+            targetTitle_->setText(tr("All monitors"));
+            monitorLabel_->setText(tr("One image of all monitors in their current arrangement, at the highest scale. "
+                                      "Gaps are transparent."));
+            monitorLabel_->setWordWrap(true);
+        } else if (screen) {
+            monitorLabel_->setWordWrap(false);
+            // Qt only reports the integer buffer scale on Wayland, so the native size is not shown here.
+            monitorLabel_->setText(tr("%1 · %2 × %3 (logical)")
+                                       .arg(connector)
+                                       .arg(screen->geometry().width())
+                                       .arg(screen->geometry().height()));
+        } else {
+            monitorLabel_->setWordWrap(false);
+            monitorLabel_->setText(tr("%1 · not connected").arg(connector));
+        }
+        if (isArea) {
+            targetTitle_->setText(area->name);
+            areaName_->setText(area->name);
+            geometryHint_->setText(tr("Logical pixels relative to the monitor's top left corner. Captures use "
+                                      "the monitor's native resolution."));
+            const QSize bounds = screen ? screen->geometry().size() : QSize(100000, 100000);
+            areaX_->setRange(0, std::max(0, bounds.width() - 1));
+            areaY_->setRange(0, std::max(0, bounds.height() - 1));
+            areaWidth_->setMaximum(bounds.width());
+            areaHeight_->setMaximum(bounds.height());
+            areaX_->setValue(area->rect.x());
+            areaY_->setValue(area->rect.y());
+            areaWidth_->setValue(area->rect.width());
+            areaHeight_->setValue(area->rect.height());
+            geometryRow_->setEnabled(screen != nullptr);
+            if (!screen) {
+                areaWarning_->setText(tr("The monitor is not connected. This area is skipped when triggered."));
+                areaWarning_->show();
+            } else if (!QRect(QPoint(), screen->geometry().size()).contains(area->rect)) {
+                areaWarning_->setText(tr("The area no longer fits on this monitor and is skipped when triggered. "
+                                           "Adjust it or select it again."));
+                areaWarning_->show();
+            } else if (!area->monitorIdentity.isEmpty() && screenInfo(screen).identity() != area->monitorIdentity) {
+                areaWarning_->setText(tr("A different monitor is connected to %1 than when this area was defined "
+                                           "(%2).")
+                                            .arg(connector, area->monitorIdentity));
+                areaWarning_->show();
+            }
+        } else if (screen) {
+            const QString name = store.monitorName(screenInfo(screen));
+            targetTitle_->setText(tr("Monitor %1").arg(name));
+            areaName_->setText(name == connector ? QString() : name);
+        } else if (id != allMonitorsTargetId()) {
+            targetTitle_->setText(tr("Monitor %1").arg(connector));
+        }
     }
+    Q_UNUSED(targetAvailable);
 
     targetCursor_->setChecked(store.targetIncludesCursor(id));
     targetCursor_->setEnabled(isArea || screen || id == allMonitorsTargetId());
@@ -686,7 +785,7 @@ void SettingsWindow::selectTarget(const QString &id)
 void SettingsWindow::addArea()
 {
     setCurrentPage(targetsPage_);
-    runSelector(QString(), QRect(), QString());
+    runSelector(QRect(), QString());
 }
 
 void SettingsWindow::showTarget(const QString &id)
@@ -705,28 +804,46 @@ void SettingsWindow::editArea(const QString &areaId)
     if (const Area *area = app_->store().area(areaId)) {
         setCurrentPage(targetsPage_);
         selectTarget(areaId);
-        runSelector(area->connector, area->rect, area->id);
+        QRect initialGlobal;
+        if (area->isCrossMonitor()) {
+            initialGlobal = area->rect;
+        } else if (const QScreen *screen = findScreen(area->connector)) {
+            initialGlobal = area->rect.translated(screen->geometry().topLeft());
+        }
+        runSelector(initialGlobal, area->id);
     }
 }
 
-void SettingsWindow::runSelector(const QString &connector, const QRect &initial, const QString &areaId)
+void SettingsWindow::runSelector(const QRect &initialGlobalRect, const QString &areaId)
 {
     if (selector_) {
         return;
     }
     selector_ = new AreaSelector(this);
     connect(selector_, &AreaSelector::selected, this,
-            [this, areaId](const QString &selectedConnector, const QRect &rect) {
+            [this, areaId](const QRect &globalRect) {
                 selector_->deleteLater();
                 TargetStore &store = app_->store();
+                const QList<ScreenInfo> screens = currentScreens();
+                const QList<ScreenInfo> hit = intersectingScreens(screens, globalRect);
                 QString id = areaId;
                 if (Area *area = store.area(areaId)) {
-                    area->rect = rect;
-                    if (const QScreen *screen = findScreen(selectedConnector)) {
-                        area->monitorIdentity = screenInfo(screen).identity();
+                    if (hit.size() == 1 && hit.first().geometry.contains(globalRect)) {
+                        area->connector = hit.first().connector;
+                        area->monitorIdentity = hit.first().identity();
+                        area->monitors.clear();
+                        area->rect = globalRect.translated(-hit.first().geometry.topLeft());
+                    } else if (!hit.isEmpty()) {
+                        area->connector.clear();
+                        area->monitorIdentity.clear();
+                        area->monitors.clear();
+                        for (const ScreenInfo &s : hit) {
+                            area->monitors.append({s.connector, s.identity()});
+                        }
+                        area->rect = globalRect;
                     }
-                } else if (const QScreen *screen = findScreen(selectedConnector)) {
-                    id = store.addArea(screenInfo(screen), rect).id;
+                } else if (!hit.isEmpty()) {
+                    id = store.addAreaForGlobalRect(screens, globalRect).id;
                 }
                 app_->storeChanged();
                 show();
@@ -734,7 +851,7 @@ void SettingsWindow::runSelector(const QString &connector, const QRect &initial,
                 activateWindow();
                 setCurrentPage(targetsPage_);
                 selectTarget(id);
-                if (areaId.isEmpty()) {
+                if (areaId.isEmpty() && !id.isEmpty()) {
                     // A fresh area is most useful with a shortcut: start recording right away.
                     targetShortcut_->captureKeySequence();
                 }
@@ -746,8 +863,8 @@ void SettingsWindow::runSelector(const QString &connector, const QRect &initial,
         activateWindow();
     });
     hide();
-    QTimer::singleShot(hideBeforeSelectDelayMs, selector_, [selector = selector_.data(), connector, initial] {
-        selector->start(connector, initial);
+    QTimer::singleShot(hideBeforeSelectDelayMs, selector_, [selector = selector_.data(), initialGlobalRect] {
+        selector->start(initialGlobalRect);
     });
 }
 
@@ -757,8 +874,33 @@ void SettingsWindow::applyAreaGeometry()
         return;
     }
     Area *area = app_->store().area(selectedTargetId());
-    const QScreen *screen = area ? findScreen(area->connector) : nullptr;
-    if (!area || !screen) {
+    if (!area) {
+        return;
+    }
+    if (area->isCrossMonitor()) {
+        const QList<ScreenInfo> screens = currentScreens();
+        QRect desktopBounds;
+        for (const ScreenInfo &s : screens) {
+            desktopBounds = desktopBounds.united(s.geometry);
+        }
+        if (desktopBounds.isEmpty()) {
+            return;
+        }
+        QRect rect(areaX_->value(), areaY_->value(), areaWidth_->value(), areaHeight_->value());
+        rect = clampToBounds(rect, desktopBounds);
+        area->rect = rect;
+        const QList<ScreenInfo> hit = intersectingScreens(screens, rect);
+        if (hit.size() >= 2) {
+            area->monitors.clear();
+            for (const ScreenInfo &s : hit) {
+                area->monitors.append({s.connector, s.identity()});
+            }
+        }
+        app_->storeChanged();
+        return;
+    }
+    const QScreen *screen = findScreen(area->connector);
+    if (!screen) {
         return;
     }
     const QSize bounds = screen->geometry().size();
@@ -1061,8 +1203,18 @@ void SettingsWindow::refreshGroupDetails()
             item->setCheckState(group->targetIds.contains(id) ? Qt::Checked : Qt::Unchecked);
         };
         for (const Area &area : store.areas) {
-            addMember(area.id, tr("%1 (area on %2)").arg(area.name, monitorName(store, area.connector)),
-                      QStringLiteral("transform-crop"));
+            if (area.isCrossMonitor()) {
+                QStringList names;
+                names.reserve(area.monitors.size());
+                for (const AreaMonitorBinding &b : area.monitors) {
+                    names.append(monitorName(store, b.connector));
+                }
+                addMember(area.id, tr("%1 (cross-monitor: %2)").arg(area.name, names.join(QStringLiteral(" + "))),
+                          QStringLiteral("transform-crop"));
+            } else {
+                addMember(area.id, tr("%1 (area on %2)").arg(area.name, monitorName(store, area.connector)),
+                          QStringLiteral("transform-crop"));
+            }
         }
         QStringList connectors;
         for (const ScreenInfo &screen : currentScreens()) {

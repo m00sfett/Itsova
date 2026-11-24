@@ -25,3 +25,9 @@ Name=Capture saved
 Comment=A capture from the Print key or the overlay was saved
 Action=Popup
 Urgency=Low
+
+[Event/partialCapture]
+Name=Partial capture
+Comment=A cross-monitor area was partially captured or skipped because a monitor is disconnected
+Action=Popup
+Urgency=Low

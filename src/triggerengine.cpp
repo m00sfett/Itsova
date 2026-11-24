@@ -38,6 +38,7 @@ TriggerResult TriggerEngine::execute(const TriggerPlan &plan, const Capturer &ca
     result.timestamp = timestamp;
     result.errors = plan.errors;
     result.warnings = plan.warnings;
+    result.partialNotifications = plan.partialNotifications;
 
     // One capture per monitor, all started together so the frames show (nearly) the same instant.
     QHash<QString, CaptureResult> frames;

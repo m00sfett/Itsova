@@ -69,6 +69,7 @@ public:
     void forgetCapturePath(const QString &path);
     // Notification after an overlay session, with Open and Show in Folder.
     void notifySaved(const QString &title, const QStringList &paths, const QStringList &errors);
+    void notifyPartialCapture(const QString &title, const QStringList &messages);
     void openLastCapture();
     void editLastCapture();
     void openEditorForFile(const QString &path);
