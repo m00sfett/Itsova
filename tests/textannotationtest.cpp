@@ -111,16 +111,24 @@ void TextAnnotationTest::paragraphTextWrapAndExteriorMove()
         QStringLiteral("Long paragraph text that should wrap automatically within the box"));
 
     // Dragging inside the exterior move margin (e.g. (3, 3) on editor widget) moves without committing.
+    // Construct and dispatch each synthetic mouse event sequentially so Qt 6.8's pointing device state
+    // does not overwrite an earlier event's globalPosition before it is delivered.
     const QPointF startTopLeft = editor->currentItem().rect.topLeft();
-    QMouseEvent mp(QEvent::MouseButtonPress, QPointF(3, 3), QPointF(103, 103), Qt::LeftButton, Qt::LeftButton,
-                   Qt::NoModifier);
-    QMouseEvent mm(QEvent::MouseMove, QPointF(23, 33), QPointF(123, 133), Qt::NoButton, Qt::LeftButton,
-                   Qt::NoModifier);
-    QMouseEvent mr(QEvent::MouseButtonRelease, QPointF(23, 33), QPointF(123, 133), Qt::LeftButton, Qt::NoButton,
-                   Qt::NoModifier);
-    QApplication::sendEvent(editor, &mp);
-    QApplication::sendEvent(editor, &mm);
-    QApplication::sendEvent(editor, &mr);
+    {
+        QMouseEvent mp(QEvent::MouseButtonPress, QPointF(3, 3), QPointF(103, 103), Qt::LeftButton, Qt::LeftButton,
+                       Qt::NoModifier);
+        QApplication::sendEvent(editor, &mp);
+    }
+    {
+        QMouseEvent mm(QEvent::MouseMove, QPointF(23, 33), QPointF(123, 133), Qt::NoButton, Qt::LeftButton,
+                       Qt::NoModifier);
+        QApplication::sendEvent(editor, &mm);
+    }
+    {
+        QMouseEvent mr(QEvent::MouseButtonRelease, QPointF(23, 33), QPointF(123, 133), Qt::LeftButton, Qt::NoButton,
+                       Qt::NoModifier);
+        QApplication::sendEvent(editor, &mr);
+    }
     QVERIFY(ctrl->isEditingText());
     QCOMPARE(editor->currentItem().rect.topLeft(), startTopLeft + QPointF(20.0, 30.0));
 
