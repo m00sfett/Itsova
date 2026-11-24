@@ -19,6 +19,7 @@ Public release readiness: translations, packaging and documentation. The reposit
 - Arch Linux packaging (#56): `packaging/arch/glimply-git/PKGBUILD` (development package) and `packaging/arch/glimply/PKGBUILD` (for tagged releases from `1.0.0`), installing the binary, desktop entry (`ScreenShot2` restricted interface), D-Bus service, notification config, icons, translations, and Plasma widget.
 - Documentation (#57): rewrote `README.md` in English covering current features, local-only privacy, `ScreenShot2` / `Print` / MCP / OCR permissions, Qt 6.8 / KF 6.13 requirements, Arch PKGBUILD and source build instructions, CLI usage, and translation notes (no screenshots before `1.0.0`).
 - UI translations (#52): completed all 18 additional languages (`ar`, `de`, `es`, `fr`, `hi`, `id`, `it`, `ja`, `ko`, `nl`, `pl`, `pt`, `ru`, `tr`, `uk`, `vi`, `zh_CN`, `zh_TW`) across Qt `.ts` catalogs, Plasma widget `.po` catalogs, desktop entry, notifyrc events, and widget metadata, and enabled the strict `translations` CTest check without `--allow-unfinished`.
+- RTL layout support (#54): mirror custom-painted overlay action bar anchor, corner close button, selection badge, pin window zoom/opacity readout, color-picker loupe swatch/value row, toolbar sub-group spacing, and RTL help-panel key/meaning alignment under right-to-left locales (`ar`), wrap the *General* settings page in a `QScrollArea` so hints and the inline restart banner never clip, and keep capture rectangles, monitor geometry, magnified pixel grids, and pinned images unmirrored.
 
 ### Changed
 

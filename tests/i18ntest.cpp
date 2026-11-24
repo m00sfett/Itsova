@@ -3,6 +3,7 @@
 #include <KConfig>
 #include <KConfigGroup>
 
+#include <QLocale>
 #include <QTemporaryDir>
 #include <QTest>
 
@@ -106,6 +107,17 @@ private Q_SLOTS:
         QCOMPARE(configuredUiLanguage(config), QString());
         config.group(QStringLiteral("General")).writeEntry("Language", QStringLiteral(" zh_TW "));
         QCOMPARE(configuredUiLanguage(config), QStringLiteral("zh_TW"));
+    }
+
+    void rtlDirection()
+    {
+        QCOMPARE(QLocale(QStringLiteral("ar")).textDirection(), Qt::RightToLeft);
+        QCOMPARE(QLocale(QStringLiteral("en")).textDirection(), Qt::LeftToRight);
+        for (const QString &code : translatedUiLanguages()) {
+            const Qt::LayoutDirection expected =
+                code == QLatin1String("ar") ? Qt::RightToLeft : Qt::LeftToRight;
+            QCOMPARE(QLocale(code).textDirection(), expected);
+        }
     }
 };
 

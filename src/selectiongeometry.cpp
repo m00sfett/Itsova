@@ -364,4 +364,45 @@ QRect snapMovedRectToMonitorEdges(const QRect &rect, const QList<QRect> &screenR
     return clampToBounds(out, desktopBounds);
 }
 
+QPoint placeOverlayActionBar(const QRect &anchorRect, const QSize &barSize, const QSize &overlaySize,
+                             int topObstacleBottom, int barGap, Qt::LayoutDirection direction)
+{
+    const int x = direction == Qt::RightToLeft ? anchorRect.left() : anchorRect.right() + 1 - barSize.width();
+    QPoint position(x, anchorRect.bottom() + 1 + barGap);
+    if (position.y() + barSize.height() > overlaySize.height()) {
+        position.setY(anchorRect.top() - barGap - barSize.height());
+        if (position.y() < topObstacleBottom && position.y() < 0) {
+            position.setY(anchorRect.bottom() - barSize.height() - barGap);
+        }
+    }
+    if (position.y() < 0) {
+        position.setY(anchorRect.bottom() - barSize.height() - barGap);
+    }
+    position.setX(std::clamp(position.x(), 0, std::max(0, overlaySize.width() - barSize.width())));
+    position.setY(std::clamp(position.y(), 0, std::max(0, overlaySize.height() - barSize.height())));
+    return position;
+}
+
+QRect overlayCloseButtonRect(const QRect &globalRect, const QRect &bounds, int buttonSize,
+                             Qt::LayoutDirection direction)
+{
+    QRect button(0, 0, buttonSize, buttonSize);
+    // Inside the trailing top corner, clear of the corner handle; outside on small rectangles.
+    constexpr int inset = 20;
+    const bool rtl = direction == Qt::RightToLeft;
+    if (globalRect.width() >= 3 * inset && globalRect.height() >= 3 * inset) {
+        const int cx = rtl ? globalRect.left() + inset : globalRect.right() - inset;
+        button.moveCenter(QPoint(cx, globalRect.top() + inset));
+    } else {
+        const int cx = rtl ? globalRect.left() - buttonSize / 2 - 4 : globalRect.right() + buttonSize / 2 + 4;
+        button.moveCenter(QPoint(cx, globalRect.top() - buttonSize / 2 - 4));
+    }
+    return clampToBounds(button, bounds);
+}
+
+QPointF overlaySelectionBadgeCenter(const QRectF &frame, Qt::LayoutDirection direction)
+{
+    return direction == Qt::RightToLeft ? frame.topRight() + QPointF(-14, 14) : frame.topLeft() + QPointF(14, 14);
+}
+
 } // namespace glimply

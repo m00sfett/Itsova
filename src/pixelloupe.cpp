@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <QFontMetrics>
+#include <QGuiApplication>
 
 #include <algorithm>
 
@@ -182,7 +183,12 @@ void paintColorPickerLoupe(QPainter &painter, const QPoint &cursorLocal, const Q
     painter.setRenderHint(QPainter::Antialiasing, true);
     const int rowY = gridRect.bottom() + 1 + 8;
     const int rowStartX = card.left() + std::max(pad, (card.width() - colorRowW) / 2);
-    const QRect swatchRect(rowStartX, rowY + (colorRowH - swatchSize) / 2, swatchSize, swatchSize);
+    const bool rtl = painter.layoutDirection() == Qt::RightToLeft
+                     || (painter.layoutDirection() == Qt::LayoutDirectionAuto
+                         && QGuiApplication::layoutDirection() == Qt::RightToLeft);
+    const int swatchX = rtl ? rowStartX + valueSize.width() + swatchGap : rowStartX;
+    const int valueX = rtl ? rowStartX : swatchX + swatchSize + swatchGap;
+    const QRect swatchRect(swatchX, rowY + (colorRowH - swatchSize) / 2, swatchSize, swatchSize);
     painter.setBrush(sampled);
     QColor swatchBorder = palette.color(QPalette::WindowText);
     swatchBorder.setAlpha(150);
@@ -191,8 +197,8 @@ void paintColorPickerLoupe(QPainter &painter, const QPoint &cursorLocal, const Q
 
     painter.setFont(valueFont);
     painter.setPen(palette.color(QPalette::WindowText));
-    const QRect valueRect(swatchRect.right() + 1 + swatchGap, rowY, valueSize.width() + 2, colorRowH);
-    painter.drawText(valueRect, Qt::AlignVCenter | Qt::AlignLeft, valueText);
+    const QRect valueRect(valueX, rowY, valueSize.width() + 2, colorRowH);
+    painter.drawText(valueRect, Qt::AlignVCenter | (rtl ? Qt::AlignRight : Qt::AlignLeft), valueText);
 
     painter.setFont(hintFont);
     QColor muted = palette.color(QPalette::WindowText);

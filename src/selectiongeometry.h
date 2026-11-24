@@ -2,8 +2,11 @@
 
 #include <QList>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
+#include <QRectF>
 #include <QSize>
+#include <Qt>
 
 namespace glimply
 {
@@ -60,5 +63,12 @@ struct SelectionConstraints {
                                                    int threshold = monitorEdgeSnapPx);
 [[nodiscard]] QRect snapMovedRectToMonitorEdges(const QRect &rect, const QList<QRect> &screenRects,
                                                 const QRect &desktopBounds, int threshold = monitorEdgeSnapPx);
+
+// Placement helpers for overlay chrome (capture rects and monitors are never mirrored in RTL).
+[[nodiscard]] QPoint placeOverlayActionBar(const QRect &anchorRect, const QSize &barSize, const QSize &overlaySize,
+                                           int topObstacleBottom, int barGap, Qt::LayoutDirection direction);
+[[nodiscard]] QRect overlayCloseButtonRect(const QRect &globalRect, const QRect &bounds, int buttonSize,
+                                           Qt::LayoutDirection direction);
+[[nodiscard]] QPointF overlaySelectionBadgeCenter(const QRectF &frame, Qt::LayoutDirection direction);
 
 } // namespace glimply

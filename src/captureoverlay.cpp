@@ -2009,12 +2009,13 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         grid->addWidget(heading, 0, 0, 1, 2);
         grid->setRowMinimumHeight(1, 2);
         int line = 2;
+        const bool rtl = panel->layoutDirection() == Qt::RightToLeft;
         for (const auto &[keys, meaning] : rows) {
             auto *keyLabel = new QLabel(keys, panel);
             keyLabel->setFont(bold);
-            keyLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+            keyLabel->setAlignment((rtl ? Qt::AlignLeft : Qt::AlignRight) | Qt::AlignAbsolute | Qt::AlignTop);
             auto *meaningLabel = new QLabel(meaning, panel);
-            meaningLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+            meaningLabel->setAlignment((rtl ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignAbsolute | Qt::AlignTop);
             grid->addWidget(keyLabel, line, 0);
             grid->addWidget(meaningLabel, line, 1);
             ++line;
@@ -2246,7 +2247,7 @@ void CaptureOverlay::buildActionBar()
     row->setContentsMargins(0, 0, 0, 0);
     row->setSpacing(2);
     sizeLabel_ = new QLabel(actionButtons_);
-    sizeLabel_->setContentsMargins(6, 0, 8, 0);
+    sizeLabel_->setContentsMargins(6, 0, 6, 0);
     row->addWidget(sizeLabel_);
 
     if (print) {
@@ -2547,18 +2548,8 @@ void CaptureOverlay::placeActionBar()
     if (markupPanel_ && !markupPanel_->isHidden()) {
         topObstacleBottom = std::max(topObstacleBottom, markupPanel_->geometry().bottom() + 4);
     }
-    QPoint position(anchorRect.right() + 1 - size.width(), anchorRect.bottom() + 1 + barGap);
-    if (position.y() + size.height() > height()) {
-        position.setY(anchorRect.top() - barGap - size.height());
-        if (position.y() < topObstacleBottom && position.y() < 0) {
-            position.setY(anchorRect.bottom() - size.height() - barGap);
-        }
-    }
-    if (position.y() < 0) {
-        position.setY(anchorRect.bottom() - size.height() - barGap);
-    }
-    position.setX(std::clamp(position.x(), 0, std::max(0, width() - size.width())));
-    position.setY(std::clamp(position.y(), 0, std::max(0, height() - size.height())));
+    const QPoint position = placeOverlayActionBar(anchorRect, size, this->size(), topObstacleBottom, barGap,
+                                                  layoutDirection());
     actionBar_->setGeometry(QRect(position, size));
     actionBar_->show();
     actionBar_->raise();
@@ -2580,18 +2571,11 @@ bool CaptureOverlay::focusNextPrevChild(bool next)
 
 QRect CaptureOverlay::closeButtonGlobal(const QRect &globalRect) const
 {
-    QRect button(0, 0, closeButtonSize, closeButtonSize);
-    // Inside the top right corner, clear of the corner handle; outside on small rectangles.
-    constexpr int inset = 20;
-    if (globalRect.width() >= 3 * inset && globalRect.height() >= 3 * inset) {
-        button.moveCenter(QPoint(globalRect.right() - inset, globalRect.top() + inset));
-    } else {
-        button.moveCenter(
-            QPoint(globalRect.right() + closeButtonSize / 2 + 4, globalRect.top() - closeButtonSize / 2 - 4));
-    }
-    const QList<ScreenInfo> cornerScreens = session_->intersectingScreens(QRect(globalRect.topRight(), QSize(1, 1)));
+    const Qt::LayoutDirection direction = layoutDirection();
+    const QPoint corner = direction == Qt::RightToLeft ? globalRect.topLeft() : globalRect.topRight();
+    const QList<ScreenInfo> cornerScreens = session_->intersectingScreens(QRect(corner, QSize(1, 1)));
     const QRect bounds = cornerScreens.isEmpty() ? session_->desktopBounds() : cornerScreens.first().geometry;
-    return clampToBounds(button, bounds);
+    return overlayCloseButtonRect(globalRect, bounds, closeButtonSize, direction);
 }
 
 int CaptureOverlay::closeButtonAt(const QPoint &globalPos) const
@@ -2689,7 +2673,7 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
         if (numbered) {
             const int number = model.number(selection.id);
             QRectF badge(0, 0, 22, 22);
-            badge.moveCenter(frame.topLeft() + QPointF(14, 14));
+            badge.moveCenter(overlaySelectionBadgeCenter(frame, layoutDirection()));
             painter.setPen(QPen(QColor(255, 255, 255, 230), 1.5));
             painter.setBrush(active ? accent : QColor(60, 60, 60, 220));
             painter.drawEllipse(badge);

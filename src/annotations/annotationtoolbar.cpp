@@ -443,7 +443,7 @@ void AnnotationToolbar::buildUi()
 
     fillOpacityBox_ = new QWidget(fillGroup_);
     auto *opLayout = new QHBoxLayout(fillOpacityBox_);
-    opLayout->setContentsMargins(4, 0, 0, 0);
+    opLayout->setContentsMargins(2, 0, 2, 0);
     opLayout->setSpacing(4);
     opLayout->addWidget(new QLabel(tr("Opacity:"), fillOpacityBox_));
     fillOpacitySlider_ = new QSlider(Qt::Horizontal, fillOpacityBox_);
@@ -657,7 +657,7 @@ void AnnotationToolbar::buildUi()
 
     textActionBox_ = new QWidget(textGroup_);
     auto *actLayout = new QHBoxLayout(textActionBox_);
-    actLayout->setContentsMargins(4, 0, 0, 0);
+    actLayout->setContentsMargins(2, 0, 2, 0);
     actLayout->setSpacing(2);
     applyTextButton_ = new QToolButton(textActionBox_);
     applyTextButton_->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply"),
@@ -756,7 +756,7 @@ void AnnotationToolbar::buildUi()
 
     redactStrengthBox_ = new QWidget(redactGroup_);
     auto *strLayout = new QHBoxLayout(redactStrengthBox_);
-    strLayout->setContentsMargins(4, 0, 0, 0);
+    strLayout->setContentsMargins(2, 0, 2, 0);
     strLayout->setSpacing(4);
     redactStrengthTitleLabel_ = new QLabel(tr("Block:"), redactStrengthBox_);
     redactStrengthSlider_ = new QSlider(Qt::Horizontal, redactStrengthBox_);
