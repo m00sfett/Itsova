@@ -56,6 +56,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE QString AddAreaRect(const QString &name, const QString &connector, int x, int y, int width,
                                      int height);
     Q_SCRIPTABLE QString OpenOverlay(const QString &mode, int delaySeconds);
+    Q_SCRIPTABLE QString McpDispatch(const QString &toolName, const QString &argumentsJson);
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 

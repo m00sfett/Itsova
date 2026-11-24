@@ -33,6 +33,7 @@ class CountdownController;
 class HookRunner;
 struct HookResult;
 class IntervalController;
+struct McpToolResponse;
 class QuickEditorWindow;
 class ShortcutManager;
 class TrayController;
@@ -88,6 +89,8 @@ public:
     void forgetCapturePath(const QString &path);
     [[nodiscard]] CliResolveResult resolveTarget(const QString &query) const;
     void captureAsync(const CliCaptureRequest &request, std::function<void(const CliCaptureResult &)> callback);
+    void mcpDispatchAsync(const QString &toolName, const QString &argumentsJson,
+                          std::function<void(const McpToolResponse &)> callback);
     [[nodiscard]] QJsonObject addAreaRect(const QString &name, const QString &connector, const QRect &rect);
     [[nodiscard]] QString openOverlay(const QString &mode, int delaySeconds);
     [[nodiscard]] QJsonObject lastCaptureInfo() const;

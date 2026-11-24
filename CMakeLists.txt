@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.5.0 LANGUAGES CXX)
+project(glimply VERSION 0.6.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -62,6 +62,7 @@ add_library(glimply_capture STATIC
     src/annotations/annotationsettings.cpp
     src/annotations/annotationtextlayout.cpp
     src/annotations/overlayexport.cpp
+    src/annotations/programmaticannotator.cpp
     src/annotations/redactionprocessor.cpp
     src/captureservice.cpp
     src/cli.cpp
@@ -69,6 +70,8 @@ add_library(glimply_capture STATIC
     src/hookrunner.cpp
     src/imageoutput.cpp
     src/intervalcontroller.cpp
+    src/mcppolicy.cpp
+    src/mcpserver.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
     src/selectionmodel.cpp
@@ -78,6 +81,7 @@ add_library(glimply_capture STATIC
     src/windowlist.cpp
 )
 target_include_directories(glimply_capture PUBLIC src)
+target_compile_definitions(glimply_capture PUBLIC GLIMPLY_VERSION="${PROJECT_VERSION}")
 target_link_libraries(glimply_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
 
 add_library(glimply_ui STATIC
@@ -88,6 +92,7 @@ add_library(glimply_ui STATIC
     src/areaselector.cpp
     src/countdowntimer.cpp
     src/exportdialog.cpp
+    src/mcpconfirmdialog.cpp
     src/pixelloupe.cpp
     src/quickeditorwindow.cpp
 )
@@ -171,6 +176,9 @@ if(BUILD_TESTING)
     add_executable(hooktest tests/hooktest.cpp)
     target_link_libraries(hooktest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME hook COMMAND hooktest)
+    add_executable(mcptest tests/mcptest.cpp)
+    target_link_libraries(mcptest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME mcp COMMAND mcptest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

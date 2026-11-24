@@ -81,6 +81,31 @@ void writeHookOverride(KConfigGroup &group, const HookOverride &ov)
     group.writeEntry("HookTimeoutSeconds", std::clamp(ov.timeoutSeconds, 5, 300));
 }
 
+McpAccessMode mcpAccessModeFromKey(const QString &key)
+{
+    const QString norm = key.trimmed().toLower();
+    if (norm == QLatin1String("confirm")) {
+        return McpAccessMode::ConfirmPerCapture;
+    }
+    if (norm == QLatin1String("full")) {
+        return McpAccessMode::FullSession;
+    }
+    return McpAccessMode::Allowlist;
+}
+
+QString mcpAccessModeKey(McpAccessMode mode)
+{
+    switch (mode) {
+    case McpAccessMode::Allowlist:
+        return QStringLiteral("allowlist");
+    case McpAccessMode::ConfirmPerCapture:
+        return QStringLiteral("confirm");
+    case McpAccessMode::FullSession:
+        return QStringLiteral("full");
+    }
+    return QStringLiteral("allowlist");
+}
+
 IntervalConfig clampedIntervalConfig(IntervalConfig cfg)
 {
     cfg.seconds = std::clamp(cfg.seconds, 1, 86400);
@@ -285,6 +310,19 @@ void TargetStore::load(const KConfig &config)
         hook.timeoutSeconds = std::clamp(hookCfg.readEntry("TimeoutSeconds", 30), 5, 300);
         hook.runOnInterval = hookCfg.readEntry("RunOnInterval", false);
     }
+    {
+        const KConfigGroup mcpCfg = config.group(QStringLiteral("MCP"));
+        mcp.enabled = mcpCfg.readEntry("Enabled", false);
+        mcp.accessMode = mcpAccessModeFromKey(mcpCfg.readEntry("AccessMode", QStringLiteral("allowlist")));
+        mcp.allowedTargetIds.clear();
+        for (const QString &rawId : mcpCfg.readEntry("AllowedTargets", QStringList())) {
+            const QString id = migrateId(rawId);
+            if (!id.isEmpty() && !mcp.allowedTargetIds.contains(id)) {
+                mcp.allowedTargetIds.append(id);
+            }
+        }
+        mcp.notifyOnCapture = mcpCfg.readEntry("NotifyOnCapture", true);
+    }
     keepDelayActive = general.readEntry("KeepDelayActive", false);
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
@@ -439,6 +477,13 @@ void TargetStore::save(KConfig &config) const
         hookCfg.writeEntry("Command", hook.command.trimmed());
         hookCfg.writeEntry("TimeoutSeconds", std::clamp(hook.timeoutSeconds, 5, 300));
         hookCfg.writeEntry("RunOnInterval", hook.runOnInterval);
+    }
+    {
+        KConfigGroup mcpCfg = config.group(QStringLiteral("MCP"));
+        mcpCfg.writeEntry("Enabled", mcp.enabled);
+        mcpCfg.writeEntry("AccessMode", mcpAccessModeKey(mcp.accessMode));
+        mcpCfg.writeEntry("AllowedTargets", mcp.allowedTargetIds);
+        mcpCfg.writeEntry("NotifyOnCapture", mcp.notifyOnCapture);
     }
 
     KConfigGroup general = config.group(QStringLiteral("General"));
@@ -700,6 +745,7 @@ void TargetStore::remove(const QString &id)
     builtInDelays.remove(id);
     builtInIntervals.remove(id);
     builtInHookOverrides.remove(id);
+    mcp.allowedTargetIds.removeAll(id);
     for (Group &group : groups) {
         group.targetIds.removeAll(id);
     }

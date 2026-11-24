@@ -13,20 +13,25 @@
 #include <KPageWidgetItem>
 
 #include <QCheckBox>
+#include <QClipboard>
 #include <QComboBox>
-#include <QDialogButtonBox>
 #include <QDesktopServices>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QFormLayout>
+#include <QFrame>
+#include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QPointer>
 #include <QPushButton>
 #include <QScreen>
+#include <QScrollArea>
 #include <QSignalBlocker>
 #include <QSlider>
 #include <QSpinBox>
@@ -1729,12 +1734,19 @@ QWidget *SettingsWindow::createGeneralPage()
 
 QWidget *SettingsWindow::createAutomationPage()
 {
-    auto *page = new QWidget;
+    auto *scroll = new QScrollArea;
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setWidgetResizable(true);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    auto *page = new QWidget(scroll);
+    scroll->setWidget(page);
     auto *outer = new QHBoxLayout(page);
-    outer->setContentsMargins(0, 0, 0, 0);
+    outer->setContentsMargins(0, 0, 8, 0);
     auto *content = new QWidget(page);
     content->setMaximumWidth(680);
     outer->addWidget(content);
+    outer->addStretch(1);
     auto *rootLayout = new QVBoxLayout(content);
     rootLayout->setContentsMargins(0, 0, 0, 0);
     rootLayout->setSpacing(10);
@@ -1787,6 +1799,82 @@ QWidget *SettingsWindow::createAutomationPage()
     hookForm->addRow(QString(), hookTestStatus_);
 
     rootLayout->addWidget(hookDetails_);
+
+    auto *divider = new QFrame(content);
+    divider->setFrameShape(QFrame::HLine);
+    divider->setFrameShadow(QFrame::Sunken);
+    rootLayout->addSpacing(6);
+    rootLayout->addWidget(divider);
+    rootLayout->addSpacing(4);
+
+    auto *mcpHeading = new QLabel(tr("Local MCP Server"), content);
+    mcpHeading->setFont(sectionFont);
+    rootLayout->addWidget(mcpHeading);
+
+    mcpEnabled_ = new QCheckBox(tr("Enable local MCP server (stdio only)"), content);
+    rootLayout->addWidget(mcpEnabled_);
+
+    mcpDetails_ = new QWidget(content);
+    auto *mcpForm = new QFormLayout(mcpDetails_);
+    mcpForm->setContentsMargins(20, 4, 0, 0);
+    mcpForm->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+
+    mcpAccessMode_ = new QComboBox(mcpDetails_);
+    mcpAccessMode_->setAccessibleName(tr("MCP access scope"));
+    mcpAccessMode_->addItem(tr("Allowlist only (recommended)"), int(McpAccessMode::Allowlist));
+    mcpAccessMode_->addItem(tr("Confirm every capture"), int(McpAccessMode::ConfirmPerCapture));
+    mcpAccessMode_->addItem(tr("Full session access"), int(McpAccessMode::FullSession));
+    mcpForm->addRow(tr("Access scope:"), mcpAccessMode_);
+
+    mcpAllowlistBox_ = new QWidget(mcpDetails_);
+    auto *allowLayout = new QVBoxLayout(mcpAllowlistBox_);
+    allowLayout->setContentsMargins(0, 2, 0, 2);
+    allowLayout->setSpacing(4);
+    allowLayout->addWidget(
+        makeHint(tr("Only checked areas and groups can be listed or captured over MCP:"), mcpAllowlistBox_));
+    mcpAllowlistList_ = new QListWidget(mcpAllowlistBox_);
+    mcpAllowlistList_->setMaximumHeight(160);
+    mcpAllowlistList_->setSelectionMode(QAbstractItemView::NoSelection);
+    mcpAllowlistList_->setAccessibleName(tr("MCP allowed targets"));
+    allowLayout->addWidget(mcpAllowlistList_);
+    mcpAllowlistEmpty_ =
+        makeHint(tr("No areas or groups yet — add one to allow MCP captures."), mcpAllowlistBox_);
+    mcpAllowlistEmpty_->hide();
+    allowLayout->addWidget(mcpAllowlistEmpty_);
+    mcpForm->addRow(tr("Allowed targets:"), mcpAllowlistBox_);
+
+    mcpFullWarning_ = new QLabel(
+        tr("Warning: Connected local MCP clients can capture any screen, region, or window without confirmation."),
+        mcpDetails_);
+    mcpFullWarning_->setWordWrap(true);
+    {
+        QPalette warnPal = mcpFullWarning_->palette();
+        warnPal.setColor(QPalette::WindowText, QColor(0xda, 0x44, 0x53));
+        mcpFullWarning_->setPalette(warnPal);
+    }
+    mcpFullWarning_->hide();
+    mcpForm->addRow(QString(), mcpFullWarning_);
+
+    mcpNotify_ = new QCheckBox(tr("Show a passive notification on MCP captures"), mcpDetails_);
+    mcpForm->addRow(tr("Notifications:"), mcpNotify_);
+
+    auto *cmdRow = new QHBoxLayout;
+    cmdRow->setContentsMargins(0, 0, 0, 0);
+    cmdRow->setSpacing(6);
+    mcpCommandDisplay_ = new QLineEdit(mcpDetails_);
+    mcpCommandDisplay_->setReadOnly(true);
+    mcpCommandDisplay_->setText(QStringLiteral("glimply mcp"));
+    mcpCommandDisplay_->setAccessibleName(tr("MCP stdio launch command"));
+    mcpCopyButton_ = new QPushButton(QIcon::fromTheme(QStringLiteral("edit-copy")), tr("Copy"), mcpDetails_);
+    cmdRow->addWidget(mcpCommandDisplay_, 1);
+    cmdRow->addWidget(mcpCopyButton_);
+    mcpForm->addRow(tr("Command:"), cmdRow);
+    mcpForm->addRow(QString(),
+                    makeHint(tr("Add this command in a local MCP client (Claude Code, Codex, Cursor). "
+                                "Runs strictly on stdin/stdout with no network port."),
+                             mcpDetails_));
+
+    rootLayout->addWidget(mcpDetails_);
     rootLayout->addStretch(1);
 
     connect(hookEnabled_, &QCheckBox::toggled, this, [this](bool on) {
@@ -1850,7 +1938,54 @@ QWidget *SettingsWindow::createAutomationPage()
         });
     });
 
-    return page;
+    connect(mcpEnabled_, &QCheckBox::toggled, this, [this](bool on) {
+        mcpDetails_->setVisible(on);
+        if (!updating_) {
+            app_->store().mcp.enabled = on;
+            app_->storeChanged();
+        }
+    });
+    connect(mcpAccessMode_, &QComboBox::currentIndexChanged, this, [this] {
+        const auto mode = McpAccessMode(mcpAccessMode_->currentData().toInt());
+        mcpAllowlistBox_->setVisible(mode == McpAccessMode::Allowlist);
+        mcpFullWarning_->setVisible(mode == McpAccessMode::FullSession);
+        if (!updating_) {
+            app_->store().mcp.accessMode = mode;
+            app_->storeChanged();
+        }
+    });
+    connect(mcpAllowlistList_, &QListWidget::itemChanged, this, [this] {
+        if (updating_) {
+            return;
+        }
+        QStringList allowed;
+        for (int i = 0; i < mcpAllowlistList_->count(); ++i) {
+            const QListWidgetItem *item = mcpAllowlistList_->item(i);
+            if (item && item->checkState() == Qt::Checked) {
+                allowed.append(item->data(idRole).toString());
+            }
+        }
+        app_->store().mcp.allowedTargetIds = allowed;
+        app_->storeChanged();
+    });
+    connect(mcpNotify_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().mcp.notifyOnCapture = on;
+            app_->storeChanged();
+        }
+    });
+    connect(mcpCopyButton_, &QPushButton::clicked, this, [this] {
+        QGuiApplication::clipboard()->setText(QStringLiteral("glimply mcp"));
+        mcpCopyButton_->setText(tr("Copied"));
+        QPointer<QPushButton> safeBtn(mcpCopyButton_);
+        QTimer::singleShot(1500, this, [safeBtn] {
+            if (safeBtn) {
+                safeBtn->setText(tr("Copy"));
+            }
+        });
+    });
+
+    return scroll;
 }
 
 void SettingsWindow::refreshStorage()
@@ -1885,6 +2020,33 @@ void SettingsWindow::refreshAutomation()
     hookTimeout_->setValue(std::clamp(store.hook.timeoutSeconds, 5, 300));
     hookOnInterval_->setChecked(store.hook.runOnInterval);
     testHookButton_->setEnabled(!hookCommand_->text().trimmed().isEmpty());
+
+    mcpEnabled_->setChecked(store.mcp.enabled);
+    mcpDetails_->setVisible(store.mcp.enabled);
+    mcpAccessMode_->setCurrentIndex(std::max(0, mcpAccessMode_->findData(int(store.mcp.accessMode))));
+    mcpNotify_->setChecked(store.mcp.notifyOnCapture);
+    mcpAllowlistBox_->setVisible(store.mcp.accessMode == McpAccessMode::Allowlist);
+    mcpFullWarning_->setVisible(store.mcp.accessMode == McpAccessMode::FullSession);
+
+    mcpAllowlistList_->clear();
+    for (const Area &area : store.areas) {
+        auto *item = new QListWidgetItem(QIcon::fromTheme(QStringLiteral("transform-crop")),
+                                         tr("%1 (area)").arg(area.name), mcpAllowlistList_);
+        item->setData(idRole, area.id);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(store.mcp.allowedTargetIds.contains(area.id) ? Qt::Checked : Qt::Unchecked);
+    }
+    for (const Group &group : store.groups) {
+        auto *item = new QListWidgetItem(QIcon::fromTheme(QStringLiteral("view-group")),
+                                         tr("%1 (group)").arg(group.name), mcpAllowlistList_);
+        item->setData(idRole, group.id);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(store.mcp.allowedTargetIds.contains(group.id) ? Qt::Checked : Qt::Unchecked);
+    }
+    const bool hasAnyAllowlistItems = (mcpAllowlistList_->count() > 0);
+    mcpAllowlistList_->setVisible(hasAnyAllowlistItems);
+    mcpAllowlistEmpty_->setVisible(!hasAnyAllowlistItems);
+
     updating_ = false;
 }
 

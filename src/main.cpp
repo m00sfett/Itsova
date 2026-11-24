@@ -1,5 +1,6 @@
 #include "app.h"
 #include "cli.h"
+#include "mcpserver.h"
 #include "printkey.h"
 
 #include <KConfig>
@@ -41,7 +42,8 @@ void configureParser(QCommandLineParser &parser, const QCommandLineOption &editO
         "  list               List configured targets, monitors, or open windows\n"
         "  area               Add, edit, rename, or remove saved areas\n"
         "  interval           Start, stop, or inspect interval captures\n"
-        "  overlay            Open the interactive capture overlay"));
+        "  overlay            Open the interactive capture overlay\n"
+        "  mcp                Run the local stdio MCP server (disabled by default)"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption(editOption);
@@ -126,6 +128,25 @@ int main(int argc, char *argv[])
         outFile.flush();
         errFile.flush();
         return code;
+    }
+
+    if (argc >= 2 && QString::fromLocal8Bit(argv[1]).compare(QLatin1String("mcp"), Qt::CaseInsensitive) == 0) {
+        qInstallMessageHandler(routeQtLogsToStderr);
+        QCoreApplication mcpApp(argc, argv);
+        QCoreApplication::setApplicationName(QStringLiteral("glimply"));
+        QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+        QCoreApplication::setOrganizationDomain(QStringLiteral("m00sfett.github.io"));
+        QCoreApplication::installTranslator(new EnglishTranslator(&mcpApp));
+        const QStringList args = QCoreApplication::arguments();
+        if (args.contains(QStringLiteral("--help")) || args.contains(QStringLiteral("-h"))) {
+            std::fputs("Usage: glimply mcp\n"
+                       "Runs the local stdio JSON-RPC 2.0 MCP server (disabled by default; enable in\n"
+                       "glimply Settings -> Automation -> Local MCP Server).\n",
+                       stderr);
+            return 0;
+        }
+        glimply::DBusMcpBackend backend;
+        return glimply::McpServer::runStdio(backend);
     }
 
     QApplication application(argc, argv);

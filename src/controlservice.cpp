@@ -3,6 +3,7 @@
 #include "app.h"
 #include "cli.h"
 #include "intervalcontroller.h"
+#include "mcpserver.h"
 #include "screens.h"
 #include "shortcutmanager.h"
 #include "traycontroller.h"
@@ -352,6 +353,23 @@ QString ControlService::AddAreaRect(const QString &name, const QString &connecto
 QString ControlService::OpenOverlay(const QString &mode, int delaySeconds)
 {
     return app_->openOverlay(mode, delaySeconds);
+}
+
+QString ControlService::McpDispatch(const QString &toolName, const QString &argumentsJson)
+{
+    if (!calledFromDBus()) {
+        return {};
+    }
+
+    setDelayedReply(true);
+    const QDBusMessage msg = message();
+    const QDBusConnection bus = connection();
+    app_->mcpDispatchAsync(toolName, argumentsJson, [msg, bus](const McpToolResponse &response) {
+        const QString json =
+            QString::fromUtf8(QJsonDocument(mcpToolResponseToJson(response)).toJson(QJsonDocument::Compact));
+        bus.send(msg.createReply(json));
+    });
+    return {};
 }
 
 void ControlService::RegisterWidget()

@@ -39,6 +39,7 @@ struct CliCaptureRequest
     bool toStdout = false;
     bool clipboard = false;
     bool noSave = false;
+    QString triggerKind;
 };
 
 struct CliCaptureResult

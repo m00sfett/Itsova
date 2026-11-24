@@ -5,13 +5,16 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.0] - 2026-11-24
+
+Automation milestone: interval captures, scriptable CLI & async D-Bus API, post-capture hooks, and an opt-in local MCP server.
 
 ### Added
 
 - Scheduled concurrent interval captures per area, monitor, all monitors, or group (`#22`) with per-target interval configuration (`Every N s`, optional `Only save when changed` raw pixel comparison preserving group frame simultaneity, optional `maxCaptures` and `maxMinutes` stop limits), dedicated global toggle shortcuts, active tray/Plasma-widget interval indicator (`io.github.m00sfett.glimply-tray-interval`) with `Start` / `Stop` / `Stop All` controls, and automatic low-disk (`< 100 MB`) / disconnect stop protection.
 - Scriptable CLI subcommands (`capture`, `list`, `area`, `interval`, `overlay`) with `--format`, `--quality`, `--png-compression`, `--lossless`, `--delay`, `--cursor`/`--no-cursor`, `--out`, `--stdout` (raw binary stream), `--clipboard`, `--no-save`, `--json`, and structured exit codes (`0`/`1`/`2`/`3`) backed by an expanded async `io.github.m00sfett.glimply.Control` D-Bus API (`CaptureSync`, `ListMonitors`, `ListWindows`, `LastCaptureInfo`, `ResolveTarget`, `AddAreaRect`, `OpenOverlay`) (`#23`).
-- Optional post-capture command hooks (`#24`) executed asynchronously without shell interpolation (`QProcess::splitCommand` + `%f` argument expansion + `GLIMPLY_FILE`, `GLIMPLY_FILES`, `GLIMPLY_FILE_COUNT`, `GLIMPLY_TARGET_ID`, `GLIMPLY_TARGET_NAME`, `GLIMPLY_TRIGGER_KIND`, `GLIMPLY_TIMESTAMP`, `GLIMPLY_FORMAT` environment variables), configurable on the new *Automation* Settings page with per-target and per-group overrides, interval kill-switch (default off), timeout protection (`5–300 s`), non-blocking `Test Hook` check, and `[Event/hookFailed]` notifications.
+- Optional post-capture command hooks (`#24`) executed asynchronously without shell interpolation (`QProcess::splitCommand` + `%f` argument expansion + `GLIMPLY_FILE`, `GLIMPLY_FILES`, `GLIMPLY_FILE_COUNT`, `GLIMPLY_TARGET_ID`, `GLIMPLY_TARGET_NAME`, `GLIMPLY_TRIGGER_KIND`, `GLIMPLY_TIMESTAMP`, `GLIMPLY_FORMAT` environment variables), configurable on the *Automation* Settings page with per-target and per-group overrides, interval kill-switch (default off), timeout protection (`5–300 s`), non-blocking `Test Hook` check, and `[Event/hookFailed]` notifications.
+- Local stdio-only MCP server (`glimply mcp`, disabled by default, zero network listeners) backed by async `McpDispatch` on `/Control`, configured under *Configure glimply… → Automation → Local MCP Server* with three security modes (`Allowlist`, `Confirm every capture` via native Breeze `McpConfirmDialog` with 30 s auto-deny timeout, and `Full session access`), mandatory tray activity indicator, optional low-urgency `[Event/mcpCapture]` notifications, 10 tools (`list_targets`, `list_monitors`, `list_windows`, `capture_target`, `capture_region`, `capture_window`, `get_last_capture`, `start_interval`, `stop_interval`, `annotate_image`) returning JSON metadata by default with optional Base64 `include_image` + `max_dimension`, and shared `AnnotationDocument`/`renderAnnotatedCrop` programmatic callouts and irreversible pixel redactions (`#25`).
 
 ## [0.5.0] - 2026-11-24
 
