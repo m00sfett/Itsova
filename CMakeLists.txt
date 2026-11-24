@@ -216,7 +216,6 @@ if(BUILD_TESTING)
     if(Python3_Interpreter_FOUND)
         add_test(NAME translations
             COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/scripts/check-translations.py"
-                    --allow-unfinished
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
     endif()
     add_executable(ocrtest tests/ocrtest.cpp)

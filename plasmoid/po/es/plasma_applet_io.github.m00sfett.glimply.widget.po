@@ -20,322 +20,322 @@ msgstr ""
 #, kde-format
 msgctxt "@label capture time"
 msgid "Yesterday %1"
-msgstr ""
+msgstr "Ayer %1"
 
 #: plasmoid/contents/ui/RecentSection.qml:73
 #: plasmoid/contents/ui/RecentSection.qml:85
 #, kde-format
 msgctxt "@title section"
 msgid "Recent"
-msgstr ""
+msgstr "Recientes"
 
 #: plasmoid/contents/ui/RecentSection.qml:74
 #, kde-format
 msgid "Collapse recent captures"
-msgstr ""
+msgstr "Contraer capturas recientes"
 
 #: plasmoid/contents/ui/RecentSection.qml:74
 #, kde-format
 msgid "Expand recent captures"
-msgstr ""
+msgstr "Expandir capturas recientes"
 
 #: plasmoid/contents/ui/RecentSection.qml:84
 #, kde-format
 msgctxt "@title section"
 msgid "Recent (%1)"
-msgstr ""
+msgstr "Recientes (%1)"
 
 #: plasmoid/contents/ui/RecentSection.qml:96
 #, kde-format
 msgid "Clear History"
-msgstr ""
+msgstr "Borrar historial"
 
 #: plasmoid/contents/ui/RecentSection.qml:98
 #, kde-format
 msgid "Clear the list (image files are kept)"
-msgstr ""
+msgstr "Borrar la lista (los archivos de imagen se conservan)"
 
 #: plasmoid/contents/ui/RecentSection.qml:109
 #, kde-format
 msgid "No captures yet. Press Print or a target shortcut."
-msgstr ""
+msgstr "Aún no hay capturas. Pulse Print o un atajo de objetivo."
 
 #: plasmoid/contents/ui/RecentSection.qml:159
 #, kde-format
 msgid "Show all (%1)"
-msgstr ""
+msgstr "Mostrar todo (%1)"
 
 #: plasmoid/contents/ui/RecentSection.qml:159
 #, kde-format
 msgid "Show fewer"
-msgstr ""
+msgstr "Mostrar menos"
 
 #: plasmoid/contents/ui/RecentSection.qml:174
 #, kde-format
 msgid "%2: 1 file"
 msgid_plural "%2: %1 files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%2: 1 archivo"
+msgstr[1] "%2: %1 archivos"
 
 #: plasmoid/contents/ui/RecentSection.qml:217
 #, kde-format
 msgid "Open"
-msgstr ""
+msgstr "Abrir"
 
 #: plasmoid/contents/ui/RecentSection.qml:222
 #, kde-format
 msgid "Edit in Window"
-msgstr ""
+msgstr "Editar en ventana"
 
 #: plasmoid/contents/ui/RecentSection.qml:227
 #, kde-format
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: plasmoid/contents/ui/RecentSection.qml:232
 #: plasmoid/contents/ui/RecentSection.qml:261
 #, kde-format
 msgid "Show in Folder"
-msgstr ""
+msgstr "Mostrar en carpeta"
 
 #: plasmoid/contents/ui/RecentSection.qml:237
 #, kde-format
 msgid "Pin to Screen"
-msgstr ""
+msgstr "Fijar en pantalla"
 
 #: plasmoid/contents/ui/RecentSection.qml:243
 #, kde-format
 msgid "Move to Trash"
-msgstr ""
+msgstr "Mover a la papelera"
 
 #: plasmoid/contents/ui/RecentSection.qml:254
 #, kde-format
 msgid "Hide Files"
-msgstr ""
+msgstr "Ocultar archivos"
 
 #: plasmoid/contents/ui/RecentSection.qml:255
 #, kde-format
 msgid "Show Files"
-msgstr ""
+msgstr "Mostrar archivos"
 
 #: plasmoid/contents/ui/RecentSection.qml:267
 #, kde-format
 msgid "Move All to Trash"
-msgstr ""
+msgstr "Mover todo a la papelera"
 
 #: plasmoid/contents/ui/RecentTile.qml:30
 #, kde-format
 msgid "(1 file)"
 msgid_plural "(%1 files)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(1 archivo)"
+msgstr[1] "(%1 archivos)"
 
 #: plasmoid/contents/ui/RecentTile.qml:124
 #, kde-format
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 #: plasmoid/contents/ui/RecentTile.qml:125
 #, kde-format
 msgid "Actions for %1"
-msgstr ""
+msgstr "Acciones para %1"
 
 #: plasmoid/contents/ui/TargetRow.qml:41
 #, kde-format
 msgctxt "target name, shortcut"
 msgid "%1, %2"
-msgstr ""
+msgstr "%1, %2"
 
 #: plasmoid/contents/ui/TargetRow.qml:42
 #, kde-format
 msgid "Press to capture"
-msgstr ""
+msgstr "Pulse para capturar"
 
 #: plasmoid/contents/ui/TargetRow.qml:92
 #, kde-format
 msgid "Delete “%1”?"
-msgstr ""
+msgstr "¿Eliminar «%1»?"
 
 #: plasmoid/contents/ui/TargetRow.qml:99
 #, kde-format
 msgid "Its shortcut is cleared. Saved captures are kept."
-msgstr ""
+msgstr "Se borra su atajo. Las capturas guardadas se conservan."
 
 #: plasmoid/contents/ui/TargetRow.qml:100
 #, kde-format
 msgid "Its targets stay. Only the group and its shortcut go."
-msgstr ""
+msgstr "Sus objetivos se conservan. Solo se eliminan el grupo y su atajo."
 
 #: plasmoid/contents/ui/TargetRow.qml:114
 #, kde-format
 msgid "New name"
-msgstr ""
+msgstr "Nuevo nombre"
 
 #: plasmoid/contents/ui/TargetRow.qml:115
 #, kde-format
 msgid "Empty: back to the connector name"
-msgstr ""
+msgstr "Vacío: volver al nombre del conector"
 
 #: plasmoid/contents/ui/TargetRow.qml:138
 #, kde-format
 msgid "Capture now"
-msgstr ""
+msgstr "Capturar ahora"
 
 #: plasmoid/contents/ui/TargetRow.qml:144
 #, kde-format
 msgid "Stop interval"
-msgstr ""
+msgstr "Detener intervalo"
 
 #: plasmoid/contents/ui/TargetRow.qml:145
 #, kde-format
 msgid "Start interval (%1 s)"
-msgstr ""
+msgstr "Iniciar intervalo (%1 s)"
 
 #: plasmoid/contents/ui/TargetRow.qml:153
 #, kde-format
 msgid "Edit area on screen"
-msgstr ""
+msgstr "Editar área en pantalla"
 
 #: plasmoid/contents/ui/TargetRow.qml:153
 #, kde-format
 msgid "Edit group…"
-msgstr ""
+msgstr "Editar grupo…"
 
 #: plasmoid/contents/ui/TargetRow.qml:160
 #, kde-format
 msgid "Rename"
-msgstr ""
+msgstr "Renombrar"
 
 #: plasmoid/contents/ui/TargetRow.qml:166
 #: plasmoid/contents/ui/TargetRow.qml:196
 #, kde-format
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #: plasmoid/contents/ui/TargetRow.qml:177
 #, kde-format
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: plasmoid/contents/ui/TargetRow.qml:182
 #: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:228
 #, kde-format
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: plasmoid/contents/ui/main.qml:39 plasmoid/contents/ui/main.qml:348
 #, kde-format
 msgid "glimply is not running"
-msgstr ""
+msgstr "glimply no está en ejecución"
 
 #: plasmoid/contents/ui/main.qml:41 plasmoid/contents/ui/main.qml:376
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 captura por intervalo activa"
+msgstr[1] "%1 capturas por intervalo activas"
 
 #: plasmoid/contents/ui/main.qml:42
 #, kde-format
 msgid "Capture fixed areas and monitors"
-msgstr ""
+msgstr "Capturar áreas fijas y pantallas"
 
 #: plasmoid/contents/ui/main.qml:80
 #, kde-format
 msgid "Groups"
-msgstr ""
+msgstr "Grupos"
 
 #: plasmoid/contents/ui/main.qml:81
 #, kde-format
 msgid "Areas"
-msgstr ""
+msgstr "Áreas"
 
 #: plasmoid/contents/ui/main.qml:82
 #, kde-format
 msgid "Monitors"
-msgstr ""
+msgstr "Pantallas"
 
 #: plasmoid/contents/ui/main.qml:229
 #, kde-format
 msgid "%1 s"
-msgstr ""
+msgstr "%1 s"
 
 #: plasmoid/contents/ui/main.qml:230
 #, kde-format
 msgid "Delay"
-msgstr ""
+msgstr "Retardo"
 
 #: plasmoid/contents/ui/main.qml:246
 #, kde-format
 msgid "No delay"
-msgstr ""
+msgstr "Sin retardo"
 
 #: plasmoid/contents/ui/main.qml:253
 #, kde-format
 msgid "3 seconds"
-msgstr ""
+msgstr "3 segundos"
 
 #: plasmoid/contents/ui/main.qml:259
 #, kde-format
 msgid "5 seconds"
-msgstr ""
+msgstr "5 segundos"
 
 #: plasmoid/contents/ui/main.qml:265
 #, kde-format
 msgid "10 seconds"
-msgstr ""
+msgstr "10 segundos"
 
 #: plasmoid/contents/ui/main.qml:272
 #, kde-format
 msgid "Keep delay active"
-msgstr ""
+msgstr "Mantener retardo activo"
 
 #: plasmoid/contents/ui/main.qml:282
 #, kde-format
 msgid "Pick Color"
-msgstr ""
+msgstr "Seleccionar color"
 
 #: plasmoid/contents/ui/main.qml:289
 #, kde-format
 msgid "Add Area"
-msgstr ""
+msgstr "Añadir área"
 
 #: plasmoid/contents/ui/main.qml:295
 #, kde-format
 msgid "Configure glimply…"
-msgstr ""
+msgstr "Configurar glimply…"
 
 #: plasmoid/contents/ui/main.qml:313
 #, kde-format
 msgid "Open Last Capture"
-msgstr ""
+msgstr "Abrir última captura"
 
 #: plasmoid/contents/ui/main.qml:322
 #, kde-format
 msgid "Edit Last Capture"
-msgstr ""
+msgstr "Editar última captura"
 
 #: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "Open Capture Folder"
-msgstr ""
+msgstr "Abrir carpeta de capturas"
 
 #: plasmoid/contents/ui/main.qml:349
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
-msgstr ""
+msgstr "Los atajos y capturas necesitan el servicio glimply."
 
 #: plasmoid/contents/ui/main.qml:352
 #, kde-format
 msgid "Start glimply"
-msgstr ""
+msgstr "Iniciar glimply"
 
 #: plasmoid/contents/ui/main.qml:381
 #, kde-format
 msgid "Stop All"
-msgstr ""
+msgstr "Detener todo"
 
 #: plasmoid/contents/ui/main.qml:447
 #, kde-format
 msgid "Loading…"
-msgstr ""
+msgstr "Cargando…"

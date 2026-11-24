@@ -214,9 +214,11 @@ def check_message(where: str, msg: Message, pattern: re.Pattern[str], nplurals: 
         report.error(label, f"{len(msg.forms)} plural forms, the language has {nplurals}")
 
     sources = [msg.source] + ([msg.plural_source] if msg.plural_source else [])
-    expected = sorted(set(pattern.findall(" ".join(sources))) - ({"%n"} if msg.numerus else set()))
+    # The count may be left out of a plural form ("1 file"): %n in Qt, %1 in gettext (KI18n).
+    count = ({"%1"} if msg.plural_source else {"%n"}) if msg.numerus else set()
+    expected = sorted(set(pattern.findall(" ".join(sources))) - count)
     for index, form in enumerate(msg.forms):
-        found = sorted(set(pattern.findall(form)) - ({"%n"} if msg.numerus else set()))
+        found = sorted(set(pattern.findall(form)) - count)
         if found != expected:
             report.error(label, f"placeholders {found} in form {index}, source has {expected}")
         if msg.numerus and "%n" in msg.source and "%n" not in form and len(msg.forms) > 1:
