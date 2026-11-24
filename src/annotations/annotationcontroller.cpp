@@ -157,98 +157,121 @@ QRectF AnnotationController::bounds() const
     return bounds_;
 }
 
-QColor AnnotationController::strokeColor() const { return strokeColor_; }
+void AnnotationController::applySettings(const AnnotationSettings &settings)
+{
+    settings_ = settings;
+    redactionStrength_ = settings_.redactionMode == RedactionMode::Blur ? settings_.blurRadius
+                                                                        : settings_.pixelateBlockSize;
+    Q_EMIT styleChanged();
+}
+
+void AnnotationController::writeSettings(AnnotationSettings &settings) const
+{
+    settings = settings_;
+}
+
+const AnnotationSettings &AnnotationController::settings() const
+{
+    return settings_;
+}
+
+QColor AnnotationController::strokeColor() const { return settings_.strokeColor; }
 void AnnotationController::setStrokeColor(const QColor &color)
 {
-    if (strokeColor_ != color) {
-        strokeColor_ = color;
+    QColor opaque = color;
+    opaque.setAlpha(255);
+    if (settings_.strokeColor != opaque) {
+        settings_.strokeColor = opaque;
         Q_EMIT styleChanged();
     }
 }
 
-QColor AnnotationController::highlighterColor() const { return highlighterColor_; }
+QColor AnnotationController::highlighterColor() const { return settings_.highlighterColor; }
 void AnnotationController::setHighlighterColor(const QColor &color)
 {
-    if (highlighterColor_ != color) {
-        highlighterColor_ = color;
+    QColor opaque = color;
+    opaque.setAlpha(255);
+    if (settings_.highlighterColor != opaque) {
+        settings_.highlighterColor = opaque;
         Q_EMIT styleChanged();
     }
 }
 
-qreal AnnotationController::strokeWidth() const { return strokeWidth_; }
+qreal AnnotationController::strokeWidth() const { return settings_.strokeWidth; }
 void AnnotationController::setStrokeWidth(qreal width)
 {
     const qreal clamped = std::clamp(width, 2.0, 16.0);
-    if (!qFuzzyCompare(strokeWidth_, clamped)) {
-        strokeWidth_ = clamped;
+    if (!qFuzzyCompare(settings_.strokeWidth, clamped)) {
+        settings_.strokeWidth = clamped;
         Q_EMIT styleChanged();
     }
 }
 
-qreal AnnotationController::highlighterWidth() const { return highlighterWidth_; }
+qreal AnnotationController::highlighterWidth() const { return settings_.highlighterWidth; }
 void AnnotationController::setHighlighterWidth(qreal width)
 {
     const qreal clamped = std::clamp(width, 8.0, 48.0);
-    if (!qFuzzyCompare(highlighterWidth_, clamped)) {
-        highlighterWidth_ = clamped;
+    if (!qFuzzyCompare(settings_.highlighterWidth, clamped)) {
+        settings_.highlighterWidth = clamped;
         Q_EMIT styleChanged();
     }
 }
 
-ShapeFillMode AnnotationController::fillMode() const { return fillMode_; }
+ShapeFillMode AnnotationController::fillMode() const { return settings_.shapeFillMode; }
 void AnnotationController::setFillMode(ShapeFillMode mode)
 {
-    if (fillMode_ != mode) {
-        fillMode_ = mode;
+    if (settings_.shapeFillMode != mode) {
+        settings_.shapeFillMode = mode;
         Q_EMIT styleChanged();
     }
 }
 
-qreal AnnotationController::fillOpacity() const { return fillOpacity_; }
+qreal AnnotationController::fillOpacity() const { return settings_.shapeFillOpacity; }
 void AnnotationController::setFillOpacity(qreal opacity)
 {
     const qreal clamped = std::clamp(opacity, 0.10, 1.0);
-    if (!qFuzzyCompare(fillOpacity_, clamped)) {
-        fillOpacity_ = clamped;
+    if (!qFuzzyCompare(settings_.shapeFillOpacity, clamped)) {
+        settings_.shapeFillOpacity = clamped;
         Q_EMIT styleChanged();
     }
 }
 
-SpotlightShape AnnotationController::spotlightShape() const { return spotlightShape_; }
+SpotlightShape AnnotationController::spotlightShape() const { return settings_.spotlightShape; }
 void AnnotationController::setSpotlightShape(SpotlightShape shape)
 {
-    if (spotlightShape_ != shape) {
-        spotlightShape_ = shape;
+    if (settings_.spotlightShape != shape) {
+        settings_.spotlightShape = shape;
         Q_EMIT styleChanged();
     }
 }
 
-qreal AnnotationController::dimOpacity() const { return dimOpacity_; }
+qreal AnnotationController::dimOpacity() const { return settings_.spotlightDimOpacity; }
 void AnnotationController::setDimOpacity(qreal opacity)
 {
     const qreal clamped = std::clamp(opacity, 0.35, 0.85);
-    if (!qFuzzyCompare(dimOpacity_, clamped)) {
-        dimOpacity_ = clamped;
+    if (!qFuzzyCompare(settings_.spotlightDimOpacity, clamped)) {
+        settings_.spotlightDimOpacity = clamped;
         Q_EMIT styleChanged();
     }
 }
 
-RedactionMode AnnotationController::redactionMode() const { return redactionMode_; }
+RedactionMode AnnotationController::redactionMode() const { return settings_.redactionMode; }
 void AnnotationController::setRedactionMode(RedactionMode mode)
 {
-    if (redactionMode_ != mode) {
-        redactionMode_ = mode;
+    if (settings_.redactionMode != mode) {
+        settings_.redactionMode = mode;
+        redactionStrength_ = mode == RedactionMode::Blur ? settings_.blurRadius : settings_.pixelateBlockSize;
         Q_EMIT styleChanged();
     }
 }
 
-QColor AnnotationController::redactionColor() const { return redactionColor_; }
+QColor AnnotationController::redactionColor() const { return settings_.redactionColor; }
 void AnnotationController::setRedactionColor(const QColor &color)
 {
     QColor opaque = color;
     opaque.setAlpha(255);
-    if (redactionColor_ != opaque) {
-        redactionColor_ = opaque;
+    if (settings_.redactionColor != opaque) {
+        settings_.redactionColor = opaque;
         Q_EMIT styleChanged();
     }
 }
@@ -256,6 +279,13 @@ void AnnotationController::setRedactionColor(const QColor &color)
 int AnnotationController::redactionStrength() const { return redactionStrength_; }
 void AnnotationController::setRedactionStrength(int strength)
 {
+    if (settings_.redactionMode == RedactionMode::Blur) {
+        strength = std::clamp(strength, 14, 48);
+        settings_.blurRadius = strength;
+    } else {
+        strength = std::clamp(strength, 12, 40);
+        settings_.pixelateBlockSize = strength;
+    }
     if (redactionStrength_ != strength) {
         redactionStrength_ = strength;
         Q_EMIT styleChanged();
@@ -381,46 +411,48 @@ bool AnnotationController::mousePress(const QPointF &logicalPos, Qt::MouseButton
     case ToolKind::Arrow:
         draftItem_.start = startPos;
         draftItem_.end = startPos;
-        draftItem_.color = strokeColor_;
-        draftItem_.strokeWidth = strokeWidth_;
+        draftItem_.color = settings_.strokeColor;
+        draftItem_.strokeWidth = settings_.strokeWidth;
         break;
     case ToolKind::Rectangle:
     case ToolKind::Ellipse:
         draftItem_.rect = QRectF(startPos, QSizeF(0.0, 0.0));
-        draftItem_.color = strokeColor_;
-        draftItem_.strokeWidth = strokeWidth_;
-        draftItem_.fillMode = fillMode_;
-        draftItem_.fillOpacity = fillOpacity_;
+        draftItem_.color = settings_.strokeColor;
+        draftItem_.strokeWidth = settings_.strokeWidth;
+        draftItem_.fillMode = settings_.shapeFillMode;
+        draftItem_.fillOpacity = settings_.shapeFillOpacity;
         break;
     case ToolKind::Pen:
         draftItem_.points = {startPos};
-        draftItem_.color = strokeColor_;
-        draftItem_.strokeWidth = strokeWidth_;
+        draftItem_.color = settings_.strokeColor;
+        draftItem_.strokeWidth = settings_.strokeWidth;
         break;
     case ToolKind::Highlighter:
         draftItem_.points = {startPos};
-        draftItem_.color = highlighterColor_;
-        draftItem_.strokeWidth = highlighterWidth_;
+        draftItem_.color = settings_.highlighterColor;
+        draftItem_.strokeWidth = settings_.highlighterWidth;
         break;
     case ToolKind::Step:
         draftItem_.start = startPos;
         draftItem_.end = startPos;
         draftItem_.hasPointer = false;
         draftItem_.stepNumber = doc_->nextStepNumber();
-        draftItem_.color = strokeColor_;
-        draftItem_.strokeWidth = strokeWidth_;
+        draftItem_.color = settings_.strokeColor;
+        draftItem_.strokeWidth = settings_.strokeWidth;
         break;
     case ToolKind::Spotlight:
         draftItem_.rect = QRectF(startPos, QSizeF(0.0, 0.0));
-        draftItem_.spotlightShape = spotlightShape_;
-        draftItem_.dimOpacity = dimOpacity_;
+        draftItem_.spotlightShape = settings_.spotlightShape;
+        draftItem_.dimOpacity = settings_.spotlightDimOpacity;
         break;
     case ToolKind::Redact:
         draftItem_.rect = QRectF(startPos, QSizeF(0.0, 0.0));
-        draftItem_.redactionMode = redactionMode_;
-        draftItem_.color = redactionMode_ == RedactionMode::Solid ? redactionColor_ : QColor(0, 0, 0);
+        draftItem_.redactionMode = settings_.redactionMode;
+        draftItem_.color = settings_.redactionMode == RedactionMode::Solid ? settings_.redactionColor
+                                                                           : QColor(0, 0, 0);
         draftItem_.color.setAlpha(255);
-        draftItem_.redactionStrength = redactionStrength_;
+        draftItem_.redactionStrength = settings_.redactionMode == RedactionMode::Blur ? settings_.blurRadius
+                                                                                      : settings_.pixelateBlockSize;
         draftItem_.jitterSeed = QRandomGenerator::global()->generate();
         break;
     case ToolKind::Select:
@@ -619,14 +651,18 @@ void AnnotationController::stepActiveSize(int direction)
     const AnnotationItem *sel = doc_ ? doc_->selectedItem() : nullptr;
     const ItemKind targetKind = sel ? sel->kind : itemKindForTool(tool_);
     if (targetKind == ItemKind::Highlighter) {
-        setHighlighterWidth(highlighterWidth_ + direction * 4.0);
+        const qreal next = std::clamp((sel ? sel->strokeWidth : settings_.highlighterWidth) + direction * 4.0,
+                                      8.0, 48.0);
+        setHighlighterWidth(next);
         if (sel && sel->kind == ItemKind::Highlighter) {
             AnnotationItem after = *sel;
-            after.strokeWidth = std::clamp(sel->strokeWidth + direction * 4.0, 8.0, 48.0);
+            after.strokeWidth = next;
             doc_->commitModification(*sel, after, /*mergeKey=*/2);
         }
     } else if (targetKind == ItemKind::Redact) {
-        const int next = std::clamp(redactionStrength_ + direction * 2, 12, 48);
+        const int next = std::clamp(redactionStrength_ + direction * 2,
+                                    settings_.redactionMode == RedactionMode::Blur ? 14 : 12,
+                                    settings_.redactionMode == RedactionMode::Blur ? 48 : 40);
         setRedactionStrength(next);
         if (sel && sel->kind == ItemKind::Redact) {
             AnnotationItem after = *sel;
@@ -634,12 +670,14 @@ void AnnotationController::stepActiveSize(int direction)
             doc_->commitModification(*sel, after, /*mergeKey=*/2);
         }
     } else {
-        setStrokeWidth(strokeWidth_ + direction * 1.0);
+        const qreal next = std::clamp((sel ? sel->strokeWidth : settings_.strokeWidth) + direction * 1.0,
+                                      2.0, 16.0);
+        setStrokeWidth(next);
         if (sel && (sel->kind == ItemKind::Arrow || sel->kind == ItemKind::Rectangle
                     || sel->kind == ItemKind::Ellipse || sel->kind == ItemKind::Pen
                     || sel->kind == ItemKind::Step)) {
             AnnotationItem after = *sel;
-            after.strokeWidth = std::clamp(sel->strokeWidth + direction * 1.0, 2.0, 16.0);
+            after.strokeWidth = next;
             doc_->commitModification(*sel, after, /*mergeKey=*/2);
         }
     }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "annotations/annotationsettings.h"
+
 #include <QHash>
 #include <QList>
 #include <QRect>
@@ -78,6 +80,8 @@ public:
     bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
+
+    AnnotationSettings annotations;
 
     [[nodiscard]] static QString defaultCaptureDirectory();
     [[nodiscard]] static QString defaultFilenameTemplate();

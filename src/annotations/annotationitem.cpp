@@ -352,10 +352,11 @@ QColor contrastingTextColor(const QColor &background)
     const qreal lum = 0.2126 * linearizeChannel(background.redF())
                     + 0.7152 * linearizeChannel(background.greenF())
                     + 0.0722 * linearizeChannel(background.blueF());
-    // Contrast ratio vs #FFFFFF = 1.05 / (L + 0.05); vs #111111 (~0.0056) = (L + 0.05) / 0.0556.
+    // Crossover at lum = sqrt(1.05 * 0.05) - 0.05 (~0.1791) guarantees >= 4.58:1 contrast
+    // against either pure white or pure black across the entire sRGB color space.
     const qreal contrastWhite = 1.05 / (lum + 0.05);
-    const qreal contrastDark = (lum + 0.05) / 0.055605;
-    return contrastDark >= contrastWhite ? QColor(0x11, 0x11, 0x11) : QColor(0xFF, 0xFF, 0xFF);
+    const qreal contrastBlack = (lum + 0.05) / 0.05;
+    return contrastBlack >= contrastWhite ? QColor(0x00, 0x00, 0x00) : QColor(0xFF, 0xFF, 0xFF);
 }
 
 } // namespace glimply

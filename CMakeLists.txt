@@ -60,6 +60,7 @@ add_library(glimply_capture STATIC
     src/annotations/annotationgeometry.cpp
     src/annotations/annotationitem.cpp
     src/annotations/annotationrenderer.cpp
+    src/annotations/annotationsettings.cpp
     src/captureservice.cpp
     src/imageoutput.cpp
     src/selectiongeometry.cpp
@@ -75,6 +76,7 @@ target_link_libraries(glimply_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt
 add_library(glimply_ui STATIC
     src/annotations/annotationcanvas.cpp
     src/annotations/annotationcontroller.cpp
+    src/annotations/annotationtoolbar.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
 target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n)
@@ -119,6 +121,9 @@ if(BUILD_TESTING)
     add_executable(annotationenginetest tests/annotationenginetest.cpp)
     target_link_libraries(annotationenginetest PRIVATE glimply_ui Qt6::Test)
     add_test(NAME annotationengine COMMAND annotationenginetest)
+    add_executable(coremarkuptoolstest tests/coremarkuptoolstest.cpp)
+    target_link_libraries(coremarkuptoolstest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME coremarkuptools COMMAND coremarkuptoolstest)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)
