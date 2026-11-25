@@ -744,6 +744,14 @@
         <translation>Schermata recente</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Registrazione salvata</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Registrazione non riuscita</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Intervallo: %1</translation>
     </message>
@@ -754,6 +762,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Seleziona colore dello schermo</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Avvia o ferma la registrazione dello schermo</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Metti in pausa o riprendi la registrazione dello schermo</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -944,6 +960,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 copiato negli appunti</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Registrazione copiata</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1217,6 +1237,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Strumento MCP sconosciuto: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>La finestra da registrare non è più aperta.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Selezione</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>Lo schermo dell&apos;area %1 non è collegato.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>I gruppi non possono essere registrati; scegline una delle destinazioni.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Destinazione di registrazione sconosciuta: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>L&apos;area da registrare non si trova su nessuno schermo collegato.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Una registrazione è già in corso.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Registrazione</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>Impossibile creare la cartella %1.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1464,6 +1520,26 @@
         <translation>Aggiungi rettangolo</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Registra</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Aree e finestre</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Avvia registrazione</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Finestre</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · Ferma: fai clic su glimply nell&apos;area di notifica</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Dal vivo</translation>
     </message>
@@ -1625,6 +1701,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Apri nella finestra dell&apos;editor</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>Registra il rettangolo come video oppure scegli cosa registrare</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1853,6 +1937,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>Nella richiesta di acquisizione manca un obiettivo o un formato valido.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Una registrazione è già in corso.</translation>
     </message>
 </context>
 <context>
@@ -2273,6 +2361,41 @@
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Una registrazione è già in corso.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Non c&apos;è nulla da registrare.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin non offre la registrazione dello schermo a glimply. Reinstalla glimply in modo che il suo file .desktop conceda l&apos;interfaccia screencast, poi accedi di nuovo.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin non ha inviato il flusso dello schermo.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>Questo sistema non ha un codificatore per le registrazioni %1 (manca FFmpeg).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>Impossibile codificare la registrazione.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>La registrazione è terminata senza alcun fotogramma.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin ha rifiutato il flusso dello schermo.</translation>
     </message>
 </context>
 <context>
@@ -2758,6 +2881,66 @@
         <translation>Cronologia cancellata</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Formato di registrazione</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): si riproduce ovunque</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: immagine animata, senza audio, file più grandi</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): file piccoli per il web</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Registrazioni:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Frequenza fotogrammi di registrazione</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Mostra il puntatore del mouse</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Frequenza fotogrammi:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Scorciatoia per avviare o fermare la registrazione</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Scorciatoia per mettere in pausa o riprendere la registrazione</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Avvia/ferma:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Pausa:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Scorciatoie:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Registra dalla sovrimpressione (Ctrl+R) o con la scorciatoia avvia/ferma, che registra di nuovo l&apos;ultima destinazione. Le registrazioni GIF usano al massimo %1 fps. Le registrazioni non hanno audio.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Cartella delle acquisizioni</translation>
     </message>
@@ -3129,6 +3312,22 @@
         <translation>Cancella l&apos;elenco; i file immagine restano dove sono</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>Avvio della registrazione di %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>Registrazione di %1 in pausa a %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>Salvataggio della registrazione di %1…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Registrazione %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>Acquisizione tra %1 s…</translation>
     </message>
@@ -3139,6 +3338,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Intervalli attivi: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Ferma registrazione (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Riprendi registrazione</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Pausa registrazione</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

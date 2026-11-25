@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glimply 0.9.0\n"
+"Project-Id-Version: glimply 0.10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
@@ -216,123 +216,168 @@ msgid "Apply"
 msgstr "Áp dụng"
 
 #: plasmoid/contents/ui/TargetRow.qml:182
-#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:228
+#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:300
 #, kde-format
 msgid "Cancel"
 msgstr "Hủy"
 
-#: plasmoid/contents/ui/main.qml:39 plasmoid/contents/ui/main.qml:348
+#: plasmoid/contents/ui/main.qml:46 plasmoid/contents/ui/main.qml:426
 #, kde-format
 msgid "glimply is not running"
 msgstr "glimply chưa chạy"
 
-#: plasmoid/contents/ui/main.qml:41 plasmoid/contents/ui/main.qml:376
+#: plasmoid/contents/ui/main.qml:49 plasmoid/contents/ui/main.qml:490
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
 msgstr[0] "%n lượt chụp theo khoảng thời gian đang hoạt động"
 
-#: plasmoid/contents/ui/main.qml:42
+#: plasmoid/contents/ui/main.qml:50
 #, kde-format
 msgid "Capture fixed areas and monitors"
 msgstr "Chụp các vùng cố định và màn hình"
 
-#: plasmoid/contents/ui/main.qml:80
+#: plasmoid/contents/ui/main.qml:88
 #, kde-format
 msgid "Groups"
 msgstr "Nhóm"
 
-#: plasmoid/contents/ui/main.qml:81
+#: plasmoid/contents/ui/main.qml:89
 #, kde-format
 msgid "Areas"
 msgstr "Vùng"
 
-#: plasmoid/contents/ui/main.qml:82
+#: plasmoid/contents/ui/main.qml:90
 #, kde-format
 msgid "Monitors"
 msgstr "Màn hình"
 
-#: plasmoid/contents/ui/main.qml:229
+#: plasmoid/contents/ui/main.qml:131
+#, kde-format
+msgid "Starting the recording of %1…"
+msgstr "Đang bắt đầu ghi %1…"
+
+#: plasmoid/contents/ui/main.qml:133
+#, kde-format
+msgid "Recording of %1 paused at %2"
+msgstr "Đã tạm dừng ghi %1 ở %2"
+
+#: plasmoid/contents/ui/main.qml:135
+#, kde-format
+msgid "Saving the recording of %1…"
+msgstr "Đang lưu bản ghi %1…"
+
+#: plasmoid/contents/ui/main.qml:137
+#, kde-format
+msgid "Recording %1: %2"
+msgstr "Đang ghi %1: %2"
+
+#: plasmoid/contents/ui/main.qml:258
+#, kde-format
+msgid "Stop recording"
+msgstr "Dừng ghi"
+
+#: plasmoid/contents/ui/main.qml:301
 #, kde-format
 msgid "%1 s"
 msgstr "%1 giây"
 
-#: plasmoid/contents/ui/main.qml:230
+#: plasmoid/contents/ui/main.qml:302
 #, kde-format
 msgid "Delay"
 msgstr "Độ trễ"
 
-#: plasmoid/contents/ui/main.qml:246
+#: plasmoid/contents/ui/main.qml:318
 #, kde-format
 msgid "No delay"
 msgstr "Không trễ"
 
-#: plasmoid/contents/ui/main.qml:253
+#: plasmoid/contents/ui/main.qml:325
 #, kde-format
 msgid "3 seconds"
 msgstr "3 giây"
 
-#: plasmoid/contents/ui/main.qml:259
+#: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "5 seconds"
 msgstr "5 giây"
 
-#: plasmoid/contents/ui/main.qml:265
+#: plasmoid/contents/ui/main.qml:337
 #, kde-format
 msgid "10 seconds"
 msgstr "10 giây"
 
-#: plasmoid/contents/ui/main.qml:272
+#: plasmoid/contents/ui/main.qml:344
 #, kde-format
 msgid "Keep delay active"
 msgstr "Giữ độ trễ luôn bật"
 
-#: plasmoid/contents/ui/main.qml:282
+#: plasmoid/contents/ui/main.qml:353
+#, kde-format
+msgid "Record"
+msgstr "Ghi"
+
+#: plasmoid/contents/ui/main.qml:360
 #, kde-format
 msgid "Pick Color"
 msgstr "Lấy màu"
 
-#: plasmoid/contents/ui/main.qml:289
+#: plasmoid/contents/ui/main.qml:367
 #, kde-format
 msgid "Add Area"
 msgstr "Thêm vùng"
 
-#: plasmoid/contents/ui/main.qml:295
+#: plasmoid/contents/ui/main.qml:373
 #, kde-format
 msgid "Configure glimply…"
 msgstr "Cấu hình glimply…"
 
-#: plasmoid/contents/ui/main.qml:313
+#: plasmoid/contents/ui/main.qml:391
 #, kde-format
 msgid "Open Last Capture"
 msgstr "Mở ảnh chụp cuối"
 
-#: plasmoid/contents/ui/main.qml:322
+#: plasmoid/contents/ui/main.qml:400
 #, kde-format
 msgid "Edit Last Capture"
 msgstr "Sửa ảnh chụp cuối"
 
-#: plasmoid/contents/ui/main.qml:331
+#: plasmoid/contents/ui/main.qml:409
 #, kde-format
 msgid "Open Capture Folder"
 msgstr "Mở thư mục ảnh chụp"
 
-#: plasmoid/contents/ui/main.qml:349
+#: plasmoid/contents/ui/main.qml:427
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
 msgstr "Phím tắt và chụp ảnh cần dịch vụ glimply."
 
-#: plasmoid/contents/ui/main.qml:352
+#: plasmoid/contents/ui/main.qml:430
 #, kde-format
 msgid "Start glimply"
 msgstr "Khởi động glimply"
 
-#: plasmoid/contents/ui/main.qml:381
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Pause"
+msgstr "Tạm dừng"
+
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Resume"
+msgstr "Tiếp tục"
+
+#: plasmoid/contents/ui/main.qml:466
+#, kde-format
+msgid "Stop"
+msgstr "Dừng"
+
+#: plasmoid/contents/ui/main.qml:495
 #, kde-format
 msgid "Stop All"
 msgstr "Dừng tất cả"
 
-#: plasmoid/contents/ui/main.qml:447
+#: plasmoid/contents/ui/main.qml:561
 #, kde-format
 msgid "Loading…"
 msgstr "Đang tải…"

@@ -748,6 +748,14 @@
         <translation>لقطة حديثة</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>تم حفظ التسجيل</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>فشل التسجيل</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>الفاصل الزمني: %1</translation>
     </message>
@@ -758,6 +766,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>التقاط لون من الشاشة</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>بدء تسجيل الشاشة أو إيقافه</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>إيقاف تسجيل الشاشة مؤقتًا أو استئنافه</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -956,6 +972,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>تم نسخ %1 إلى الحافظة</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>تم نسخ التسجيل</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1229,6 +1249,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>أداة MCP غير معروفة: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>النافذة المراد تسجيلها لم تعد مفتوحة.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>التحديد</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>الشاشة الخاصة بالمنطقة %1 غير متصلة.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>لا يمكن تسجيل المجموعات؛ اختر أحد أهدافها.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>هدف تسجيل غير معروف: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>المنطقة المراد تسجيلها غير موجودة على أي شاشة متصلة.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>يجري تسجيل بالفعل.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>التسجيل</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>تعذّر إنشاء المجلد %1.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1476,6 +1532,26 @@
         <translation>إضافة مستطيل</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>تسجيل</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>المناطق والنوافذ</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>بدء التسجيل</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>النوافذ</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1، %2 fps · للإيقاف: انقر على glimply في علبة النظام</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>عرض مباشر</translation>
     </message>
@@ -1657,6 +1733,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>فتح في نافذة المحرّر</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>سجّل المستطيل كفيديو، أو اختر ما تريد تسجيله</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1889,6 +1973,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>طلب الالتقاط يفتقد هدفًا أو تنسيقًا صالحًا.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>يجري تسجيل بالفعل.</translation>
     </message>
 </context>
 <context>
@@ -2313,6 +2401,41 @@
     <message>
         <source>Cancel</source>
         <translation>إلغاء</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>يجري تسجيل بالفعل.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>لا يوجد شيء لتسجيله.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>لا يتيح KWin تسجيل الشاشة لـ glimply. أعد تثبيت glimply حتى يمنح ملف سطح المكتب الخاص به واجهة بث الشاشة، ثم سجّل الدخول من جديد.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>لم يُرسل KWin بث الشاشة.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>لا يوجد في هذا النظام مُرمِّز لتسجيلات %1 (FFmpeg لا يوفره).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>تعذّر ترميز التسجيل.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>انتهى التسجيل دون أي إطارات.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>رفض KWin بث الشاشة.</translation>
     </message>
 </context>
 <context>
@@ -2798,6 +2921,66 @@
         <translation>تم مسح السجل</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>تنسيق التسجيل</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): يعمل في كل مكان</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: صورة متحركة، بلا صوت، وملفات أكبر حجمًا</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): ملفات صغيرة للويب</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>التسجيلات:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>معدل إطارات التسجيل</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>إظهار مؤشر الفأرة</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>معدل الإطارات:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>اختصار بدء التسجيل أو إيقافه</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>اختصار إيقاف التسجيل مؤقتًا أو استئنافه</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>بدء/إيقاف:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>إيقاف مؤقت:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>الاختصارات:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>سجّل من التراكب (Ctrl+R) أو باختصار بدء التسجيل أو إيقافه، وهو يعيد تسجيل آخر هدف. تستخدم تسجيلات GIF بحد أقصى %1 fps. التسجيلات لا تحتوي على صوت.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>مجلد اللقطات</translation>
     </message>
@@ -3169,6 +3352,22 @@
         <translation>يمسح القائمة؛ تبقى ملفات الصور كما هي</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>جارٍ بدء تسجيل %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>تم إيقاف تسجيل %1 مؤقتًا عند %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>جارٍ حفظ تسجيل %1…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>تسجيل %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>جارٍ الالتقاط خلال %1 ث…</translation>
     </message>
@@ -3179,6 +3378,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>الفواصل الزمنية النشطة: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>إيقاف التسجيل (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>استئناف التسجيل</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>إيقاف التسجيل مؤقتًا</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

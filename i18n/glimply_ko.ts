@@ -743,6 +743,14 @@
         <translation>최근 캡처</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>녹화 저장됨</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>녹화 실패</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>간격: %1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>화면 색상 추출</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>화면 녹화 시작 또는 중지</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>화면 녹화 일시 중지 또는 재개</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1이(가) 클립보드에 복사되었습니다</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>녹화 복사됨</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>알 수 없는 MCP 도구: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>녹화할 창이 더 이상 열려 있지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>선택 영역</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>영역 %1의 모니터가 연결되어 있지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>그룹은 녹화할 수 없습니다. 그룹의 대상 중 하나를 선택하세요.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>알 수 없는 녹화 대상: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>녹화할 영역이 연결된 모니터에 없습니다.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>이미 녹화가 진행 중입니다.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>녹화</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>%1 폴더를 만들 수 없습니다.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>사각형 추가</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>녹화</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>영역 및 창</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>녹화 시작</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>창</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · 중지: 시스템 트레이에서 glimply 클릭</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>실시간</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>편집 창에서 열기</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>사각형을 동영상으로 녹화하거나 녹화 대상을 선택</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>캡처 요청에 유효한 대상 또는 형식이 누락되었습니다.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>이미 녹화가 진행 중입니다.</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>취소</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>이미 녹화가 진행 중입니다.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>녹화할 항목이 없습니다.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin이 glimply에 화면 녹화 기능을 제공하지 않습니다. glimply를 다시 설치해 데스크톱 파일이 스크린캐스트 인터페이스를 허용하도록 한 뒤 다시 로그인하세요.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin이 화면 스트림을 전달하지 않았습니다.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>이 시스템에는 %1 녹화용 인코더가 없습니다(FFmpeg에 포함되지 않음).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>녹화를 인코딩할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>녹화가 프레임 없이 끝났습니다.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin이 화면 스트림을 거부했습니다.</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>기록 지워짐</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>녹화 형식</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): 어디서나 재생 가능</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: 애니메이션 이미지, 소리 없음, 파일이 더 큼</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): 웹용 작은 파일</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>녹화:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>녹화 프레임 속도</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>마우스 포인터 표시</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>프레임 속도:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>녹화 시작 또는 중지 단축키</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>녹화 일시 중지 또는 재개 단축키</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>시작/중지:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>일시 중지:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>단축키:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>오버레이(Ctrl+R) 또는 시작/중지 단축키로 녹화할 수 있으며, 단축키는 마지막 대상을 다시 녹화합니다. GIF 녹화는 최대 %1 fps를 사용합니다. 녹화에는 소리가 포함되지 않습니다.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>캡처 폴더</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>목록을 지웁니다. 이미지 파일은 그대로 유지됩니다</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>%1 녹화를 시작하는 중…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>%1 녹화가 %2에 일시 중지됨</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>%1 녹화를 저장하는 중…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>%1 녹화 중: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>%1초 후 캡처…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>활성 간격: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>녹화 중지 (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>녹화 재개</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>녹화 일시 중지</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

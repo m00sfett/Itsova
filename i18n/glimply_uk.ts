@@ -745,6 +745,14 @@
         <translation>Недавній знімок</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Запис збережено</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Помилка запису</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Інтервал: %1</translation>
     </message>
@@ -755,6 +763,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Вибрати колір з екрана</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Почати або зупинити запис екрана</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Призупинити або продовжити запис екрана</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -947,6 +963,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 скопійовано до буфера обміну</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Запис скопійовано</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1220,6 +1240,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Невідомий інструмент MCP: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>Вікно для запису більше не відкрите.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Виділення</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>Монітор області %1 не підключено.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>Групи не можна записати; виберіть одну з їхніх цілей.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Невідома ціль запису: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>Область для запису не розташована на жодному з підключених моніторів.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Запис уже виконується.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Запис</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>Не вдалося створити теку %1.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1467,6 +1523,26 @@
         <translation>Додати прямокутник</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Записати</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Області та вікна</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Почати запис</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Вікна</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 к/с · Зупинка: клацніть glimply у системному лотку</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Наживо</translation>
     </message>
@@ -1633,6 +1709,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Відкрити у вікні редактора</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>Записати прямокутник як відео або вибрати, що записати</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1862,6 +1946,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>У запиті захоплення відсутня дійсна ціль або формат.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Запис уже виконується.</translation>
     </message>
 </context>
 <context>
@@ -2283,6 +2371,41 @@
     <message>
         <source>Cancel</source>
         <translation>Скасувати</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Запис уже виконується.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Немає чого записувати.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin не надає glimply доступу до запису екрана. Перевстановіть glimply, щоб його файл .desktop надавав цей доступ, а потім знову увійдіть у систему.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin не передав потік екрана.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>У системі немає кодувальника для записів у форматі %1 (бракує FFmpeg).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>Не вдалося закодувати запис.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>Запис завершився без жодного кадру.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin відхилив потік екрана.</translation>
     </message>
 </context>
 <context>
@@ -2768,6 +2891,66 @@
         <translation>Історію очищено</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Формат запису</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): відтворюється скрізь</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: анімоване зображення, без звуку, більші файли</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): малі файли для Інтернету</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Записи:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Частота кадрів запису</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 к/с</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Показувати вказівник миші</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Частота кадрів:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Комбінація клавіш для початку або зупинки запису</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Комбінація клавіш для призупинення або продовження запису</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Початок/зупинка:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Пауза:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Гарячі клавіші:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Запис можна почати з накладення (Ctrl+R) або комбінацією початку/зупинки, яка знову записує останню ціль. Записи GIF використовують не більше %1 к/с. Звуку в записах немає.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Каталог знімків</translation>
     </message>
@@ -3139,6 +3322,22 @@
         <translation>Очищає список; файли зображень залишаються на місці</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>Запуск запису для %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>Запис для %1 призупинено на %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>Збереження запису для %1…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Запис %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>Захоплення через %1 с…</translation>
     </message>
@@ -3149,6 +3348,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Активні інтервали: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Зупинити запис (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Продовжити запис</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Призупинити запис</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

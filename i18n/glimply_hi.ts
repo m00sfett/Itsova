@@ -744,6 +744,14 @@
         <translation>हाल का कैप्चर</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>रिकॉर्डिंग सहेजी गई</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>रिकॉर्डिंग विफल रही</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>अंतराल: %1</translation>
     </message>
@@ -754,6 +762,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>स्क्रीन रंग चुनें</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>स्क्रीन रिकॉर्डिंग शुरू या रोकें</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>स्क्रीन रिकॉर्डिंग पर विराम दें या जारी रखें</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -944,6 +960,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 क्लिपबोर्ड पर कॉपी किया गया</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>रिकॉर्डिंग कॉपी की गई</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1217,6 +1237,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>अज्ञात MCP टूल: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>जिस विंडो की रिकॉर्डिंग होनी थी, वह अब खुली नहीं है।</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>चयन</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>क्षेत्र %1 का मॉनिटर जुड़ा नहीं है।</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>समूहों की रिकॉर्डिंग नहीं हो सकती; उनमें से कोई एक लक्ष्य चुनें।</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>अज्ञात रिकॉर्डिंग लक्ष्य: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>जिस क्षेत्र की रिकॉर्डिंग करनी है, वह किसी भी जुड़े मॉनिटर पर नहीं है।</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>एक रिकॉर्डिंग पहले से चल रही है।</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>रिकॉर्डिंग</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>फ़ोल्डर %1 नहीं बनाया जा सका।</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1464,6 +1520,26 @@
         <translation>आयत जोड़ें</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>रिकॉर्ड</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>क्षेत्र और विंडो</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>रिकॉर्डिंग शुरू करें</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>विंडो</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · रोकें: सिस्टम ट्रे में glimply पर क्लिक करें</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>लाइव करें</translation>
     </message>
@@ -1625,6 +1701,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>एडिटर विंडो में खोलें</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>आयत को वीडियो के रूप में रिकॉर्ड करें, या चुनें कि क्या रिकॉर्ड करना है</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1853,6 +1937,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>कैप्चर अनुरोध में एक वैध लक्ष्य या प्रारूप अनुपस्थित है।</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>एक रिकॉर्डिंग पहले से चल रही है।</translation>
     </message>
 </context>
 <context>
@@ -2273,6 +2361,41 @@
     <message>
         <source>Cancel</source>
         <translation>रद्द करें</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>एक रिकॉर्डिंग पहले से चल रही है।</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>रिकॉर्ड करने के लिए कुछ नहीं है।</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin glimply को स्क्रीन रिकॉर्डिंग की सुविधा नहीं दे रहा है। glimply को फिर से इंस्टॉल करें, ताकि उसकी डेस्कटॉप प्रविष्टि स्क्रीनकास्ट इंटरफ़ेस की अनुमति दे सके, फिर से लॉग इन करें।</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin ने स्क्रीन स्ट्रीम नहीं दी।</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>इस सिस्टम में %1 रिकॉर्डिंग के लिए कोई एनकोडर नहीं है (FFmpeg में वह मौजूद नहीं है)।</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>रिकॉर्डिंग एन्कोड नहीं की जा सकी।</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>रिकॉर्डिंग बिना किसी फ़्रेम के समाप्त हो गई।</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin ने स्क्रीन स्ट्रीम देने से इनकार कर दिया।</translation>
     </message>
 </context>
 <context>
@@ -2758,6 +2881,66 @@
         <translation>इतिहास साफ़ किया गया</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>रिकॉर्डिंग प्रारूप</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): हर जगह चलता है</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: एनिमेटेड चित्र, कोई ध्वनि नहीं, बड़ी फ़ाइलें</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): वेब के लिए छोटी फ़ाइलें</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>रिकॉर्डिंग:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>रिकॉर्डिंग फ़्रेम दर</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>माउस पॉइंटर दिखाएँ</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>फ़्रेम दर:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>रिकॉर्डिंग शुरू या रोकने का शॉर्टकट</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>रिकॉर्डिंग पर विराम देने या जारी रखने का शॉर्टकट</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>शुरू/रोकें:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>विराम:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>शॉर्टकट:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>ओवरले से (Ctrl+R) या शुरू/रोकें शॉर्टकट से रिकॉर्ड करें, जो अंतिम लक्ष्य को फिर से रिकॉर्ड करता है। GIF रिकॉर्डिंग अधिकतम %1 fps पर बनती है। रिकॉर्डिंग में कोई ध्वनि नहीं होती।</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>कैप्चर फ़ोल्डर</translation>
     </message>
@@ -3129,6 +3312,22 @@
         <translation>सूची साफ़ करता है; छवि फ़ाइलें जहाँ हैं वहीं रहती हैं</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>%1 की रिकॉर्डिंग शुरू हो रही है…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>%1 की रिकॉर्डिंग %2 पर विराम पर है</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>%1 की रिकॉर्डिंग सहेजी जा रही है…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>रिकॉर्डिंग %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>%1 सेकंड में कैप्चर हो रहा है…</translation>
     </message>
@@ -3139,6 +3338,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>सक्रिय अंतराल: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>रिकॉर्डिंग रोकें (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>रिकॉर्डिंग जारी रखें</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>रिकॉर्डिंग विराम दें</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

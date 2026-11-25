@@ -744,6 +744,14 @@
         <translation>Recente opname</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Video-opname opgeslagen</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Video-opname mislukt</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Interval: %1</translation>
     </message>
@@ -754,6 +762,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Schermkleur kiezen</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Schermopname starten of stoppen</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Schermopname pauzeren of hervatten</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -944,6 +960,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 gekopieerd naar het klembord</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Video-opname gekopieerd</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1217,6 +1237,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Onbekend MCP-tool: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>Het venster om op te nemen is niet meer open.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Selectie</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>Het scherm van gebied %1 is niet aangesloten.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>Groepen kunnen niet worden opgenomen; kies een van de onderdelen.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Onbekend opnamedoel: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>Het gebied om op te nemen staat op geen enkel aangesloten scherm.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Er is al een video-opname bezig.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Video-opname</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>De map %1 kon niet worden aangemaakt.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1464,6 +1520,26 @@
         <translation>Rechthoek toevoegen</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Opnemen</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Gebieden en vensters</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Video-opname starten</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Vensters</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · Stoppen: klik op glimply in het systeemvak</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Naar live</translation>
     </message>
@@ -1625,6 +1701,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Openen in het bewerkingsvenster</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>De rechthoek als video opnemen, of kies wat je wilt opnemen</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1853,6 +1937,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>Opnameverzoek mist een geldig doel of formaat.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Er is al een video-opname bezig.</translation>
     </message>
 </context>
 <context>
@@ -2273,6 +2361,41 @@
     <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Er is al een video-opname bezig.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Er is niets om op te nemen.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin biedt glimply geen schermopname aan. Installeer glimply opnieuw, zodat het bureaubladbestand de screencast-interface toestaat, en log daarna opnieuw in.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin heeft de schermstroom niet geleverd.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>Dit systeem heeft geen encoder voor %1-video-opnames (FFmpeg mist die).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>De video-opname kon niet worden gecodeerd.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>De video-opname is beëindigd zonder één beeld.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin heeft de schermstroom geweigerd.</translation>
     </message>
 </context>
 <context>
@@ -2758,6 +2881,66 @@
         <translation>Geschiedenis gewist</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Videoformaat</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): speelt overal af</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: geanimeerde afbeelding, zonder geluid, grotere bestanden</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): kleine bestanden voor het web</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Video-opnames:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Beeldsnelheid voor video-opnames</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Muisaanwijzer tonen</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Beeldsnelheid:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Sneltoets om video-opname te starten of stoppen</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Sneltoets om video-opname te pauzeren of hervatten</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Starten/stoppen:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Pauzeren:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Sneltoetsen:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Opnemen kan via de overlay (Ctrl+R) of met de sneltoets voor starten en stoppen. Die sneltoets neemt het laatste doel opnieuw op. GIF-opnames gebruiken maximaal %1 fps. Video-opnames bevatten geen geluid.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Opnamemap</translation>
     </message>
@@ -3129,6 +3312,22 @@
         <translation>Wist de lijst; de afbeeldingsbestanden blijven waar ze zijn</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>Video-opname van %1 wordt gestart…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>Video-opname van %1 gepauzeerd bij %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>Video-opname van %1 wordt opgeslagen…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Video-opname %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>Vastleggen over %1 s…</translation>
     </message>
@@ -3139,6 +3338,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Actieve intervallen: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Video-opname stoppen (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Video-opname hervatten</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Video-opname pauzeren</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

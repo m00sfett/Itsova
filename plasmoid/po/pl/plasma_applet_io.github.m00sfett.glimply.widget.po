@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glimply 0.9.0\n"
+"Project-Id-Version: glimply 0.10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
@@ -220,17 +220,17 @@ msgid "Apply"
 msgstr "Zastosuj"
 
 #: plasmoid/contents/ui/TargetRow.qml:182
-#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:228
+#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:300
 #, kde-format
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: plasmoid/contents/ui/main.qml:39 plasmoid/contents/ui/main.qml:348
+#: plasmoid/contents/ui/main.qml:46 plasmoid/contents/ui/main.qml:426
 #, kde-format
 msgid "glimply is not running"
 msgstr "glimply nie jest uruchomiony"
 
-#: plasmoid/contents/ui/main.qml:41 plasmoid/contents/ui/main.qml:376
+#: plasmoid/contents/ui/main.qml:49 plasmoid/contents/ui/main.qml:490
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
@@ -238,107 +238,152 @@ msgstr[0] "1 aktywny zrzut interwałowy"
 msgstr[1] "%1 aktywne zrzuty interwałowe"
 msgstr[2] "%1 aktywnych zrzutów interwałowych"
 
-#: plasmoid/contents/ui/main.qml:42
+#: plasmoid/contents/ui/main.qml:50
 #, kde-format
 msgid "Capture fixed areas and monitors"
 msgstr "Przechwytuj stałe obszary i ekrany"
 
-#: plasmoid/contents/ui/main.qml:80
+#: plasmoid/contents/ui/main.qml:88
 #, kde-format
 msgid "Groups"
 msgstr "Grupy"
 
-#: plasmoid/contents/ui/main.qml:81
+#: plasmoid/contents/ui/main.qml:89
 #, kde-format
 msgid "Areas"
 msgstr "Obszary"
 
-#: plasmoid/contents/ui/main.qml:82
+#: plasmoid/contents/ui/main.qml:90
 #, kde-format
 msgid "Monitors"
 msgstr "Ekrany"
 
-#: plasmoid/contents/ui/main.qml:229
+#: plasmoid/contents/ui/main.qml:131
+#, kde-format
+msgid "Starting the recording of %1…"
+msgstr "Rozpoczynanie nagrywania: %1…"
+
+#: plasmoid/contents/ui/main.qml:133
+#, kde-format
+msgid "Recording of %1 paused at %2"
+msgstr "Nagrywanie %1 wstrzymane na %2"
+
+#: plasmoid/contents/ui/main.qml:135
+#, kde-format
+msgid "Saving the recording of %1…"
+msgstr "Zapisywanie nagrania: %1…"
+
+#: plasmoid/contents/ui/main.qml:137
+#, kde-format
+msgid "Recording %1: %2"
+msgstr "Nagrywanie %1: %2"
+
+#: plasmoid/contents/ui/main.qml:258
+#, kde-format
+msgid "Stop recording"
+msgstr "Zatrzymaj nagrywanie"
+
+#: plasmoid/contents/ui/main.qml:301
 #, kde-format
 msgid "%1 s"
 msgstr "%1 s"
 
-#: plasmoid/contents/ui/main.qml:230
+#: plasmoid/contents/ui/main.qml:302
 #, kde-format
 msgid "Delay"
 msgstr "Opóźnienie"
 
-#: plasmoid/contents/ui/main.qml:246
+#: plasmoid/contents/ui/main.qml:318
 #, kde-format
 msgid "No delay"
 msgstr "Bez opóźnienia"
 
-#: plasmoid/contents/ui/main.qml:253
+#: plasmoid/contents/ui/main.qml:325
 #, kde-format
 msgid "3 seconds"
 msgstr "3 sekundy"
 
-#: plasmoid/contents/ui/main.qml:259
+#: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "5 seconds"
 msgstr "5 sekund"
 
-#: plasmoid/contents/ui/main.qml:265
+#: plasmoid/contents/ui/main.qml:337
 #, kde-format
 msgid "10 seconds"
 msgstr "10 sekund"
 
-#: plasmoid/contents/ui/main.qml:272
+#: plasmoid/contents/ui/main.qml:344
 #, kde-format
 msgid "Keep delay active"
 msgstr "Utrzymuj aktywne opóźnienie"
 
-#: plasmoid/contents/ui/main.qml:282
+#: plasmoid/contents/ui/main.qml:353
+#, kde-format
+msgid "Record"
+msgstr "Nagraj"
+
+#: plasmoid/contents/ui/main.qml:360
 #, kde-format
 msgid "Pick Color"
 msgstr "Pobierz kolor"
 
-#: plasmoid/contents/ui/main.qml:289
+#: plasmoid/contents/ui/main.qml:367
 #, kde-format
 msgid "Add Area"
 msgstr "Dodaj obszar"
 
-#: plasmoid/contents/ui/main.qml:295
+#: plasmoid/contents/ui/main.qml:373
 #, kde-format
 msgid "Configure glimply…"
 msgstr "Konfiguruj glimply…"
 
-#: plasmoid/contents/ui/main.qml:313
+#: plasmoid/contents/ui/main.qml:391
 #, kde-format
 msgid "Open Last Capture"
 msgstr "Otwórz ostatni zrzut"
 
-#: plasmoid/contents/ui/main.qml:322
+#: plasmoid/contents/ui/main.qml:400
 #, kde-format
 msgid "Edit Last Capture"
 msgstr "Edytuj ostatni zrzut"
 
-#: plasmoid/contents/ui/main.qml:331
+#: plasmoid/contents/ui/main.qml:409
 #, kde-format
 msgid "Open Capture Folder"
 msgstr "Otwórz katalog zrzutów"
 
-#: plasmoid/contents/ui/main.qml:349
+#: plasmoid/contents/ui/main.qml:427
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
 msgstr "Skróty i zrzuty wymagają usługi glimply."
 
-#: plasmoid/contents/ui/main.qml:352
+#: plasmoid/contents/ui/main.qml:430
 #, kde-format
 msgid "Start glimply"
 msgstr "Uruchom glimply"
 
-#: plasmoid/contents/ui/main.qml:381
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Pause"
+msgstr "Wstrzymaj"
+
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Resume"
+msgstr "Wznów"
+
+#: plasmoid/contents/ui/main.qml:466
+#, kde-format
+msgid "Stop"
+msgstr "Zatrzymaj"
+
+#: plasmoid/contents/ui/main.qml:495
 #, kde-format
 msgid "Stop All"
 msgstr "Zatrzymaj wszystko"
 
-#: plasmoid/contents/ui/main.qml:447
+#: plasmoid/contents/ui/main.qml:561
 #, kde-format
 msgid "Loading…"
 msgstr "Wczytywanie…"

@@ -743,6 +743,14 @@
         <translation>最近的擷取</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>錄影已儲存</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>錄影失敗</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>間隔：%1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>選取螢幕色彩</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>開始或停止螢幕錄影</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>暫停或繼續螢幕錄影</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>已將 %1 複製到剪貼簿</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>已複製錄影</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>未知的 MCP 工具：%1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>要錄影的視窗已不再開啟。</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>選取範圍</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>區域 %1 所在的螢幕未連接。</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>無法錄影群組；請選擇其中一個目標。</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>未知的錄影目標：%1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>要錄影的區域不在任何已連接的螢幕上。</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>已有錄影正在進行。</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>錄影</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>無法建立資料夾 %1。</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>新增矩形</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>錄影</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>區域與視窗</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>開始錄影</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>視窗</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1，%2 fps · 停止：在系統匣中點選 glimply</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>切換即時</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>在編輯視窗中開啟</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>將矩形錄成影片，或選擇要錄影的目標</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>擷取要求缺少有效的目標或格式。</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>已有錄影正在進行。</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>已有錄影正在進行。</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>沒有可錄影的內容。</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin 未向 glimply 提供螢幕錄影功能。請重新安裝 glimply，讓其桌面檔案授予螢幕錄影介面的權限，然後重新登入。</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin 未提供螢幕串流。</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>此系統沒有 %1 錄影的編碼器(FFmpeg 未提供)。</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>無法編碼此錄影。</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>錄影已結束，但沒有任何影格。</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin 拒絕提供螢幕串流。</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>已清除紀錄</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>錄影格式</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264)：到處都能播放</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF：動態圖片、無聲音、檔案較大</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9)：適合網頁的小檔案</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>錄影：</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>錄影影格速率</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>顯示滑鼠指標</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>影格速率：</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>開始或停止錄影快速鍵</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>暫停或繼續錄影快速鍵</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>開始/停止：</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>暫停：</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>快速鍵：</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>從覆疊層錄影 (Ctrl+R)，或使用開始/停止快速鍵，後者會重新錄製上次的目標。GIF 錄影最多使用 %1 fps。錄影不含聲音。</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>擷取資料夾</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>清除清單；圖片檔案會保留在原處</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>正在開始錄影 %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>%1 的錄影已於 %2 暫停</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>正在儲存 %1 的錄影…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>正在錄影 %1：%2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>將於 %1 秒後擷取…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>進行中的定時擷取：%1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>停止錄影 (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>繼續錄影</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>暫停錄影</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

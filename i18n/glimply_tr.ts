@@ -743,6 +743,14 @@
         <translation>Son yakalama</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Kayıt kaydedildi</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Kayıt başarısız oldu</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Aralık: %1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Ekran rengi seç</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Ekran Kaydını Başlat veya Durdur</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Ekran Kaydını Duraklat veya Sürdür</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 panoya kopyalandı</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Kayıt kopyalandı</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Bilinmeyen MCP aracı: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>Kaydedilecek pencere artık açık değil.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Seçim</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>%1 alanının ekranı bağlı değil.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>Gruplar kaydedilemez; gruptaki hedeflerden birini seç.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Bilinmeyen kayıt hedefi: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>Kaydedilecek alan bağlı hiçbir ekranda değil.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Zaten çalışan bir kayıt var.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Kayıt</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>%1 klasörü oluşturulamadı.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>Dikdörtgen Ekle</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Kayıt</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Alanlar ve Pencereler</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Kaydı Başlat</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Pencereler</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · Durdurmak için sistem tepsisinde glimply&apos;e tıkla</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Canlıya Geç</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Düzenleyici pencerede aç</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>Dikdörtgeni video olarak kaydet veya kaydedilecek hedefi seç</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>Yakalama isteğinde geçerli bir hedef veya biçim eksik.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Zaten çalışan bir kayıt var.</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Zaten çalışan bir kayıt var.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Kaydedilecek bir şey yok.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin, glimply&apos;e ekran kaydı sunmuyor. Masaüstü dosyasının ekran yayını arayüzüne izin vermesi için glimply&apos;i yeniden yükle, ardından yeniden oturum aç.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin ekran akışını iletmedi.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>Bu sistemde %1 kayıtları için kodlayıcı yok (FFmpeg bunu içermiyor).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>Kayıt kodlanamadı.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>Kayıt hiç kare içermeden sona erdi.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin ekran akışını reddetti.</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>Geçmiş temizlendi</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Kayıt biçimi</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): her yerde oynatılır</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: hareketli görüntü, ses yok, daha büyük dosyalar</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): web için küçük dosyalar</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Kayıtlar:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Kayıt kare hızı</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Fare imlecini göster</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Kare hızı:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Kaydı başlatma veya durdurma kısayolu</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Kaydı duraklatma veya sürdürme kısayolu</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Başlat/durdur:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Duraklat:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Kısayollar:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Katmandan (Ctrl+R) ya da başlat/durdur kısayoluyla kaydet; kısayol son hedefi yeniden kaydeder. GIF kayıtları en fazla %1 fps kullanır. Kayıtlarda ses yoktur.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Yakalama Klasörü</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>Listeyi temizler; görsel dosyaları olduğu yerde kalır</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>%1 kaydı başlatılıyor…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>%1 kaydı %2 anında duraklatıldı</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>%1 kaydı kaydediliyor…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Kaydediliyor %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>%1 sn içinde yakalanıyor…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Etkin aralıklar: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Kaydı Durdur (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Kaydı Sürdür</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Kaydı Duraklat</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>
