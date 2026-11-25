@@ -19,7 +19,30 @@ constexpr int processTimeoutMs = 120000;
 constexpr double toleranceSeconds = 0.1;
 } // namespace
 
-std::optional<TailFix> planTailFix(const QString &ffprobeCsv, double targetSeconds)
+namespace
+{
+
+// A pause takes effect from its middle: frames before it are earlier, frames after it later, so
+// a small offset between glimply's clock and the stream's does not matter.
+double pauseThreshold(const RecordingPause &pause)
+{
+    return (pause.start + pause.end) / 2;
+}
+
+double shifted(double pts, const QList<RecordingPause> &pauses)
+{
+    double shift = 0;
+    for (const RecordingPause &pause : pauses) {
+        if (pts >= pauseThreshold(pause)) {
+            shift += pause.end - pause.start;
+        }
+    }
+    return pts - shift;
+}
+
+} // namespace
+
+std::optional<TailFix> planTailFix(const QString &ffprobeCsv, double targetSeconds, const QList<RecordingPause> &pauses)
 {
     int count = 0;
     double lastPts = -1;
@@ -32,13 +55,13 @@ std::optional<TailFix> planTailFix(const QString &ffprobeCsv, double targetSecon
         if (!ok) {
             continue; // packets without a timestamp ("N/A")
         }
-        bool durationOk = false;
-        const double duration = fields.value(1).toDouble(&durationOk);
         if (pts < lastPts) {
             // Packets out of display order (B-frames): the last packet is not the last picture,
             // and changing its duration would not hold it. glimply's encoders write none.
             return std::nullopt;
         }
+        bool durationOk = false;
+        const double duration = fields.value(1).toDouble(&durationOk);
         lastPts = pts;
         lastDuration = durationOk ? duration : 0;
         ++count;
@@ -46,11 +69,22 @@ std::optional<TailFix> planTailFix(const QString &ffprobeCsv, double targetSecon
     if (count == 0 || lastPts < 0 || targetSeconds <= 0) {
         return std::nullopt;
     }
-    const double extra = targetSeconds - lastPts;
-    if (extra <= lastDuration + toleranceSeconds) {
+    TailFix fix;
+    fix.lastPacket = count - 1;
+    // Only pauses that frames follow need cutting.
+    for (const RecordingPause &pause : pauses) {
+        if (pause.end > pause.start && lastPts >= pauseThreshold(pause)) {
+            fix.pauses.append(pause);
+        }
+    }
+    const double extra = targetSeconds - shifted(lastPts, fix.pauses);
+    if (extra > lastDuration + toleranceSeconds) {
+        fix.extraSeconds = extra;
+    }
+    if (fix.extraSeconds <= 0 && fix.pauses.isEmpty()) {
         return std::nullopt;
     }
-    return TailFix{count - 1, extra};
+    return fix;
 }
 
 QStringList ffprobePacketArguments(const QString &path)
@@ -62,14 +96,31 @@ QStringList ffprobePacketArguments(const QString &path)
 
 QStringList tailFixArguments(const QString &input, const QString &output, const TailFix &fix)
 {
-    // setts rewrites the duration of one packet; the muxer keeps it for the last frame.
-    // QString::number always writes a dot; printf would follow the locale ("3,1" breaks ffmpeg).
-    const QString filter = QStringLiteral("setts=duration=if(eq(N\\,%1)\\,%2/TB_OUT\\,DURATION)")
-                               .arg(fix.lastPacket)
-                               .arg(QString::number(fix.extraSeconds, 'f', 6));
+    // setts rewrites timestamps and the duration of one packet; with stream copy the time base
+    // stays, so TB_OUT converts seconds. QString::number always writes a dot; printf would follow
+    // the locale ("3,1" breaks ffmpeg).
+    const auto number = [](double value) { return QString::number(value, 'f', 6); };
+    QStringList parts;
+    if (!fix.pauses.isEmpty()) {
+        const auto shift = [&](const QString &ts) {
+            QStringList terms;
+            for (const RecordingPause &pause : fix.pauses) {
+                terms.append(QStringLiteral("gte(%1*TB_OUT\\,%2)*%3")
+                                 .arg(ts, number(pauseThreshold(pause)), number(pause.end - pause.start)));
+            }
+            return QStringLiteral("%1-(%2)/TB_OUT").arg(ts, terms.join(QLatin1Char('+')));
+        };
+        parts.append(QStringLiteral("pts=") + shift(QStringLiteral("PTS")));
+        parts.append(QStringLiteral("dts=") + shift(QStringLiteral("DTS")));
+    }
+    if (fix.extraSeconds > 0) {
+        parts.append(QStringLiteral("duration=if(eq(N\\,%1)\\,%2/TB_OUT\\,DURATION)")
+                         .arg(fix.lastPacket)
+                         .arg(number(fix.extraSeconds)));
+    }
     return {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-y"), QStringLiteral("-i"), input,
             QStringLiteral("-map"), QStringLiteral("0"), QStringLiteral("-c"), QStringLiteral("copy"),
-            QStringLiteral("-bsf:v"), filter, output};
+            QStringLiteral("-bsf:v"), QStringLiteral("setts=") + parts.join(QLatin1Char(':')), output};
 }
 
 RecordingFinalizer::RecordingFinalizer(QObject *parent)
@@ -89,9 +140,10 @@ RecordingFinalizer::~RecordingFinalizer()
     }
 }
 
-void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs)
+void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs, const QList<RecordingPause> &pauses)
 {
     path_ = path;
+    pauses_ = pauses;
     targetSeconds_ = double(targetDurationMs) / 1000.0;
     finished_ = false;
     const QString ffprobe = QStandardPaths::findExecutable(QStringLiteral("ffprobe"));
@@ -108,7 +160,7 @@ void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs)
             finish(false, QStringLiteral("ffprobe failed"));
             return;
         }
-        const std::optional<TailFix> fix = planTailFix(output, targetSeconds_);
+        const std::optional<TailFix> fix = planTailFix(output, targetSeconds_, pauses_);
         if (!fix) {
             finish(false, QStringLiteral("nothing to extend"));
             return;

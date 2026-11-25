@@ -84,6 +84,8 @@ private Q_SLOTS:
         clock.resume(9000);
         QCOMPARE(clock.elapsed(10000), 3000);
         QVERIFY(!clock.paused());
+        QCOMPARE(clock.pauses().size(), 1);
+        QCOMPARE(clock.pauses().first(), (QPair<qint64, qint64>(2000, 8000)));
     }
 
     void fileNamesFollowTheTemplate()
@@ -136,6 +138,53 @@ private Q_SLOTS:
         const QStringList args = tailFixArguments(QStringLiteral("in.gif"), QStringLiteral("out.gif"), *fix);
         QVERIFY(args.contains(QStringLiteral("copy")));
         QVERIFY(args.join(QLatin1Char(' ')).contains(QStringLiteral("eq(N\\,2)\\,3.100000/TB_OUT")));
+    }
+
+    void pausesAreCutOut()
+    {
+        // 0–3 s recorded, paused 3–7 s (no frames), recorded until 9 s: 5 s of recording.
+        const QString csv = QStringLiteral("0.0,0.1\n2.9,0.1\n7.1,0.1\n8.9,0.1\n");
+        const std::optional<TailFix> fix = planTailFix(csv, 5.0, {{3.0, 7.0}});
+        QVERIFY(fix);
+        QCOMPARE(fix->pauses.size(), 1);
+        QCOMPARE(fix->extraSeconds, 0.0); // 8.9 − 4 = 4.9, the last frame reaches 5.0
+        const QString filter = tailFixArguments(QStringLiteral("a.mp4"), QStringLiteral("b.mp4"), *fix).at(10);
+        QVERIFY2(filter.contains(QStringLiteral("pts=PTS-(gte(PTS*TB_OUT\\,5.000000)*4.000000)/TB_OUT")),
+                 qPrintable(filter));
+        QVERIFY(filter.contains(QStringLiteral(":dts=DTS-(")));
+        QVERIFY(!filter.contains(QStringLiteral("duration=")));
+        // A pause at the very end (stopped while paused) has no frames after it.
+        QVERIFY(!planTailFix(QStringLiteral("0.0,0.1\n2.9,0.1\n"), 3.0, {{3.0, 6.0}}));
+    }
+
+    void finalizerCutsARealPause()
+    {
+        if (QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+            || QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty()) {
+            QSKIP("ffmpeg/ffprobe not installed");
+        }
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        // 4 s of frames with nothing between 1 s and 3 s, like a paused recording.
+        const QString path = dir.filePath(QStringLiteral("paused.mp4"));
+        QProcess make;
+        make.start(QStringLiteral("ffmpeg"),
+                   {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"), QStringLiteral("lavfi"),
+                    QStringLiteral("-i"), QStringLiteral("testsrc=size=64x48:rate=10:duration=4"), QStringLiteral("-vf"),
+                    QStringLiteral("select='not(between(t\\,1.05\\,2.95))'"), QStringLiteral("-fps_mode"),
+                    QStringLiteral("passthrough"), QStringLiteral("-c:v"), QStringLiteral("libx264"),
+                    QStringLiteral("-bf"), QStringLiteral("0"), QStringLiteral("-pix_fmt"), QStringLiteral("yuv420p"), path});
+        QVERIFY(make.waitForFinished(60000));
+        if (make.exitCode() != 0) {
+            QSKIP("this ffmpeg cannot write the test clip");
+        }
+        QVERIFY(probeDuration(path) > 3.5);
+        RecordingFinalizer finalizer;
+        QSignalSpy done(&finalizer, &RecordingFinalizer::done);
+        finalizer.finalize(path, 2000, {{1.0, 3.0}});
+        QVERIFY(done.wait(60000));
+        QVERIFY2(done.first().at(0).toBool(), qPrintable(done.first().at(1).toString()));
+        QVERIFY2(qAbs(probeDuration(path) - 2.0) < 0.15, qPrintable(QString::number(probeDuration(path))));
     }
 
     void finalizerExtendsARealFile_data()

@@ -263,7 +263,11 @@ void ScreenRecorder::finalizeFile()
         setState(State::Idle);
         Q_EMIT finished(path, target, duration);
     });
-    finalizer_->finalize(options_.path, finalDurationMs_);
+    QList<RecordingPause> pauses;
+    for (const auto &[start, end] : clock_.pauses()) {
+        pauses.append({double(start) / 1000.0, double(end) / 1000.0});
+    }
+    finalizer_->finalize(options_.path, finalDurationMs_, pauses);
 }
 
 void ScreenRecorder::stop()

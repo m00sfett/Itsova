@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QList>
+#include <QPair>
 #include <QRect>
 #include <QString>
 
@@ -75,6 +76,8 @@ public:
     void resume(qint64 nowMs);
     [[nodiscard]] qint64 elapsed(qint64 nowMs) const;
     [[nodiscard]] bool paused() const { return paused_; }
+    // Finished pauses as (start, end) in milliseconds after start().
+    [[nodiscard]] QList<QPair<qint64, qint64>> pauses() const { return pauses_; }
 
 private:
     qint64 startedAt_ = 0;
@@ -82,6 +85,7 @@ private:
     qint64 pausedTotal_ = 0;
     bool running_ = false;
     bool paused_ = false;
+    QList<QPair<qint64, qint64>> pauses_;
 };
 
 } // namespace glimply

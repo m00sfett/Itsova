@@ -160,6 +160,7 @@ void RecordingClock::start(qint64 nowMs)
     startedAt_ = nowMs;
     pausedAt_ = 0;
     pausedTotal_ = 0;
+    pauses_.clear();
     running_ = true;
     paused_ = false;
 }
@@ -176,6 +177,7 @@ void RecordingClock::resume(qint64 nowMs)
 {
     if (running_ && paused_) {
         pausedTotal_ += nowMs - pausedAt_;
+        pauses_.append({pausedAt_ - startedAt_, nowMs - startedAt_});
         paused_ = false;
     }
 }

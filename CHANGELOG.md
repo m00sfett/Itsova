@@ -25,6 +25,7 @@ Screen recording (milestone 0.10.0, #30). The repository stays private until 1.0
 ### Fixed
 
 - KWin sends a new frame only when the screen changes, so a recording ending on a still picture would stop at the last change (a 10 s recording came out 6.9 s long). glimply now holds the last frame until the moment of *Stop* by rewriting only the container timing with FFmpeg (stream copy, no re-encoding).
+- Pauses are cut out of the file: KPipeWire drops the frames of a pause but its clock keeps running, so a paused recording showed the pause as a still picture. The same FFmpeg pass shifts the frames after each pause back by its length.
 
 ## [0.9.0] - Unreleased
 
