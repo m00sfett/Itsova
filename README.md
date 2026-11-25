@@ -1,6 +1,6 @@
 # glimply
 
-> **Note:** `glimply` is currently a working name while in pre-release development (`0.8.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
+> **Note:** `glimply` is currently a working name while in pre-release development (`0.9.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
 
 **glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
 
@@ -18,6 +18,27 @@
 - **Export formats:** PNG, JPEG, WebP, AVIF, and JXL (WebP/AVIF/JXL require the corresponding Qt image-format plugins).
 - **CLI & local stdio MCP server:** Scriptable JSON/stdout CLI (`capture`, `list`, `area`, `interval`, `overlay`, `history`, `mcp`) and an opt-in local JSON-RPC 2.0 stdio MCP server (`glimply mcp`).
 - **19 UI languages:** English (base/fallback), Arabic, Chinese (Simplified & Traditional), Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, and Vietnamese (*Settings -> General -> Language*).
+
+---
+
+## The Capture Overlay
+
+`Print` saves every monitor right away; then the overlay opens on top, frozen (the moment you pressed the key) or live (`Space` switches). One panel shows the actions of the current state: at the start *This Monitor*, *All Monitors*, *Window*, *Areas*, *Delay*, *Annotate* and *More*; with a selection *Save*, *Copy*, *Pin*, *Copy Text*, *Annotate* and *More*. Buttons carry no labels: hovering shows the title, and after half a second a tooltip adds the shortcut. Windows, saved areas, the delay, the markup tools and less frequent actions open as drawers inside the panel. Drag the panel by its grip to move it, also to another monitor; it remembers its place per monitor. `F1` shows every title and key at once, together with the modifier keys.
+
+| Key | Action |
+|---|---|
+| Drag | Draw a rectangle (`Shift` square, `Alt` from the centre, `Space` repositions) |
+| `1` / `2` | Capture this monitor / all monitors |
+| `W` / `G` / `D` | Window list / saved areas / delay (in a list, `1`–`9` pick an entry) |
+| `V A R E B M T N X S` | Markup tools: Select, Arrow, Rectangle, Ellipse, Pen, Marker, Text, Step, Redact, Spotlight |
+| `Enter` / `Ctrl+C` / `P` / `O` | Save / copy / pin / copy text of the selection |
+| `Ctrl+Shift+S` / `Ctrl+B` | Save as… / save as area |
+| `I` | Pick a colour (`Tab` cycles the format) |
+| `Ctrl+E` | Open in the editor window |
+| `F10` / `Ctrl+,` | More actions / settings |
+| `Tab`, arrows | Move through the panel; `Enter` or `Space` presses the focused button |
+| `F1` | Overview of all buttons, keys and modifiers |
+| `Escape` | Step back, or close (the full screenshot stays saved) |
 
 ---
 
