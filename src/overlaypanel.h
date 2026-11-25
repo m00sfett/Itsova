@@ -33,6 +33,30 @@ struct PanelTitleLayout
 // spaces ("V A R E B M T N X S") becomes one keycap per key, never an abbreviation.
 [[nodiscard]] QString panelToolTip(const QString &title, const QString &shortcut);
 
+// The panel's own keys (#70, Q24). Tool letters, Enter, Escape, Space, F1, I, P, O and Ctrl+E are
+// handled elsewhere; this covers the keys that open drawers or run main-row and ⋯ entries.
+enum class PanelState { Start, Selection, Area };
+enum class PanelKeyAction {
+    None,
+    ThisMonitor,
+    AllMonitors,
+    Window,
+    Areas,
+    Delay,
+    More,
+    Copy,
+    SaveAs,
+    SaveAsArea,
+    Settings,
+    PickEntry, // 1–9 in an open list drawer; entry is 0-based
+};
+struct PanelKey
+{
+    PanelKeyAction action = PanelKeyAction::None;
+    int entry = -1;
+};
+[[nodiscard]] PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::KeyboardModifiers modifiers);
+
 // A 64 × 64 button without a label (#69). On hover the icon fades to about 15 % and blurs, and the
 // title shows on top of it; after 500 ms a tooltip adds the shortcut.
 class PanelButton : public QAbstractButton

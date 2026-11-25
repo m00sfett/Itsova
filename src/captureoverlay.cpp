@@ -516,6 +516,17 @@ void CaptureSession::togglePanelDrawer(PanelDrawer drawer)
     setPanelDrawer(panelDrawer_ == drawer ? PanelDrawer::None : drawer);
 }
 
+void CaptureSession::pickPanelEntry(int index)
+{
+    const QString connector = panelConnector();
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay && overlay->connector() == connector) {
+            overlay->pickListEntry(index);
+            return;
+        }
+    }
+}
+
 QString CaptureSession::panelConnector() const
 {
     if (!manualPanelConnector_.isEmpty() && isConnected(manualPanelConnector_)) {
@@ -2100,7 +2111,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     const QString toolKeys = QStringLiteral("V A R E B M T N X S");
 
     if (state == QLatin1String("area")) {
-        drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QString());
+        drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QStringLiteral("G"));
         panel_->addGroupGap();
         add(QStringLiteral("list-add"), tr("Add Rectangle"), QString(), [this] { session_->setForceNew(true); });
         PanelButton *save = drawer(Drawer::SaveArea, QStringLiteral("bookmark-new"), tr("Save as Area"),
@@ -2117,27 +2128,27 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
             add(QStringLiteral("document-save"), tr("Save"), QStringLiteral("Enter"), [this] { session_->save(); });
         save->setPrimary(true);
         saveButton_ = save;
-        add(QStringLiteral("edit-copy"), tr("Copy"), QString(), [this] { session_->copy(); });
+        add(QStringLiteral("edit-copy"), tr("Copy"), QStringLiteral("Ctrl+C"), [this] { session_->copy(); });
         add(QStringLiteral("window-pin"), tr("Pin"), QStringLiteral("P"), [this] { session_->pin(); });
         add(QStringLiteral("edit-select-text"), tr("Copy Text"), QStringLiteral("O"),
             [this] { session_->copyText(screen_.connector); });
         panel_->addGroupGap();
         drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
         panel_->addGroupGap();
-        drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QString());
+        drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QStringLiteral("F10"));
         close();
         return;
     }
-    add(QStringLiteral("monitor-symbolic"), tr("This Monitor"), QString(),
+    add(QStringLiteral("monitor-symbolic"), tr("This Monitor"), QStringLiteral("1"),
         [this] { session_->captureMonitor(screen_.connector); });
-    add(QStringLiteral("view-fullscreen"), tr("All Monitors"), QString(), [this] { session_->captureAllMonitors(); });
-    drawer(Drawer::Window, QStringLiteral("window"), tr("Window"), QString());
-    drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QString());
+    add(QStringLiteral("view-fullscreen"), tr("All Monitors"), QStringLiteral("2"), [this] { session_->captureAllMonitors(); });
+    drawer(Drawer::Window, QStringLiteral("window"), tr("Window"), QStringLiteral("W"));
+    drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QStringLiteral("G"));
     panel_->addGroupGap();
-    delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QString());
+    delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
     drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
     panel_->addGroupGap();
-    drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QString());
+    drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QStringLiteral("F10"));
     close();
 }
 
@@ -2150,7 +2161,9 @@ QString CaptureOverlay::drawerSignature(CaptureSession::PanelDrawer drawer) cons
         signature += QStringLiteral(":%1:%2").arg(session_->captureDelaySeconds()).arg(session_->keepDelayActive());
         break;
     case Drawer::More:
-        signature += QLatin1Char(':') + panelState() + QLatin1Char(':') + QString::number(session_->colorPickerActive());
+        signature += QLatin1Char(':') + panelState() + QLatin1Char(':') + QString::number(session_->colorPickerActive())
+                   + QLatin1Char(':') + QString::number(session_->frozen())
+                   + QLatin1Char(':') + QString::number(session_->canSwitchToLive());
         break;
     case Drawer::Areas:
         signature += QLatin1Char(':') + panelState();
@@ -2164,6 +2177,7 @@ QString CaptureOverlay::drawerSignature(CaptureSession::PanelDrawer drawer) cons
 QWidget *CaptureOverlay::buildDrawer(CaptureSession::PanelDrawer drawer)
 {
     using Drawer = CaptureSession::PanelDrawer;
+    listEntries_.clear();
     switch (drawer) {
     case Drawer::None:
         return nullptr;
@@ -2212,6 +2226,21 @@ QWidget *listDrawer(QWidget *content)
     return scroll;
 }
 
+// The 1–9 key of a list drawer entry (Q24), in front of the row; later rows get an empty slot.
+QLabel *entryNumber(int index, QWidget *parent)
+{
+    auto *label = new QLabel(index < 9 ? QString::number(index + 1) : QString(), parent);
+    label->setAlignment(Qt::AlignCenter);
+    label->setFixedWidth(20);
+    QPalette pal = label->palette();
+    QColor muted = pal.color(QPalette::WindowText);
+    muted.setAlphaF(0.6);
+    pal.setColor(QPalette::WindowText, muted);
+    label->setPalette(pal);
+    label->setAccessibleName(QString()); // the row's button carries the name
+    return label;
+}
+
 QWidget *buttonRow(const QList<QWidget *> &buttons)
 {
     auto *row = new QWidget;
@@ -2245,11 +2274,19 @@ QWidget *CaptureOverlay::buildWindowList()
             text = tr("%1 (minimized)").arg(text);
         }
         const QString icon = QIcon::hasThemeIcon(window.iconName) ? window.iconName : QStringLiteral("window");
-        auto *row = barButton(content, icon, text, QString());
-        row->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        auto *row = new QWidget(content);
+        auto *layout = new QHBoxLayout(row);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(2);
+        layout->addWidget(entryNumber(int(listEntries_.size()), row));
+        auto *main = barButton(row, icon, text, QString());
+        layout->addWidget(main);
+        layout->addStretch(); // rows start at their number, not centred
         row->setAttribute(Qt::WA_Hover);
         row->installEventFilter(new HoverOutline(row, session_, {{window.geometry, window.caption}}));
-        connect(row, &QToolButton::clicked, this, [this, window] { session_->captureWindow(window); });
+        const auto capture = [this, window] { session_->captureWindow(window); };
+        connect(main, &QToolButton::clicked, this, capture);
+        listEntries_.append(capture);
         column->addWidget(row);
     }
     return listDrawer(content);
@@ -2277,22 +2314,25 @@ QWidget *CaptureOverlay::buildAreaList()
         auto *layout = new QHBoxLayout(row);
         layout->setContentsMargins(0, 0, 0, 0);
         layout->setSpacing(2);
+        layout->addWidget(entryNumber(int(listEntries_.size()), row));
         QString label = name;
         if (const QKeySequence shortcut = session_->shortcut(id); !shortcut.isEmpty()) {
             label = tr("%1    %2").arg(name, shortcut.toString(QKeySequence::NativeText));
         }
         auto *main = barButton(row, icon, label, print ? tr("Capture now") : tr("Add as a rectangle"));
-        main->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         main->setEnabled(available);
         layout->addWidget(main);
-        connect(main, &QToolButton::clicked, this, [this, id, print] {
+        layout->addStretch();
+        const auto pick = [this, id, print] {
             if (print) {
                 session_->captureTarget(id);
             } else {
                 session_->setPanelDrawer(CaptureSession::PanelDrawer::None);
                 session_->addTarget(id);
             }
-        });
+        };
+        connect(main, &QToolButton::clicked, this, pick);
+        listEntries_.append(available ? std::function<void()>(pick) : std::function<void()>());
         if (print) {
             auto *add = barButton(row, QStringLiteral("list-add"), QString(), tr("Add as a rectangle to adjust it"));
             add->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -2414,8 +2454,10 @@ QWidget *CaptureOverlay::buildMoreRow()
                            [this] { session_->editInWindow(screen_.connector); });
     if (panelState() == QLatin1String("selection")) {
         return buttonRow({
-            button(QStringLiteral("document-save-as"), tr("Save As…"), QString(), [this] { session_->saveAs(); }),
-            button(QStringLiteral("bookmark-new"), tr("Save as Area"), QString(), [this] { session_->showAreaPanel(); }),
+            button(QStringLiteral("document-save-as"), tr("Save As…"), QStringLiteral("Ctrl+Shift+S"),
+                   [this] { session_->saveAs(); }),
+            button(QStringLiteral("bookmark-new"), tr("Save as Area"), QStringLiteral("Ctrl+B"),
+                   [this] { session_->showAreaPanel(); }),
             button(QStringLiteral("list-add"), tr("Add Rectangle"), QString(),
                    [this] {
                        session_->setPanelDrawer(Drawer::None);
@@ -2425,11 +2467,20 @@ QWidget *CaptureOverlay::buildMoreRow()
             pick,
         });
     }
+    // Frozen/Live as an entry too (Q11); the end cap shows the current mode.
+    const bool frozen = session_->frozen();
+    auto *mode = static_cast<PanelButton *>(
+        button(frozen ? QStringLiteral("media-playback-start") : QStringLiteral("media-playback-pause"),
+               frozen ? tr("Go Live") : tr("Freeze"), QStringLiteral("Space"),
+               [this] { session_->setFrozen(!session_->frozen()); }));
+    mode->setEnabled(!frozen || session_->canSwitchToLive());
     return buttonRow({
+        mode,
         pick,
         edit,
-        button(QStringLiteral("configure"), tr("Settings"), QString(), [this] { session_->openSettings(); }),
-        button(QStringLiteral("help-contextual"), tr("Help"), QStringLiteral("F1"), [this] { session_->toggleHelp(); }),
+        button(QStringLiteral("configure"), tr("Settings"), QStringLiteral("Ctrl+,"), [this] { session_->openSettings(); }),
+        button(QStringLiteral("help-contextual"), tr("Shortcut Overview"), QStringLiteral("F1"),
+               [this] { session_->toggleHelp(); }),
     });
 }
 
@@ -3395,6 +3446,65 @@ void CaptureOverlay::keyReleaseEvent(QKeyEvent *event)
     QWidget::keyReleaseEvent(event);
 }
 
+bool CaptureOverlay::handlePanelKey(int key, Qt::KeyboardModifiers modifiers)
+{
+    using Drawer = CaptureSession::PanelDrawer;
+    const QString name = panelState();
+    const PanelState state = name == QLatin1String("area")        ? PanelState::Area
+                             : name == QLatin1String("selection") ? PanelState::Selection
+                                                                  : PanelState::Start;
+    const Drawer open = session_->panelDrawer();
+    const bool listOpen = open == Drawer::Window || open == Drawer::Areas;
+    const PanelKey result = panelKeyAction(state, listOpen, key, modifiers);
+    switch (result.action) {
+    case PanelKeyAction::None:
+        return false;
+    case PanelKeyAction::ThisMonitor:
+        session_->captureMonitor(session_->panelConnector()); // the monitor showing the panel
+        return true;
+    case PanelKeyAction::AllMonitors:
+        session_->captureAllMonitors();
+        return true;
+    case PanelKeyAction::Window:
+        session_->togglePanelDrawer(Drawer::Window);
+        return true;
+    case PanelKeyAction::Areas:
+        session_->togglePanelDrawer(Drawer::Areas);
+        return true;
+    case PanelKeyAction::Delay:
+        session_->togglePanelDrawer(Drawer::Delay);
+        return true;
+    case PanelKeyAction::More:
+        session_->togglePanelDrawer(Drawer::More);
+        return true;
+    case PanelKeyAction::Copy:
+        session_->copy(screen_.connector);
+        return true;
+    case PanelKeyAction::SaveAs:
+        session_->saveAs();
+        return true;
+    case PanelKeyAction::SaveAsArea:
+        session_->showAreaPanel();
+        return true;
+    case PanelKeyAction::Settings:
+        session_->openSettings();
+        return true;
+    case PanelKeyAction::PickEntry:
+        session_->pickPanelEntry(result.entry); // the panel may sit on another monitor's overlay
+        return true;
+    }
+    return false;
+}
+
+void CaptureOverlay::pickListEntry(int index)
+{
+    // A missing or unavailable entry is a no-op.
+    if (index >= 0 && index < listEntries_.size() && listEntries_.at(index)) {
+        const std::function<void()> action = listEntries_.at(index); // may rebuild the drawer
+        action();
+    }
+}
+
 void CaptureOverlay::keyPressEvent(QKeyEvent *event)
 {
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isEditingText()) {
@@ -3484,6 +3594,11 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             return;
         }
         session_->setPickerCursorGlobal(session_->pickerCursorGlobal() + pickerDelta);
+        event->accept();
+        return;
+    }
+
+    if (!event->isAutoRepeat() && handlePanelKey(event->key(), modifiers)) {
         event->accept();
         return;
     }

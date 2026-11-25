@@ -113,6 +113,8 @@ public:
     void togglePanelDrawer(PanelDrawer drawer);
     [[nodiscard]] QString panelConnector() const;
     void notePointerOn(const QString &connector);
+    // Runs entry index (0-based) of the list drawer open on the panel (keys 1–9, Q24).
+    void pickPanelEntry(int index);
     // Where the user put the panel on this monitor (top-left, monitor coordinates), if anywhere.
     [[nodiscard]] std::optional<QPoint> panelPosition(const QString &connector) const;
     void setPanelPosition(const QString &connector, const std::optional<QPoint> &position);
@@ -245,6 +247,7 @@ public:
     CaptureOverlay(CaptureSession *session, const ScreenInfo &screen);
 
     [[nodiscard]] QString connector() const;
+    void pickListEntry(int index);
     [[nodiscard]] const ScreenInfo &screen() const;
     [[nodiscard]] InlineTextEditor *textEditor() const;
     void startInlineTextEdit(const AnnotationItem &item, bool isExisting);
@@ -283,6 +286,7 @@ private:
     void placeHint();
     void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
+    bool handlePanelKey(int key, Qt::KeyboardModifiers modifiers);
     void updateCursor(const QPoint &globalPos);
     [[nodiscard]] QPoint toGlobalPoint(const QPoint &localPos) const;
     [[nodiscard]] QRect toLocalRect(const QRect &globalRect) const;
@@ -311,6 +315,8 @@ private:
     QString builtState_;
     CaptureSession::PanelDrawer builtDrawer_ = CaptureSession::PanelDrawer::None;
     QString builtDrawerSignature_;
+    // Actions of the open list drawer, in row order, for the keys 1–9 (Q24); empty = unavailable.
+    QList<std::function<void()>> listEntries_;
     QHash<int, QPointer<PanelButton>> drawerButtons_;
     QPointer<PanelButton> saveButton_;
     QPointer<PanelButton> delayButton_;

@@ -145,6 +145,58 @@ QString panelToolTip(const QString &title, const QString &shortcut)
     return html;
 }
 
+PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::KeyboardModifiers modifiers)
+{
+    const Qt::KeyboardModifiers mods = modifiers & ~Qt::KeypadModifier;
+    const bool plain = mods == Qt::NoModifier;
+    const bool ctrl = mods == Qt::ControlModifier;
+    const bool print = state != PanelState::Area;
+
+    if (plain && key >= Qt::Key_1 && key <= Qt::Key_9) {
+        if (listDrawerOpen) {
+            return {PanelKeyAction::PickEntry, key - Qt::Key_1};
+        }
+        if (state == PanelState::Start && key == Qt::Key_1) {
+            return {PanelKeyAction::ThisMonitor};
+        }
+        if (state == PanelState::Start && key == Qt::Key_2) {
+            return {PanelKeyAction::AllMonitors};
+        }
+        return {};
+    }
+    if (plain) {
+        switch (key) {
+        case Qt::Key_W:
+            return {state == PanelState::Start ? PanelKeyAction::Window : PanelKeyAction::None};
+        case Qt::Key_G:
+            return {state != PanelState::Selection ? PanelKeyAction::Areas : PanelKeyAction::None};
+        case Qt::Key_D:
+            return {state == PanelState::Start ? PanelKeyAction::Delay : PanelKeyAction::None};
+        case Qt::Key_F10:
+        case Qt::Key_Menu:
+            return {print ? PanelKeyAction::More : PanelKeyAction::None};
+        default:
+            return {};
+        }
+    }
+    if (ctrl) {
+        switch (key) {
+        case Qt::Key_C:
+            return {state == PanelState::Selection ? PanelKeyAction::Copy : PanelKeyAction::None};
+        case Qt::Key_B:
+            return {state != PanelState::Start ? PanelKeyAction::SaveAsArea : PanelKeyAction::None};
+        case Qt::Key_Comma:
+            return {print ? PanelKeyAction::Settings : PanelKeyAction::None};
+        default:
+            return {};
+        }
+    }
+    if (mods == (Qt::ControlModifier | Qt::ShiftModifier) && key == Qt::Key_S && state == PanelState::Selection) {
+        return {PanelKeyAction::SaveAs};
+    }
+    return {};
+}
+
 // ------------------------------------------------------------------------------------- PanelButton
 
 PanelButton::PanelButton(const QString &iconName, const QString &title, const QString &shortcut, QWidget *parent)
@@ -646,7 +698,7 @@ void CapsulePanel::setDrawer(QWidget *content)
     drawer_ = content;
     if (content) {
         content->setParent(this);
-        drawerBox_->addWidget(content);
+        drawerBox_->addWidget(content, 0, Qt::AlignLeft); // leading edge, mirrored in RTL
         content->show();
     }
     adjustSize();

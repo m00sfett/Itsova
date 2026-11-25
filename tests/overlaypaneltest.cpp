@@ -69,6 +69,57 @@ private Q_SLOTS:
         QVERIFY(panelToolTip(QStringLiteral("A & <B>"), QString()).contains(QStringLiteral("A &amp; &lt;B&gt;")));
     }
 
+    void panelKeysFollowTheState()
+    {
+        using A = PanelKeyAction;
+        using S = PanelState;
+        const auto action = [](S state, bool list, int key, Qt::KeyboardModifiers mods = Qt::NoModifier) {
+            return panelKeyAction(state, list, key, mods).action;
+        };
+        // Start (Q11/Q24).
+        QCOMPARE(action(S::Start, false, Qt::Key_1), A::ThisMonitor);
+        QCOMPARE(action(S::Start, false, Qt::Key_2), A::AllMonitors);
+        QCOMPARE(action(S::Start, false, Qt::Key_3), A::None);
+        QCOMPARE(action(S::Start, false, Qt::Key_W), A::Window);
+        QCOMPARE(action(S::Start, false, Qt::Key_G), A::Areas);
+        QCOMPARE(action(S::Start, false, Qt::Key_D), A::Delay);
+        QCOMPARE(action(S::Start, false, Qt::Key_F10), A::More);
+        QCOMPARE(action(S::Start, false, Qt::Key_Menu), A::More);
+        QCOMPARE(action(S::Start, false, Qt::Key_Comma, Qt::ControlModifier), A::Settings);
+        QCOMPARE(action(S::Start, false, Qt::Key_C, Qt::ControlModifier), A::None); // nothing to copy yet
+        QCOMPARE(action(S::Start, false, Qt::Key_B, Qt::ControlModifier), A::None);
+        // Selection (Q12): drawers of the start row are gone.
+        QCOMPARE(action(S::Selection, false, Qt::Key_C, Qt::ControlModifier), A::Copy);
+        QCOMPARE(action(S::Selection, false, Qt::Key_S, Qt::ControlModifier | Qt::ShiftModifier), A::SaveAs);
+        QCOMPARE(action(S::Selection, false, Qt::Key_B, Qt::ControlModifier), A::SaveAsArea);
+        QCOMPARE(action(S::Selection, false, Qt::Key_F10), A::More);
+        QCOMPARE(action(S::Selection, false, Qt::Key_1), A::None);
+        QCOMPARE(action(S::Selection, false, Qt::Key_W), A::None);
+        QCOMPARE(action(S::Selection, false, Qt::Key_D), A::None);
+        // Area editing without Print (Q19).
+        QCOMPARE(action(S::Area, false, Qt::Key_G), A::Areas);
+        QCOMPARE(action(S::Area, false, Qt::Key_B, Qt::ControlModifier), A::SaveAsArea);
+        QCOMPARE(action(S::Area, false, Qt::Key_F10), A::None);
+        QCOMPARE(action(S::Area, false, Qt::Key_Comma, Qt::ControlModifier), A::None);
+        // Tool letters, Ctrl+D and Ctrl+S stay with their own handlers.
+        QCOMPARE(action(S::Selection, false, Qt::Key_S, Qt::ControlModifier), A::None);
+        QCOMPARE(action(S::Selection, false, Qt::Key_D, Qt::ControlModifier), A::None);
+        QCOMPARE(action(S::Start, false, Qt::Key_A), A::None);
+        QCOMPARE(action(S::Start, false, Qt::Key_W, Qt::AltModifier), A::None);
+    }
+
+    void digitsPickEntriesInOpenListDrawers()
+    {
+        PanelKey key = panelKeyAction(PanelState::Start, true, Qt::Key_1, Qt::NoModifier);
+        QCOMPARE(key.action, PanelKeyAction::PickEntry);
+        QCOMPARE(key.entry, 0);
+        key = panelKeyAction(PanelState::Area, true, Qt::Key_9, Qt::KeypadModifier);
+        QCOMPARE(key.action, PanelKeyAction::PickEntry);
+        QCOMPARE(key.entry, 8);
+        QCOMPARE(panelKeyAction(PanelState::Start, true, Qt::Key_0, Qt::NoModifier).action, PanelKeyAction::None);
+        QCOMPARE(panelKeyAction(PanelState::Start, true, Qt::Key_1, Qt::ControlModifier).action, PanelKeyAction::None);
+    }
+
     void buttonHasFixedSizeAndAccessibleName()
     {
         PanelButton button(QStringLiteral("document-save"), QStringLiteral("Save"), QStringLiteral("Enter"), nullptr);
