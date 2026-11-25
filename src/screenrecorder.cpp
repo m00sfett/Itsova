@@ -81,20 +81,34 @@ Q_SIGNALS:
 protected:
     void zkde_screencast_stream_unstable_v1_created(uint32_t node) override
     {
-        // Older KWin sends only the node; version 6 follows up with the serial.
+        // Older KWin sends only the node; version 6 follows up with the serial (used when both
+        // the protocol file and KPipeWire know it).
         nodeId_ = node;
-        if (version() < 6) {
+        if (!useSerial()) {
             Q_EMIT ready(0, node);
         }
     }
+#ifdef GLIMPLY_SCREENCAST_SERIAL_EVENT
     void zkde_screencast_stream_unstable_v1_serial(uint32_t hi, uint32_t low) override
     {
-        Q_EMIT ready((quint64(hi) << 32) | low, nodeId_);
+        if (useSerial()) {
+            Q_EMIT ready((quint64(hi) << 32) | low, nodeId_);
+        }
     }
+#endif
     void zkde_screencast_stream_unstable_v1_failed(const QString &error) override { Q_EMIT failed(error); }
     void zkde_screencast_stream_unstable_v1_closed() override { Q_EMIT closed(); }
 
 private:
+    [[nodiscard]] bool useSerial() const
+    {
+#if defined(GLIMPLY_SCREENCAST_SERIAL_EVENT) && defined(GLIMPLY_KPIPEWIRE_SERIAL)
+        return version() >= 6;
+#else
+        return false;
+#endif
+    }
+
     quint32 nodeId_ = 0;
 };
 
@@ -171,9 +185,13 @@ void ScreenRecorder::onStreamReady(quint64 objectSerial, quint32 nodeId)
     encoder_->setEncoder(wanted);
     encoder_->setMaxFramerate(quint32(effectiveFrameRate(options_.format, options_.frameRate)), 1);
     encoder_->setOutput(options_.path);
+#ifdef GLIMPLY_KPIPEWIRE_SERIAL
     if (objectSerial != 0) {
         encoder_->setObjectSerial(objectSerial);
-    } else {
+    } else
+#endif
+    {
+        Q_UNUSED(objectSerial)
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
         encoder_->setNodeId(nodeId);
@@ -205,12 +223,14 @@ void ScreenRecorder::onEncoderStateChanged()
             setState(State::Recording);
         }
         break;
+#ifdef GLIMPLY_KPIPEWIRE_PAUSE
     case PipeWireBaseEncodedStream::Paused:
         if (state_ == State::Recording) {
             clock_.pause(monotonic_.elapsed());
             setState(State::Paused);
         }
         break;
+#endif
     case PipeWireBaseEncodedStream::Rendering:
         if (state_ != State::Finishing) {
             finalDurationMs_ = clock_.elapsed(monotonic_.elapsed());
@@ -300,8 +320,18 @@ void ScreenRecorder::stop()
     }
 }
 
+bool ScreenRecorder::canPause()
+{
+#ifdef GLIMPLY_KPIPEWIRE_PAUSE
+    return true;
+#else
+    return false;
+#endif
+}
+
 void ScreenRecorder::setPaused(bool paused)
 {
+#ifdef GLIMPLY_KPIPEWIRE_PAUSE
     if (!encoder_) {
         return;
     }
@@ -310,6 +340,9 @@ void ScreenRecorder::setPaused(bool paused)
     } else if (!paused && state_ == State::Paused) {
         encoder_->resume();
     }
+#else
+    Q_UNUSED(paused)
+#endif
 }
 
 void ScreenRecorder::togglePause()

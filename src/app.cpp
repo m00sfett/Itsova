@@ -223,6 +223,7 @@ App::App(QObject *parent)
 
     // Screen recording (#30). The recorder touches neither KWin nor PipeWire before the first recording.
     recorder_ = new ScreenRecorder(this);
+    tray_->setRecordingPauseAvailable(ScreenRecorder::canPause());
     recordingTicker_ = new QTimer(this);
     recordingTicker_->setInterval(1000);
     connect(recordingTicker_, &QTimer::timeout, this, &App::syncRecordingUi);
@@ -399,7 +400,9 @@ void App::syncShortcuts(const QStringList &deletedIds)
     entries.append({pinsToggleActionId(), tr("Show or hide pinned screenshots")});
     entries.append({ocrSelectionActionId(), tr("Copy text from a screen selection")});
     entries.append({recordToggleActionId(), tr("Start or stop screen recording")});
-    entries.append({recordPauseActionId(), tr("Pause or resume screen recording")});
+    if (ScreenRecorder::canPause()) {
+        entries.append({recordPauseActionId(), tr("Pause or resume screen recording")});
+    }
     shortcuts_->sync(entries, deletedIds);
 }
 
@@ -3019,6 +3022,7 @@ QJsonObject App::recordingState() const
     state.insert(QStringLiteral("state"), recordingStateKey(recorder_->state()));
     state.insert(QStringLiteral("elapsedMs"), double(recorder_->elapsedMs()));
     state.insert(QStringLiteral("format"), recordingFormatKey(store_.recordingFormat));
+    state.insert(QStringLiteral("canPause"), ScreenRecorder::canPause());
     if (recorder_->isBusy()) {
         state.insert(QStringLiteral("target"), recorder_->target().targetId);
         state.insert(QStringLiteral("targetName"), recorder_->target().displayName);

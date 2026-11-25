@@ -38,6 +38,24 @@ add_executable(glimply
     src/trayicon.cpp
 )
 target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
+# Older KPipeWire (Debian 13: 6.3) has no pause and no object serials; older protocol files no
+# serial event. Recording works there, pausing does not.
+get_target_property(glimply_kpipewire_includes K::KPipeWire INTERFACE_INCLUDE_DIRECTORIES)
+find_file(GLIMPLY_KPIPEWIRE_STREAM_HEADER pipewirebaseencodedstream.h PATHS ${glimply_kpipewire_includes}
+          PATH_SUFFIXES KPipeWire NO_DEFAULT_PATH)
+if(GLIMPLY_KPIPEWIRE_STREAM_HEADER)
+    file(READ "${GLIMPLY_KPIPEWIRE_STREAM_HEADER}" glimply_kpipewire_stream)
+    if(glimply_kpipewire_stream MATCHES "void pause\\(\\)")
+        target_compile_definitions(glimply PRIVATE GLIMPLY_KPIPEWIRE_PAUSE=1)
+    endif()
+    if(glimply_kpipewire_stream MATCHES "setObjectSerial")
+        target_compile_definitions(glimply PRIVATE GLIMPLY_KPIPEWIRE_SERIAL=1)
+    endif()
+endif()
+file(READ "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml" glimply_screencast_xml)
+if(glimply_screencast_xml MATCHES "name=\"serial\"")
+    target_compile_definitions(glimply PRIVATE GLIMPLY_SCREENCAST_SERIAL_EVENT=1)
+endif()
 qt6_generate_wayland_protocol_client_sources(glimply PRIVATE_CODE
     FILES "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml")
 # Brand marks for the footer of the settings window.

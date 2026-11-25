@@ -31,6 +31,7 @@ PlasmoidItem {
     property string recordingState: "idle"
     property real recordingElapsedMs: 0
     property string recordingTarget: ""
+    property bool recordingCanPause: true
     readonly property bool recording: recordingState !== "idle"
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
@@ -149,6 +150,7 @@ PlasmoidItem {
             root.recordingState = state.state || "idle";
             root.recordingElapsedMs = state.elapsedMs || 0;
             root.recordingTarget = state.targetName || "";
+            root.recordingCanPause = state.canPause !== false;
         });
     }
 
@@ -456,7 +458,7 @@ PlasmoidItem {
                     font.features: { "tnum": 1 }
                 }
                 PlasmaComponents3.ToolButton {
-                    visible: root.recordingState === "recording" || root.recordingState === "paused"
+                    visible: root.recordingCanPause && (root.recordingState === "recording" || root.recordingState === "paused")
                     icon.name: root.recordingState === "paused" ? "media-record" : "media-playback-pause"
                     text: root.recordingState === "paused" ? i18n("Resume") : i18n("Pause")
                     onClicked: root.call("PauseRecording", [root.recordingState !== "paused"])

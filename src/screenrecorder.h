@@ -51,6 +51,8 @@ public:
     // screen streams to glimply.
     bool start(const RecordingTarget &target, const Options &options);
     void stop();
+    // KPipeWire before 6.4 cannot pause; the tray, widget and shortcut leave pausing out then.
+    [[nodiscard]] static bool canPause();
     void setPaused(bool paused);
     void togglePause();
 

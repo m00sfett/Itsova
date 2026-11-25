@@ -201,6 +201,11 @@ void TrayController::setRecordingState(int state, qint64 elapsedMs, const QStrin
     updateToolTip();
 }
 
+void TrayController::setRecordingPauseAvailable(bool available)
+{
+    recordingPauseAvailable_ = available;
+}
+
 void TrayController::setCountdownState(bool active, int remainingSeconds)
 {
     countdownActive_ = active;
@@ -316,7 +321,7 @@ void TrayController::rebuildMenu()
         auto *stop = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
                                      tr("Stop Recording (%1)").arg(formatElapsed(recordingElapsedMs_)), menu_));
         connect(stop, &QAction::triggered, this, &TrayController::stopRecordingRequested);
-        if (recordingState_ != 1) {
+        if (recordingState_ != 1 && recordingPauseAvailable_) {
             const bool paused = recordingState_ == 3;
             auto *pause = add(new QAction(QIcon::fromTheme(paused ? QStringLiteral("media-record")
                                                                   : QStringLiteral("media-playback-pause")),

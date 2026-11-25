@@ -1,5 +1,7 @@
 #include "settingswindow.h"
 
+#include "screenrecorder.h"
+
 #include "app.h"
 #include "areaselector.h"
 #include "historystore.h"
@@ -1669,9 +1671,13 @@ QWidget *SettingsWindow::createStoragePage()
     auto *shortcutRow = new QHBoxLayout;
     shortcutRow->addWidget(new QLabel(tr("Start/stop:"), page));
     shortcutRow->addWidget(recordToggleShortcut_);
-    shortcutRow->addSpacing(12);
-    shortcutRow->addWidget(new QLabel(tr("Pause:"), page));
-    shortcutRow->addWidget(recordPauseShortcut_);
+    if (ScreenRecorder::canPause()) {
+        shortcutRow->addSpacing(12);
+        shortcutRow->addWidget(new QLabel(tr("Pause:"), page));
+        shortcutRow->addWidget(recordPauseShortcut_);
+    } else {
+        recordPauseShortcut_->hide(); // this KPipeWire cannot pause
+    }
     shortcutRow->addStretch(1);
     form->addRow(tr("Shortcuts:"), shortcutRow);
     form->addRow(QString(), makeHint(tr("Record from the overlay (Ctrl+R) or with the start/stop shortcut, which "

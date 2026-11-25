@@ -20,7 +20,7 @@ Screen recording (milestone 0.10.0, #30). The repository stays private until 1.0
 
 ### Changed
 
-- New build and runtime dependencies: Qt Wayland, `plasma-wayland-protocols` (build), KPipeWire and FFmpeg.
+- New build and runtime dependencies: Qt Wayland, `plasma-wayland-protocols` (build), KPipeWire and FFmpeg. With KPipeWire before 6.4 (Debian 13 ships 6.3) recording works but cannot pause; the pause controls are left out there.
 
 ### Fixed
 
