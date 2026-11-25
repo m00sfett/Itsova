@@ -1,6 +1,7 @@
 #include "overlaypanel.h"
 
 #include <QFontMetricsF>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QSignalSpy>
 #include <QTest>
@@ -145,6 +146,26 @@ private Q_SLOTS:
         QVERIFY(annotate.keycapText().isEmpty());
         annotate.setKeycapVisible(true);
         QCOMPARE(annotate.size(), QSize(64, 64 + PanelButton::keycapHeight)); // the row stays aligned
+    }
+
+    void buttonsWorkFromTheKeyboard()
+    {
+        // #74 (Q30): Tab reaches the buttons, Enter/Space click, the name and description carry the key.
+        PanelButton button(QStringLiteral("document-save"), QStringLiteral("Save"), QStringLiteral("Enter"), nullptr);
+        QCOMPARE(button.focusPolicy(), Qt::TabFocus);
+        QCOMPARE(button.accessibleDescription(), QStringLiteral("Shortcut: Enter"));
+        QSignalSpy clicked(&button, &QAbstractButton::clicked);
+        QTest::keyClick(&button, Qt::Key_Return);
+        QTest::keyClick(&button, Qt::Key_Space);
+        QCOMPARE(clicked.count(), 2);
+        // Keys the panel does not use stay with the overlay.
+        QKeyEvent other(QEvent::KeyPress, Qt::Key_W, Qt::NoModifier);
+        QCoreApplication::sendEvent(&button, &other);
+        QVERIFY(!other.isAccepted());
+        QKeyEvent shifted(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier);
+        QCoreApplication::sendEvent(&button, &shifted);
+        QVERIFY(!shifted.isAccepted());
+        QCOMPARE(clicked.count(), 2);
     }
 
     void drawerGrowsInsideThePanel()

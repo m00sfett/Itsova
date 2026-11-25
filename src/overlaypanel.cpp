@@ -6,6 +6,7 @@
 #include <QFontMetricsF>
 #include <QHBoxLayout>
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyle>
@@ -16,6 +17,7 @@
 #include <QVariantAnimation>
 
 #include <algorithm>
+#include <functional>
 #include <cmath>
 
 namespace glimply
@@ -71,6 +73,40 @@ bool animationsOff(const QWidget *widget)
 {
     // Breeze honours KDE's animation speed here; "instant" gives 0 (Q30).
     return widget->style()->styleHint(QStyle::SH_Widget_Animation_Duration, nullptr, widget) <= 0;
+}
+
+// Keyboard use of a panel control (#74, Q30): Enter, Return and Space click it, the arrows move
+// along the panel (mirrored right to left), Escape hands the keyboard back to the overlay. Other
+// keys stay with the overlay's shortcuts.
+bool panelControlKey(QAbstractButton *button, QKeyEvent *event, const std::function<void(bool)> &moveFocus)
+{
+    if (event->modifiers() & ~Qt::KeypadModifier) {
+        return false;
+    }
+    const bool rtl = button->layoutDirection() == Qt::RightToLeft;
+    switch (event->key()) {
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+    case Qt::Key_Space:
+        if (!event->isAutoRepeat()) {
+            button->click();
+        }
+        return true;
+    case Qt::Key_Right:
+    case Qt::Key_Left:
+        moveFocus((event->key() == Qt::Key_Right) != rtl);
+        return true;
+    case Qt::Key_Down:
+    case Qt::Key_Up:
+        moveFocus(event->key() == Qt::Key_Down);
+        return true;
+    case Qt::Key_Escape:
+        button->clearFocus();
+        button->window()->setFocus(Qt::OtherFocusReason);
+        return true;
+    default:
+        return false;
+    }
 }
 
 QPixmap blurred(const QPixmap &source)
@@ -206,7 +242,8 @@ PanelButton::PanelButton(const QString &iconName, const QString &title, const QS
     , shortcut_(shortcut)
 {
     setFixedSize(side, side);
-    setFocusPolicy(Qt::NoFocus); // the overlay keeps the keyboard for its shortcuts
+    // Tab reaches the panel (#74); without focus every key stays with the overlay's shortcuts.
+    setFocusPolicy(Qt::TabFocus);
     setCursor(Qt::ArrowCursor);
     setAttribute(Qt::WA_Hover);
     animation_ = new QVariantAnimation(this);
@@ -368,6 +405,35 @@ void PanelButton::leaveEvent(QEvent *event)
     QAbstractButton::leaveEvent(event);
 }
 
+void PanelButton::focusInEvent(QFocusEvent *event)
+{
+    // Keyboard focus looks like hover: title on the faded icon, the tooltip right away.
+    animateHover(true);
+    QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)), panelToolTip(title_, shortcut_), this);
+    QAbstractButton::focusInEvent(event);
+}
+
+void PanelButton::focusOutEvent(QFocusEvent *event)
+{
+    animateHover(hovered_ || forcedHover_);
+    if (!hovered_) {
+        QToolTip::hideText();
+    }
+    QAbstractButton::focusOutEvent(event);
+}
+
+void PanelButton::keyPressEvent(QKeyEvent *event)
+{
+    if (!panelControlKey(this, event, [this](bool next) { focusNextPrevChild(next); })) {
+        event->ignore();
+    }
+}
+
+void PanelButton::keyReleaseEvent(QKeyEvent *event)
+{
+    event->ignore(); // clicks happen on press; never QAbstractButton's Space-release click
+}
+
 void PanelButton::mousePressEvent(QMouseEvent *event)
 {
     toolTipTimer_->stop();
@@ -408,6 +474,7 @@ void PanelButton::animateHover(bool on)
 void PanelButton::updateAccessibility()
 {
     setAccessibleName(shortcut_.isEmpty() ? title_ : tr("%1 (%2)").arg(title_, shortcut_));
+    setAccessibleDescription(shortcut_.isEmpty() ? QString() : tr("Shortcut: %1").arg(shortcut_));
 }
 
 void PanelButton::rebuildIconCache()
@@ -475,8 +542,9 @@ void PanelButton::paintEvent(QPaintEvent *)
             painter.drawPixmap(iconRect, iconSharp_);
         }
         if (blurOpacity > 0) {
+            // KDE animation speed "instant": no fade (see animateHover) and no blur either (Q30).
             painter.setOpacity(base * blurOpacity);
-            painter.drawPixmap(iconRect, iconBlurred_);
+            painter.drawPixmap(iconRect, animationsOff(this) ? iconSharp_ : iconBlurred_);
         }
     } else {
         QFont glyphFont = font();
@@ -558,7 +626,7 @@ PanelModeCap::PanelModeCap(QWidget *parent)
     : QAbstractButton(parent)
 {
     setFixedSize(PanelButton::side, PanelButton::side);
-    setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy(Qt::TabFocus);
     setCursor(Qt::ArrowCursor);
     toolTipTimer_ = new QTimer(this);
     toolTipTimer_->setSingleShot(true);
@@ -609,6 +677,35 @@ void PanelModeCap::enterEvent(QEnterEvent *event)
     QAbstractButton::enterEvent(event);
 }
 
+void PanelModeCap::focusInEvent(QFocusEvent *event)
+{
+    QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)),
+                       panelToolTip(frozen_ ? frozenTitle_ : liveTitle_, shortcut_), this);
+    update();
+    QAbstractButton::focusInEvent(event);
+}
+
+void PanelModeCap::focusOutEvent(QFocusEvent *event)
+{
+    if (!hovered_) {
+        QToolTip::hideText();
+    }
+    update();
+    QAbstractButton::focusOutEvent(event);
+}
+
+void PanelModeCap::keyPressEvent(QKeyEvent *event)
+{
+    if (!panelControlKey(this, event, [this](bool next) { focusNextPrevChild(next); })) {
+        event->ignore();
+    }
+}
+
+void PanelModeCap::keyReleaseEvent(QKeyEvent *event)
+{
+    event->ignore();
+}
+
 void PanelModeCap::leaveEvent(QEvent *event)
 {
     hovered_ = false;
@@ -628,8 +725,9 @@ void PanelModeCap::paintEvent(QPaintEvent *)
     const QPalette pal = palette();
     const QColor highlight = pal.color(QPalette::Highlight);
     const QRectF circle = QRectF(rect()).adjusted(1.5, 1.5, -1.5, -1.5);
-    painter.setBrush(withAlpha(highlight, isDown() ? 110 : hovered_ ? 80 : 46));
-    painter.setPen(QPen(withAlpha(highlight, 140), 1));
+    painter.setBrush(withAlpha(highlight, isDown() ? 110 : hovered_ || hasFocus() ? 80 : 46));
+    // Keyboard focus: a full-strength ring, clearer than the hover fill alone (#74).
+    painter.setPen(hasFocus() ? QPen(highlight, 2) : QPen(withAlpha(highlight, 140), 1));
     painter.drawEllipse(circle);
     const QIcon icon = QIcon::fromTheme(frozen_ ? QStringLiteral("media-playback-pause")
                                                 : QStringLiteral("media-playback-start"));
