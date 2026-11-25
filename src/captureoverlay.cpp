@@ -227,7 +227,11 @@ void CaptureSession::start()
             &CaptureSession::handleInlineTextRequested);
 
     frozen_ = forcedFrozen_.has_value() ? *forcedFrozen_ : store().overlayStartsFrozen();
-    if (purpose_ == Purpose::Print && textMode_) {
+    if (purpose_ == Purpose::Print && recordMode_) {
+        // Choosing what to record needs no picture and writes no file.
+        frozen_ = false;
+        panelDrawer_ = PanelDrawer::Record;
+    } else if (purpose_ == Purpose::Print && textMode_) {
         // Text mode writes no file (Q15); it only needs the frozen frames to read from.
         frozen_ = true;
         QStringList connectors;
@@ -977,6 +981,13 @@ void CaptureSession::captureFrames(const QStringList &connectors)
     for (auto it = captured.cbegin(); it != captured.cend(); ++it) {
         frames_.insert(it.key(), it.value());
     }
+    // Recordings need the real (fractional) scale; a capture is the only place it shows (#30).
+    for (const ScreenInfo &screen : std::as_const(screens_)) {
+        if (const auto it = captured.constFind(screen.connector);
+            it != captured.cend() && !it->image.isNull() && screen.geometry.width() > 0) {
+            app_->noteNativeScale(screen, qreal(it->image.width()) / screen.geometry.width());
+        }
+    }
 }
 
 void CaptureSession::withFrames(const QStringList &connectors, const std::function<void()> &next)
@@ -1712,6 +1723,44 @@ void CaptureSession::captureWindow(const WindowInfo &window)
     finishWith(write({{windowToken(window), result.image}}, &errors), result.image, errors, window.caption);
 }
 
+void CaptureSession::setRecordMode(bool on)
+{
+    recordMode_ = on;
+}
+
+void CaptureSession::record(const QString &targetId)
+{
+    if (finished_) {
+        return;
+    }
+    if (annotationController_.isEditingText()) {
+        annotationController_.requestCommitActiveText(false);
+    }
+    // The Print file (if any) stays as it is; the recording is its own result. The overlay must be
+    // off the screen before KWin starts the stream, or its last frame ends up in the recording.
+    const int delay = captureDelaySeconds();
+    App *app = app_;
+    finish({}, {});
+    QTimer::singleShot(liveHideDelayMs, app, [app, targetId, delay] {
+        const QString error = app->startRecording(targetId, delay);
+        if (!error.isEmpty()) {
+            app->notifySaved({}, {}, {error});
+        }
+    });
+}
+
+void CaptureSession::recordSelection()
+{
+    if (selections_.isEmpty()) {
+        return;
+    }
+    QRect bounds;
+    for (const Selection &selection : selections_.stack()) {
+        bounds = bounds.united(selection.rect);
+    }
+    record(regionRecordingTargetId(bounds));
+}
+
 void CaptureSession::setFrozen(bool frozen)
 {
     if (frozen == frozen_ || switching_ || finished_) {
@@ -2119,6 +2168,17 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         close();
         return;
     }
+    if (state == QLatin1String("selection") && session_->recordMode()) {
+        // Opened to record (#30): recording the selection is the main action.
+        PanelButton *record = add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Enter"),
+                                  [this] { session_->recordSelection(); });
+        record->setPrimary(true);
+        panel_->addGroupGap();
+        drawer(Drawer::Record, QStringLiteral("view-list-details"), tr("Areas and Windows"), QString());
+        panel_->addGroupGap();
+        close();
+        return;
+    }
     if (state == QLatin1String("selection")) {
         PanelButton *save =
             add(QStringLiteral("document-save"), tr("Save"), QStringLiteral("Enter"), [this] { session_->save(); });
@@ -2128,10 +2188,25 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         add(QStringLiteral("window-pin"), tr("Pin"), QStringLiteral("P"), [this] { session_->pin(); });
         add(QStringLiteral("edit-select-text"), tr("Copy Text"), QStringLiteral("O"),
             [this] { session_->copyText(screen_.connector); });
+        add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"),
+            [this] { session_->recordSelection(); });
         panel_->addGroupGap();
         drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
         panel_->addGroupGap();
         drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QStringLiteral("F10"));
+        close();
+        return;
+    }
+    if (session_->recordMode()) {
+        // Opened to record (#30): every target records instead of capturing a picture.
+        add(QStringLiteral("monitor-symbolic"), tr("This Monitor"), QStringLiteral("1"),
+            [this] { session_->record(screenTargetId(screen_.connector)); });
+        add(QStringLiteral("view-fullscreen"), tr("All Monitors"), QStringLiteral("2"),
+            [this] { session_->record(allMonitorsTargetId()); });
+        drawer(Drawer::Record, QStringLiteral("view-list-details"), tr("Areas and Windows"), QStringLiteral("Ctrl+R"));
+        panel_->addGroupGap();
+        delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
+        panel_->addGroupGap();
         close();
         return;
     }
@@ -2140,6 +2215,8 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     add(QStringLiteral("view-fullscreen"), tr("All Monitors"), QStringLiteral("2"), [this] { session_->captureAllMonitors(); });
     drawer(Drawer::Window, QStringLiteral("window"), tr("Window"), QStringLiteral("W"));
     drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QStringLiteral("G"));
+    panel_->addGroupGap();
+    drawer(Drawer::Record, QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"));
     panel_->addGroupGap();
     delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
     drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
@@ -2191,6 +2268,8 @@ QWidget *CaptureOverlay::buildDrawer(CaptureSession::PanelDrawer drawer)
         return buildAreaForm();
     case Drawer::Help:
         return buildHelpPanel(nullptr);
+    case Drawer::Record:
+        return buildRecordList();
     }
     return nullptr;
 }
@@ -2343,6 +2422,108 @@ QWidget *CaptureOverlay::buildWindowList()
         listEntries_.append(capture);
         column->addWidget(row);
     }
+    return listDrawer(content);
+}
+
+// The Record drawer (#30): what to record, in the order of the start row (this monitor, all
+// monitors), then saved areas and open windows. A line at the bottom says how it is recorded and
+// how to stop.
+QWidget *CaptureOverlay::buildRecordList()
+{
+    auto *content = new QWidget;
+    auto *column = new QVBoxLayout(content);
+    column->setContentsMargins(0, 2, 0, 2);
+    column->setSpacing(0);
+    const TargetStore &store = session_->store();
+
+    const auto caption = [&](const QString &text) {
+        auto *label = new QLabel(text, content);
+        QFont font = label->font();
+        font.setPointSizeF(font.pointSizeF() * 0.9);
+        label->setFont(font);
+        QPalette pal = label->palette();
+        QColor muted = pal.color(QPalette::WindowText);
+        muted.setAlphaF(0.65);
+        pal.setColor(QPalette::WindowText, muted);
+        label->setPalette(pal);
+        label->setContentsMargins(22, 8, 0, 2); // aligned with the row text, past the number column
+        column->addWidget(label);
+    };
+    const auto addRow = [&](const QString &icon, const QString &text, bool available,
+                            const QList<CaptureSession::Highlight> &outline, const QString &targetId) {
+        auto *row = new QWidget(content);
+        auto *layout = new QHBoxLayout(row);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->setSpacing(2);
+        layout->addWidget(entryNumber(int(listEntries_.size()), row));
+        auto *main = barButton(row, icon, text, tr("Start recording"));
+        main->setEnabled(available);
+        layout->addWidget(main);
+        layout->addStretch();
+        if (!outline.isEmpty()) {
+            row->setAttribute(Qt::WA_Hover);
+            row->installEventFilter(new HoverOutline(row, session_, outline));
+        }
+        const auto pick = [this, targetId] { session_->record(targetId); };
+        connect(main, &QToolButton::clicked, this, pick);
+        listEntries_.append(available ? std::function<void()>(pick) : std::function<void()>());
+        column->addWidget(row);
+    };
+
+    const QString connector = session_->panelConnector();
+    const QScreen *panelScreen = findScreen(connector);
+    addRow(QStringLiteral("monitor-symbolic"), tr("This Monitor"), true,
+           panelScreen ? QList<CaptureSession::Highlight>{{panelScreen->geometry(), session_->monitorName(connector)}}
+                       : QList<CaptureSession::Highlight>{},
+           screenTargetId(connector));
+    addRow(QStringLiteral("view-fullscreen"), tr("All Monitors"), true, {}, allMonitorsTargetId());
+
+    bool areaCaption = false;
+    for (const Area &area : store.areas) {
+        if (!areaCaption) {
+            caption(tr("Areas"));
+            areaCaption = true;
+        }
+        QList<CaptureSession::Highlight> outline;
+        bool available = false;
+        if (area.isCrossMonitor()) {
+            outline.append({area.rect, area.name});
+            available = std::any_of(area.monitors.cbegin(), area.monitors.cend(),
+                                    [&](const AreaMonitorBinding &b) { return session_->isConnected(b.connector); });
+        } else if (const QScreen *screen = findScreen(area.connector)) {
+            outline.append({area.rect.translated(screen->geometry().topLeft()), area.name});
+            available = session_->isConnected(area.connector);
+        }
+        addRow(QStringLiteral("select-rectangular"), elided(area.name, 70), available, outline, area.id);
+    }
+
+    const QList<WindowInfo> windows = session_->windows();
+    bool windowCaption = false;
+    for (const WindowInfo &window : windows) {
+        if (window.minimized) {
+            continue; // a minimized window has nothing to show
+        }
+        if (!windowCaption) {
+            caption(tr("Windows"));
+            windowCaption = true;
+        }
+        const QString icon = QIcon::hasThemeIcon(window.iconName) ? window.iconName : QStringLiteral("window");
+        addRow(icon, elided(window.caption.isEmpty() ? window.appName : window.caption, 70), true,
+               {{window.geometry, window.caption}}, windowRecordingTargetId(window.handle));
+    }
+
+    const RecordingFormat format = store.recordingFormat;
+    auto *footer = new QLabel(tr("%1, %2 fps · Stop: click glimply in the system tray")
+                                  .arg(recordingFormatKey(format).toUpper())
+                                  .arg(effectiveFrameRate(format, store.recordingFrameRate)),
+                              content);
+    QPalette pal = footer->palette();
+    QColor muted = pal.color(QPalette::WindowText);
+    muted.setAlphaF(0.65);
+    pal.setColor(QPalette::WindowText, muted);
+    footer->setPalette(pal);
+    footer->setContentsMargins(22, 8, 0, 4);
+    column->addWidget(footer);
     return listDrawer(content);
 }
 
@@ -2861,6 +3042,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
     if (print) {
         select.insert(1, {tr("Click, nothing drawn"), tr("Capture this monitor")});
         select.append({tr("Ctrl+E"), tr("Open in the editor window")});
+        select.append({tr("Ctrl+R"), tr("Record the rectangle as a video, or choose what to record")});
     }
     section(tr("Select"), select);
     if (print) {
@@ -3530,22 +3712,30 @@ bool CaptureOverlay::handlePanelKey(int key, Qt::KeyboardModifiers modifiers)
                              : name == QLatin1String("selection") ? PanelState::Selection
                                                                   : PanelState::Start;
     const Drawer open = session_->panelDrawer();
-    const bool listOpen = open == Drawer::Window || open == Drawer::Areas;
+    const bool listOpen = open == Drawer::Window || open == Drawer::Areas || open == Drawer::Record;
     const PanelKey result = panelKeyAction(state, listOpen, key, modifiers);
     switch (result.action) {
     case PanelKeyAction::None:
         return false;
     case PanelKeyAction::ThisMonitor:
-        session_->captureMonitor(session_->panelConnector()); // the monitor showing the panel
+        if (session_->recordMode()) {
+            session_->record(screenTargetId(session_->panelConnector()));
+        } else {
+            session_->captureMonitor(session_->panelConnector()); // the monitor showing the panel
+        }
         return true;
     case PanelKeyAction::AllMonitors:
-        session_->captureAllMonitors();
+        if (session_->recordMode()) {
+            session_->record(allMonitorsTargetId());
+        } else {
+            session_->captureAllMonitors();
+        }
         return true;
     case PanelKeyAction::Window:
-        session_->togglePanelDrawer(Drawer::Window);
+        session_->togglePanelDrawer(session_->recordMode() ? Drawer::Record : Drawer::Window);
         return true;
     case PanelKeyAction::Areas:
-        session_->togglePanelDrawer(Drawer::Areas);
+        session_->togglePanelDrawer(session_->recordMode() ? Drawer::Record : Drawer::Areas);
         return true;
     case PanelKeyAction::Delay:
         session_->togglePanelDrawer(Drawer::Delay);
@@ -3564,6 +3754,13 @@ bool CaptureOverlay::handlePanelKey(int key, Qt::KeyboardModifiers modifiers)
         return true;
     case PanelKeyAction::Settings:
         session_->openSettings();
+        return true;
+    case PanelKeyAction::Record:
+        if (state == PanelState::Selection) {
+            session_->recordSelection();
+        } else {
+            session_->togglePanelDrawer(Drawer::Record);
+        }
         return true;
     case PanelKeyAction::PickEntry:
         session_->pickPanelEntry(result.entry); // the panel may sit on another monitor's overlay
@@ -3782,6 +3979,8 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
         }
         if (session_->purpose() == CaptureSession::Purpose::Print && session_->textMode()) {
             session_->copyText(screen_.connector);
+        } else if (session_->purpose() == CaptureSession::Purpose::Print && session_->recordMode()) {
+            session_->recordSelection();
         } else if (session_->purpose() == CaptureSession::Purpose::Print) {
             session_->save(screen_.connector);
         } else {

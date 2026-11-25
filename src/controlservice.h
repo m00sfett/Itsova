@@ -67,6 +67,15 @@ public Q_SLOTS:
                                      int height);
     Q_SCRIPTABLE QString OpenOverlay(const QString &mode, int delaySeconds);
     Q_SCRIPTABLE QString McpDispatch(const QString &toolName, const QString &argumentsJson);
+    // Screen recording (#30). targetId as in App::startRecording; an empty id records the last
+    // target again or opens the overlay to choose one. Returns an error message or "".
+    Q_SCRIPTABLE QString StartRecording(const QString &targetId, int delaySeconds);
+    Q_SCRIPTABLE void StopRecording();
+    // Opens the overlay with the Record drawer, to choose what to record (the widget's button).
+    Q_SCRIPTABLE void OpenRecordOverlay();
+    Q_SCRIPTABLE void PauseRecording(bool paused);
+    // JSON object, see App::recordingState.
+    Q_SCRIPTABLE QString RecordingState() const;
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 
@@ -75,6 +84,7 @@ Q_SIGNALS:
     Q_SCRIPTABLE void IntervalsChanged();
     Q_SCRIPTABLE void HistoryChanged();
     Q_SCRIPTABLE void Captured(bool success);
+    Q_SCRIPTABLE void RecordingChanged();
     void widgetActiveChanged(bool active);
 
 private:

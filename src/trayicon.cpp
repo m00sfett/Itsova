@@ -44,6 +44,11 @@ QPixmap renderGlyph(int size, TrayIconState state)
     }
     if (flash) {
         painter.drawRoundedRect(QRectF(6, 6, 10, 10), 1.5, 1.5);
+    } else if (state == TrayIconState::Recording) {
+        painter.drawEllipse(QPointF(11, 11), 4.2, 4.2);
+    } else if (state == TrayIconState::RecordingPaused) {
+        painter.drawRoundedRect(QRectF(7.5, 7, 2.6, 8), 0.8, 0.8);
+        painter.drawRoundedRect(QRectF(11.9, 7, 2.6, 8), 0.8, 0.8);
     } else {
         painter.drawRoundedRect(QRectF(9, 9, 4, 4), 1, 1);
     }

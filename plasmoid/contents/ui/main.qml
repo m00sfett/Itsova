@@ -27,16 +27,24 @@ PlasmoidItem {
     property int activeIntervalCount: 0
     property string lastError: ""
     property var historyEntries: []
+    // Screen recording (#30): idle, starting, recording, paused or finishing.
+    property string recordingState: "idle"
+    property real recordingElapsedMs: 0
+    property string recordingTarget: ""
+    readonly property bool recording: recordingState !== "idle"
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
     readonly property int closeDelay: 300
 
-    Plasmoid.icon: flashing ? "io.github.m00sfett.glimply-tray-flash"
+    Plasmoid.icon: recordingState === "paused" ? "io.github.m00sfett.glimply-tray-recording-paused"
+                 : recording ? "io.github.m00sfett.glimply-tray-recording"
+                 : flashing ? "io.github.m00sfett.glimply-tray-flash"
                  : activeIntervalCount > 0 ? "io.github.m00sfett.glimply-tray-interval"
                                            : "io.github.m00sfett.glimply-tray"
     Plasmoid.status: running ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
     toolTipMainText: "glimply"
     toolTipSubText: !running ? i18n("glimply is not running")
+                  : recording ? recordingStatusText()
                   : activeIntervalCount > 0
                     ? i18np("1 interval capture active", "%1 interval captures active", activeIntervalCount)
                     : i18n("Capture fixed areas and monitors")
@@ -96,6 +104,7 @@ PlasmoidItem {
             root.countdownActive = value === true;
         });
         refreshHistory();
+        refreshRecording();
         call("Intervals", [], function (json) {
             let list = [];
             try {
@@ -104,6 +113,42 @@ PlasmoidItem {
                 list = [];
             }
             root.activeIntervalCount = Array.isArray(list) ? list.length : 0;
+        });
+    }
+
+    function formatElapsed(ms) {
+        const total = Math.max(0, Math.floor(ms / 1000));
+        const hours = Math.floor(total / 3600);
+        const minutes = Math.floor(total / 60) % 60;
+        const seconds = String(total % 60).padStart(2, "0");
+        return hours > 0 ? hours + ":" + String(minutes).padStart(2, "0") + ":" + seconds
+                         : minutes + ":" + seconds;
+    }
+
+    function recordingStatusText() {
+        switch (recordingState) {
+        case "starting":
+            return i18n("Starting the recording of %1…", recordingTarget);
+        case "paused":
+            return i18n("Recording of %1 paused at %2", recordingTarget, formatElapsed(recordingElapsedMs));
+        case "finishing":
+            return i18n("Saving the recording of %1…", recordingTarget);
+        default:
+            return i18n("Recording %1: %2", recordingTarget, formatElapsed(recordingElapsedMs));
+        }
+    }
+
+    function refreshRecording() {
+        call("RecordingState", [], function (json) {
+            let state = {};
+            try {
+                state = JSON.parse(json);
+            } catch (e) {
+                state = {};
+            }
+            root.recordingState = state.state || "idle";
+            root.recordingElapsedMs = state.elapsedMs || 0;
+            root.recordingTarget = state.targetName || "";
         });
     }
 
@@ -185,6 +230,10 @@ PlasmoidItem {
             root.refreshHistory();
         }
 
+        function dbusRecordingChanged() {
+            root.refreshRecording();
+        }
+
         function dbusCaptured(success) {
             if (success) {
                 root.flashing = true;
@@ -200,6 +249,29 @@ PlasmoidItem {
     }
 
     onExpandedChanged: if (root.expanded && root.running) root.refresh()
+
+    // While recording, a click on the icon stops it (Q6) instead of opening the popup.
+    compactRepresentation: MouseArea {
+        property bool wasExpanded: false
+        acceptedButtons: Qt.LeftButton
+        hoverEnabled: true
+        Accessible.name: root.recording ? i18n("Stop recording") : "glimply"
+        Accessible.role: Accessible.Button
+        onPressed: wasExpanded = root.expanded
+        onClicked: {
+            if (root.recording && root.recordingState !== "finishing") {
+                root.call("StopRecording");
+            } else {
+                root.expanded = !wasExpanded;
+            }
+        }
+
+        Kirigami.Icon {
+            anchors.fill: parent
+            source: Plasmoid.icon
+            active: parent.containsMouse
+        }
+    }
 
     fullRepresentation: PlasmaExtras.Representation {
         id: dialog
@@ -275,6 +347,12 @@ PlasmoidItem {
                             onTriggered: root.call("SetDelay", [checked ? (root.delaySeconds > 0 ? root.delaySeconds : 3) : 0, checked])
                         }
                     }
+                }
+                PlasmaComponents3.ToolButton {
+                    icon.name: "media-record"
+                    text: i18n("Record")
+                    enabled: !root.recording
+                    onClicked: root.afterClose(() => root.call("OpenRecordOverlay"))
                 }
                 PlasmaComponents3.ToolButton {
                     icon.name: "color-picker"
@@ -359,6 +437,42 @@ PlasmoidItem {
             anchors.fill: parent
             spacing: 0
             visible: root.running
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.margins: Kirigami.Units.smallSpacing
+                visible: root.recording
+                spacing: Kirigami.Units.smallSpacing
+
+                Kirigami.Icon {
+                    Layout.preferredWidth: Kirigami.Units.iconSizes.smallMedium
+                    Layout.preferredHeight: Kirigami.Units.iconSizes.smallMedium
+                    source: root.recordingState === "paused" ? "media-playback-pause" : "media-record"
+                }
+                PlasmaComponents3.Label {
+                    Layout.fillWidth: true
+                    text: root.recordingStatusText()
+                    elide: Text.ElideMiddle
+                    font.features: { "tnum": 1 }
+                }
+                PlasmaComponents3.ToolButton {
+                    visible: root.recordingState === "recording" || root.recordingState === "paused"
+                    icon.name: root.recordingState === "paused" ? "media-record" : "media-playback-pause"
+                    text: root.recordingState === "paused" ? i18n("Resume") : i18n("Pause")
+                    onClicked: root.call("PauseRecording", [root.recordingState !== "paused"])
+                }
+                PlasmaComponents3.ToolButton {
+                    icon.name: "media-playback-stop"
+                    text: i18n("Stop")
+                    enabled: root.recordingState !== "finishing"
+                    onClicked: root.call("StopRecording")
+                }
+            }
+
+            Kirigami.Separator {
+                Layout.fillWidth: true
+                visible: root.recording
+            }
 
             RowLayout {
                 Layout.fillWidth: true

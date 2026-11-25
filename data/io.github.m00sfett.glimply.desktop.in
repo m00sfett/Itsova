@@ -63,3 +63,4 @@ Keywords[fr]=screenshot;capture;capture d'écran;zone;région;écran;moniteur;
 Keywords[de]=screenshot;capture;region;monitor;Bildschirmfoto;Aufnahme;Bereich;Bildschirm;
 StartupNotify=false
 X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2
+X-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1

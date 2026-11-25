@@ -6,7 +6,10 @@
 #include <KSharedConfig>
 
 #include <QDateTime>
+#include <QHash>
 #include <QList>
+#include <QPair>
+#include <QRect>
 #include <QObject>
 #include <QPointer>
 #include <QSet>
@@ -41,6 +44,8 @@ class TesseractOcrEngine;
 class ThumbnailCache;
 struct McpToolResponse;
 class QuickEditorWindow;
+class ScreenRecorder;
+struct RecordingTarget;
 class ShortcutManager;
 class TrayController;
 class TriggerEngine;
@@ -155,11 +160,31 @@ public:
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
 
+    // Screen recording (#30). targetId: "screen:<connector>", "all", an area id,
+    // "window:<uuid>" or "region:x,y,w,h". Starts after delaySeconds (0: at once) and remembers
+    // the target for the start/stop shortcut. Returns an error message, or an empty string.
+    QString startRecording(const QString &targetId, int delaySeconds = 0);
+    void stopRecording();
+    void setRecordingPaused(bool paused);
+    // The start/stop shortcut: stops a running recording, records the last target again, or opens
+    // the overlay to choose one.
+    void toggleRecording();
+    [[nodiscard]] bool isRecording() const;
+    // {state: idle|starting|recording|paused|finishing, elapsedMs, target, targetName, format}
+    [[nodiscard]] QJsonObject recordingState() const;
+    // Opens the overlay with the Record drawer, to choose what to record.
+    void openOverlayForRecording();
+    // Quits; a running recording is stopped and written first (at most a few seconds).
+    void quit();
+    // A capture showed the real scale of a monitor (see nativeScales_).
+    void noteNativeScale(const ScreenInfo &screen, qreal scale);
+
 Q_SIGNALS:
     void targetsChanged();
     void intervalsChanged();
     void captured(bool success);
     void historyChanged();
+    void recordingChanged();
 
 private:
     void executeTriggerNow(const QString &id);
@@ -180,6 +205,11 @@ private:
     void startWithPinsHidden(QObject *owner, std::function<void()> start, bool recordLatency = false);
     void historyModified(bool sweepThumbnails);
     void requestThumbnails();
+    [[nodiscard]] std::optional<RecordingTarget> recordingTargetFor(const QString &targetId, QString *error) const;
+    void beginRecording(const QString &targetId);
+    void startRecorder(const QString &targetId);
+    [[nodiscard]] qreal nativeScale(const ScreenInfo &screen) const;
+    void syncRecordingUi();
 
     KSharedConfigPtr config_;
     TargetStore store_;
@@ -206,6 +236,12 @@ private:
     QString lastCaptureTargetId_;
     QString lastCaptureDisplayName_;
     QDateTime lastCaptureTimestamp_;
+    ScreenRecorder *recorder_ = nullptr;
+    // Native scale per connector as KWin reports it in captures, with the geometry it belongs to
+    // (QScreen has no fractional scale on Wayland). Filled before region recordings.
+    QHash<QString, QPair<QRect, qreal>> nativeScales_;
+    bool recordingPending_ = false;
+    QTimer *recordingTicker_ = nullptr;
 };
 
 } // namespace glimply

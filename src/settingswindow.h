@@ -123,6 +123,12 @@ private:
     QLineEdit *template_ = nullptr;
     QLabel *templatePreview_ = nullptr;
     QSpinBox *historyLimit_ = nullptr;
+    // Screen recording (#30).
+    QComboBox *recordingFormat_ = nullptr;
+    QComboBox *recordingFrameRate_ = nullptr;
+    QCheckBox *recordingCursor_ = nullptr;
+    KKeySequenceWidget *recordToggleShortcut_ = nullptr;
+    KKeySequenceWidget *recordPauseShortcut_ = nullptr;
     QLabel *historyFeedback_ = nullptr;
     ExportOptionsWidget *storageExport_ = nullptr;
     QCheckBox *autostart_ = nullptr;

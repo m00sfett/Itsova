@@ -3,8 +3,10 @@
 #include "annotations/annotationsettings.h"
 #include "colorformat.h"
 #include "imageoutput.h"
+#include "recordingplan.h"
 
 #include <QHash>
+#include <optional>
 #include <QList>
 #include <QRect>
 #include <QString>
@@ -136,6 +138,16 @@ struct Group
 [[nodiscard]] QString pinsToggleActionId();
 // Global shortcut that opens the overlay in text mode (#27), unbound by default.
 [[nodiscard]] QString ocrSelectionActionId();
+// Screen recording (#30): start or stop, and pause or resume; unbound by default.
+[[nodiscard]] QString recordToggleActionId();
+[[nodiscard]] QString recordPauseActionId();
+// Targets that only exist for recordings: a window ("window:<uuid>") and a rectangle drawn in the
+// overlay ("region:x,y,w,h", global logical coordinates).
+[[nodiscard]] QString windowRecordingTargetId(const QString &windowHandle);
+[[nodiscard]] QString regionRecordingTargetId(const QRect &globalRect);
+[[nodiscard]] bool isWindowRecordingTargetId(const QString &id);
+[[nodiscard]] QString windowHandleFromRecordingTargetId(const QString &id);
+[[nodiscard]] std::optional<QRect> regionFromRecordingTargetId(const QString &id);
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 [[nodiscard]] QString intervalShortcutId(const QString &targetId);
@@ -177,6 +189,11 @@ public:
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
     bool showSelectionLoupe = true;
+    // Screen recording (#30).
+    RecordingFormat recordingFormat = RecordingFormat::Mp4;
+    int recordingFrameRate = 30;
+    bool recordingCursor = true;
+    QString lastRecordingTarget; // what the start/stop shortcut records; empty: ask in the overlay
     ColorFormat colorPickerFormat = ColorFormat::Hex;
 
     AnnotationSettings annotations;

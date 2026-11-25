@@ -48,6 +48,7 @@ enum class PanelKeyAction {
     SaveAs,
     SaveAsArea,
     Settings,
+    Record, // Ctrl+R (#30): opens the Record drawer, or records the selection
     PickEntry, // 1–9 in an open list drawer; entry is 0-based
 };
 struct PanelKey

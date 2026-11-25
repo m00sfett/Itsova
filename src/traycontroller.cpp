@@ -1,5 +1,7 @@
 #include "traycontroller.h"
 
+#include "recordingplan.h"
+
 #include "targets.h"
 #include "trayicon.h"
 
@@ -59,12 +61,19 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     item_->setContextMenu(menu_); // the item takes ownership
 #if KSTATUSNOTIFIERITEM_VERSION >= QT_VERSION_CHECK(6, 14, 0)
     item_->setIsMenu(true); // a click opens the menu
-#else
-    // KF6 before 6.14 (Debian 13) has no setIsMenu: open the menu on activation instead.
-    connect(item_, &KStatusNotifierItem::activateRequested, this, [this](bool, const QPoint &pos) {
-        menu_->popup(pos);
-    });
 #endif
+    connect(item_, &KStatusNotifierItem::activateRequested, this, [this](bool, const QPoint &pos) {
+        if (recordingState_ == 1 || recordingState_ == 2 || recordingState_ == 3) {
+            Q_EMIT stopRecordingRequested();
+            return;
+        }
+#if KSTATUSNOTIFIERITEM_VERSION < QT_VERSION_CHECK(6, 14, 0)
+        // KF6 before 6.14 (Debian 13) has no setIsMenu: open the menu on activation instead.
+        menu_->popup(pos);
+#else
+        Q_UNUSED(pos)
+#endif
+    });
 
     blinkTimer_->setSingleShot(true);
     blinkTimer_->setInterval(blinkDurationMs);
@@ -175,6 +184,23 @@ void TrayController::setDelayState(int seconds, bool keepActive)
     keepDelayActive_ = keepActive;
 }
 
+void TrayController::setRecordingState(int state, qint64 elapsedMs, const QString &targetName)
+{
+    const bool changed = state != recordingState_;
+    recordingState_ = state;
+    recordingElapsedMs_ = elapsedMs;
+    recordingTarget_ = targetName;
+    if (changed) {
+#if KSTATUSNOTIFIERITEM_VERSION >= QT_VERSION_CHECK(6, 14, 0)
+        // While recording, a click stops instead of opening the menu (Q6); the menu stays on
+        // right click.
+        item_->setIsMenu(state == 0);
+#endif
+        updateIcon();
+    }
+    updateToolTip();
+}
+
 void TrayController::setCountdownState(bool active, int remainingSeconds)
 {
     countdownActive_ = active;
@@ -209,6 +235,13 @@ void TrayController::blink()
 
 void TrayController::updateIcon()
 {
+    if (recordingState_ != 0) {
+        const TrayIconState recording =
+            recordingState_ == 3 ? TrayIconState::RecordingPaused : TrayIconState::Recording;
+        item_->setIconByPixmap(trayIcon(recording));
+        item_->setToolTipIconByPixmap(trayIcon(recording));
+        return;
+    }
     const TrayIconState state = flashing_ ? TrayIconState::Flash
                               : !activeIntervals_.isEmpty() ? TrayIconState::IntervalActive
                                                             : TrayIconState::Normal;
@@ -220,6 +253,24 @@ void TrayController::updateIcon()
 
 void TrayController::updateToolTip()
 {
+    if (recordingState_ != 0) {
+        const QString time = formatElapsed(recordingElapsedMs_);
+        switch (recordingState_) {
+        case 1:
+            item_->setToolTipSubTitle(tr("Starting the recording of %1…").arg(recordingTarget_));
+            break;
+        case 3:
+            item_->setToolTipSubTitle(tr("Recording of %1 paused at %2").arg(recordingTarget_, time));
+            break;
+        case 4:
+            item_->setToolTipSubTitle(tr("Saving the recording of %1…").arg(recordingTarget_));
+            break;
+        default:
+            item_->setToolTipSubTitle(tr("Recording %1: %2").arg(recordingTarget_, time));
+            break;
+        }
+        return;
+    }
     if (countdownActive_) {
         item_->setToolTipSubTitle(tr("Capturing in %1 s…").arg(countdownRemaining_));
         return;
@@ -260,6 +311,20 @@ void TrayController::rebuildMenu()
         }
         first = false;
     };
+
+    if (recordingState_ == 1 || recordingState_ == 2 || recordingState_ == 3) {
+        auto *stop = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
+                                     tr("Stop Recording (%1)").arg(formatElapsed(recordingElapsedMs_)), menu_));
+        connect(stop, &QAction::triggered, this, &TrayController::stopRecordingRequested);
+        if (recordingState_ != 1) {
+            const bool paused = recordingState_ == 3;
+            auto *pause = add(new QAction(QIcon::fromTheme(paused ? QStringLiteral("media-record")
+                                                                  : QStringLiteral("media-playback-pause")),
+                                          paused ? tr("Resume Recording") : tr("Pause Recording"), menu_));
+            connect(pause, &QAction::triggered, this, [this, paused] { Q_EMIT pauseRecordingRequested(!paused); });
+        }
+        first = false;
+    }
 
     if (countdownActive_) {
         auto *cancelCountdown = add(new QAction(QIcon::fromTheme(QStringLiteral("dialog-cancel")),
@@ -435,7 +500,7 @@ void TrayController::rebuildMenu()
     auto *configure = add(new QAction(QIcon::fromTheme(QStringLiteral("configure")), tr("Configure glimply…"), menu_));
     connect(configure, &QAction::triggered, this, &TrayController::configureRequested);
     auto *quit = add(new QAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("Quit"), menu_));
-    connect(quit, &QAction::triggered, qApp, &QCoreApplication::quit);
+    connect(quit, &QAction::triggered, this, &TrayController::quitRequested);
 }
 
 } // namespace glimply
