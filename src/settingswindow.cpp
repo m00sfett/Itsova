@@ -1783,6 +1783,31 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
+    // Overlay panel (#72, Q33): a dragged panel remembers its place per monitor; the first-start
+    // hint shows once.
+    auto *panelRow = new QWidget(page);
+    auto *panelLayout = new QHBoxLayout(panelRow);
+    panelLayout->setContentsMargins(0, 0, 0, 0);
+    resetPanelPosition_ = new QPushButton(QIcon::fromTheme(QStringLiteral("edit-reset")), tr("Reset Panel Position"),
+                                          panelRow);
+    showFirstHintAgain_ = new QPushButton(QIcon::fromTheme(QStringLiteral("help-hint")),
+                                          tr("Show First-Start Hint Again"), panelRow);
+    panelLayout->addWidget(resetPanelPosition_);
+    panelLayout->addWidget(showFirstHintAgain_);
+    panelLayout->addStretch(1);
+    form->addRow(tr("Overlay panel:"), panelRow);
+    form->addRow(QString(), makeHint(tr("Reset puts the panel back at the top centre of every monitor."), page));
+    connect(resetPanelPosition_, &QPushButton::clicked, this, [this] {
+        app_->store().overlayPanelPositions.clear();
+        app_->storeChanged();
+        resetPanelPosition_->setEnabled(false);
+    });
+    connect(showFirstHintAgain_, &QPushButton::clicked, this, [this] {
+        app_->store().overlayFirstHintShown = false;
+        app_->storeChanged();
+        showFirstHintAgain_->setEnabled(false);
+    });
+
     captureOnRelease_ = new QCheckBox(tr("Save as soon as the mouse is released"), page);
     form->addRow(tr("Selection:"), captureOnRelease_);
     form->addRow(QString(), makeHint(tr("Skips the buttons: drawing one rectangle saves it right away."), page));
@@ -2166,6 +2191,8 @@ void SettingsWindow::refreshStorage()
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
     overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));
+    resetPanelPosition_->setEnabled(!store.overlayPanelPositions.isEmpty());
+    showFirstHintAgain_->setEnabled(store.overlayFirstHintShown);
     captureOnRelease_->setChecked(store.captureOnRelease);
     showSelectionLoupe_->setChecked(store.showSelectionLoupe);
     colorPickerShortcut_->setKeySequence(app_->shortcuts()->shortcut(colorPickerTargetId()));

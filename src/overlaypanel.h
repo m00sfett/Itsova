@@ -67,6 +67,7 @@ public:
     static constexpr int side = 64;
     static constexpr int iconSide = 32;
     static constexpr int toolTipDelayMs = 500;
+    static constexpr int keycapHeight = 20;
 
     PanelButton(const QString &iconName, const QString &title, const QString &shortcut, QWidget *parent);
 
@@ -89,6 +90,11 @@ public:
     void setBadge(const QString &badge);
     // Shows the hover state without the pointer (F1 overview, #72).
     void setForcedHover(bool forced);
+    // F1 overview: the shortcut as a keycap below the button, which grows by keycapHeight. A
+    // shortcut of several keys shows no keycap.
+    void setKeycapVisible(bool visible);
+    [[nodiscard]] bool isKeycapVisible() const;
+    [[nodiscard]] QString keycapText() const;
 
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -115,6 +121,7 @@ private:
     bool active_ = false;
     bool opensDrawer_ = false;
     bool forcedHover_ = false;
+    bool keycapVisible_ = false;
     bool hovered_ = false;
     qreal hover_ = 0; // 0 = icon, 1 = title
     QVariantAnimation *animation_ = nullptr;
@@ -178,6 +185,8 @@ Q_SIGNALS:
     void dragMoved(const QPoint &globalPos, const QPoint &grabOffset);
     void dragFinished(const QPoint &globalPos);
     void resetRequested();
+    // The pointer entered one of the panel's buttons (dismisses the first-start hint, #72).
+    void buttonHovered();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

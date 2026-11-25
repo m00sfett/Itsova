@@ -360,7 +360,7 @@ void TargetStore::load(const KConfig &config)
         overlayStart = OverlayStart::LastUsed;
     }
     lastOverlayFrozen = general.readEntry("LastOverlayFrozen", true);
-    overlayHelpExpanded = general.readEntry("OverlayHelpExpanded", true);
+    overlayFirstHintShown = general.readEntry("OverlayFirstHintShown", false);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
     showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
     colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
@@ -533,7 +533,8 @@ void TargetStore::save(KConfig &config) const
     }
     general.deleteEntry("OverlayStartsFrozen");
     general.writeEntry("LastOverlayFrozen", lastOverlayFrozen);
-    general.writeEntry("OverlayHelpExpanded", overlayHelpExpanded);
+    general.deleteEntry("OverlayHelpExpanded"); // the help is a drawer since 0.9.0, never stored open
+    general.writeEntry("OverlayFirstHintShown", overlayFirstHintShown);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
     general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));

@@ -132,6 +132,21 @@ private Q_SLOTS:
         QCOMPARE(clicked.count(), 1);
     }
 
+    void keycapsGrowTheButtonForTheOverview()
+    {
+        PanelButton button(QStringLiteral("edit-copy"), QStringLiteral("Copy"), QStringLiteral("Ctrl+C"), nullptr);
+        button.setKeycapVisible(true);
+        QCOMPARE(button.size(), QSize(64, 64 + PanelButton::keycapHeight));
+        button.setKeycapVisible(false);
+        QCOMPARE(button.size(), QSize(64, 64));
+        // Several keys go into the overview's table, not under the button.
+        PanelButton annotate(QStringLiteral("draw-freehand"), QStringLiteral("Annotate"),
+                             QStringLiteral("V A R E B M T N X S"), nullptr);
+        QVERIFY(annotate.keycapText().isEmpty());
+        annotate.setKeycapVisible(true);
+        QCOMPARE(annotate.size(), QSize(64, 64 + PanelButton::keycapHeight)); // the row stays aligned
+    }
+
     void drawerGrowsInsideThePanel()
     {
         CapsulePanel panel(nullptr);

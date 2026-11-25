@@ -103,6 +103,9 @@ public:
     // Closes that form, if it is open.
     void dismissAreaPanels();
     [[nodiscard]] QString hint() const;
+    // The one-time first-start hint is due (#72); gone after the first button hover or F1.
+    [[nodiscard]] bool firstHintPending() const;
+    void dismissFirstHint();
 
     // The one panel of the session (#69). It shows on one monitor: where the pointer is while
     // nothing is selected, then where the selection is; a monitor the user dragged it to wins.
@@ -321,6 +324,7 @@ private:
     // Actions of the open list drawer, in row order, for the keys 1–9 (Q24); empty = unavailable.
     QList<std::function<void()>> listEntries_;
     QHash<int, QPointer<PanelButton>> drawerButtons_;
+    QList<QPointer<PanelButton>> mainButtons_;
     QPointer<PanelButton> saveButton_;
     QPointer<PanelButton> delayButton_;
     bool panelDragging_ = false;
