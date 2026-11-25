@@ -230,6 +230,10 @@ if(BUILD_TESTING)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)
 
+    # Widget tests never show windows on the desktop and never depend on a compositor's timing
+    # (#76): CTest runs every test on the offscreen platform.
+    get_property(glimply_tests DIRECTORY PROPERTY TESTS)
+    set_tests_properties(${glimply_tests} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
     # Opt-in visual check of the overlay panel (#69); renders PNG files, never run by CTest.
     add_executable(glimply-panel-shots EXCLUDE_FROM_ALL tests/panelshots.cpp)
     target_link_libraries(glimply-panel-shots PRIVATE glimply_ui)

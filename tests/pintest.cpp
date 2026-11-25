@@ -215,7 +215,13 @@ void PinTest::rtlReadoutMirrorsWithoutMirroringImage()
     const QRect rtlBox = window.readoutRect();
     QVERIFY(!rtlBox.isEmpty());
     QVERIFY(rtlBox.center().x() < window.width() / 2);
-    QCOMPARE(rtlBox.bottom(), ltrBox.bottom());
+    // Compare with the LTR box of the same window size: on Wayland the window may meet its output
+    // (screenChanged) only now and take that output's scale (#76).
+    window.setLayoutDirection(Qt::LeftToRight);
+    const QRect ltrNow = window.readoutRect();
+    window.setLayoutDirection(Qt::RightToLeft);
+    QCOMPARE(rtlBox.bottom(), ltrNow.bottom());
+    QCOMPARE(rtlBox.size(), ltrNow.size());
     // Captured image content must stay unmirrored in RTL.
     const QImage rtlGrab = window.grab().toImage();
     QVERIFY(rtlGrab.pixelColor(20, 20).red() > 180);
