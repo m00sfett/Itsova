@@ -161,10 +161,6 @@ Q_SIGNALS:
     void captured(bool success);
     void historyChanged();
 
-private Q_SLOTS:
-    // kglobalaccel globalShortcutPressed: keeps the key timestamp for the latency trace (#67).
-    void noteShortcutPressed(const QString &component, const QString &action, qlonglong timestamp);
-
 private:
     void executeTriggerNow(const QString &id);
     void startPrintNow(std::optional<bool> forcedFrozen = std::nullopt, bool forceOverlay = false);

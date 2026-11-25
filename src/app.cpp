@@ -188,11 +188,6 @@ App::App(QObject *parent)
     connect(countdown_, &CountdownController::cancelled, this, syncCountdownUi);
 
     connect(shortcuts_, &ShortcutManager::triggered, this, &App::trigger);
-    // The key timestamp is only in the raw kglobalaccel signal, not in QAction::triggered.
-    QDBusConnection::sessionBus().connect(QString(), QStringLiteral("/component/glimply"),
-                                          QStringLiteral("org.kde.kglobalaccel.Component"),
-                                          QStringLiteral("globalShortcutPressed"), this,
-                                          SLOT(noteShortcutPressed(QString, QString, qlonglong)));
     connect(engine_, &TriggerEngine::finished, this, &App::onTriggerFinished);
     connect(tray_, &TrayController::triggerRequested, this, &App::trigger);
     connect(tray_, &TrayController::delayChangedRequested, this, &App::setCaptureDelay);
@@ -458,14 +453,6 @@ void App::startPrintNow(std::optional<bool> forcedFrozen, bool forceOverlay)
     session_ = session;
     connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
     startWithPinsHidden(session, [session] { session->start(); }, true);
-}
-
-void App::noteShortcutPressed(const QString &component, const QString &action, qlonglong timestamp)
-{
-    Q_UNUSED(component);
-    if (action == PrintKey::actionId()) {
-        LatencyTrace::notePress(timestamp);
-    }
 }
 
 void App::startOcrSelection()

@@ -11,7 +11,7 @@ Overlay redesign and capture latency (milestone 0.9.0). The repository stays pri
 
 ### Added
 
-- Latency measurement (#67): every Print capture records how long it took from the key press (kglobalaccel timestamp) to the capture request, the pixels in memory, the first overlay frame and the written file. `glimply latency [--last N] [--json]` shows the last 50 captures with median, 95th percentile and maximum (D-Bus `Control.LatencyReport()`). `scripts/measure-latency.sh` measures a build in a nested, virtual KWin with a throw-away home, without touching the desktop session.
+- Latency measurement (#67): every Print capture records how long it took from the moment glimply receives the shortcut to the capture request, the pixels in memory, the first overlay frame and the written file. `glimply latency [--last N] [--json]` shows the last 50 captures with median, 95th percentile and maximum (D-Bus `Control.LatencyReport()`). `scripts/measure-latency.sh` measures a build in a nested, virtual KWin with a throw-away home, without touching the desktop session. The time from the physical key press to the shortcut is not measurable: on Wayland, KDE's global shortcut service sends the key timestamp as 0.
 
 ### Changed
 

@@ -13,9 +13,6 @@ namespace
 {
 
 constexpr int maxSamples = 50;
-constexpr qint64 maxPressDelayUs = 5'000'000;
-// A press note arriving later than this after the trigger belongs to another press.
-constexpr qint64 pressMatchWindowUs = 2'000'000;
 // Marks long after the trigger come from another capture.
 constexpr qint64 markWindowUs = 30'000'000;
 
@@ -24,7 +21,6 @@ struct State
     std::mutex mutex;
     QList<LatencySample> samples; // the last one may be running
     bool running = false;
-    std::optional<std::pair<qint64, qint64>> pendingPress; // timestamp ms, arrival us
 };
 
 State &state()
@@ -64,7 +60,6 @@ qint64 optionalRead(const QJsonObject &object, const QString &key)
 QJsonObject LatencySample::toJson() const
 {
     return {
-        {QStringLiteral("pressToTriggerUs"), optionalValue(pressToTriggerUs)},
         {QStringLiteral("requestUs"), optionalValue(requestUs)},
         {QStringLiteral("pixelsUs"), optionalValue(pixelsUs)},
         {QStringLiteral("overlayUs"), optionalValue(overlayUs)},
@@ -77,7 +72,6 @@ QJsonObject LatencySample::toJson() const
 LatencySample LatencySample::fromJson(const QJsonObject &object)
 {
     LatencySample sample;
-    sample.pressToTriggerUs = optionalRead(object, QStringLiteral("pressToTriggerUs"));
     sample.requestUs = optionalRead(object, QStringLiteral("requestUs"));
     sample.pixelsUs = optionalRead(object, QStringLiteral("pixelsUs"));
     sample.overlayUs = optionalRead(object, QStringLiteral("overlayUs"));
@@ -105,24 +99,6 @@ LatencyStats latencyStats(QList<qint64> values)
     return stats;
 }
 
-std::optional<qint64> pressDelayUs(qint64 timestampMs, qint64 nowUs)
-{
-    if (timestampMs <= 0 || nowUs <= 0) {
-        return std::nullopt;
-    }
-    const qint64 nowMs = nowUs / 1000;
-    qint64 delayMs = nowMs - timestampMs;
-    if (timestampMs <= 0xFFFFFFFFLL && nowMs > 0xFFFFFFFFLL) {
-        delayMs = (nowMs - timestampMs) & 0xFFFFFFFFLL; // 32-bit millisecond clock wrapped
-    }
-    // Sub-millisecond part of now, so a press in the current millisecond is not rounded to zero.
-    const qint64 delay = delayMs * 1000 + nowUs % 1000;
-    if (delayMs < 0 || delay > maxPressDelayUs) {
-        return std::nullopt;
-    }
-    return delay;
-}
-
 qint64 LatencyTrace::nowUs()
 {
     timespec ts{};
@@ -138,33 +114,11 @@ void LatencyTrace::begin(int monitors)
     LatencySample sample;
     sample.startedUs = now;
     sample.monitors = monitors;
-    if (s.pendingPress && now - s.pendingPress->second < pressMatchWindowUs) {
-        sample.pressToTriggerUs = pressDelayUs(s.pendingPress->first, now).value_or(-1);
-    }
-    s.pendingPress.reset();
     s.samples.append(sample);
     while (s.samples.size() > maxSamples) {
         s.samples.removeFirst();
     }
     s.running = true;
-}
-
-void LatencyTrace::notePress(qint64 timestampMs)
-{
-    State &s = state();
-    const qint64 now = nowUs();
-    const std::lock_guard lock(s.mutex);
-    // The press note and the action trigger arrive in one D-Bus dispatch, in either order.
-    if (s.running && !s.samples.isEmpty()) {
-        LatencySample &sample = s.samples.last();
-        if (sample.pressToTriggerUs < 0 && now - sample.startedUs < pressMatchWindowUs) {
-            if (const auto delay = pressDelayUs(timestampMs, sample.startedUs)) {
-                sample.pressToTriggerUs = *delay;
-            }
-            return;
-        }
-    }
-    s.pendingPress = std::make_pair(timestampMs, now);
 }
 
 void LatencyTrace::setPinWait(qint64 us)
@@ -226,7 +180,6 @@ void LatencyTrace::resetForTest()
     const std::lock_guard lock(s.mutex);
     s.samples.clear();
     s.running = false;
-    s.pendingPress.reset();
 }
 
 } // namespace glimply
