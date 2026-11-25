@@ -365,6 +365,15 @@ void TargetStore::load(const KConfig &config)
     showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
     colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
 
+    overlayPanelPositions.clear();
+    const KConfigGroup panelPositions = config.group(QStringLiteral("OverlayPanelPositions"));
+    for (const QString &key : panelPositions.keyList()) {
+        const QPoint position = panelPositions.readEntry(key, QPoint(-1, -1));
+        if (position.x() >= 0 && position.y() >= 0) {
+            overlayPanelPositions.insert(key, position);
+        }
+    }
+
     monitorNames.clear();
     const KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));
     for (const QString &key : monitors.keyList()) {
@@ -533,6 +542,13 @@ void TargetStore::save(KConfig &config) const
     config.group(QStringLiteral("TextRecognition")).writeEntry("Languages", ocrLanguages);
     general.writeEntry("CaptureDelaySeconds", keepDelayActive ? std::clamp(captureDelaySeconds, 0, 60) : 0);
 
+    config.deleteGroup(QStringLiteral("OverlayPanelPositions"));
+    if (!overlayPanelPositions.isEmpty()) {
+        KConfigGroup panelPositions = config.group(QStringLiteral("OverlayPanelPositions"));
+        for (auto it = overlayPanelPositions.cbegin(); it != overlayPanelPositions.cend(); ++it) {
+            panelPositions.writeEntry(it.key(), it.value());
+        }
+    }
     config.deleteGroup(QStringLiteral("MonitorNames"));
     if (!monitorNames.isEmpty()) {
         KConfigGroup monitors = config.group(QStringLiteral("MonitorNames"));

@@ -172,18 +172,27 @@ private Q_SLOTS:
                  QRect(0, 290, 60, 60));
     }
 
+    void panelPlacement()
+    {
+        const QSize panel(600, 80);
+        const QSize overlay(1920, 1080);
+        // Top centre without a selection or when the selection is elsewhere.
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(), std::nullopt, 16), QPoint(660, 16));
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(100, 500, 300, 300), std::nullopt, 16), QPoint(660, 16));
+        // A selection under the panel sends it to the bottom.
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(700, 50, 400, 300), std::nullopt, 16), QPoint(660, 984));
+        // Both sides covered: the side that covers less wins.
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(0, 0, 1920, 1000), std::nullopt, 16), QPoint(660, 984));
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(0, 60, 1920, 1020), std::nullopt, 16), QPoint(660, 16));
+        // A position chosen by hand wins and stays on the monitor.
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(700, 50, 400, 300), QPoint(40, 30), 16), QPoint(40, 30));
+        QCOMPARE(placeOverlayPanel(panel, overlay, QRect(), QPoint(1800, 1050), 16), QPoint(1320, 1000));
+        // A panel wider than the monitor starts at the left edge.
+        QCOMPARE(placeOverlayPanel(QSize(2000, 80), overlay, QRect(), std::nullopt, 16), QPoint(0, 16));
+    }
+
     void rtlOverlayChromePlacement()
     {
-        const QRect anchor(200, 100, 300, 120);
-        const QSize barSize(160, 40);
-        const QSize overlaySize(1000, 800);
-        QCOMPARE(placeOverlayActionBar(anchor, barSize, overlaySize, 40, 8, Qt::LeftToRight), QPoint(340, 228));
-        QCOMPARE(placeOverlayActionBar(anchor, barSize, overlaySize, 40, 8, Qt::RightToLeft), QPoint(200, 228));
-
-        // Near bottom edge, flips above the selection and respects edge clamping in RTL.
-        const QRect nearEdge(5, 740, 80, 50);
-        QCOMPARE(placeOverlayActionBar(nearEdge, barSize, overlaySize, 40, 8, Qt::RightToLeft), QPoint(5, 692));
-
         const QRect roomy(100, 50, 200, 120);
         const QRect screenBounds(0, 0, 1000, 800);
         const QRect ltrClose = overlayCloseButtonRect(roomy, screenBounds, 24, Qt::LeftToRight);
