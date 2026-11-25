@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="zh_CN" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,7 +301,7 @@
         <translation>遮盖操作 #%1 需要 x、y、width &gt; 0 和 height &gt; 0。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
         <translation>操作 #%2 中存在不支持的批注类型“%1”。</translation>
     </message>
     <message>
@@ -308,7 +309,7 @@
         <translation>渲染批注图像失败。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
         <translation>未设置 overwrite=true，拒绝覆盖输入文件“%1”。</translation>
     </message>
 </context>
@@ -730,7 +731,8 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>已在 %n 次截图后停止 %1 的间隔截图。</numerusform></translation>
+            <numerusform>已在 %n 次截图后停止 %1 的间隔截图。</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +869,8 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>以及另外 %n 项</numerusform></translation>
+            <numerusform>以及另外 %n 项</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +879,8 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>已保存 %n 张截图</numerusform></translation>
+            <numerusform>已保存 %n 张截图</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,7 +951,7 @@
         <translation>无法移至回收站：%1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>未知操作“%1”。</translation>
     </message>
     <message>
@@ -1055,8 +1059,8 @@
         <translation>截图倒计时已在运行。</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>'window:' 后的窗口标识符不能为空。</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>&apos;window:&apos; 后的窗口标识符不能为空。</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,19 +1147,19 @@
         <translation>MCP 已截取 %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
+        <source>Unsupported image format &apos;%1&apos;.</source>
         <translation>不支持的图像格式“%1”。</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' 必须是 1 到 100 之间的整数。</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; 必须是 1 到 100 之间的整数。</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>必须提供 'target'。</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>必须提供 &apos;target&apos;。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>外部 MCP 客户端请求截取“%1”(%2)。</translation>
     </message>
     <message>
@@ -1167,11 +1171,11 @@
         <translation>外部 MCP 客户端请求截取 %5 上位于 (%3, %4) 的 %1x%2 区域。</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>必须提供 'window_id'。</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>必须提供 &apos;window_id&apos;。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>外部 MCP 客户端请求截取窗口“%1”。</translation>
     </message>
     <message>
@@ -1183,27 +1187,27 @@
         <translation>外部 MCP 客户端请求读取上次截图 (%1)。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>外部 MCP 客户端请求每 %1 秒对“%2”进行间隔截图。</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>请指定 'target' 或设置 'all': true。</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>请指定 &apos;target&apos; 或设置 &apos;all&apos;: true。</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image 需要非空的 input_path 和 operations 数组。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>在 MCP 允许列表模式下，input_path 必须是 glimply 截图目录中的现有文件。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>在 MCP 允许列表模式下，output_path 必须位于 glimply 截图目录内。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>外部 MCP 客户端请求批注“%1”（%2 项操作）。</translation>
     </message>
     <message>
@@ -1241,304 +1245,92 @@
         <translation>冻结</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>显示按下按键时的画面。从该静态画面中裁剪截图。(Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>实时</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>查看屏幕动态变化（例如视频）。保存时再进行截图。(Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>当前显示器</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>截取整个 %1</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>所有显示器</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>将所有显示器截取为一张图像</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>窗口</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>截取单个窗口，即使被遮挡或最小化</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>区域</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>截取已保存的区域或组，或将其添加为矩形</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>将已保存的区域或组添加为矩形</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>延迟</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>倒计时后重新截图，以便保持菜单打开</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>批注</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>显示或隐藏标记工具 (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>取色</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>使用放大镜采样像素颜色 (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>在窗口中编辑</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>在快速编辑器窗口中打开以进行裁剪、缩放和精细编辑 (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>帮助</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>显示或隐藏控件 (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>保留完整截图并打开设置</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>关闭</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>保留完整截图并关闭 (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>取消 (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>拖动</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>绘制矩形（或当前标记工具）</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>拖动内部 / 边缘</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>移动 / 调整当前矩形或批注的大小</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>拖动时按住 Shift / Alt</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>保持正方形或 15° 对齐 / 从中心放大或创建副本</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>拖动时按住 Space</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>实时重新定位形状或选区</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>在标记工具中按住 Ctrl</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>临时切换到“选择 / 移动”</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>单击 / 右键单击</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>激活 / 删除最顶层的批注或矩形</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>双击</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>编辑文本批注或保存矩形</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>将矩形保存为区域</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>单击（未绘制任何内容）</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>截取此显示器（批注前）</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>鼠标</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>选择 / 箭头 矩形 椭圆 画笔 荧光笔 文本 步骤 遮盖 聚光灯</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>选区修饰键在所有显示器上均有效</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>调整画笔或字号  ·  撤销 / 重做</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>在冻结和实时模式之间切换（空闲时）</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>方向键 / Shift+方向键</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>将当前批注或矩形移动 1 像素 / 10 像素</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+方向键 / Ctrl+方向键</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>从中心调整大小 / 等比例正方形调整</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>保存选区或已批注的屏幕</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>保存为区域</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>删除当前批注或矩形</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>提交文本、返回上一步或关闭</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>显示或隐藏此帮助</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>拾取像素颜色（Tab 切换格式，Alt+单击应用到标记）</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>在快速编辑器窗口中打开选区或屏幕</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>将选区固定到屏幕（每个矩形一张贴图）</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>复制选区中的文本（需要 tesseract）</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>快捷键</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1341,12 @@
         <translation>%1（已最小化）</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>无延迟</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>%1 秒后重新截图</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 秒</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1367,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>尚无已保存的区域。请先绘制一个矩形，然后选择“保存为区域”。</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>更多</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>选择</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>箭头</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>矩形</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>椭圆</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>画笔</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>荧光笔</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>文本</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>步骤</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>遮盖</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>聚光灯</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1437,40 @@
         <translation>保存</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>保存到截图文件夹并复制到剪贴板 (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>复制</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>仅复制到剪贴板</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>复制文本</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>识别文本并复制到剪贴板 (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>贴图</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>将选区保持在屏幕最前方 (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>另存为…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>选择保存位置</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>打开标记工具以绘制或遮盖</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>在快速编辑器窗口中打开选区和批注 (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>保存为区域</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>记住此矩形，以便日后一键或通过快捷键再次截取</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>添加矩形</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>绘制另一个矩形，也可覆盖在现有矩形之上</translation>
+        <source>Go Live</source>
+        <translation>实时</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>关闭 (Escape)</translation>
+        <source>Freeze</source>
+        <translation>冻结</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>快捷键</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1499,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n 秒</numerusform></translation>
+            <numerusform>%n 秒</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1529,14 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>将 %n 个区域保存为组</numerusform></translation>
+            <numerusform>将 %n 个区域保存为组</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>一个快捷键可同时截取全部 %n 个区域，并各自保存为独立文件。</numerusform></translation>
+            <numerusform>一个快捷键可同时截取全部 %n 个区域，并各自保存为独立文件。</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1545,8 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>保存 %n 个区域</numerusform></translation>
+            <numerusform>保存 %n 个区域</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1555,128 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>保存 %n 个区域</numerusform></translation>
+            <numerusform>保存 %n 个区域</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>清除或撤销批注以返回实时模式</translation>
+        <source>New rectangle</source>
+        <translation>新建矩形</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>延迟：%1 秒</translation>
+        <source>New area</source>
+        <translation>新建区域</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>拖动时按住 Shift</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>保持正方形</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>拖动时按住 Alt</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>从中心向外扩展</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>在实时模式下重新定位</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>按 1 px / 10 px 移动</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>从中心调整大小 / 调整为正方形</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>删除当前矩形</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>将矩形保存为图片</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>返回上一步，或关闭</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>截取当前显示器</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>在编辑器窗口中打开</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>批注</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>选取工具</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>绘制时按住 Shift</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>正方形、圆形或 15° 步进</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>绘制时按住 Alt</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+拖动</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>复制一个批注</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>绘制时按住 Space</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>按住 Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>暂时切换为选择 / 移动</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>减小 / 增大画笔或字体</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>撤销 / 重做</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>取色；Alt+单击应用该颜色</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1698,10 @@
         <translation>无法截取屏幕。</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>单击复制颜色 · Alt+单击将其应用到批注 · Tab 切换格式 · Escape 退出</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>已应用 %1 并复制到剪贴板</translation>
     </message>
@@ -1781,48 +1710,8 @@
         <translation>已将 %1 复制到剪贴板</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>单击复制颜色，Alt+单击应用到当前标记工具，Tab 切换格式，Escape 退出。</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift 保持正方形，Alt 从中心放大，拖动时按 Space 重新定位。</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>输入文本，拖动框外边缘可移动；Escape 或 Ctrl+Enter 提交。</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>拖动以绘制（Ctrl 临时选择；Shift 对齐，Alt 居中，Space 移动；V 返回）。</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>在任意位置拖动绘制下一个矩形，也可覆盖在另一个矩形之上。</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>按 Enter 保存已批注的截图，或先绘制裁剪矩形。按 Escape 关闭。</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>拖动绘制矩形，单击显示器截取它，或打开批注。按 Escape 保留完整截图。</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>为新区域拖动绘制一个矩形。按 Escape 取消。</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>单击矩形以更改它，或拖动绘制新矩形。</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>在内部拖动可移动，拖动边缘可调整大小。在其他位置拖动可绘制另一个矩形。按 Enter 保存。</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>在内部拖动可移动，拖动边缘可调整大小。在其他位置拖动可绘制另一个矩形。</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>将鼠标悬停在按钮上可查看名称和快捷键 · F1 显示全部内容</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1760,8 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>已保存 %n 个区域</numerusform></translation>
+            <numerusform>已保存 %n 个区域</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1990,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>快捷键：%1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2009,8 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>确定要永久移除 %n 张贴图吗？</numerusform></translation>
+            <numerusform>确定要永久移除 %n 张贴图吗？</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2408,8 @@
         <translation>截图后 Hook 与外部自动化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2492,7 @@
         <translation>在屏幕上选择…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>相对于显示器左上角的逻辑像素。截图使用显示器的原生分辨率。</translation>
     </message>
     <message>
@@ -2666,7 +2568,7 @@
         <translation>跨显示器的全局逻辑坐标。截图将以最高缩放比例合成相交的显示器。</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>此区域的显示器均未连接。触发时不会保存任何内容。</translation>
     </message>
     <message>
@@ -2928,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>“冻结”显示按下 Print 键时的瞬间画面。“实时”允许视频继续播放，并在保存时进行截图。随时可在覆盖层中按 Space 切换。</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>重置面板位置</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>再次显示首次启动提示</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>覆盖层面板：</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>重置会将面板移回每个显示器的顶部中央。</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3181,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n 秒</numerusform></translation>
+            <numerusform>%n 秒</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3444,8 @@
         <translation>--mode 缺少值。</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode 必须是 'frozen' 或 'live'。</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode 必须是 &apos;frozen&apos; 或 &apos;live&apos;。</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>无最近截图。</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last 需要一个正整数。</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>自 glimply 启动以来，尚未测量过通过 Print 触发的截图。</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="id" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>Operasi redaksi #%1 memerlukan x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>Jenis anotasi '%1' tidak didukung pada operasi #%2.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>Jenis anotasi &apos;%1&apos; tidak didukung pada operasi #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Gagal merender gambar beranotasi.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>Menolak menimpa berkas masukan '%1' tanpa overwrite=true.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>Menolak menimpa berkas masukan &apos;%1&apos; tanpa overwrite=true.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,8 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>Interval untuk %1 dihentikan setelah %n tangkapan.</numerusform></translation>
+            <numerusform>Interval untuk %1 dihentikan setelah %n tangkapan.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +869,8 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>dan %n lainnya</numerusform></translation>
+            <numerusform>dan %n lainnya</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +879,8 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>%n tangkapan layar disimpan</numerusform></translation>
+            <numerusform>%n tangkapan layar disimpan</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +951,8 @@
         <translation>Tidak dapat memindahkan ke tempat sampah: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>Tindakan tidak dikenal "%1".</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>Tindakan tidak dikenal &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1059,8 @@
         <translation>Hitung mundur tangkapan sudah berjalan.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>Penentu jendela setelah 'window:' tidak boleh kosong.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>Penentu jendela setelah &apos;window:&apos; tidak boleh kosong.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,20 +1147,20 @@
         <translation>MCP menangkap %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>Format gambar '%1' tidak didukung.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>Format gambar &apos;%1&apos; tidak didukung.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' harus berupa bilangan bulat antara 1 dan 100.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; harus berupa bilangan bulat antara 1 dan 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target' diperlukan.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos; diperlukan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
-        <translation>Klien MCP eksternal ingin menangkap "%1" (%2).</translation>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <translation>Klien MCP eksternal ingin menangkap &quot;%1&quot; (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1167,12 +1171,12 @@
         <translation>Klien MCP eksternal ingin menangkap wilayah %1x%2 pada (%3, %4) di %5.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id' diperlukan.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos; diperlukan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
-        <translation>Klien MCP eksternal ingin menangkap jendela "%1".</translation>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <translation>Klien MCP eksternal ingin menangkap jendela &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1183,28 +1187,28 @@
         <translation>Klien MCP eksternal ingin membaca tangkapan terakhir (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
-        <translation>Klien MCP eksternal ingin memulai tangkapan interval setiap %1 d untuk "%2".</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <translation>Klien MCP eksternal ingin memulai tangkapan interval setiap %1 d untuk &quot;%2&quot;.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>Tentukan 'target' atau atur 'all': true.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>Tentukan &apos;target&apos; atau atur &apos;all&apos;: true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image memerlukan input_path dan larik operations yang tidak kosong.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>Dalam mode Daftar izin MCP, input_path harus berupa berkas yang ada di dalam direktori tangkapan glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>Dalam mode Daftar izin MCP, output_path harus berada di dalam direktori tangkapan glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
-        <translation>Klien MCP eksternal ingin menganotasi "%1" (%2 operasi).</translation>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <translation>Klien MCP eksternal ingin menganotasi &quot;%1&quot; (%2 operasi).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1241,304 +1245,92 @@
         <translation>Beku</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Tampilkan momen saat Anda menekan tombol. Tangkapan dipotong dari gambar ini. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Langsung</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Lihat layar bergerak terus, misalnya video. Tangkapan diambil saat Anda menyimpan. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Monitor Ini</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>Tangkap seluruh %1</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Semua Monitor</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Tangkap setiap monitor dalam satu gambar</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Jendela</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Tangkap satu jendela, termasuk saat tertutup atau diminimalkan</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Area</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Tangkap area atau grup tersimpan, atau tambahkan sebagai persegi panjang</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Tambahkan area atau grup tersimpan sebagai persegi panjang</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Tunda</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Ambil ulang tangkapan layar setelah hitung mundur agar menu tetap terbuka</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>Anotasi</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>Tampilkan atau sembunyikan alat markah (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Pilih Warna</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Ambil sampel warna piksel dengan kaca pembesar (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Sunting di Jendela</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Buka di jendela Editor Cepat untuk memotong, memperbesar, dan menyunting halus (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Bantuan</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Tampilkan atau sembunyikan kontrol (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Pengaturan</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Simpan tangkapan layar penuh dan buka pengaturan</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Tutup</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Simpan tangkapan layar penuh dan tutup (Esc)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>Batal (Esc)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Seret</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Gambar persegi panjang (atau alat markah aktif)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>Seret bagian dalam / tepi</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Pindahkan / ubah ukuran persegi panjang atau anotasi aktif</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt saat menyeret</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Pertahankan bujur sangkar atau kunci 15° / perbesar dari tengah atau duplikat</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space saat menyeret</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Posisikan ulang bentuk atau pilihan secara langsung</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl di alat markah</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Beralih sementara ke Pilih / Pindahkan</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Klik / Klik kanan</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Aktifkan / hapus anotasi atau persegi panjang teratas</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Klik ganda</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Sunting anotasi teks atau simpan persegi panjang</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Simpan persegi panjang sebagai area</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Klik, tidak ada yang digambar</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Tangkap monitor ini (sebelum menganotasi)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Tetikus</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Pilih / Panah Persegi Elips Pena Stabilo Teks Langkah Redaksi Sorotan</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Pengubah pilihan berfungsi di semua monitor</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Ubah ukuran kuas atau fon  ·  Urungkan / Ulangi</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Beralih antara Beku dan Langsung (saat diam)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Panah / Shift+Panah</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Pindahkan anotasi atau persegi panjang aktif sebesar 1 px / 10 px</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Panah / Ctrl+Panah</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Ubah ukuran dari tengah / ubah ukuran bujur sangkar</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Simpan pilihan atau layar beranotasi</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Simpan sebagai area</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Hapus anotasi atau persegi panjang aktif</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Esc</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Terapkan teks, mundur, atau tutup</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Batal</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Tampilkan atau sembunyikan bantuan ini</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Pilih warna piksel (Tab mengganti format, Alt+Klik menerapkan ke markah)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Buka pilihan atau layar di jendela Editor Cepat</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Sematkan pilihan ke layar (satu pin per persegi panjang)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Salin teks dari pilihan (memerlukan tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Tombol</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1341,12 @@
         <translation>%1 (diminimalkan)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Tanpa tunda</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>Ambil ulang dalam %1 d</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 dtk</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1367,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>Belum ada area tersimpan. Gambar persegi panjang, lalu pilih Simpan sebagai Area.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Lainnya</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Pilih</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Panah</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Persegi Panjang</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Elips</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Pena</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Stabilo</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Teks</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Langkah</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Redaksi</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Sorotan</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1437,40 @@
         <translation>Simpan</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Simpan ke folder tangkapan dan salin ke papan klip (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Salin</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Salin ke papan klip saja</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Salin Teks</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Kenali teks dan salin ke papan klip (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Sematkan</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Pertahankan pilihan di layar di atas jendela lain (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Simpan Sebagai…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Pilih lokasi penyimpanan</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Buka alat markah untuk menggambar atau meredaksi</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Buka pilihan dan anotasi di jendela Editor Cepat (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Simpan sebagai Area</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Ingat persegi panjang ini untuk menangkapnya lagi dengan satu klik atau pintasan</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>Tambah Persegi Panjang</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Gambar persegi panjang lain, juga di atas yang sudah ada</translation>
+        <source>Go Live</source>
+        <translation>Ke Langsung</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Tutup (Esc)</translation>
+        <source>Freeze</source>
+        <translation>Bekukan</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Ringkasan Pintasan</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1499,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n detik</numerusform></translation>
+            <numerusform>%n detik</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1529,14 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>Simpan %n area sebagai grup</numerusform></translation>
+            <numerusform>Simpan %n area sebagai grup</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Satu pintasan menangkap semua %n area pada saat yang sama, masing-masing ke berkasnya sendiri.</numerusform></translation>
+            <numerusform>Satu pintasan menangkap semua %n area pada saat yang sama, masing-masing ke berkasnya sendiri.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1545,8 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>Simpan %n area</numerusform></translation>
+            <numerusform>Simpan %n area</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1555,128 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>Simpan %n Area</numerusform></translation>
+            <numerusform>Simpan %n Area</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Hapus atau urungkan anotasi untuk kembali ke mode Langsung</translation>
+        <source>New rectangle</source>
+        <translation>Persegi Panjang Baru</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Tunda: %1 d</translation>
+        <source>New area</source>
+        <translation>Area Baru</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift saat menyeret</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Pertahankan persegi</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt saat menyeret</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Membesar dari tengah</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Ubah posisi langsung</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>Pindahkan 1 px / 10 px</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Ubah ukuran dari tengah / sebagai persegi</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Hapus</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Hapus persegi panjang aktif</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Simpan persegi panjang</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Mundur selangkah, atau tutup</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Tangkap monitor ini</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Buka di jendela penyunting</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Anotasi</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Pilih alat</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift saat menggambar</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Persegi, lingkaran, atau kelipatan 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt saat menggambar</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+Seret</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Duplikasi anotasi</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space saat menggambar</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Pilih dan pindahkan sementara</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Kuas atau font lebih kecil / lebih besar</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Urungkan / Ulangi</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Pilih warna; Alt+Klik menerapkannya</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1698,10 @@
         <translation>Layar tidak dapat ditangkap.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Klik menyalin warna · Alt+Klik menerapkannya ke anotasi · Tab mengganti format · Esc keluar</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 diterapkan dan disalin ke papan klip</translation>
     </message>
@@ -1781,48 +1710,8 @@
         <translation>%1 disalin ke papan klip</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Klik untuk menyalin warna, Alt+Klik untuk menerapkan ke alat markah aktif, Tab mengganti format, Esc keluar.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift mempertahankan bujur sangkar, Alt memperbesar dari tengah, Space memosisikan ulang saat menyeret.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Ketik teks, seret di luar tepi bingkai untuk memindahkan; Esc atau Ctrl+Enter menerapkan.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Seret untuk menggambar (Ctrl memilih sementara; Shift mengunci, Alt dari tengah, Space memindahkan; V kembali).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Seret persegi panjang berikutnya ke mana saja, juga di atas yang lain.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter menyimpan tangkapan beranotasi, atau gambar persegi panjang pemotongan terlebih dahulu. Esc menutup.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Seret persegi panjang, klik monitor untuk menangkapnya, atau buka Anotasi. Esc menyimpan tangkapan layar penuh.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Seret persegi panjang untuk area baru. Esc membatalkan.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Klik persegi panjang untuk mengubahnya, atau seret yang baru.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Seret di dalam untuk memindahkan, di tepi untuk mengubah ukuran. Seret di tempat lain untuk persegi panjang lain. Enter menyimpan.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Seret di dalam untuk memindahkan, di tepi untuk mengubah ukuran. Seret di tempat lain untuk persegi panjang lain.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Arahkan kursor ke tombol untuk nama dan pintasan · F1 menampilkan semuanya</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1760,8 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>%n area disimpan</numerusform></translation>
+            <numerusform>%n area disimpan</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1990,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Pintasan: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2009,8 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>Hapus %n pin secara permanen?</numerusform></translation>
+            <numerusform>Hapus %n pin secara permanen?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2408,8 @@
         <translation>Hook pasca-tangkapan dan otomasi eksternal</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2492,7 @@
         <translation>Pilih di Layar…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Piksel logis relatif terhadap sudut kiri atas monitor. Tangkapan menggunakan resolusi asli monitor.</translation>
     </message>
     <message>
@@ -2666,7 +2568,7 @@
         <translation>Koordinat logis global di seluruh monitor. Tangkapan menggabungkan monitor yang berpotongan pada skala tertinggi.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Tidak ada monitor dari area ini yang terhubung. Tidak ada yang disimpan saat dipicu.</translation>
     </message>
     <message>
@@ -2928,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>Beku menampilkan momen saat Anda menekan Print. Langsung membiarkan video tetap diputar dan menangkap saat Anda menyimpan. Space beralih di overlay kapan saja.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Atur Ulang Posisi Panel</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>Tampilkan Lagi Petunjuk Awal</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Panel overlay:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Atur ulang mengembalikan panel ke tengah atas setiap monitor.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3181,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n detik</numerusform></translation>
+            <numerusform>%n detik</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3444,8 @@
         <translation>Nilai untuk --mode tidak ada.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode harus 'frozen' atau 'live'.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode harus &apos;frozen&apos; atau &apos;live&apos;.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Tidak ada tangkapan terbaru.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last membutuhkan angka positif.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>Tidak ada tangkapan Print yang diukur sejak glimply dimulai.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

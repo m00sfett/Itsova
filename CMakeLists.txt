@@ -234,6 +234,9 @@ if(BUILD_TESTING)
     # (#76): CTest runs every test on the offscreen platform.
     get_property(glimply_tests DIRECTORY PROPERTY TESTS)
     set_tests_properties(${glimply_tests} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    # Opt-in check that translated panel button titles fit (#73); never run by CTest.
+    add_executable(glimply-title-fit EXCLUDE_FROM_ALL tests/titlefit.cpp)
+    target_link_libraries(glimply-title-fit PRIVATE glimply_ui)
     # Opt-in visual check of the overlay panel (#69); renders PNG files, never run by CTest.
     add_executable(glimply-panel-shots EXCLUDE_FROM_ALL tests/panelshots.cpp)
     target_link_libraries(glimply-panel-shots PRIVATE glimply_ui)

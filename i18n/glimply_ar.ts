@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="ar" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>عملية الطمس #%1 تتطلب x و y و width &gt; 0 و height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>نوع التعليق التوضيحي غير المدعوم '%1' في العملية #%2.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>نوع التعليق التوضيحي غير المدعوم &apos;%1&apos; في العملية #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>فشل تصيير الصورة المشروحة.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>تم رفض الكتابة فوق ملف الإدخال '%1' بدون overwrite=true.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>تم رفض الكتابة فوق ملف الإدخال &apos;%1&apos; بدون overwrite=true.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,13 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform><numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد لقطة واحدة (%n).</numerusform><numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد لقطتين (%n).</numerusform><numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطات.</numerusform><numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform><numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform></translation>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد لقطة واحدة (%n).</numerusform>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد لقطتين (%n).</numerusform>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطات.</numerusform>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform>
+            <numerusform>تم إيقاف الفاصل الزمني لـ %1 بعد %n لقطة.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +874,13 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>و %n أخرى</numerusform><numerusform>و %n أخرى</numerusform><numerusform>و %n أخريين</numerusform><numerusform>و %n أخرى</numerusform><numerusform>و %n أخرى</numerusform><numerusform>و %n أخرى</numerusform></translation>
+            <numerusform>و %n أخرى</numerusform>
+            <numerusform>و %n أخرى</numerusform>
+            <numerusform>و %n أخريين</numerusform>
+            <numerusform>و %n أخرى</numerusform>
+            <numerusform>و %n أخرى</numerusform>
+            <numerusform>و %n أخرى</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +889,13 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>تم حفظ %n لقطة شاشة</numerusform><numerusform>تم حفظ لقطة شاشة واحدة (%n)</numerusform><numerusform>تم حفظ لقطتي شاشة (%n)</numerusform><numerusform>تم حفظ %n لقطات شاشة</numerusform><numerusform>تم حفظ %n لقطة شاشة</numerusform><numerusform>تم حفظ %n لقطة شاشة</numerusform></translation>
+            <numerusform>تم حفظ %n لقطة شاشة</numerusform>
+            <numerusform>تم حفظ لقطة شاشة واحدة (%n)</numerusform>
+            <numerusform>تم حفظ لقطتي شاشة (%n)</numerusform>
+            <numerusform>تم حفظ %n لقطات شاشة</numerusform>
+            <numerusform>تم حفظ %n لقطة شاشة</numerusform>
+            <numerusform>تم حفظ %n لقطة شاشة</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,7 +966,7 @@
         <translation>تعذّر النقل إلى سلة المهملات: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>إجراء غير معروف «%1».</translation>
     </message>
     <message>
@@ -1055,8 +1074,8 @@
         <translation>العد التنازلي للالتقاط قيد التشغيل بالفعل.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>محدد النافذة بعد 'window:' لا يمكن أن يكون فارغًا.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>محدد النافذة بعد &apos;window:&apos; لا يمكن أن يكون فارغًا.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,19 +1162,19 @@
         <translation>التقط MCP %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>تنسيق الصورة غير مدعوم '%1'.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>تنسيق الصورة غير مدعوم &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>يجب أن يكون 'quality' عددًا صحيحًا بين 1 و 100.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>يجب أن يكون &apos;quality&apos; عددًا صحيحًا بين 1 و 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target' مطلوب.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos; مطلوب.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>يريد عميل MCP خارجي التقاط «%1» (%2).</translation>
     </message>
     <message>
@@ -1167,11 +1186,11 @@
         <translation>يريد عميل MCP خارجي التقاط المنطقة %1x%2 عند (%3, %4) على %5.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id' مطلوب.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos; مطلوب.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>يريد عميل MCP خارجي التقاط النافذة «%1».</translation>
     </message>
     <message>
@@ -1183,27 +1202,27 @@
         <translation>يريد عميل MCP خارجي قراءة آخر لقطة (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>يريد عميل MCP خارجي بدء التقاط دوري كل %1 ثانية لـ «%2».</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>حدد 'target' أو عيّن 'all': true.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>حدد &apos;target&apos; أو عيّن &apos;all&apos;: true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>يتطلب annotate_image مسار input_path غير فارغ ومصفوفة operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>في وضع قائمة السماح لـ MCP، يجب أن يكون input_path ملفًا موجودًا داخل مجلد لقطات glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>في وضع قائمة السماح لـ MCP، يجب أن يكون output_path داخل مجلد لقطات glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>يريد عميل MCP خارجي إضافة شروح إلى «%1» (%2 عملية/عمليات).</translation>
     </message>
     <message>
@@ -1241,304 +1260,92 @@
         <translation>مجمّد</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>إظهار اللحظة التي ضغطت فيها على المفتاح. تُقص اللقطات من هذه الصورة. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>مباشر</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>رؤية الشاشة وهي تتحرك، مثل فيديو. تُؤخذ اللقطات عند الحفظ. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>هذه الشاشة</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>التقاط كامل %1</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>كل الشاشات</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>التقاط كل شاشة في صورة واحدة</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>نافذة</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>التقاط نافذة واحدة، حتى عندما تكون مغطاة أو مصغّرة</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>المناطق</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>التقاط منطقة أو مجموعة محفوظة، أو إضافتها كمستطيل</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>إضافة منطقة أو مجموعة محفوظة كمستطيل</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>تأخير</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>إعادة التقاط لقطة الشاشة بعد عد تنازلي لتبقى القوائم مفتوحة</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>شروح</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>إظهار أو إخفاء أدوات الشرح (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>التقاط لون</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>أخذ عينة ألوان بكسل بعدسة مكبّرة (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>تحرير في نافذة</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>فتح في نافذة المحرر السريع للقص والتكبير والتحرير الدقيق (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>مساعدة</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>إظهار أو إخفاء عناصر التحكم (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>الإعدادات</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>الاحتفاظ بلقطة الشاشة الكاملة وفتح الإعدادات</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>إغلاق</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>الاحتفاظ بلقطة الشاشة الكاملة والإغلاق (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>إلغاء (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>سحب</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>رسم مستطيل (أو أداة الشرح النشطة)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>سحب من الداخل / الحافة</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>تحريك / تغيير حجم المستطيل أو التعليق التوضيحي النشط</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt أثناء السحب</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>الحفاظ على مربع أو محاذاة 15° / التمدد من المركز أو التكرار</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space أثناء السحب</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>إعادة تموضع الشكل أو التحديد مباشرة</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl في أداة الشرح</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>التبديل مؤقتًا إلى تحديد / تحريك</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>نقر / نقر يمين</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>تفعيل / حذف أعلى تعليق توضيحي أو مستطيل</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>نقر مزدوج</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>تحرير التعليق النصي أو حفظ المستطيل</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>حفظ المستطيل كمنطقة</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>نقر بدون رسم</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>التقاط هذه الشاشة (قبل الشرح)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>الفأرة</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>تحديد / سهم مستطيل قطع ناقص قلم مميّز نص خطوة طمس تسليط الضوء</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>تعمل معدّلات التحديد على جميع الشاشات</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>تغيير حجم الفرشاة أو الخط  ·  تراجع / إعادة</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>التبديل بين مجمّد ومباشر (عند الخمول)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>الأسهم / Shift+الأسهم</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>تحريك التعليق التوضيحي أو المستطيل النشط بمقدار 1 بكسل / 10 بكسل</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+الأسهم / Ctrl+الأسهم</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>تغيير الحجم من المركز / تغيير الحجم كمربع</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>حفظ التحديد أو الشاشة المشروحة</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>حفظ كمنطقة</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>حذف التعليق التوضيحي أو المستطيل النشط</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>اعتماد النص، التراجع خطوة، أو الإغلاق</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>إظهار أو إخفاء هذه المساعدة</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>التقاط لون البكسل (Tab يبدّل التنسيق، Alt+نقر يطبّقه على الشرح)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>فتح التحديد أو الشاشة في نافذة المحرر السريع</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>تثبيت التحديد على الشاشة (دبوس واحد لكل مستطيل)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>نسخ نص التحديد (يتطلب tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>المفاتيح</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1356,12 @@
         <translation>%1 (مصغّرة)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>بدون تأخير</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>إعادة الالتقاط خلال %1 ث</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 ث</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1382,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>لا توجد مناطق محفوظة بعد. ارسم مستطيلًا، ثم اختر حفظ كمنطقة.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>المزيد</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>تحديد</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>سهم</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>مستطيل</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>قطع ناقص</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>قلم</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>مميّز</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>نص</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>خطوة</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>طمس</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>تسليط الضوء</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1452,40 @@
         <translation>حفظ</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>حفظ في مجلد اللقطات والنسخ إلى الحافظة (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>نسخ</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>نسخ إلى الحافظة فقط</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>نسخ النص</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>التعرف على النص ونسخه إلى الحافظة (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>تثبيت</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>إبقاء التحديد على الشاشة فوق النوافذ الأخرى (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>حفظ باسم…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>اختيار مكان الحفظ</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>فتح أدوات الشرح للرسم أو الطمس</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>فتح التحديد والتعليقات التوضيحية في نافذة المحرر السريع (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>حفظ كمنطقة</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>تذكّر هذا المستطيل لالتقاطه مجددًا بنقرة واحدة أو اختصار</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>إضافة مستطيل</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>رسم مستطيل آخر، حتى فوق مستطيل موجود</translation>
+        <source>Go Live</source>
+        <translation>عرض مباشر</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>إغلاق (Escape)</translation>
+        <source>Freeze</source>
+        <translation>تجميد</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>عرض الاختصارات</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1514,13 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n ثانية</numerusform><numerusform>ثانية واحدة (%n)</numerusform><numerusform>ثانيتان (%n)</numerusform><numerusform>%n ثوانٍ</numerusform><numerusform>%n ثانية</numerusform><numerusform>%n ثانية</numerusform></translation>
+            <numerusform>%n ثانية</numerusform>
+            <numerusform>ثانية واحدة (%n)</numerusform>
+            <numerusform>ثانيتان (%n)</numerusform>
+            <numerusform>%n ثوانٍ</numerusform>
+            <numerusform>%n ثانية</numerusform>
+            <numerusform>%n ثانية</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1549,24 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>حفظ %n منطقة كمجموعة</numerusform><numerusform>حفظ منطقة واحدة (%n) كمجموعة</numerusform><numerusform>حفظ منطقتين (%n) كمجموعة</numerusform><numerusform>حفظ %n مناطق كمجموعة</numerusform><numerusform>حفظ %n منطقة كمجموعة</numerusform><numerusform>حفظ %n منطقة كمجموعة</numerusform></translation>
+            <numerusform>حفظ %n منطقة كمجموعة</numerusform>
+            <numerusform>حفظ منطقة واحدة (%n) كمجموعة</numerusform>
+            <numerusform>حفظ منطقتين (%n) كمجموعة</numerusform>
+            <numerusform>حفظ %n مناطق كمجموعة</numerusform>
+            <numerusform>حفظ %n منطقة كمجموعة</numerusform>
+            <numerusform>حفظ %n منطقة كمجموعة</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform><numerusform>اختصار واحد يلتقط المنطقة (%n) في نفس اللحظة، في ملفها الخاص.</numerusform><numerusform>اختصار واحد يلتقط المنطقتين (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform><numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform><numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform><numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform></translation>
+            <numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform>
+            <numerusform>اختصار واحد يلتقط المنطقة (%n) في نفس اللحظة، في ملفها الخاص.</numerusform>
+            <numerusform>اختصار واحد يلتقط المنطقتين (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform>
+            <numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform>
+            <numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform>
+            <numerusform>اختصار واحد يلتقط جميع المناطق (%n) في نفس اللحظة، كل واحدة في ملفها الخاص.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1575,13 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>حفظ %n منطقة</numerusform><numerusform>حفظ منطقة واحدة (%n)</numerusform><numerusform>حفظ منطقتين (%n)</numerusform><numerusform>حفظ %n مناطق</numerusform><numerusform>حفظ %n منطقة</numerusform><numerusform>حفظ %n منطقة</numerusform></translation>
+            <numerusform>حفظ %n منطقة</numerusform>
+            <numerusform>حفظ منطقة واحدة (%n)</numerusform>
+            <numerusform>حفظ منطقتين (%n)</numerusform>
+            <numerusform>حفظ %n مناطق</numerusform>
+            <numerusform>حفظ %n منطقة</numerusform>
+            <numerusform>حفظ %n منطقة</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1590,133 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>حفظ %n منطقة</numerusform><numerusform>حفظ منطقة واحدة (%n)</numerusform><numerusform>حفظ منطقتين (%n)</numerusform><numerusform>حفظ %n مناطق</numerusform><numerusform>حفظ %n منطقة</numerusform><numerusform>حفظ %n منطقة</numerusform></translation>
+            <numerusform>حفظ %n منطقة</numerusform>
+            <numerusform>حفظ منطقة واحدة (%n)</numerusform>
+            <numerusform>حفظ منطقتين (%n)</numerusform>
+            <numerusform>حفظ %n مناطق</numerusform>
+            <numerusform>حفظ %n منطقة</numerusform>
+            <numerusform>حفظ %n منطقة</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>امسح التعليقات التوضيحية أو تراجع عنها للعودة إلى الوضع المباشر</translation>
+        <source>New rectangle</source>
+        <translation>مستطيل جديد</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>التأخير: %1 ث</translation>
+        <source>New area</source>
+        <translation>منطقة جديدة</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift أثناء السحب</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>الحفاظ على شكل مربع</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt أثناء السحب</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>التوسيع من المركز</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>تغيير الموضع في العرض المباشر</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>تحريك بمقدار 1 px / 10 px</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>تغيير الحجم من المركز / كمربع</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>حذف المستطيل النشط</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>حفظ المستطيل</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>الرجوع خطوة للخلف، أو الإغلاق</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>التقاط هذه الشاشة</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>فتح في نافذة المحرّر</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>شروح</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>اختيار أداة</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift أثناء الرسم</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>مربع أو دائرة أو خطوات من 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt أثناء الرسم</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+سحب</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>تكرار أحد الشروح</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space أثناء الرسم</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>تحديد وتحريك مؤقتًا</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>أصغر / أكبر للفرشاة أو الخط</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>تراجع / إعادة</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>اختيار لون؛ Alt+نقر لتطبيقه</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1738,10 @@
         <translation>تعذّر التقاط الشاشة.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>النقر ينسخ اللون · Alt+نقر يطبّقه على الشروح · Tab يبدّل الصيغة · Escape يخرج</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>تم تطبيق %1 ونسخه إلى الحافظة</translation>
     </message>
@@ -1781,48 +1750,8 @@
         <translation>تم نسخ %1 إلى الحافظة</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>انقر لنسخ اللون، Alt+نقر للتطبيق على أداة الشرح النشطة، Tab لتبديل التنسيق، Escape للخروج.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift يحافظ على المربع، Alt يمدد من المركز، Space يعيد التموضع أثناء السحب.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>اكتب النص، اسحب خارج حافة الإطار للتحريك؛ Escape أو Ctrl+Enter للاعتماد.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>اسحب للرسم (Ctrl يحدد مؤقتًا؛ Shift يحاذي، Alt يوسّط، Space يحرّك؛ V يعود).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>اسحب المستطيل التالي في أي مكان، حتى فوق مستطيل آخر.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter يحفظ اللقطة المشروحة، أو ارسم مستطيل قص أولًا. Escape يغلق.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>اسحب مستطيلًا، أو انقر على شاشة لالتقاطها، أو افتح الشروح. Escape يحتفظ بلقطة الشاشة الكاملة.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>اسحب مستطيلًا للمنطقة الجديدة. Escape يلغي.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>انقر على مستطيل لتغييره، أو اسحب مستطيلًا جديدًا.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>اسحب من الداخل للتحريك، ومن الحواف لتغيير الحجم. اسحب في مكان آخر لمستطيل آخر. Enter للحفظ.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>اسحب من الداخل للتحريك، ومن الحواف لتغيير الحجم. اسحب في مكان آخر لمستطيل آخر.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>مرّر المؤشر فوق الأزرار لعرض الأسماء والاختصارات · F1 يعرض كل شيء</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1800,13 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>تم حفظ %n منطقة</numerusform><numerusform>تم حفظ منطقة واحدة (%n)</numerusform><numerusform>تم حفظ منطقتين (%n)</numerusform><numerusform>تم حفظ %n مناطق</numerusform><numerusform>تم حفظ %n منطقة</numerusform><numerusform>تم حفظ %n منطقة</numerusform></translation>
+            <numerusform>تم حفظ %n منطقة</numerusform>
+            <numerusform>تم حفظ منطقة واحدة (%n)</numerusform>
+            <numerusform>تم حفظ منطقتين (%n)</numerusform>
+            <numerusform>تم حفظ %n مناطق</numerusform>
+            <numerusform>تم حفظ %n منطقة</numerusform>
+            <numerusform>تم حفظ %n منطقة</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +2035,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>الاختصار: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2054,13 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>إزالة %n دبوس نهائيًا؟</numerusform><numerusform>إزالة دبوس واحد (%n) نهائيًا؟</numerusform><numerusform>إزالة دبوسين (%n) نهائيًا؟</numerusform><numerusform>إزالة %n دبابيس نهائيًا؟</numerusform><numerusform>إزالة %n دبوسًا نهائيًا؟</numerusform><numerusform>إزالة %n دبوس نهائيًا؟</numerusform></translation>
+            <numerusform>إزالة %n دبوس نهائيًا؟</numerusform>
+            <numerusform>إزالة دبوس واحد (%n) نهائيًا؟</numerusform>
+            <numerusform>إزالة دبوسين (%n) نهائيًا؟</numerusform>
+            <numerusform>إزالة %n دبابيس نهائيًا؟</numerusform>
+            <numerusform>إزالة %n دبوسًا نهائيًا؟</numerusform>
+            <numerusform>إزالة %n دبوس نهائيًا؟</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2458,8 @@
         <translation>الخطّافات بعد الالتقاط والأتمتة الخارجية</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2542,7 @@
         <translation>تحديد على الشاشة…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>بكسلات منطقية نسبةً إلى الزاوية العلوية اليسرى للشاشة. تستخدم اللقطات الدقة الأصلية للشاشة.</translation>
     </message>
     <message>
@@ -2666,7 +2618,7 @@
         <translation>إحداثيات منطقية عامة عبر الشاشات. تدمج اللقطات الشاشات المتقاطعة بأعلى مقياس.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>لا توجد أي من شاشات هذه المنطقة متصلة. لن يُحفظ شيء عند التشغيل.</translation>
     </message>
     <message>
@@ -2928,6 +2880,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>يُظهر مجمّد اللحظة التي ضغطت فيها Print. يتيح مباشر استمرار تشغيل الفيديو والالتقاط عند الحفظ. يبدّل Space في التراكب في أي وقت.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>إعادة ضبط موضع اللوحة</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>إظهار تلميح التشغيل الأول مجددًا</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>لوحة التراكب:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>إعادة الضبط تنقل اللوحة إلى منتصف أعلى كل شاشة.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3231,13 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n ثانية</numerusform><numerusform>ثانية واحدة (%n)</numerusform><numerusform>ثانيتان (%n)</numerusform><numerusform>%n ثوانٍ</numerusform><numerusform>%n ثانية</numerusform><numerusform>%n ثانية</numerusform></translation>
+            <numerusform>%n ثانية</numerusform>
+            <numerusform>ثانية واحدة (%n)</numerusform>
+            <numerusform>ثانيتان (%n)</numerusform>
+            <numerusform>%n ثوانٍ</numerusform>
+            <numerusform>%n ثانية</numerusform>
+            <numerusform>%n ثانية</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3499,8 @@
         <translation>قيمة مفقودة لـ --mode.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>يجب أن يكون --mode 'frozen' أو 'live'.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>يجب أن يكون --mode &apos;frozen&apos; أو &apos;live&apos;.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3513,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>لا توجد لقطات حديثة.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>يتوقع --last عددًا موجبًا.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>لا توجد التقاطات مقاسة بالمفتاح Print منذ بدء glimply.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

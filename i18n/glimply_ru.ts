@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="ru" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,7 +301,7 @@
         <translation>Для операции скрытия #%1 требуются x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
         <translation>Неподдерживаемый тип аннотации «%1» в операции #%2.</translation>
     </message>
     <message>
@@ -308,7 +309,7 @@
         <translation>Не удалось отрисовать изображение с аннотациями.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
         <translation>Отказ в перезаписи входного файла «%1» без overwrite=true.</translation>
     </message>
 </context>
@@ -730,7 +731,10 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>Интервал для %1 остановлен после %n снимка.</numerusform><numerusform>Интервал для %1 остановлен после %n снимков.</numerusform><numerusform>Интервал для %1 остановлен после %n снимков.</numerusform></translation>
+            <numerusform>Интервал для %1 остановлен после %n снимка.</numerusform>
+            <numerusform>Интервал для %1 остановлен после %n снимков.</numerusform>
+            <numerusform>Интервал для %1 остановлен после %n снимков.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +871,10 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>и ещё %n</numerusform><numerusform>и ещё %n</numerusform><numerusform>и ещё %n</numerusform></translation>
+            <numerusform>и ещё %n</numerusform>
+            <numerusform>и ещё %n</numerusform>
+            <numerusform>и ещё %n</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +883,10 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>Сохранён %n снимок</numerusform><numerusform>Сохранено %n снимка</numerusform><numerusform>Сохранено %n снимков</numerusform></translation>
+            <numerusform>Сохранён %n снимок</numerusform>
+            <numerusform>Сохранено %n снимка</numerusform>
+            <numerusform>Сохранено %n снимков</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,7 +957,7 @@
         <translation>Не удалось переместить в корзину: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>Неизвестное действие «%1».</translation>
     </message>
     <message>
@@ -1055,8 +1065,8 @@
         <translation>Обратный отсчёт захвата уже запущен.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>Указатель окна после 'window:' не может быть пустым.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>Указатель окна после &apos;window:&apos; не может быть пустым.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,19 +1153,19 @@
         <translation>MCP захватил %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>Неподдерживаемый формат изображения '%1'.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>Неподдерживаемый формат изображения &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' должно быть целым числом от 1 до 100.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; должно быть целым числом от 1 до 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>Требуется 'target'.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>Требуется &apos;target&apos;.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>Внешний клиент MCP хочет захватить «%1» (%2).</translation>
     </message>
     <message>
@@ -1167,11 +1177,11 @@
         <translation>Внешний клиент MCP хочет захватить регион %1x%2 в (%3, %4) на %5.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>Требуется 'window_id'.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>Требуется &apos;window_id&apos;.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>Внешний клиент MCP хочет захватить окно «%1».</translation>
     </message>
     <message>
@@ -1183,27 +1193,27 @@
         <translation>Внешний клиент MCP хочет прочитать последний снимок (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>Внешний клиент MCP хочет запустить интервальный захват каждые %1 с для «%2».</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>Укажите 'target' или задайте 'all': true.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>Укажите &apos;target&apos; или задайте &apos;all&apos;: true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image требует непустой input_path и массив operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>В режиме белого списка MCP input_path должен быть существующим файлом в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>В режиме белого списка MCP output_path должен находиться в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>Внешний клиент MCP хочет добавить аннотации к «%1» (операций: %2).</translation>
     </message>
     <message>
@@ -1241,304 +1251,92 @@
         <translation>Замороженный</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Показывает момент нажатия клавиши. Снимки вырезаются из этого кадра. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Живой</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Показывает движение на экране, например видео. Снимок делается при сохранении. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Этот экран</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>Снять весь %1</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Все экраны</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Снять все экраны на одном изображении</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Снять одно окно, даже если оно перекрыто или свёрнуто</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Области</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Снять сохранённую область или группу либо добавить её как прямоугольник</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Добавить сохранённую область или группу как прямоугольник</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Задержка</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Повторить снимок после обратного отсчёта, чтобы меню оставались открытыми</translation>
-    </message>
-    <message>
         <source>Annotate</source>
-        <translation>Аннотировать</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>Показать или скрыть инструменты разметки (A, R, E, B, M, T, N, X, S)</translation>
+        <translation>Разметить</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Выбрать цвет</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Взять цвет пикселя с помощью лупы (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Открыть в окне</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Открыть в окне быстрого редактора для обрезки, масштаба и точной правки (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Справка</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Показать или скрыть элементы управления (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Сохранить полный снимок и открыть настройки</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Закрыть</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Сохранить полный снимок и закрыть (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>Отмена (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Перетащить</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Нарисовать прямоугольник (или активный инструмент разметки)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>Потянуть внутри / за край</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Переместить / изменить размер активного прямоугольника или аннотации</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt при перетаскивании</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Квадрат или шаг 15° / от центра или дубликат</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space при перетаскивании</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Сдвинуть фигуру или выделение на лету</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl в инструменте разметки</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Временно переключиться на Выбор / перемещение</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Клик / Правый клик</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Активировать / удалить верхнюю аннотацию или прямоугольник</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Двойной клик</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Изменить текстовую аннотацию или сохранить прямоугольник</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Сохранить прямоугольник как область</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Клик, ничего не нарисовано</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Снять этот экран (до начала разметки)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Мышь</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Выбор / Стрелка Прямоуг. Эллипс Перо Маркер Текст Шаг Скрытие Прожектор</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Модификаторы выделения работают на всех экранах</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Размер кисти или шрифта  ·  Отменить / Повторить</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Переключить «Замороженный» и «Живой» (в покое)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Стрелки / Shift+Стрелки</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Сдвинуть активную аннотацию или прямоугольник на 1 пикс. / 10 пикс.</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Стрелки / Ctrl+Стрелки</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Изменить размер от центра / квадратом</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Сохранить выделение или экран с аннотациями</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Сохранить как область</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Удалить активную аннотацию или прямоугольник</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Применить текст, шаг назад или закрыть</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Показать или скрыть эту справку</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Взять цвет пикселя (Tab меняет формат, Alt+клик применяет к разметке)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Открыть выделение или экран в окне быстрого редактора</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Закрепить выделение на экране (по одному закреплению на прямоугольник)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Копировать текст выделения (нужен tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Клавиши</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1347,12 @@
         <translation>%1 (свёрнуто)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Без задержки</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>Повторить через %1 с</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 с</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1373,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>Сохранённых областей пока нет. Нарисуйте прямоугольник и выберите «Сохранить как область».</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Ещё</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Выбор</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Стрелка</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Рамка</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Эллипс</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Перо</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Маркер</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Текст</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Счётчик</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Скрыть</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Прожектор</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1443,40 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Сохранить в папку снимков и скопировать в буфер обмена (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Копировать</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Только скопировать в буфер обмена</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Копировать текст</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Распознать текст и скопировать в буфер обмена (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Закрепить</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Удерживать выделение на экране поверх других окон (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Сохранить как…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Выбрать место сохранения</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Открыть инструменты разметки для рисования или скрытия</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Открыть выделение и аннотации в окне быстрого редактора (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Сохранить как область</translation>
     </message>
     <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Запомнить этот прямоугольник для повторного захвата одним кликом или горячей клавишей</translation>
-    </message>
-    <message>
         <source>Add Rectangle</source>
-        <translation>Добавить прямоугольник</translation>
+        <translation>Добавить рамку</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Нарисовать ещё один прямоугольник, в том числе поверх существующего</translation>
+        <source>Go Live</source>
+        <translation>Живой режим</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Закрыть (Escape)</translation>
+        <source>Freeze</source>
+        <translation>Заморозить</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Сочетания клавиш</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1505,10 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform></translation>
+            <numerusform>%n секунда</numerusform>
+            <numerusform>%n секунды</numerusform>
+            <numerusform>%n секунд</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1537,18 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>Сохранить %n область как группу</numerusform><numerusform>Сохранить %n области как группу</numerusform><numerusform>Сохранить %n областей как группу</numerusform></translation>
+            <numerusform>Сохранить %n область как группу</numerusform>
+            <numerusform>Сохранить %n области как группу</numerusform>
+            <numerusform>Сохранить %n областей как группу</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Одна горячая клавиша одновременно снимает %n область, каждую в свой файл.</numerusform><numerusform>Одна горячая клавиша одновременно снимает %n области, каждую в свой файл.</numerusform><numerusform>Одна горячая клавиша одновременно снимает %n областей, каждую в свой файл.</numerusform></translation>
+            <numerusform>Одна горячая клавиша одновременно снимает %n область, каждую в свой файл.</numerusform>
+            <numerusform>Одна горячая клавиша одновременно снимает %n области, каждую в свой файл.</numerusform>
+            <numerusform>Одна горячая клавиша одновременно снимает %n областей, каждую в свой файл.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1557,10 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>Сохранить %n область</numerusform><numerusform>Сохранить %n области</numerusform><numerusform>Сохранить %n областей</numerusform></translation>
+            <numerusform>Сохранить %n область</numerusform>
+            <numerusform>Сохранить %n области</numerusform>
+            <numerusform>Сохранить %n областей</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1569,130 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>Сохранить %n область</numerusform><numerusform>Сохранить %n области</numerusform><numerusform>Сохранить %n областей</numerusform></translation>
+            <numerusform>Сохранить %n область</numerusform>
+            <numerusform>Сохранить %n области</numerusform>
+            <numerusform>Сохранить %n областей</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Очистите или отмените аннотации, чтобы вернуться в живой режим</translation>
+        <source>New rectangle</source>
+        <translation>Новый прямоугольник</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Задержка: %1 с</translation>
+        <source>New area</source>
+        <translation>Новая область</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift при перетаскивании</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Сохранять квадрат</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt при перетаскивании</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Расширять от центра</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Перемещать на лету</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>Сдвигать на 1 px / 10 px</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Изменять размер от центра / до квадрата</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Удалить активный прямоугольник</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Сохранить прямоугольник</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Вернуться или закрыть</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Снять этот экран</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Открыть в окне редактора</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Разметка</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Выбрать инструмент</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift при рисовании</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Квадрат, круг или углы с шагом 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt при рисовании</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+перетаскивание</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Дублировать аннотацию</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space при рисовании</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Ненадолго переключиться на выбор и перемещение</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Уменьшить / увеличить кисть или шрифт</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Отменить / Повторить</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Выбрать цвет; Alt+клик применяет его</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1714,10 @@
         <translation>Не удалось захватить экран.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Клик копирует цвет · Alt+клик применяет его к разметке · Tab переключает формат · Escape выходит</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>Применено %1 и скопировано в буфер обмена</translation>
     </message>
@@ -1781,48 +1726,8 @@
         <translation>Скопировано %1 в буфер обмена</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Клик — копировать цвет, Alt+клик — применить к активному инструменту разметки, Tab — сменить формат, Escape — выход.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift сохраняет квадрат, Alt растит от центра, Space сдвигает при перетаскивании.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Введите текст, перетащите за край рамки для перемещения; Escape или Ctrl+Enter применяет.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Потяните для рисования (Ctrl — временный выбор; Shift — привязка, Alt — от центра, Space — сдвиг; V — возврат).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Нарисуйте следующий прямоугольник в любом месте, в том числе поверх другого.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter сохраняет снимок с аннотациями, или сначала выделите область обрезки. Escape закрывает.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Выделите прямоугольник, кликните по экрану для его захвата или откройте «Аннотировать». Escape сохранит полный снимок.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Выделите прямоугольник для новой области. Escape отменяет.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Кликните по прямоугольнику для изменения или нарисуйте новый.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Перетащите внутри для перемещения, за края для изменения размера. Потяните в другом месте для нового прямоугольника. Enter сохраняет.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Перетащите внутри для перемещения, за края для изменения размера. Потяните в другом месте для нового прямоугольника.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Наведите указатель на кнопки, чтобы увидеть названия и сочетания клавиш · F1 показывает всё</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1776,10 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>Сохранена %n область</numerusform><numerusform>Сохранено %n области</numerusform><numerusform>Сохранено %n областей</numerusform></translation>
+            <numerusform>Сохранена %n область</numerusform>
+            <numerusform>Сохранено %n области</numerusform>
+            <numerusform>Сохранено %n областей</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +2008,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Сочетание клавиш: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2027,10 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>Удалить %n закрепление навсегда?</numerusform><numerusform>Удалить %n закрепления навсегда?</numerusform><numerusform>Удалить %n закреплений навсегда?</numerusform></translation>
+            <numerusform>Удалить %n закрепление навсегда?</numerusform>
+            <numerusform>Удалить %n закрепления навсегда?</numerusform>
+            <numerusform>Удалить %n закреплений навсегда?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2428,8 @@
         <translation>Хуки после захвата и внешняя автоматизация</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2512,7 @@
         <translation>Выбрать на экране…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Логические пиксели относительно верхнего левого угла экрана. Снимки используют родное разрешение экрана.</translation>
     </message>
     <message>
@@ -2666,7 +2588,7 @@
         <translation>Глобальные логические координаты по всем экранам. Снимки объединяют пересечённые экраны с наибольшим масштабом.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Ни один из экранов этой области не подключён. При запуске ничего не сохраняется.</translation>
     </message>
     <message>
@@ -2928,6 +2850,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>«Замороженный» показывает момент нажатия Print. «Живой» не останавливает видео и снимает при сохранении. Space переключает режим в любой момент.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Сбросить положение панели</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>Снова показать подсказку при первом запуске</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Панель оверлея:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Сброс возвращает панель в верхний центр каждого экрана.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3201,10 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform></translation>
+            <numerusform>%n секунда</numerusform>
+            <numerusform>%n секунды</numerusform>
+            <numerusform>%n секунд</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3466,8 @@
         <translation>Отсутствует значение для --mode.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode должен быть 'frozen' или 'live'.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode должен быть &apos;frozen&apos; или &apos;live&apos;.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3480,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Нет недавних снимков.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last ожидает положительное число.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>С момента запуска glimply не измерено ни одного снимка, сделанного клавишей Print.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
