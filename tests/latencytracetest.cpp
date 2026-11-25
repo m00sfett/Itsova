@@ -36,22 +36,6 @@ private Q_SLOTS:
         QCOMPARE(latencyStats(values).medianUs, 10);
     }
 
-    void pressDelayFromMonotonicMilliseconds()
-    {
-        const qint64 now = 10'000'000'250; // 10000 s and 250 us
-        QCOMPARE(pressDelayUs(10'000'000 - 3, now), 3'250);
-        QCOMPARE(pressDelayUs(10'000'000, now), 250);
-        QVERIFY(!pressDelayUs(0, now)); // no timestamp
-        QVERIFY(!pressDelayUs(10'000'000 + 5, now)); // from the future
-        QVERIFY(!pressDelayUs(10'000'000 - 6'000, now)); // too old to belong to this capture
-    }
-
-    void pressDelayHandlesWrapped32BitClock()
-    {
-        const qint64 nowMs = 0x1'0000'0010LL; // 16 ms past a 32-bit wrap
-        QCOMPARE(pressDelayUs(0xFFFF'FFFELL, nowMs * 1000), 18'000);
-    }
-
     void marksArePerStageAndFirstWins()
     {
         LatencyTrace::begin(2);
@@ -78,20 +62,6 @@ private Q_SLOTS:
         // An area shortcut after the Print capture must not fill the request of the finished trace.
         LatencyTrace::mark(LatencyTrace::Stage::Request);
         QVERIFY(LatencyTrace::report().last().toObject().value(QStringLiteral("requestUs")).isNull());
-    }
-
-    void pressNoteMatchesTriggerInEitherOrder()
-    {
-        // Note first, trigger second.
-        LatencyTrace::notePress(LatencyTrace::nowUs() / 1000 - 2);
-        LatencyTrace::begin(1);
-        const qint64 before = LatencyTrace::report().last().toObject().value(QStringLiteral("pressToTriggerUs")).toInteger();
-        QVERIFY(before >= 2'000 && before < 1'000'000);
-        // Trigger first, note second (the note arrives after the blocking capture).
-        LatencyTrace::begin(1);
-        LatencyTrace::notePress(LatencyTrace::nowUs() / 1000 - 1);
-        const qint64 after = LatencyTrace::report().last().toObject().value(QStringLiteral("pressToTriggerUs")).toInteger();
-        QVERIFY(after >= 0 && after < 1'000'000);
     }
 
     void reportKeepsTheLastFifty()

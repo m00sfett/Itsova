@@ -190,8 +190,9 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
     } else if (subcommand == QLatin1String("latency")) {
         writeLine(out,
                   QStringLiteral("Usage: glimply latency [--last N] [--json]\n\n"
-                                 "Shows how long the last Print captures took, from the key press to the written file.\n"
-                                 "Times are milliseconds after glimply received the key; \"key\" is the delay before that.\n\n"
+                                 "Shows how long the last Print captures took, from the shortcut to the written file.\n"
+                                 "Times are milliseconds after glimply received the Print shortcut. The time before that, from\n"
+                                 "the key press, is unknown: KDE sends no key timestamp on Wayland.\n\n"
                                  "Options:\n"
                                  "  --last <N>                          Only the last N captures\n"
                                  "  --json                              Output JSON\n"
@@ -1343,7 +1344,6 @@ static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice
     }
     using Field = qint64 LatencySample::*;
     const QList<std::pair<QString, Field>> columns{
-        {QStringLiteral("key"), &LatencySample::pressToTriggerUs},
         {QStringLiteral("request"), &LatencySample::requestUs},
         {QStringLiteral("pixels"), &LatencySample::pixelsUs},
         {QStringLiteral("overlay"), &LatencySample::overlayUs},

@@ -7,8 +7,8 @@
 #
 # --pins pins the warm-up capture to the screen first, so every run waits for a visible pin.
 #
-# The trigger comes from kglobalaccel's invokeShortcut, which carries no key timestamp, so the
-# "key" column stays empty here; real key presses on the desktop fill it (see `glimply latency`).
+# Times start when glimply receives the trigger: KDE sends no key timestamp on Wayland, so the time
+# from the key press to the trigger is not measurable, here or on the desktop.
 set -euo pipefail
 
 runs=20
