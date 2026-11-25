@@ -171,7 +171,7 @@ CaptureSession::CaptureSession(App *app, Purpose purpose)
     , transientHintTimer_(new QTimer(this))
 {
     transientHintTimer_->setSingleShot(true);
-    transientHintTimer_->setInterval(2500);
+    transientHintTimer_->setInterval(2000); // feedback pills (#72, Q16)
     connect(transientHintTimer_, &QTimer::timeout, this, [this] {
         transientHint_.clear();
         changed();
@@ -694,8 +694,10 @@ void CaptureSession::setColorPickerActive(bool active)
         if (annotationController_.isEditingText()) {
             annotationController_.requestCommitActiveText(false);
         }
-        transientHint_.clear();
-        transientHintTimer_->stop();
+        // Entering the picker changes what a click does: say so once, as a feedback pill.
+        transientHint_ = tr("Click copies the color · Alt+Click applies it to markup · Tab switches the format · "
+                            "Escape exits");
+        transientHintTimer_->start();
         if (!desktopBounds_.contains(pickerCursorGlobal_)) {
             pickerCursorGlobal_ = QCursor::pos();
         }
@@ -884,40 +886,29 @@ void CaptureSession::dismissAreaPanels()
 
 QString CaptureSession::hint() const
 {
-    if (colorPickerActive_) {
-        return tr("Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape "
-                  "exits.");
-    }
-    if (dragging_) {
-        return tr("Shift keeps a square, Alt grows from the centre, Space repositions while dragging.");
-    }
+    // No permanent hint line (#72, Q16): short feedback, or the one-time first-start hint.
     if (!transientHint_.isEmpty()) {
         return transientHint_;
     }
-    if (annotationController_.isEditingText()) {
-        return tr("Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.");
+    if (firstHintPending()) {
+        return tr("Hover over buttons for names and shortcuts · F1 shows everything");
     }
-    if (annotationController_.tool() != ToolKind::Select) {
-        return tr("Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).");
+    return {};
+}
+
+bool CaptureSession::firstHintPending() const
+{
+    return purpose_ == Purpose::Print && !store().overlayFirstHintShown && panelDrawer_ != PanelDrawer::Help;
+}
+
+void CaptureSession::dismissFirstHint()
+{
+    if (store().overlayFirstHintShown || purpose_ != Purpose::Print) {
+        return;
     }
-    if (forceNew_) {
-        return tr("Drag the next rectangle anywhere, also over another one.");
-    }
-    if (selections_.isEmpty()) {
-        if (!annotations_.isEmpty()) {
-            return tr("Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.");
-        }
-        return purpose_ == Purpose::Print
-                   ? tr("Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full "
-                        "screenshot.")
-                   : tr("Drag a rectangle for the new area. Escape cancels.");
-    }
-    if (!selections_.active()) {
-        return tr("Click a rectangle to change it, or drag a new one.");
-    }
-    return purpose_ == Purpose::Print
-               ? tr("Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.")
-               : tr("Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.");
+    store().overlayFirstHintShown = true;
+    app_->saveSettings();
+    changed();
 }
 
 const QList<CaptureSession::Highlight> &CaptureSession::highlights() const
@@ -1831,6 +1822,7 @@ void CaptureSession::setCaptureDelay(int seconds, bool keepActive)
 
 void CaptureSession::toggleHelp()
 {
+    dismissFirstHint();
     togglePanelDrawer(PanelDrawer::Help);
 }
 
@@ -2055,6 +2047,7 @@ void CaptureOverlay::buildPanel()
         }
         session_->setPanelPosition(screen_.connector, panel_->pos());
     });
+    connect(panel_, &CapsulePanel::buttonHovered, this, [this] { session_->dismissFirstHint(); });
     connect(panel_, &CapsulePanel::resetRequested, this,
             [this] { session_->setPanelPosition(screen_.connector, std::nullopt); });
 
@@ -2089,6 +2082,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     using Drawer = CaptureSession::PanelDrawer;
     panel_->clearMainRow();
     drawerButtons_.clear();
+    mainButtons_.clear();
     saveButton_ = nullptr;
     delayButton_ = nullptr;
 
@@ -2097,6 +2091,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         auto *button = new PanelButton(icon, title, shortcut, panel_);
         connect(button, &QAbstractButton::clicked, this, action);
         panel_->addMainButton(button);
+        mainButtons_.append(button);
         return button;
     };
     const auto drawer = [&](Drawer kind, const QString &icon, const QString &title, const QString &shortcut) {
@@ -2736,6 +2731,14 @@ void CaptureOverlay::refreshPanel()
             it.value()->setActive(it.key() == int(drawer));
         }
     }
+    // F1 overview (#72, Q15): every button in its hover state at once, keys as keycaps below.
+    const bool overview = drawer == Drawer::Help;
+    for (const QPointer<PanelButton> &button : std::as_const(mainButtons_)) {
+        if (button) {
+            button->setForcedHover(overview);
+            button->setKeycapVisible(overview);
+        }
+    }
     if (saveButton_ && state == QLatin1String("selection")) {
         const int count = session_->selections().count();
         saveButton_->setTitle(count > 1 ? tr("Save %n Areas", nullptr, count) : tr("Save"));
@@ -2787,6 +2790,8 @@ void CaptureOverlay::placeHint()
         return;
     }
     hint_->setText(text);
+    // One line up to 720 px; a word-wrapped label would otherwise pick a narrow width by itself.
+    hint_->setFixedWidth(std::min(hint_->fontMetrics().horizontalAdvance(text) + 2, 720));
     hintPanel_->adjustSize();
     const QSize size = hintPanel_->sizeHint();
     const QRect panel = panel_->geometry();
@@ -2840,42 +2845,38 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         columns->addLayout(grid);
     };
 
-    QList<QPair<QString, QString>> mouse{
-        {tr("Drag"), tr("Draw a rectangle (or active markup tool)")},
-        {tr("Drag inside / edge"), tr("Move / resize the active rectangle or annotation")},
-        {tr("Shift / Alt while dragging"), tr("Keep a square or 15° snap / grow from centre or duplicate")},
-        {tr("Space while dragging"), tr("Reposition shape or selection live")},
-        {tr("Ctrl in markup tool"), tr("Temporarily switch to Select / Move")},
-        {tr("Click / Right-click"), tr("Activate / delete topmost annotation or rectangle")},
-        {tr("Double-click"), print ? tr("Edit text annotation or save rectangle") : tr("Save rectangle as area")},
+    // The F1 overview (#72, Q15): the buttons show their titles and keycaps; this table adds the
+    // modifiers and keys no button shows, grouped by what is being worked on.
+    QList<QPair<QString, QString>> select{
+        {tr("Drag"), print ? tr("New rectangle") : tr("New area")},
+        {tr("Shift while dragging"), tr("Keep a square")},
+        {tr("Alt while dragging"), tr("Grow from the centre")},
+        {tr("Space while dragging"), tr("Reposition live")},
+        {tr("Arrows / Shift+Arrows"), tr("Move by 1 px / 10 px")},
+        {tr("Alt+Arrows / Ctrl+Arrows"), tr("Resize from the centre / as a square")},
+        {tr("Delete"), tr("Delete the active rectangle")},
+        {tr("Double-click"), print ? tr("Save the rectangle") : tr("Save as area")},
+        {tr("Escape"), print ? tr("Step back, or close") : tr("Cancel")},
     };
     if (print) {
-        mouse.append({tr("Click, nothing drawn"), tr("Capture this monitor (before annotating)")});
+        select.insert(1, {tr("Click, nothing drawn"), tr("Capture this monitor")});
+        select.append({tr("Ctrl+E"), tr("Open in the editor window")});
     }
-    section(tr("Mouse"), mouse);
-
-    QList<QPair<QString, QString>> keys{
-        {tr("V / A R E B M T N X S"), print ? tr("Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight")
-                                          : tr("Selection modifiers work on all monitors")},
-        {tr("[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z"), tr("Step brush or font size  ·  Undo / Redo")},
-        {tr("Space"), tr("Switch between Frozen and Live (when idle)")},
-        {tr("Arrows / Shift+Arrows"), tr("Move active annotation or rectangle by 1 px / 10 px")},
-        {tr("Alt+Arrows / Ctrl+Arrows"), tr("Resize from centre / resize square")},
-        {tr("Enter"), print ? tr("Save selection or annotated screen") : tr("Save as area")},
-        {tr("Delete / Backspace"), tr("Delete active annotation or rectangle")},
-        {tr("Escape"), print ? tr("Commit text, step back, or close") : tr("Cancel")},
-        {tr("F1"), tr("Show or hide this help")},
-    };
-    if (!print) {
-        keys.removeFirst();
-        keys.removeFirst();
-    } else {
-        keys.insert(2, {tr("I"), tr("Pick pixel color (Tab cycles format, Alt+Click applies to markup)")});
-        keys.insert(3, {tr("Ctrl+E"), tr("Open selection or screen in Quick Editor window")});
-        keys.insert(4, {tr("P"), tr("Pin the selection to the screen (one pin per rectangle)")});
-        keys.insert(5, {tr("O"), tr("Copy the text of the selection (needs tesseract)")});
+    section(tr("Select"), select);
+    if (print) {
+        section(tr("Markup"),
+                {
+                    {QStringLiteral("V A R E B M T N X S"), tr("Pick a tool")},
+                    {tr("Shift while drawing"), tr("Square, circle or 15° steps")},
+                    {tr("Alt while drawing"), tr("Grow from the centre")},
+                    {tr("Alt+Drag"), tr("Duplicate an annotation")},
+                    {tr("Space while drawing"), tr("Reposition live")},
+                    {tr("Ctrl"), tr("Select and move for a moment")},
+                    {tr("[ / ]"), tr("Smaller / larger brush or font")},
+                    {tr("Ctrl+Z / Ctrl+Shift+Z"), tr("Undo / Redo")},
+                    {tr("I"), tr("Pick a color; Alt+Click applies it")},
+                });
     }
-    section(tr("Keys"), keys);
     return panel;
 }
 

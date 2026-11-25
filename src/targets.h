@@ -169,7 +169,8 @@ public:
     enum class OverlayStart { LastUsed, Frozen, Live };
     OverlayStart overlayStart = OverlayStart::LastUsed;
     bool lastOverlayFrozen = true; // the mode the overlay was in when it was last used
-    bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
+    // The overlay's one-time hint ("Hover over buttons…") was shown and dismissed (#72).
+    bool overlayFirstHintShown = false;
     // Where the user dragged the overlay panel, per monitor (monitorKey()), top-left in logical
     // monitor coordinates (#69). No entry: the panel places itself.
     QHash<QString, QPoint> overlayPanelPositions;

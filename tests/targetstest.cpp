@@ -197,18 +197,21 @@ void TargetsTest::overlayStartMode()
     QVERIFY(fresh.overlayStartsFrozen());
     fresh.lastOverlayFrozen = false;
     QVERIFY(!fresh.overlayStartsFrozen());
-    fresh.overlayHelpExpanded = false;
+    QVERIFY(!fresh.overlayFirstHintShown);
+    fresh.overlayFirstHintShown = true;
     {
         KConfig config(path, KConfig::SimpleConfig);
+        config.group(QStringLiteral("General")).writeEntry("OverlayHelpExpanded", true); // 0.8.0 key
         fresh.save(config);
     }
     KConfig config(path, KConfig::SimpleConfig);
     QVERIFY(!config.group(QStringLiteral("General")).hasKey("OverlayStartsFrozen"));
+    QVERIFY(!config.group(QStringLiteral("General")).hasKey("OverlayHelpExpanded")); // #72
     TargetStore reloaded;
     reloaded.load(config);
     QCOMPARE(reloaded.overlayStart, TargetStore::OverlayStart::LastUsed);
     QVERIFY(!reloaded.lastOverlayFrozen);
-    QVERIFY(!reloaded.overlayHelpExpanded);
+    QVERIFY(reloaded.overlayFirstHintShown);
 }
 
 void TargetsTest::monitorNames()

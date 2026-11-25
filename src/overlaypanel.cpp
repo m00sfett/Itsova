@@ -310,9 +310,31 @@ void PanelButton::setForcedHover(bool forced)
     }
 }
 
+void PanelButton::setKeycapVisible(bool visible)
+{
+    if (keycapVisible_ == visible) {
+        return;
+    }
+    keycapVisible_ = visible;
+    setFixedSize(sizeHint());
+    update();
+}
+
+bool PanelButton::isKeycapVisible() const
+{
+    return keycapVisible_;
+}
+
+QString PanelButton::keycapText() const
+{
+    // Several keys ("V A R E B M T N X S") are listed in the overview's table instead.
+    return shortcut_.contains(QLatin1Char(' ')) ? QString() : shortcut_;
+}
+
 QSize PanelButton::sizeHint() const
 {
-    return {side, side};
+    // Every button of the overview grows, with or without a keycap, so the row stays aligned.
+    return {side, keycapVisible_ ? side + keycapHeight : side};
 }
 
 bool PanelButton::event(QEvent *event)
@@ -325,6 +347,12 @@ bool PanelButton::event(QEvent *event)
 
 void PanelButton::enterEvent(QEnterEvent *event)
 {
+    for (QWidget *ancestor = parentWidget(); ancestor; ancestor = ancestor->parentWidget()) {
+        if (auto *panel = qobject_cast<CapsulePanel *>(ancestor)) {
+            Q_EMIT panel->buttonHovered();
+            break;
+        }
+    }
     hovered_ = true;
     animateHover(true);
     toolTipTimer_->start();
@@ -417,16 +445,19 @@ void PanelButton::paintEvent(QPaintEvent *)
     }
     const QPalette pal = palette();
     const QColor text = primary_ ? pal.color(QPalette::HighlightedText) : pal.color(QPalette::WindowText);
-    const QRectF circle = QRectF(rect()).adjusted(1, 1, -1, -1);
+    const QRect face(0, 0, side, side); // the keycap row of the F1 overview sits below
+    const QRectF circle = QRectF(face).adjusted(1, 1, -1, -1);
 
     if (primary_) {
         painter.setPen(Qt::NoPen);
         painter.setBrush(pal.color(QPalette::Highlight));
         painter.drawEllipse(circle);
     }
-    if (hover_ > 0 || isDown()) {
+    // The F1 overview shows every title at once; the hover disc stays for the pointer only.
+    const qreal disc = forcedHover_ && !hovered_ ? 0.0 : hover_;
+    if (disc > 0 || isDown()) {
         painter.setPen(Qt::NoPen);
-        const int alpha = isDown() ? 40 : int(20 * hover_);
+        const int alpha = isDown() ? 40 : int(20 * disc);
         painter.setBrush(withAlpha(primary_ ? pal.color(QPalette::HighlightedText) : pal.color(QPalette::WindowText),
                                    alpha));
         painter.drawEllipse(circle);
@@ -435,7 +466,7 @@ void PanelButton::paintEvent(QPaintEvent *)
     // Icon (or glyph): sharp fades out, the blurred copy stays at about 15 %.
     const qreal sharpOpacity = 1.0 - hover_;
     const qreal blurOpacity = fadedIconOpacity * hover_;
-    const QRect iconRect((width() - iconSide) / 2, (height() - iconSide) / 2, iconSide, iconSide);
+    const QRect iconRect((side - iconSide) / 2, (side - iconSide) / 2, iconSide, iconSide);
     const qreal base = painter.opacity();
     if (glyph_.isEmpty()) {
         rebuildIconCache();
@@ -454,7 +485,7 @@ void PanelButton::paintEvent(QPaintEvent *)
         painter.setFont(glyphFont);
         painter.setPen(text);
         painter.setOpacity(base * (sharpOpacity + blurOpacity));
-        painter.drawText(rect(), Qt::AlignCenter, glyph_);
+        painter.drawText(face, Qt::AlignCenter, glyph_);
     }
     painter.setOpacity(base);
 
@@ -465,12 +496,12 @@ void PanelButton::paintEvent(QPaintEvent *)
         const QFontMetricsF metrics(font);
         const qreal lineHeight = metrics.height() * 0.95;
         const qreal total = lineHeight * layout.lines.size();
-        qreal y = (height() - total) / 2.0;
+        qreal y = (side - total) / 2.0;
         painter.setFont(font);
         painter.setPen(text);
         painter.setOpacity(base * hover_);
         for (const QString &line : layout.lines) {
-            painter.drawText(QRectF(4, y, width() - 8, lineHeight), Qt::AlignCenter, line);
+            painter.drawText(QRectF(4, y, side - 8, lineHeight), Qt::AlignCenter, line);
             y += lineHeight;
         }
         painter.setOpacity(base);
@@ -480,11 +511,11 @@ void PanelButton::paintEvent(QPaintEvent *)
     if (active_) {
         painter.setPen(Qt::NoPen);
         painter.setBrush(pal.color(QPalette::Highlight));
-        painter.drawRoundedRect(QRectF(width() / 2.0 - 8, height() - 5, 16, 3), 1.5, 1.5);
+        painter.drawRoundedRect(QRectF(side / 2.0 - 8, side - 5, 16, 3), 1.5, 1.5);
     } else if (opensDrawer_) {
         painter.setPen(Qt::NoPen);
         painter.setBrush(withAlpha(text, int(140 * (1.0 - hover_))));
-        painter.drawEllipse(QPointF(width() / 2.0, height() - 6), 1.5, 1.5);
+        painter.drawEllipse(QPointF(side / 2.0, side - 6), 1.5, 1.5);
     }
 
     if (!badge_.isEmpty()) {
@@ -494,13 +525,30 @@ void PanelButton::paintEvent(QPaintEvent *)
         const QFontMetricsF metrics(badgeFont);
         const qreal w = std::max(16.0, metrics.horizontalAdvance(badge_) + 8);
         const bool rtl = layoutDirection() == Qt::RightToLeft;
-        const QRectF pill(rtl ? 4 : width() - 4 - w, 4, w, 16);
+        const QRectF pill(rtl ? 4 : side - 4 - w, 4, w, 16);
         painter.setPen(Qt::NoPen);
         painter.setBrush(pal.color(QPalette::Highlight));
         painter.drawRoundedRect(pill, 8, 8);
         painter.setFont(badgeFont);
         painter.setPen(pal.color(QPalette::HighlightedText));
         painter.drawText(pill, Qt::AlignCenter, badge_);
+    }
+
+    // F1 overview: the shortcut as a keycap under the button (#72, Q15).
+    const QString keycap = keycapText();
+    if (keycapVisible_ && !keycap.isEmpty()) {
+        QFont capFont = font();
+        capFont.setPointSizeF(8);
+        capFont.setWeight(QFont::DemiBold);
+        const QFontMetricsF metrics(capFont);
+        const qreal w = std::min<qreal>(side - 2, std::max(18.0, metrics.horizontalAdvance(keycap) + 10));
+        const QRectF cap((side - w) / 2.0, side + 2, w, keycapHeight - 4);
+        painter.setPen(withAlpha(pal.color(QPalette::WindowText), 90));
+        painter.setBrush(withAlpha(pal.color(QPalette::WindowText), 22));
+        painter.drawRoundedRect(cap.adjusted(0.5, 0.5, -0.5, -0.5), 3, 3);
+        painter.setFont(capFont);
+        painter.setPen(pal.color(QPalette::WindowText));
+        painter.drawText(cap, Qt::AlignCenter, metrics.elidedText(keycap, Qt::ElideRight, w - 4));
     }
 }
 
