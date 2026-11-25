@@ -364,23 +364,29 @@ QRect snapMovedRectToMonitorEdges(const QRect &rect, const QList<QRect> &screenR
     return clampToBounds(out, desktopBounds);
 }
 
-QPoint placeOverlayActionBar(const QRect &anchorRect, const QSize &barSize, const QSize &overlaySize,
-                             int topObstacleBottom, int barGap, Qt::LayoutDirection direction)
+QPoint placeOverlayPanel(const QSize &panelSize, const QSize &overlaySize, const QRect &selection,
+                         const std::optional<QPoint> &userPosition, int margin)
 {
-    const int x = direction == Qt::RightToLeft ? anchorRect.left() : anchorRect.right() + 1 - barSize.width();
-    QPoint position(x, anchorRect.bottom() + 1 + barGap);
-    if (position.y() + barSize.height() > overlaySize.height()) {
-        position.setY(anchorRect.top() - barGap - barSize.height());
-        if (position.y() < topObstacleBottom && position.y() < 0) {
-            position.setY(anchorRect.bottom() - barSize.height() - barGap);
-        }
+    const int maxX = std::max(0, overlaySize.width() - panelSize.width());
+    const int maxY = std::max(0, overlaySize.height() - panelSize.height());
+    if (userPosition) {
+        return {std::clamp(userPosition->x(), 0, maxX), std::clamp(userPosition->y(), 0, maxY)};
     }
-    if (position.y() < 0) {
-        position.setY(anchorRect.bottom() - barSize.height() - barGap);
+    const int x = maxX / 2;
+    const QPoint top(x, std::min(margin, maxY));
+    if (!selection.isValid()) {
+        return top;
     }
-    position.setX(std::clamp(position.x(), 0, std::max(0, overlaySize.width() - barSize.width())));
-    position.setY(std::clamp(position.y(), 0, std::max(0, overlaySize.height() - barSize.height())));
-    return position;
+    const QPoint bottom(x, std::max(0, maxY - margin));
+    const auto covered = [&](const QPoint &at) {
+        const QRect overlap = QRect(at, panelSize).adjusted(-margin, -margin, margin, margin).intersected(selection);
+        return overlap.isEmpty() ? qint64(0) : qint64(overlap.width()) * overlap.height();
+    };
+    const qint64 atTop = covered(top);
+    if (atTop == 0) {
+        return top;
+    }
+    return covered(bottom) < atTop ? bottom : top;
 }
 
 QRect overlayCloseButtonRect(const QRect &globalRect, const QRect &bounds, int buttonSize,

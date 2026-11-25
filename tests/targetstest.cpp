@@ -54,6 +54,7 @@ private Q_SLOTS:
     void legacyRegionConfigIsMigrated();
     void overlayStartMode();
     void monitorNames();
+    void overlayPanelPositionsRoundTrip();
     void removingAreaDropsItFromGroups();
     void groupPlanCapturesEachMonitorOnce();
     void groupCursorOverridesTargets();
@@ -264,6 +265,39 @@ void TargetsTest::monitorNames()
     QVERIFY(reloaded.monitorNames.isEmpty());
     store.setMonitorName(dp, QStringLiteral("  "));
     QVERIFY(store.monitorNames.isEmpty());
+}
+
+void TargetsTest::overlayPanelPositionsRoundTrip()
+{
+    const ScreenInfo dp = testLayout().at(0);
+    TargetStore store;
+    store.overlayPanelPositions.insert(TargetStore::monitorKey(dp), QPoint(40, 900));
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+    TargetStore reloaded;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        reloaded.load(config);
+    }
+    QCOMPARE(reloaded.overlayPanelPositions.value(TargetStore::monitorKey(dp)), QPoint(40, 900));
+
+    // Resetting removes the entry from the file, too.
+    reloaded.overlayPanelPositions.clear();
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        reloaded.save(config);
+    }
+    TargetStore again;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        again.load(config);
+    }
+    QVERIFY(again.overlayPanelPositions.isEmpty());
 }
 
 void TargetsTest::removingAreaDropsItFromGroups()

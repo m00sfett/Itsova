@@ -24,16 +24,15 @@
 #include <optional>
 
 class QLabel;
-class QPushButton;
 class QTimer;
-class QToolButton;
 
 namespace glimply
 {
 
-class AnnotationToolbar;
 class App;
+class CapsulePanel;
 class CaptureOverlay;
+class PanelButton;
 class InlineTextEditor;
 struct RenderedOutput;
 
@@ -99,9 +98,26 @@ public:
     [[nodiscard]] QList<ScreenInfo> intersectingScreens(const QRect &globalRect) const;
     [[nodiscard]] QStringList intersectingConnectors(const QRect &globalRect) const;
     [[nodiscard]] QString actionBarConnector(const Selection &selection) const;
+    // Opens the "Save as Area" form in the panel for the active rectangle.
     void showAreaPanel();
+    // Closes that form, if it is open.
     void dismissAreaPanels();
     [[nodiscard]] QString hint() const;
+
+    // The one panel of the session (#69). It shows on one monitor: where the pointer is while
+    // nothing is selected, then where the selection is; a monitor the user dragged it to wins.
+    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help };
+    [[nodiscard]] PanelDrawer panelDrawer() const;
+    void setPanelDrawer(PanelDrawer drawer);
+    // A second click on the button of the open drawer closes it.
+    void togglePanelDrawer(PanelDrawer drawer);
+    [[nodiscard]] QString panelConnector() const;
+    void notePointerOn(const QString &connector);
+    // Where the user put the panel on this monitor (top-left, monitor coordinates), if anywhere.
+    [[nodiscard]] std::optional<QPoint> panelPosition(const QString &connector) const;
+    void setPanelPosition(const QString &connector, const std::optional<QPoint> &position);
+    // The panel was dropped at globalTopLeft with the pointer at globalPointer, on another monitor.
+    void movePanelToMonitor(const QPoint &globalPointer, const QPoint &globalTopLeft);
     // Outlines shown while the user hovers an area or a window in a list (global logical rects).
     struct Highlight {
         QRect rect;
@@ -192,7 +208,6 @@ private:
     bool forceShowOverlay_ = false;
     bool textMode_ = false;
     bool frozen_ = true;
-    bool markupVisible_ = false;
     bool forceNew_ = false;
     bool dragging_ = false;
     bool dragLoupeActive_ = false;
@@ -212,6 +227,9 @@ private:
     QTimer *transientHintTimer_ = nullptr;
     QList<Highlight> highlights_;
     QList<QPointer<CaptureOverlay>> overlays_;
+    PanelDrawer panelDrawer_ = PanelDrawer::None;
+    QString pointerConnector_;
+    QString manualPanelConnector_;
     QString printPath_;
     QFuture<PrintWrite> printWrite_;
     bool printWritePending_ = false;
@@ -231,8 +249,6 @@ public:
     [[nodiscard]] InlineTextEditor *textEditor() const;
     void startInlineTextEdit(const AnnotationItem &item, bool isExisting);
     void stopInlineTextEdit();
-    void openAreaPanel();
-    void closeAreaPanel();
     void refresh();
 
 protected:
@@ -250,23 +266,27 @@ protected:
 private:
     enum class Drag { None, Pending, Create, Move, Resize };
 
-    void buildTopBar();
-    void buildMarkupBar();
+    void buildPanel();
+    // "start", "selection" or "area": which main row the panel shows.
+    [[nodiscard]] QString panelState() const;
+    void rebuildMainRow(const QString &state);
+    // What a drawer shows depends on more than its kind; it is rebuilt when this changes.
+    [[nodiscard]] QString drawerSignature(CaptureSession::PanelDrawer drawer) const;
+    [[nodiscard]] QWidget *buildDrawer(CaptureSession::PanelDrawer drawer);
     [[nodiscard]] QWidget *buildHelpPanel(QWidget *parent) const;
-    void buildActionBar();
-    void showAreaPanel();
-    void showActionButtons();
-    void placeActionBar();
-    void fillAreasMenu();
-    void fillWindowsMenu();
-    void fillDelayMenu();
+    [[nodiscard]] QWidget *buildWindowList();
+    [[nodiscard]] QWidget *buildAreaList();
+    [[nodiscard]] QWidget *buildDelayRow();
+    [[nodiscard]] QWidget *buildMoreRow();
+    [[nodiscard]] QWidget *buildAreaForm();
+    void refreshPanel();
+    void placeHint();
     void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
     void updateCursor(const QPoint &globalPos);
     [[nodiscard]] QPoint toGlobalPoint(const QPoint &localPos) const;
     [[nodiscard]] QRect toLocalRect(const QRect &globalRect) const;
     [[nodiscard]] QPointF toGlobalLogical(const QPointF &localPos) const;
-    [[nodiscard]] const Selection *actionBarSelection() const;
     [[nodiscard]] Qt::Edges edgesAt(const QRect &globalRect, const QPoint &globalPos) const;
     [[nodiscard]] QRect closeButtonGlobal(const QRect &globalRect) const;
     // Rectangle whose delete button is under globalPos (active one, or the hovered one), or 0.
@@ -284,23 +304,18 @@ private:
     QRect dragStartRect_;
     Qt::Edges dragEdges_;
 
-    QWidget *topBar_ = nullptr;
-    QWidget *markupPanel_ = nullptr;
-    AnnotationToolbar *annotationToolbar_ = nullptr;
     InlineTextEditor *textEditor_ = nullptr;
+    CapsulePanel *panel_ = nullptr;
+    QWidget *hintPanel_ = nullptr;
     QLabel *hint_ = nullptr;
-    QToolButton *annotateButton_ = nullptr;
-    QToolButton *pickColorButton_ = nullptr;
-    QToolButton *delayButton_ = nullptr;
-    QToolButton *helpButton_ = nullptr;
-    QWidget *helpPanel_ = nullptr;
-    QToolButton *frozenButton_ = nullptr;
-    QToolButton *liveButton_ = nullptr;
-    QWidget *actionBar_ = nullptr;
-    QWidget *actionButtons_ = nullptr;
-    QWidget *areaPanel_ = nullptr;
-    QLabel *sizeLabel_ = nullptr;
-    QPushButton *saveButton_ = nullptr;
+    QString builtState_;
+    CaptureSession::PanelDrawer builtDrawer_ = CaptureSession::PanelDrawer::None;
+    QString builtDrawerSignature_;
+    QHash<int, QPointer<PanelButton>> drawerButtons_;
+    QPointer<PanelButton> saveButton_;
+    QPointer<PanelButton> delayButton_;
+    bool panelDragging_ = false;
+    QPoint panelGrabOffset_;
 };
 
 } // namespace glimply

@@ -101,6 +101,7 @@ add_library(glimply_ui STATIC
     src/countdowntimer.cpp
     src/exportdialog.cpp
     src/mcpconfirmdialog.cpp
+    src/overlaypanel.cpp
     src/pinwindow.cpp
     src/pixelloupe.cpp
     src/quickeditorwindow.cpp
@@ -195,6 +196,9 @@ if(BUILD_TESTING)
     add_executable(intervaltest tests/intervaltest.cpp)
     target_link_libraries(intervaltest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME interval COMMAND intervaltest)
+    add_executable(overlaypaneltest tests/overlaypaneltest.cpp)
+    target_link_libraries(overlaypaneltest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME overlaypanel COMMAND overlaypaneltest)
     add_executable(latencytracetest tests/latencytracetest.cpp)
     target_link_libraries(latencytracetest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME latencytrace COMMAND latencytracetest)
@@ -225,6 +229,10 @@ if(BUILD_TESTING)
     add_executable(ocrtest tests/ocrtest.cpp)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)
+
+    # Opt-in visual check of the overlay panel (#69); renders PNG files, never run by CTest.
+    add_executable(glimply-panel-shots EXCLUDE_FROM_ALL tests/panelshots.cpp)
+    target_link_libraries(glimply-panel-shots PRIVATE glimply_ui)
 
     # Opt-in only: this executable reads the real desktop and is never run by CTest.
     add_executable(glimply-capture-smoke EXCLUDE_FROM_ALL tests/capturesmoke.cpp)

@@ -170,6 +170,9 @@ public:
     OverlayStart overlayStart = OverlayStart::LastUsed;
     bool lastOverlayFrozen = true; // the mode the overlay was in when it was last used
     bool overlayHelpExpanded = true; // the control overview in the overlay's top bar
+    // Where the user dragged the overlay panel, per monitor (monitorKey()), top-left in logical
+    // monitor coordinates (#69). No entry: the panel places itself.
+    QHash<QString, QPoint> overlayPanelPositions;
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
     bool showSelectionLoupe = true;

@@ -1,0 +1,124 @@
+#include "overlaypanel.h"
+
+#include <QFontMetricsF>
+#include <QLabel>
+#include <QSignalSpy>
+#include <QTest>
+
+using namespace glimply;
+
+class OverlayPanelTest : public QObject
+{
+    Q_OBJECT
+
+private Q_SLOTS:
+    void shortTitleKeepsTheLargestSize()
+    {
+        const PanelTitleLayout layout = fitPanelTitle(QStringLiteral("Save"), QFont(), 56);
+        QCOMPARE(layout.lines, QStringList{QStringLiteral("Save")});
+        QCOMPARE(layout.pixelSize, 11.0);
+        QVERIFY(!layout.shrunk);
+        QVERIFY(!layout.elided);
+    }
+
+    void longTitleWrapsIntoAtMostThreeLines()
+    {
+        const PanelTitleLayout layout = fitPanelTitle(QStringLiteral("Im Fenster bearbeiten"), QFont(), 56);
+        QVERIFY(!layout.elided);
+        QVERIFY(layout.lines.size() >= 2);
+        QVERIFY(layout.lines.size() <= 3);
+        QCOMPARE(layout.lines.join(QLatin1Char(' ')), QStringLiteral("Im Fenster bearbeiten"));
+    }
+
+    void wordsAreNeverSplitBeforeEliding()
+    {
+        // One word wider than the button at every size: shrunk to the minimum, then elided.
+        const PanelTitleLayout layout =
+            fitPanelTitle(QStringLiteral("Donaudampfschifffahrtsgesellschaftskapitän"), QFont(), 56);
+        QVERIFY(layout.elided);
+        QCOMPARE(layout.pixelSize, 8.0);
+        QCOMPARE(layout.lines.size(), 1);
+        QVERIFY(layout.lines.first().endsWith(QChar(0x2026)));
+    }
+
+    void linesFitTheWidth()
+    {
+        const QStringList titles{QStringLiteral("Добавить прямоугольник"), QStringLiteral("Tous les écrans"),
+                                 QStringLiteral("Alle Bildschirme"), QStringLiteral("すべてのディスプレイ")};
+        for (const QString &title : titles) {
+            const PanelTitleLayout layout = fitPanelTitle(title, QFont(), 56);
+            QFont font;
+            font.setPointSizeF(layout.pixelSize * 0.75);
+            font.setWeight(QFont::DemiBold);
+            const QFontMetricsF metrics(font);
+            QVERIFY2(layout.lines.size() <= 3, qPrintable(title));
+            for (const QString &line : layout.lines) {
+                QVERIFY2(metrics.horizontalAdvance(line) <= 56.5, qPrintable(title + QStringLiteral(": ") + line));
+            }
+        }
+    }
+
+    void toolTipShowsEveryKey()
+    {
+        const QString tip = panelToolTip(QStringLiteral("Annotate"), QStringLiteral("V A R E B M T N X S"));
+        QVERIFY(tip.contains(QStringLiteral("<b>Annotate</b>")));
+        QCOMPARE(tip.count(QStringLiteral("<code>")), 10);
+        QVERIFY(!tip.contains(QChar(0x2026)));
+        QVERIFY(!panelToolTip(QStringLiteral("More"), QString()).contains(QStringLiteral("<code>")));
+        // Titles are escaped.
+        QVERIFY(panelToolTip(QStringLiteral("A & <B>"), QString()).contains(QStringLiteral("A &amp; &lt;B&gt;")));
+    }
+
+    void buttonHasFixedSizeAndAccessibleName()
+    {
+        PanelButton button(QStringLiteral("document-save"), QStringLiteral("Save"), QStringLiteral("Enter"), nullptr);
+        QCOMPARE(button.size(), QSize(64, 64));
+        QCOMPARE(button.accessibleName(), QStringLiteral("Save (Enter)"));
+        button.setShortcutText(QString());
+        QCOMPARE(button.accessibleName(), QStringLiteral("Save"));
+        QSignalSpy clicked(&button, &QAbstractButton::clicked);
+        button.click();
+        QCOMPARE(clicked.count(), 1);
+    }
+
+    void drawerGrowsInsideThePanel()
+    {
+        CapsulePanel panel(nullptr);
+        for (int i = 0; i < 4; ++i) {
+            panel.addMainButton(new PanelButton(QStringLiteral("edit-copy"), QStringLiteral("Copy"), QString(), &panel));
+        }
+        panel.adjustSize();
+        const QSize closed = panel.size();
+        QVERIFY(closed.height() >= 64);
+        QVERIFY(!panel.drawerOpen());
+
+        auto *content = new QLabel(QStringLiteral("drawer"));
+        content->setFixedSize(500, 120);
+        panel.setDrawer(content);
+        QVERIFY(panel.drawerOpen());
+        QVERIFY(panel.size().height() >= closed.height() + 120);
+        QVERIFY(panel.size().width() > closed.width()); // a drawer may be wider than the main row
+
+        panel.setDrawer(nullptr);
+        QVERIFY(!panel.drawerOpen());
+        QCOMPARE(panel.size(), closed);
+    }
+
+    void clearingTheMainRowRemovesButtons()
+    {
+        CapsulePanel panel(nullptr);
+        panel.addMainButton(new PanelButton(QStringLiteral("edit-copy"), QStringLiteral("Copy"), QString(), &panel));
+        panel.addGroupGap();
+        panel.addMainButton(new PanelButton(QStringLiteral("window-close"), QStringLiteral("Close"), QString(), &panel));
+        panel.adjustSize();
+        const int withButtons = panel.width();
+        panel.clearMainRow();
+        QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+        panel.adjustSize();
+        QVERIFY(panel.width() < withButtons);
+        QCOMPARE(panel.findChildren<PanelButton *>().size(), 0);
+    }
+};
+
+QTEST_MAIN(OverlayPanelTest)
+#include "overlaypaneltest.moc"

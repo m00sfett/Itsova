@@ -8,6 +8,8 @@
 #include <QSize>
 #include <Qt>
 
+#include <optional>
+
 namespace glimply
 {
 
@@ -65,8 +67,11 @@ struct SelectionConstraints {
                                                 const QRect &desktopBounds, int threshold = monitorEdgeSnapPx);
 
 // Placement helpers for overlay chrome (capture rects and monitors are never mirrored in RTL).
-[[nodiscard]] QPoint placeOverlayActionBar(const QRect &anchorRect, const QSize &barSize, const QSize &overlaySize,
-                                           int topObstacleBottom, int barGap, Qt::LayoutDirection direction);
+// The session panel on one monitor (#69, Q5b/Q17), in overlay coordinates. A position the user
+// chose wins and is only kept on the monitor. Otherwise the panel sits top centre and moves to the
+// bottom centre when it would cover the selection (the side that covers less, if both do).
+[[nodiscard]] QPoint placeOverlayPanel(const QSize &panelSize, const QSize &overlaySize, const QRect &selection,
+                                       const std::optional<QPoint> &userPosition, int margin);
 [[nodiscard]] QRect overlayCloseButtonRect(const QRect &globalRect, const QRect &bounds, int buttonSize,
                                            Qt::LayoutDirection direction);
 [[nodiscard]] QPointF overlaySelectionBadgeCenter(const QRectF &frame, Qt::LayoutDirection direction);
