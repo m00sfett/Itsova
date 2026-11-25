@@ -743,6 +743,14 @@
         <translation>最近のキャプチャ</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>録画を保存しました</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>録画に失敗しました</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>インターバル: %1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>画面の色を取得</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>画面録画の開始/停止</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>画面録画の一時停止/再開</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 をクリップボードにコピーしました</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>録画をコピーしました</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>不明な MCP ツール: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>録画するウィンドウは既に閉じられています。</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>選択範囲</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>範囲 %1 のディスプレイが接続されていません。</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>グループは録画できません。その中の対象を一つ選んでください。</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>不明な録画対象: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>録画する範囲は、接続されているどのディスプレイ上にもありません。</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>既に録画中です。</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>録画</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>フォルダー %1 を作成できませんでした。</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>四角形を追加</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>録画</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>範囲とウィンドウ</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>録画を開始</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>ウィンドウ</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1、%2 fps · 停止: システムトレイのglimplyをクリック</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>ライブに戻す</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>エディターウィンドウで開く</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>四角形を動画として録画、または録画する対象を選択</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>キャプチャリクエストに有効な対象または形式がありません。</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>既に録画中です。</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>既に録画中です。</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>録画する対象がありません。</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin は glimply に画面録画を提供していません。デスクトップファイルでスクリーンキャストのインターフェースが許可されるように glimply を再インストールしてから、再度ログインしてください。</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin から画面ストリームが届きませんでした。</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>このシステムには %1 録画用のエンコーダーがありません(FFmpeg に含まれていません)。</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>録画をエンコードできませんでした。</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>録画はフレームを1つも取得せずに終了しました。</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin が画面ストリームを拒否しました。</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>履歴を消去しました</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>録画形式</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): どこでも再生できます</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: アニメーション画像、音声なし、ファイルが大きめ</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): Web向けの小さいファイル</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>録画:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>録画のフレームレート</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>マウスポインターを表示</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>フレームレート:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>録画の開始/停止のショートカット</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>録画の一時停止/再開のショートカット</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>開始/停止:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>一時停止:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>ショートカット:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>オーバーレイ(Ctrl+R)から録画するか、開始/停止のショートカットで録画します。ショートカットは前回の対象を再び録画します。GIF の録画では最大 %1 fps を使います。録画に音声は含まれません。</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>キャプチャ用フォルダー</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>一覧を消去します。画像ファイルはそのまま残ります。</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>%1 の録画を開始しています…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>%1 の録画は %2 で一時停止中</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>%1 の録画を保存しています…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>%1 を録画中: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>%1 秒後にキャプチャ…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>実行中のインターバル: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>録画を停止 (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>録画を再開</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>録画を一時停止</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

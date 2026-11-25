@@ -109,7 +109,7 @@ public:
 
     // The one panel of the session (#69). It shows on one monitor: where the pointer is while
     // nothing is selected, then where the selection is; a monitor the user dragged it to wins.
-    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help };
+    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help, Record };
     [[nodiscard]] PanelDrawer panelDrawer() const;
     void setPanelDrawer(PanelDrawer drawer);
     // A second click on the button of the open drawer closes it.
@@ -148,6 +148,15 @@ public:
     void copyText(const QString &preferredConnector = QString());
     // Text mode: no Print snapshot is saved and Enter copies text instead of saving.
     void setTextMode(bool on);
+    // Screen recording (#30): the session only chooses what to record. It starts live, saves no
+    // Print file and opens the Record drawer.
+    void setRecordMode(bool on);
+    [[nodiscard]] bool recordMode() const { return recordMode_; }
+    // Closes the overlay and records targetId (see App::startRecording) once it is gone, after the
+    // delay chosen in the panel.
+    void record(const QString &targetId);
+    // Records the selection (all rectangles: their bounding box).
+    void recordSelection();
     [[nodiscard]] bool textMode() const;
     // Returns an error message, or an empty string when the areas were saved.
     QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds = 0);
@@ -212,6 +221,7 @@ private:
     std::optional<bool> forcedFrozen_;
     bool forceShowOverlay_ = false;
     bool textMode_ = false;
+    bool recordMode_ = false;
     bool frozen_ = true;
     bool forceNew_ = false;
     bool dragging_ = false;
@@ -282,6 +292,7 @@ private:
     [[nodiscard]] QWidget *buildDrawer(CaptureSession::PanelDrawer drawer);
     [[nodiscard]] QWidget *buildHelpPanel(QWidget *parent) const;
     [[nodiscard]] QWidget *buildWindowList();
+    [[nodiscard]] QWidget *buildRecordList();
     [[nodiscard]] QWidget *buildAreaList();
     [[nodiscard]] QWidget *buildDelayRow();
     [[nodiscard]] QWidget *buildMarkupDrawer();

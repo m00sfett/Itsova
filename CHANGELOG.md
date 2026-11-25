@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - Unreleased
+
+Screen recording (milestone 0.10.0, #30). The repository stays private until 1.0.0.
+
+### Added
+
+- Screen recording to MP4 (H.264), GIF or WebM (VP9) (#30): a monitor, all monitors, a saved area, a rectangle drawn in the overlay or a single window. KWin hands glimply a PipeWire stream of the logical region or the window (`zkde_screencast_unstable_v1`, granted through the desktop file like `ScreenShot2`) and KPipeWire encodes it; region streams use each monitor's real scale, so a 125 % monitor records at its native resolution. Recordings go into the capture folder with the capture file name template, show up in the history, the notification and the post-capture hook (trigger `record`), and *Edit* opens them in the default player. No sound in this release.
+- Overlay: *Record* (`Ctrl+R`) in the start row opens a drawer with *This Monitor*, *All Monitors*, the saved areas and the open windows; with a selection, *Record* records the rectangle (several rectangles: their bounding box). The overlay is gone before the stream starts, and the panel's delay applies. The F1 overview lists `Ctrl+R`.
+- Start and stop without the overlay: a global *Start or stop screen recording* shortcut records the last target again (or opens the overlay to choose one), *Pause or resume screen recording* pauses; both are unbound by default and set in *Settings → Storage* or System Settings. The widget gains a *Record* button.
+- While recording, the tray icon shows a record disc (two bars when paused) with the elapsed time in its tooltip; a click on it stops the recording, and its menu offers *Stop Recording* and *Pause*/*Resume*. The widget shows the same state with *Pause* and *Stop*, and a click on its icon stops as well. Quitting glimply finishes a running recording first.
+- *Settings → Storage → Recordings*: format, frame rate (15, 30 or 60 fps; GIF at most 15) and whether the mouse pointer is recorded.
+- D-Bus: `StartRecording(targetId, delaySeconds)`, `StopRecording()`, `PauseRecording(paused)`, `RecordingState()`, `OpenRecordOverlay()` and the `RecordingChanged` signal.
+
+### Changed
+
+- New build and runtime dependencies: Qt Wayland, `plasma-wayland-protocols` (build), KPipeWire and FFmpeg. With KPipeWire before 6.4 (Debian 13 ships 6.3) recording works but cannot pause; the pause controls are left out there.
+
+### Fixed
+
+- KWin sends a new frame only when the screen changes, so a recording ending on a still picture would stop at the last change (a 10 s recording came out 6.9 s long). glimply now holds the last frame until the moment of *Stop* by rewriting only the container timing with FFmpeg (stream copy, no re-encoding).
+- Pauses are cut out of the file: KPipeWire drops the frames of a pause but its clock keeps running, so a paused recording showed the pause as a still picture. The same FFmpeg pass shifts the frames after each pause back by its length.
+
 ## [0.9.0] - Unreleased
 
 Overlay redesign and capture latency (milestone 0.9.0). The repository stays private until 1.0.0.

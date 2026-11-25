@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <!-- Tray recording variant (#30): a record disc inside the viewfinder, in roteson.de colours. -->
+  <rect x="0.5" y="0.5" width="21" height="21" rx="4.5" fill="#B11218" stroke="#080604" stroke-width="1"/>
+  <g transform="translate(11 11) scale(0.86) translate(-11 -11)" fill="#FFD21F">
+    <path d="M3 3h6v2H5v4H3zM13 3h6v6h-2V5h-4zM19 13v6h-6v-2h4v-4zM3 13h2v4h4v2H3z"/>
+    <circle cx="11" cy="11" r="4.2"/>
+  </g>
+</svg>

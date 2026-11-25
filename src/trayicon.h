@@ -9,6 +9,8 @@ enum class TrayIconState {
     Normal,
     Flash,
     IntervalActive,
+    Recording, // screen recording (#30): a record disc inside the viewfinder
+    RecordingPaused, // two pause bars inside the viewfinder
 };
 
 // The tray icon in the roteson.de colours: yellow viewfinder corners around a small point on a red

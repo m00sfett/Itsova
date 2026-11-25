@@ -743,6 +743,14 @@
         <translation>Ảnh chụp gần đây</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Đã lưu bản ghi</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Ghi thất bại</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Khoảng thời gian: %1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Lấy màu trên màn hình</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Bắt đầu hoặc dừng ghi màn hình</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Tạm dừng hoặc tiếp tục ghi màn hình</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>Đã sao chép %1 vào bảng nhớ tạm</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Đã sao chép bản ghi</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Công cụ MCP không xác định: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>Cửa sổ cần ghi không còn mở.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Vùng chọn</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>Màn hình của vùng %1 chưa được kết nối.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>Không thể ghi nhóm; hãy chọn một trong các đối tượng của nhóm.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Đối tượng ghi không xác định: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>Vùng cần ghi không nằm trên màn hình nào đang được kết nối.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Đã có một bản ghi đang chạy.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Bản ghi</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>Không thể tạo thư mục %1.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>Thêm hình chữ nhật</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Ghi</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Vùng và cửa sổ</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Bắt đầu ghi</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Cửa sổ</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · Dừng: nhấp vào glimply trong khay hệ thống</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Trực tiếp</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Mở trong cửa sổ chỉnh sửa</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>Ghi hình chữ nhật thành video, hoặc chọn nội dung cần ghi</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>Yêu cầu chụp thiếu đối tượng hoặc định dạng hợp lệ.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Đã có một bản ghi đang chạy.</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>Hủy</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Đã có một bản ghi đang chạy.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Không có gì để ghi.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin không cấp quyền ghi màn hình cho glimply. Hãy cài lại glimply để tệp .desktop cấp giao diện screencast, rồi đăng nhập lại.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin không gửi luồng màn hình.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>Hệ thống này không có bộ mã hóa cho bản ghi %1 (FFmpeg thiếu bộ này).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>Không thể mã hóa bản ghi.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>Bản ghi kết thúc mà không có khung hình nào.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin đã từ chối luồng màn hình.</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>Đã xóa lịch sử</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Định dạng bản ghi</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): phát được ở mọi nơi</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: ảnh động, không có âm thanh, tệp lớn hơn</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): tệp nhỏ cho web</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Bản ghi:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Tốc độ khung hình khi ghi</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Hiển thị con trỏ chuột</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Tốc độ khung hình:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Phím tắt bắt đầu hoặc dừng ghi</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Phím tắt tạm dừng hoặc tiếp tục ghi</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Bắt đầu/dừng:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Tạm dừng:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Phím tắt:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Ghi từ lớp phủ (Ctrl+R) hoặc bằng phím tắt bắt đầu/dừng; phím này ghi lại đối tượng đã ghi lần trước. Bản ghi GIF dùng tối đa %1 fps. Bản ghi không có âm thanh.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Thư mục ảnh chụp</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>Xóa danh sách; các tệp ảnh vẫn giữ nguyên vị trí</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>Đang bắt đầu ghi %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>Đã tạm dừng ghi %1 ở %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>Đang lưu bản ghi %1…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Đang ghi %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>Đang chụp sau %1 giây…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Khoảng thời gian đang hoạt động: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Dừng ghi (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Tiếp tục ghi</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Tạm dừng ghi</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

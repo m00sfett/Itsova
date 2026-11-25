@@ -42,6 +42,7 @@ ControlService::ControlService(App *app)
     connect(app_->shortcuts(), &ShortcutManager::shortcutChanged, this, &ControlService::Changed);
     connect(app_, &App::captured, this, &ControlService::Captured);
     connect(app_, &App::historyChanged, this, &ControlService::HistoryChanged);
+    connect(app_, &App::recordingChanged, this, &ControlService::RecordingChanged);
 
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Control"), this,
                                                  QDBusConnection::ExportScriptableContents);
@@ -380,6 +381,38 @@ QString ControlService::AddAreaRect(const QString &name, const QString &connecto
 {
     return QString::fromUtf8(
         QJsonDocument(app_->addAreaRect(name, connector, QRect(x, y, width, height))).toJson(QJsonDocument::Compact));
+}
+
+QString ControlService::StartRecording(const QString &targetId, int delaySeconds)
+{
+    if (targetId.isEmpty()) {
+        if (app_->isRecording()) {
+            return tr("A recording is already running.");
+        }
+        app_->toggleRecording();
+        return {};
+    }
+    return app_->startRecording(targetId, delaySeconds);
+}
+
+void ControlService::StopRecording()
+{
+    app_->stopRecording();
+}
+
+void ControlService::OpenRecordOverlay()
+{
+    app_->openOverlayForRecording();
+}
+
+void ControlService::PauseRecording(bool paused)
+{
+    app_->setRecordingPaused(paused);
+}
+
+QString ControlService::RecordingState() const
+{
+    return QString::fromUtf8(QJsonDocument(app_->recordingState()).toJson(QJsonDocument::Compact));
 }
 
 QString ControlService::OpenOverlay(const QString &mode, int delaySeconds)

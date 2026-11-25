@@ -4,6 +4,7 @@
 #include "annotations/programmaticannotator.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
+#include "captureservice.h"
 #include "cli.h"
 #include "colorpicker.h"
 #include "countdowntimer.h"
@@ -18,6 +19,8 @@
 #include "pinmanager.h"
 #include "printkey.h"
 #include "quickeditorwindow.h"
+#include "recordingplan.h"
+#include "screenrecorder.h"
 #include "controlservice.h"
 
 #include <algorithm>
@@ -58,6 +61,7 @@
 #include <QJsonObject>
 #include <QLineEdit>
 #include <QLocale>
+#include <QMimeData>
 #include <QPointer>
 #include <QSaveFile>
 #include <QScreen>
@@ -217,6 +221,34 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::pinsShownRequested, pins_, &PinManager::setPinsShown);
     connect(tray_, &TrayController::removeAllPinsRequested, pins_, &PinManager::removeAllWithConfirmation);
 
+    // Screen recording (#30). The recorder touches neither KWin nor PipeWire before the first recording.
+    recorder_ = new ScreenRecorder(this);
+    tray_->setRecordingPauseAvailable(ScreenRecorder::canPause());
+    recordingTicker_ = new QTimer(this);
+    recordingTicker_->setInterval(1000);
+    connect(recordingTicker_, &QTimer::timeout, this, &App::syncRecordingUi);
+    connect(recorder_, &ScreenRecorder::stateChanged, this, [this] {
+        if (recorder_->isBusy()) {
+            recordingTicker_->start();
+        } else {
+            recordingTicker_->stop();
+        }
+        syncRecordingUi();
+    });
+    connect(recorder_, &ScreenRecorder::finished, this,
+            [this](const QString &path, const RecordingTarget &target, qint64) {
+                const QDateTime now = QDateTime::currentDateTime();
+                recordCapture({path}, target.displayName, target.targetId, QStringLiteral("record"));
+                notifySaved(tr("Recording saved"), {path}, {});
+                runPostCaptureHook(target.targetId, target.displayName, {path}, now,
+                                   recordingFormatKey(store_.recordingFormat), QStringLiteral("record"));
+            });
+    connect(recorder_, &ScreenRecorder::failed, this,
+            [this](const QString &error) { notifyError(tr("Recording failed"), {error}); });
+    connect(tray_, &TrayController::stopRecordingRequested, this, &App::stopRecording);
+    connect(tray_, &TrayController::quitRequested, this, &App::quit);
+    connect(tray_, &TrayController::pauseRecordingRequested, this, &App::setRecordingPaused);
+
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
         syncShortcuts();
@@ -325,6 +357,12 @@ QString App::targetLabel(const TargetStore &store, const QString &id)
     if (id == colorPickerTargetId()) {
         return tr("Pick screen color");
     }
+    if (id == recordToggleActionId()) {
+        return tr("Start or stop screen recording");
+    }
+    if (id == recordPauseActionId()) {
+        return tr("Pause or resume screen recording");
+    }
     if (isScreenTargetId(id)) {
         return monitorName(store, connectorFromScreenTargetId(id));
     }
@@ -361,6 +399,10 @@ void App::syncShortcuts(const QStringList &deletedIds)
     entries.append({pinLastCaptureActionId(), tr("Pin last capture to the screen")});
     entries.append({pinsToggleActionId(), tr("Show or hide pinned screenshots")});
     entries.append({ocrSelectionActionId(), tr("Copy text from a screen selection")});
+    entries.append({recordToggleActionId(), tr("Start or stop screen recording")});
+    if (ScreenRecorder::canPause()) {
+        entries.append({recordPauseActionId(), tr("Pause or resume screen recording")});
+    }
     shortcuts_->sync(entries, deletedIds);
 }
 
@@ -792,6 +834,14 @@ void App::trigger(const QString &id)
         startOcrSelection();
         return;
     }
+    if (id == recordToggleActionId()) {
+        toggleRecording();
+        return;
+    }
+    if (id == recordPauseActionId()) {
+        setRecordingPaused(recorder_->state() == ScreenRecorder::State::Recording);
+        return;
+    }
     const int delay = store_.effectiveDelaySeconds(id);
     if (delay > 0) {
         runWithDelay(delay, targetLabel(store_, id), [this, id] { executeTriggerNow(id); });
@@ -972,6 +1022,15 @@ QString App::historyAction(const QString &action, const QString &entryId, const 
         pins_->pinImage(image);
         return {};
     }
+    if (action == QLatin1String("copy") && isRecordingFile(existing.first())) {
+        // A recording goes to the clipboard as a file, the way file managers copy it.
+        auto *mime = new QMimeData;
+        mime->setUrls({QUrl::fromLocalFile(existing.first())});
+        QGuiApplication::clipboard()->setMimeData(mime);
+        notify(QStringLiteral("historyAction"), tr("Recording copied"),
+               {tr("%1 copied to the clipboard").arg(QFileInfo(existing.first()).fileName())});
+        return {};
+    }
     if (action == QLatin1String("copy")) {
         QImageReader reader(existing.first());
         reader.setAutoTransform(true);
@@ -1014,6 +1073,9 @@ void App::pinImage(const QImage &image, const QRect &logicalRect)
 void App::pinLastCapture()
 {
     for (const QString &path : std::as_const(lastPaths_)) {
+        if (isRecordingFile(path)) {
+            continue;
+        }
         QImageReader reader(path);
         reader.setAutoTransform(true);
         const QImage image = reader.read();
@@ -1136,6 +1198,11 @@ void App::openEditorForFile(const QString &path)
 {
     const QString absPath = QFileInfo(path).absoluteFilePath();
     if (absPath.isEmpty()) {
+        return;
+    }
+    if (isRecordingFile(absPath)) {
+        // Recordings have no editor here; the default player opens them.
+        QDesktopServices::openUrl(QUrl::fromLocalFile(absPath));
         return;
     }
     editors_.removeIf([](const QPointer<QuickEditorWindow> &ptr) { return ptr.isNull(); });
@@ -2669,6 +2736,305 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
     }
 
     fail(tr("Unknown MCP tool: %1").arg(toolName));
+}
+
+namespace
+{
+
+QString recordingStateKey(ScreenRecorder::State state)
+{
+    switch (state) {
+    case ScreenRecorder::State::Starting:
+        return QStringLiteral("starting");
+    case ScreenRecorder::State::Recording:
+        return QStringLiteral("recording");
+    case ScreenRecorder::State::Paused:
+        return QStringLiteral("paused");
+    case ScreenRecorder::State::Finishing:
+        return QStringLiteral("finishing");
+    case ScreenRecorder::State::Idle:
+        break;
+    }
+    return QStringLiteral("idle");
+}
+
+} // namespace
+
+std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, QString *error) const
+{
+    const QList<ScreenInfo> screens = currentScreens();
+    QList<QRect> rects;
+    QList<qreal> scales;
+    for (const ScreenInfo &screen : screens) {
+        rects.append(screen.geometry);
+        scales.append(nativeScale(screen));
+    }
+    const auto fail = [error](const QString &message) -> std::optional<RecordingTarget> {
+        if (error) {
+            *error = message;
+        }
+        return std::nullopt;
+    };
+
+    RecordingTarget target;
+    target.targetId = targetId;
+    QRect region;
+    if (isWindowRecordingTargetId(targetId)) {
+        const QString handle = windowHandleFromRecordingTargetId(targetId);
+        const QList<WindowInfo> windows = listWindows(QCoreApplication::applicationPid());
+        const auto it = std::find_if(windows.cbegin(), windows.cend(),
+                                     [&](const WindowInfo &w) { return w.handle == handle; });
+        if (it == windows.cend()) {
+            return fail(tr("The window to record is no longer open."));
+        }
+        target.kind = RecordingTarget::Kind::Window;
+        target.windowHandle = handle;
+        target.displayName = it->caption.isEmpty() ? it->appName : it->caption;
+        target.token = windowToken(*it);
+        return target;
+    }
+    if (const std::optional<QRect> rect = regionFromRecordingTargetId(targetId)) {
+        region = *rect;
+        target.displayName = tr("Selection");
+        target.token = QStringLiteral("selection");
+    } else if (targetId == allMonitorsTargetId()) {
+        for (const QRect &rect : std::as_const(rects)) {
+            region = region.united(rect);
+        }
+        target.displayName = tr("All monitors");
+        target.token = QStringLiteral("all");
+    } else if (isScreenTargetId(targetId)) {
+        const QString connector = connectorFromScreenTargetId(targetId);
+        const auto it = std::find_if(screens.cbegin(), screens.cend(),
+                                     [&](const ScreenInfo &s) { return s.connector == connector; });
+        if (it == screens.cend()) {
+            return fail(tr("Monitor %1 is not connected.").arg(connector));
+        }
+        region = it->geometry;
+        target.displayName = store_.monitorName(*it);
+        target.token = connector;
+    } else if (const Area *area = store_.area(targetId)) {
+        if (area->isCrossMonitor()) {
+            region = area->rect;
+        } else {
+            const auto it = std::find_if(screens.cbegin(), screens.cend(),
+                                         [&](const ScreenInfo &s) { return s.connector == area->connector; });
+            if (it == screens.cend()) {
+                return fail(tr("The monitor of area %1 is not connected.").arg(area->name));
+            }
+            region = area->rect.translated(it->geometry.topLeft());
+        }
+        target.displayName = area->name;
+        target.token = area->name;
+    } else if (store_.group(targetId)) {
+        return fail(tr("Groups cannot be recorded; choose one of their targets."));
+    } else {
+        return fail(tr("Unknown recording target: %1").arg(targetId));
+    }
+
+    region = clipRegionToScreens(region, rects);
+    if (region.isEmpty()) {
+        return fail(tr("The area to record is not on any connected monitor."));
+    }
+    target.kind = RecordingTarget::Kind::Region;
+    target.scale = regionScale(region, rects, scales);
+    target.region = evenSizedRegion(region, target.scale);
+    return target;
+}
+
+QString App::startRecording(const QString &targetId, int delaySeconds)
+{
+    if (recorder_->isBusy()) {
+        return tr("A recording is already running.");
+    }
+    QString error;
+    if (!recordingTargetFor(targetId, &error)) {
+        return error;
+    }
+    store_.lastRecordingTarget = targetId;
+    saveSettings();
+    const int delay = std::clamp(delaySeconds, 0, 60);
+    if (delay > 0) {
+        if (countdown_->isActive()) {
+            return tr("A capture countdown is already running.");
+        }
+        runWithDelay(delay, tr("Recording"), [this, targetId] { beginRecording(targetId); });
+        return {};
+    }
+    beginRecording(targetId);
+    return {};
+}
+
+void App::noteNativeScale(const ScreenInfo &screen, qreal scale)
+{
+    nativeScales_.insert(screen.connector, {screen.geometry, scale});
+}
+
+qreal App::nativeScale(const ScreenInfo &screen) const
+{
+    const auto it = nativeScales_.constFind(screen.connector);
+    if (it != nativeScales_.cend() && it->first == screen.geometry && it->second > 0) {
+        return it->second;
+    }
+    const QScreen *qscreen = findScreen(screen.connector);
+    return qscreen ? qscreen->devicePixelRatio() : 1.0;
+}
+
+void App::beginRecording(const QString &targetId)
+{
+    // Region streams need each monitor's real scale, which only a capture reveals. One frame per
+    // monitor whose scale is not known yet (about 20 ms); later recordings reuse it.
+    QStringList unknown;
+    if (!isWindowRecordingTargetId(targetId)) {
+        for (const ScreenInfo &screen : currentScreens()) {
+            const auto it = nativeScales_.constFind(screen.connector);
+            if (it == nativeScales_.cend() || it->first != screen.geometry) {
+                unknown.append(screen.connector);
+            }
+        }
+    }
+    if (unknown.isEmpty()) {
+        startRecorder(targetId);
+        return;
+    }
+    if (recordingPending_) {
+        return;
+    }
+    recordingPending_ = true;
+    auto *watcher = new QFutureWatcher<QHash<QString, qreal>>(this);
+    connect(watcher, &QFutureWatcher<QHash<QString, qreal>>::finished, this, [this, watcher, targetId] {
+        const QHash<QString, qreal> scales = watcher->result();
+        watcher->deleteLater();
+        recordingPending_ = false;
+        for (const ScreenInfo &screen : currentScreens()) {
+            if (const qreal scale = scales.value(screen.connector); scale > 0) {
+                nativeScales_.insert(screen.connector, {screen.geometry, scale});
+            }
+        }
+        startRecorder(targetId);
+    });
+    QHash<QString, int> logicalWidths;
+    for (const ScreenInfo &screen : currentScreens()) {
+        logicalWidths.insert(screen.connector, screen.geometry.width());
+    }
+    watcher->setFuture(QtConcurrent::run([unknown, logicalWidths] {
+        QHash<QString, qreal> scales;
+        for (const QString &connector : unknown) {
+            const CaptureResult result = CaptureService::captureScreen(connector);
+            const int logical = logicalWidths.value(connector);
+            if (!result.image.isNull() && logical > 0) {
+                scales.insert(connector, qreal(result.image.width()) / logical);
+            } else {
+                qWarning("glimply: no native scale for %s: %s", qPrintable(connector), qPrintable(result.error));
+            }
+        }
+        return scales;
+    }));
+}
+
+void App::startRecorder(const QString &targetId)
+{
+    QString error;
+    const std::optional<RecordingTarget> target = recordingTargetFor(targetId, &error);
+    if (!target) {
+        notifyError(tr("Recording failed"), {error});
+        return;
+    }
+    const QString directory = store_.effectiveCaptureDirectory();
+    if (!QDir().mkpath(directory)) {
+        notifyError(tr("Recording failed"), {tr("The folder %1 could not be created.").arg(directory)});
+        return;
+    }
+    ScreenRecorder::Options options;
+    options.format = store_.recordingFormat;
+    options.frameRate = store_.recordingFrameRate;
+    options.includeCursor = store_.recordingCursor;
+    options.path = uniqueRecordingPath(
+        directory, recordingFileName(store_.effectiveFilenameTemplate(), target->token, QDateTime::currentDateTime(),
+                                     options.format));
+    recorder_->start(*target, options); // reports its own errors through failed()
+}
+
+void App::stopRecording()
+{
+    recorder_->stop();
+}
+
+void App::setRecordingPaused(bool paused)
+{
+    recorder_->setPaused(paused);
+}
+
+void App::toggleRecording()
+{
+    if (recorder_->isBusy()) {
+        recorder_->stop();
+        return;
+    }
+    if (!store_.lastRecordingTarget.isEmpty() && recordingTargetFor(store_.lastRecordingTarget, nullptr)) {
+        const QString error = startRecording(store_.lastRecordingTarget);
+        if (!error.isEmpty()) {
+            notifyError(tr("Recording failed"), {error});
+        }
+        return;
+    }
+    openOverlayForRecording();
+}
+
+void App::openOverlayForRecording()
+{
+    if (session_ || selector_ || colorPicker_ || recorder_->isBusy()) {
+        return;
+    }
+    auto *session = new CaptureSession(this, CaptureSession::Purpose::Print);
+    session->setRecordMode(true);
+    session->setForcedFrozen(false);
+    session->setForceShowOverlay(true);
+    session_ = session;
+    connect(session, &CaptureSession::finished, session, &QObject::deleteLater);
+    startWithPinsHidden(session, [session] { session->start(); });
+}
+
+void App::quit()
+{
+    if (!recorder_->isBusy()) {
+        QCoreApplication::quit();
+        return;
+    }
+    // Quitting mid-recording keeps what was recorded.
+    connect(recorder_, &ScreenRecorder::stateChanged, this, [this] {
+        if (!recorder_->isBusy()) {
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        }
+    });
+    QTimer::singleShot(10000, qApp, &QCoreApplication::quit);
+    recorder_->stop();
+}
+
+bool App::isRecording() const
+{
+    return recorder_->isBusy();
+}
+
+QJsonObject App::recordingState() const
+{
+    QJsonObject state;
+    state.insert(QStringLiteral("state"), recordingStateKey(recorder_->state()));
+    state.insert(QStringLiteral("elapsedMs"), double(recorder_->elapsedMs()));
+    state.insert(QStringLiteral("format"), recordingFormatKey(store_.recordingFormat));
+    state.insert(QStringLiteral("canPause"), ScreenRecorder::canPause());
+    if (recorder_->isBusy()) {
+        state.insert(QStringLiteral("target"), recorder_->target().targetId);
+        state.insert(QStringLiteral("targetName"), recorder_->target().displayName);
+        state.insert(QStringLiteral("path"), recorder_->path());
+    }
+    return state;
+}
+
+void App::syncRecordingUi()
+{
+    tray_->setRecordingState(int(recorder_->state()), recorder_->elapsedMs(), recorder_->target().displayName);
+    Q_EMIT recordingChanged();
 }
 
 } // namespace glimply

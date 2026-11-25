@@ -1,14 +1,15 @@
 # Maintainer: m00sfett <https://github.com/m00sfett>
 pkgname=glimply-git
-pkgver=0.9.0.r0.g0000000
+pkgver=0.10.0.r0.g0000000
 pkgrel=1
 pkgdesc='Screenshot tool for KDE Plasma: fixed areas, monitors and windows on global shortcuts (development version)'
 arch=('x86_64')
 url='https://github.com/m00sfett/glimply'
 license=('AGPL-3.0-or-later')
 depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
-         'knotifications' 'kstatusnotifieritem' 'kwidgetsaddons' 'kwin' 'kxmlgui' 'qt6-base')
-makedepends=('cmake' 'git' 'ninja' 'qt6-tools')
+         'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'kwidgetsaddons' 'kwin' 'kxmlgui'
+         'qt6-base' 'qt6-wayland' 'wayland')
+makedepends=('cmake' 'git' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
 checkdepends=('python' 'qt6-imageformats')
 optdepends=('tesseract: text recognition (Copy Text, glimply capture --ocr)'
             'tesseract-data-eng: English text recognition'

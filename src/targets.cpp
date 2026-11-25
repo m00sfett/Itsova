@@ -248,6 +248,63 @@ QString ocrSelectionActionId()
     return QStringLiteral("ocr-selection");
 }
 
+QString recordToggleActionId()
+{
+    return QStringLiteral("record-toggle");
+}
+
+QString recordPauseActionId()
+{
+    return QStringLiteral("record-pause");
+}
+
+QString windowRecordingTargetId(const QString &windowHandle)
+{
+    return QStringLiteral("window:") + windowHandle;
+}
+
+QString regionRecordingTargetId(const QRect &globalRect)
+{
+    return QStringLiteral("region:%1,%2,%3,%4")
+        .arg(globalRect.x())
+        .arg(globalRect.y())
+        .arg(globalRect.width())
+        .arg(globalRect.height());
+}
+
+bool isWindowRecordingTargetId(const QString &id)
+{
+    return id.startsWith(QLatin1String("window:")) && id.size() > 7;
+}
+
+QString windowHandleFromRecordingTargetId(const QString &id)
+{
+    return isWindowRecordingTargetId(id) ? id.mid(7) : QString();
+}
+
+std::optional<QRect> regionFromRecordingTargetId(const QString &id)
+{
+    if (!id.startsWith(QLatin1String("region:"))) {
+        return std::nullopt;
+    }
+    const QStringList parts = id.mid(7).split(QLatin1Char(','));
+    if (parts.size() != 4) {
+        return std::nullopt;
+    }
+    int values[4];
+    for (int i = 0; i < 4; ++i) {
+        bool ok = false;
+        values[i] = parts.at(i).toInt(&ok);
+        if (!ok) {
+            return std::nullopt;
+        }
+    }
+    if (values[2] <= 0 || values[3] <= 0) {
+        return std::nullopt;
+    }
+    return QRect(values[0], values[1], values[2], values[3]);
+}
+
 bool isScreenTargetId(const QString &id)
 {
     return id.startsWith(QLatin1String(screenPrefix));
@@ -363,6 +420,13 @@ void TargetStore::load(const KConfig &config)
     overlayFirstHintShown = general.readEntry("OverlayFirstHintShown", false);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
     showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
+    {
+        const KConfigGroup recording = config.group(QStringLiteral("Recording"));
+        recordingFormat = recordingFormatFromKey(recording.readEntry("Format", QStringLiteral("mp4")));
+        recordingFrameRate = effectiveFrameRate(RecordingFormat::Mp4, recording.readEntry("FrameRate", 30));
+        recordingCursor = recording.readEntry("IncludeCursor", true);
+        lastRecordingTarget = recording.readEntry("LastTarget", QString());
+    }
     colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
 
     overlayPanelPositions.clear();
@@ -537,6 +601,13 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("OverlayFirstHintShown", overlayFirstHintShown);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
     general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
+    {
+        KConfigGroup recording = config.group(QStringLiteral("Recording"));
+        recording.writeEntry("Format", recordingFormatKey(recordingFormat));
+        recording.writeEntry("FrameRate", recordingFrameRate);
+        recording.writeEntry("IncludeCursor", recordingCursor);
+        recording.writeEntry("LastTarget", lastRecordingTarget);
+    }
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);
     config.group(QStringLiteral("History")).writeEntry("Limit", std::clamp(historyLimit, 5, 100));

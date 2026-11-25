@@ -1,5 +1,7 @@
 #include "settingswindow.h"
 
+#include "screenrecorder.h"
+
 #include "app.h"
 #include "areaselector.h"
 #include "historystore.h"
@@ -15,6 +17,8 @@
 #include <KKeySequenceWidget>
 #include <KMessageWidget>
 #include <KPageWidgetItem>
+
+#include <algorithm>
 
 #include <QAction>
 #include <QCheckBox>
@@ -1237,6 +1241,8 @@ void SettingsWindow::assignShortcut(const QString &id, const QKeySequence &seque
         owners.append(allMonitorsTargetId());
         owners.append(intervalShortcutId(allMonitorsTargetId()));
         owners.append(colorPickerTargetId());
+        owners.append(recordToggleActionId());
+        owners.append(recordPauseActionId());
         for (const QString &owner : std::as_const(owners)) {
             if (owner == id || shortcuts->shortcut(owner) != sequence) {
                 continue;
@@ -1630,6 +1636,85 @@ QWidget *SettingsWindow::createStoragePage()
         historyFeedback_->setText(tr("History cleared"));
         historyFeedback_->setVisible(true);
         QTimer::singleShot(3000, historyFeedback_, [label = historyFeedback_] { label->setVisible(false); });
+    });
+
+    // Screen recording (#30): same folder and file names as captures, so only the video settings.
+    recordingFormat_ = new QComboBox(page);
+    recordingFormat_->setAccessibleName(tr("Recording format"));
+    recordingFormat_->addItem(tr("MP4 (H.264): plays everywhere"), int(RecordingFormat::Mp4));
+    recordingFormat_->addItem(tr("GIF: animated image, no sound, larger files"), int(RecordingFormat::Gif));
+    recordingFormat_->addItem(tr("WebM (VP9): small files for the web"), int(RecordingFormat::WebM));
+    auto *formatRow = new QHBoxLayout;
+    formatRow->addWidget(recordingFormat_);
+    formatRow->addStretch(1);
+    form->addRow(tr("Recordings:"), formatRow);
+    recordingFrameRate_ = new QComboBox(page);
+    recordingFrameRate_->setAccessibleName(tr("Recording frame rate"));
+    for (const int rate : recordingFrameRates()) {
+        recordingFrameRate_->addItem(tr("%1 fps").arg(rate), rate);
+    }
+    recordingCursor_ = new QCheckBox(tr("Show the mouse pointer"), page);
+    auto *recordingRow = new QHBoxLayout;
+    recordingRow->addWidget(recordingFrameRate_);
+    recordingRow->addSpacing(12);
+    recordingRow->addWidget(recordingCursor_);
+    recordingRow->addStretch(1);
+    form->addRow(tr("Frame rate:"), recordingRow);
+    recordToggleShortcut_ = new KKeySequenceWidget(page);
+    recordToggleShortcut_->setAccessibleName(tr("Start or stop recording shortcut"));
+    recordPauseShortcut_ = new KKeySequenceWidget(page);
+    recordPauseShortcut_->setAccessibleName(tr("Pause or resume recording shortcut"));
+    for (KKeySequenceWidget *editor : {recordToggleShortcut_, recordPauseShortcut_}) {
+        editor->setCheckForConflictsAgainst(KKeySequenceWidget::GlobalShortcuts | KKeySequenceWidget::StandardShortcuts);
+        editor->setMultiKeyShortcutsAllowed(false);
+    }
+    auto *shortcutRow = new QHBoxLayout;
+    shortcutRow->addWidget(new QLabel(tr("Start/stop:"), page));
+    shortcutRow->addWidget(recordToggleShortcut_);
+    if (ScreenRecorder::canPause()) {
+        shortcutRow->addSpacing(12);
+        shortcutRow->addWidget(new QLabel(tr("Pause:"), page));
+        shortcutRow->addWidget(recordPauseShortcut_);
+    } else {
+        recordPauseShortcut_->hide(); // this KPipeWire cannot pause
+    }
+    shortcutRow->addStretch(1);
+    form->addRow(tr("Shortcuts:"), shortcutRow);
+    form->addRow(QString(), makeHint(tr("Record from the overlay (Ctrl+R) or with the start/stop shortcut, which "
+                                        "records the last target again. GIF recordings use at most %1 fps. "
+                                        "Recordings have no sound.")
+                                         .arg(maxGifFrameRate),
+                                     page));
+    connect(recordingFormat_, &QComboBox::currentIndexChanged, this, [this] {
+        if (updating_) {
+            return;
+        }
+        app_->store().recordingFormat = RecordingFormat(recordingFormat_->currentData().toInt());
+        app_->storeChanged();
+    });
+    connect(recordingFrameRate_, &QComboBox::currentIndexChanged, this, [this] {
+        if (updating_) {
+            return;
+        }
+        app_->store().recordingFrameRate = recordingFrameRate_->currentData().toInt();
+        app_->storeChanged();
+    });
+    connect(recordingCursor_, &QCheckBox::toggled, this, [this](bool on) {
+        if (updating_) {
+            return;
+        }
+        app_->store().recordingCursor = on;
+        app_->storeChanged();
+    });
+    connect(recordToggleShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &seq) {
+        if (!updating_) {
+            assignShortcut(recordToggleActionId(), seq, recordToggleShortcut_);
+        }
+    });
+    connect(recordPauseShortcut_, &KKeySequenceWidget::keySequenceChanged, this, [this](const QKeySequence &seq) {
+        if (!updating_) {
+            assignShortcut(recordPauseActionId(), seq, recordPauseShortcut_);
+        }
     });
 
     const auto applyDirectory = [this] {
@@ -2178,6 +2263,12 @@ void SettingsWindow::refreshStorage()
     template_->setText(store.filenameTemplate);
     storageExport_->setOptions(store.exportOptions);
     historyLimit_->setValue(store.historyLimit);
+    recordingFormat_->setCurrentIndex(recordingFormat_->findData(int(store.recordingFormat)));
+    recordingFrameRate_->setCurrentIndex(
+        std::max(0, recordingFrameRate_->findData(effectiveFrameRate(RecordingFormat::Mp4, store.recordingFrameRate))));
+    recordingCursor_->setChecked(store.recordingCursor);
+    recordToggleShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordToggleActionId()));
+    recordPauseShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordPauseActionId()));
     templatePreview_->setText(
         filenameFor(store.effectiveFilenameTemplate(), QStringLiteral("DP-1-1"), QDateTime::currentDateTime(),
                     store.exportOptions.format));

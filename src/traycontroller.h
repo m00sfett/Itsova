@@ -49,6 +49,11 @@ public:
     void setCountdownState(bool active, int remainingSeconds);
     void setActiveIntervals(const QList<ActiveIntervalStatus> &active);
     void setStatusText(const QString &text);
+    // Screen recording (#30). state: 0 idle, 1 starting, 2 recording, 3 paused, 4 finishing
+    // (ScreenRecorder::State). While a recording runs, the icon shows it and a click stops it.
+    void setRecordingState(int state, qint64 elapsedMs, const QString &targetName);
+    // Older KPipeWire cannot pause: the menu offers no Pause then.
+    void setRecordingPauseAvailable(bool available);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
     // One short blink. Call only after every frame of a trigger has been captured (A2).
@@ -73,6 +78,9 @@ Q_SIGNALS:
     void clearHistoryRequested();
     void pinsShownRequested(bool shown);
     void removeAllPinsRequested();
+    void stopRecordingRequested();
+    void quitRequested();
+    void pauseRecordingRequested(bool paused);
 
 private:
     void rebuildMenu();
@@ -87,6 +95,10 @@ private:
     QTimer *blinkTimer_;
     QList<ActiveIntervalStatus> activeIntervals_;
     QString statusText_;
+    int recordingState_ = 0;
+    bool recordingPauseAvailable_ = true;
+    qint64 recordingElapsedMs_ = 0;
+    QString recordingTarget_;
     bool flashing_ = false;
     bool lastCaptureAvailable_ = false;
     int pinCount_ = 0;

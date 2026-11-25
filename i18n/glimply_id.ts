@@ -743,6 +743,14 @@
         <translation>Tangkapan terbaru</translation>
     </message>
     <message>
+        <source>Recording saved</source>
+        <translation>Rekaman disimpan</translation>
+    </message>
+    <message>
+        <source>Recording failed</source>
+        <translation>Rekaman gagal</translation>
+    </message>
+    <message>
         <source>Interval: %1</source>
         <translation>Interval: %1</translation>
     </message>
@@ -753,6 +761,14 @@
     <message>
         <source>Pick screen color</source>
         <translation>Pilih warna layar</translation>
+    </message>
+    <message>
+        <source>Start or stop screen recording</source>
+        <translation>Mulai atau hentikan rekaman layar</translation>
+    </message>
+    <message>
+        <source>Pause or resume screen recording</source>
+        <translation>Jeda atau lanjutkan rekaman layar</translation>
     </message>
     <message>
         <source>Save the screen and select (Print key)</source>
@@ -941,6 +957,10 @@
     <message>
         <source>%1 copied to the clipboard</source>
         <translation>%1 disalin ke papan klip</translation>
+    </message>
+    <message>
+        <source>Recording copied</source>
+        <translation>Rekaman disalin</translation>
     </message>
     <message>
         <source>Moved to trash</source>
@@ -1214,6 +1234,42 @@
         <source>Unknown MCP tool: %1</source>
         <translation>Alat MCP tidak dikenal: %1</translation>
     </message>
+    <message>
+        <source>The window to record is no longer open.</source>
+        <translation>Jendela yang akan direkam sudah tidak terbuka.</translation>
+    </message>
+    <message>
+        <source>Selection</source>
+        <translation>Pilihan</translation>
+    </message>
+    <message>
+        <source>The monitor of area %1 is not connected.</source>
+        <translation>Monitor dari area %1 tidak terhubung.</translation>
+    </message>
+    <message>
+        <source>Groups cannot be recorded; choose one of their targets.</source>
+        <translation>Grup tidak dapat direkam; pilih salah satu targetnya.</translation>
+    </message>
+    <message>
+        <source>Unknown recording target: %1</source>
+        <translation>Target rekaman tidak dikenal: %1</translation>
+    </message>
+    <message>
+        <source>The area to record is not on any connected monitor.</source>
+        <translation>Area yang akan direkam tidak berada di monitor yang terhubung.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Rekaman sudah berjalan.</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation>Rekaman</translation>
+    </message>
+    <message>
+        <source>The folder %1 could not be created.</source>
+        <translation>Folder %1 tidak dapat dibuat.</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1461,6 +1517,26 @@
         <translation>Tambah Persegi Panjang</translation>
     </message>
     <message>
+        <source>Record</source>
+        <translation>Rekam</translation>
+    </message>
+    <message>
+        <source>Areas and Windows</source>
+        <translation>Area dan Jendela</translation>
+    </message>
+    <message>
+        <source>Start recording</source>
+        <translation>Mulai merekam</translation>
+    </message>
+    <message>
+        <source>Windows</source>
+        <translation>Jendela</translation>
+    </message>
+    <message>
+        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
+        <translation>%1, %2 fps · Hentikan: klik glimply di baki sistem</translation>
+    </message>
+    <message>
         <source>Go Live</source>
         <translation>Ke Langsung</translation>
     </message>
@@ -1617,6 +1693,14 @@
     <message>
         <source>Open in the editor window</source>
         <translation>Buka di jendela penyunting</translation>
+    </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <source>Record the rectangle as a video, or choose what to record</source>
+        <translation>Rekam persegi panjang sebagai video, atau pilih apa yang akan direkam</translation>
     </message>
     <message>
         <source>Markup</source>
@@ -1844,6 +1928,10 @@
     <message>
         <source>Capture request is missing a valid target or format.</source>
         <translation>Permintaan tangkapan tidak memiliki target atau format yang valid.</translation>
+    </message>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Rekaman sudah berjalan.</translation>
     </message>
 </context>
 <context>
@@ -2263,6 +2351,41 @@
     <message>
         <source>Cancel</source>
         <translation>Batal</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::ScreenRecorder</name>
+    <message>
+        <source>A recording is already running.</source>
+        <translation>Rekaman sudah berjalan.</translation>
+    </message>
+    <message>
+        <source>There is nothing to record.</source>
+        <translation>Tidak ada yang bisa direkam.</translation>
+    </message>
+    <message>
+        <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
+        <translation>KWin tidak menyediakan rekaman layar untuk glimply. Pasang ulang glimply agar berkas desktop-nya memberikan antarmuka screencast, lalu masuk kembali.</translation>
+    </message>
+    <message>
+        <source>KWin did not deliver the screen stream.</source>
+        <translation>KWin tidak mengirimkan aliran layar.</translation>
+    </message>
+    <message>
+        <source>This system has no encoder for %1 recordings (FFmpeg is missing it).</source>
+        <translation>Sistem ini tidak memiliki encoder untuk rekaman %1 (FFmpeg tidak menyediakannya).</translation>
+    </message>
+    <message>
+        <source>The recording could not be encoded.</source>
+        <translation>Rekaman tidak dapat dienkode.</translation>
+    </message>
+    <message>
+        <source>The recording ended without any frames.</source>
+        <translation>Rekaman berakhir tanpa bingkai apa pun.</translation>
+    </message>
+    <message>
+        <source>KWin refused the screen stream.</source>
+        <translation>KWin menolak aliran layar.</translation>
     </message>
 </context>
 <context>
@@ -2748,6 +2871,66 @@
         <translation>Riwayat dibersihkan</translation>
     </message>
     <message>
+        <source>Recording format</source>
+        <translation>Format rekaman</translation>
+    </message>
+    <message>
+        <source>MP4 (H.264): plays everywhere</source>
+        <translation>MP4 (H.264): dapat diputar di mana saja</translation>
+    </message>
+    <message>
+        <source>GIF: animated image, no sound, larger files</source>
+        <translation>GIF: gambar animasi, tanpa suara, berkas lebih besar</translation>
+    </message>
+    <message>
+        <source>WebM (VP9): small files for the web</source>
+        <translation>WebM (VP9): berkas kecil untuk web</translation>
+    </message>
+    <message>
+        <source>Recordings:</source>
+        <translation>Rekaman:</translation>
+    </message>
+    <message>
+        <source>Recording frame rate</source>
+        <translation>Laju bingkai rekaman</translation>
+    </message>
+    <message>
+        <source>%1 fps</source>
+        <translation>%1 fps</translation>
+    </message>
+    <message>
+        <source>Show the mouse pointer</source>
+        <translation>Tampilkan penunjuk mouse</translation>
+    </message>
+    <message>
+        <source>Frame rate:</source>
+        <translation>Laju bingkai:</translation>
+    </message>
+    <message>
+        <source>Start or stop recording shortcut</source>
+        <translation>Pintasan untuk mulai atau hentikan rekaman</translation>
+    </message>
+    <message>
+        <source>Pause or resume recording shortcut</source>
+        <translation>Pintasan untuk jeda atau lanjutkan rekaman</translation>
+    </message>
+    <message>
+        <source>Start/stop:</source>
+        <translation>Mulai/hentikan:</translation>
+    </message>
+    <message>
+        <source>Pause:</source>
+        <translation>Jeda:</translation>
+    </message>
+    <message>
+        <source>Shortcuts:</source>
+        <translation>Pintasan:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Rekam dari overlay (Ctrl+R) atau dengan pintasan mulai/hentikan, yang merekam ulang target terakhir. Rekaman GIF memakai paling banyak %1 fps. Rekaman tidak berisi suara.</translation>
+    </message>
+    <message>
         <source>Capture Folder</source>
         <translation>Folder Tangkapan</translation>
     </message>
@@ -3119,6 +3302,22 @@
         <translation>Membersihkan daftar; berkas gambar tetap di tempatnya</translation>
     </message>
     <message>
+        <source>Starting the recording of %1…</source>
+        <translation>Memulai rekaman %1…</translation>
+    </message>
+    <message>
+        <source>Recording of %1 paused at %2</source>
+        <translation>Rekaman %1 dijeda pada %2</translation>
+    </message>
+    <message>
+        <source>Saving the recording of %1…</source>
+        <translation>Menyimpan rekaman %1…</translation>
+    </message>
+    <message>
+        <source>Recording %1: %2</source>
+        <translation>Merekam %1: %2</translation>
+    </message>
+    <message>
         <source>Capturing in %1 s…</source>
         <translation>Menangkap dalam %1 d…</translation>
     </message>
@@ -3129,6 +3328,18 @@
     <message>
         <source>Intervals active: %1</source>
         <translation>Interval aktif: %1</translation>
+    </message>
+    <message>
+        <source>Stop Recording (%1)</source>
+        <translation>Hentikan Rekaman (%1)</translation>
+    </message>
+    <message>
+        <source>Resume Recording</source>
+        <translation>Lanjutkan Rekaman</translation>
+    </message>
+    <message>
+        <source>Pause Recording</source>
+        <translation>Jeda Rekaman</translation>
     </message>
     <message>
         <source>Cancel Countdown (%1 s)</source>

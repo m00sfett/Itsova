@@ -223,6 +223,8 @@ PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::Keyb
             return {state != PanelState::Start ? PanelKeyAction::SaveAsArea : PanelKeyAction::None};
         case Qt::Key_Comma:
             return {print ? PanelKeyAction::Settings : PanelKeyAction::None};
+        case Qt::Key_R:
+            return {print ? PanelKeyAction::Record : PanelKeyAction::None};
         default:
             return {};
         }

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glimply 0.9.0\n"
+"Project-Id-Version: glimply 0.10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
@@ -216,123 +216,168 @@ msgid "Apply"
 msgstr "適用"
 
 #: plasmoid/contents/ui/TargetRow.qml:182
-#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:228
+#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:300
 #, kde-format
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: plasmoid/contents/ui/main.qml:39 plasmoid/contents/ui/main.qml:348
+#: plasmoid/contents/ui/main.qml:46 plasmoid/contents/ui/main.qml:426
 #, kde-format
 msgid "glimply is not running"
 msgstr "glimply は実行されていません"
 
-#: plasmoid/contents/ui/main.qml:41 plasmoid/contents/ui/main.qml:376
+#: plasmoid/contents/ui/main.qml:49 plasmoid/contents/ui/main.qml:490
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
 msgstr[0] "%1 件のインターバルキャプチャが実行中"
 
-#: plasmoid/contents/ui/main.qml:42
+#: plasmoid/contents/ui/main.qml:50
 #, kde-format
 msgid "Capture fixed areas and monitors"
 msgstr "固定の範囲とディスプレイをキャプチャ"
 
-#: plasmoid/contents/ui/main.qml:80
+#: plasmoid/contents/ui/main.qml:88
 #, kde-format
 msgid "Groups"
 msgstr "グループ"
 
-#: plasmoid/contents/ui/main.qml:81
+#: plasmoid/contents/ui/main.qml:89
 #, kde-format
 msgid "Areas"
 msgstr "範囲"
 
-#: plasmoid/contents/ui/main.qml:82
+#: plasmoid/contents/ui/main.qml:90
 #, kde-format
 msgid "Monitors"
 msgstr "ディスプレイ"
 
-#: plasmoid/contents/ui/main.qml:229
+#: plasmoid/contents/ui/main.qml:131
+#, kde-format
+msgid "Starting the recording of %1…"
+msgstr "%1 の録画を開始しています…"
+
+#: plasmoid/contents/ui/main.qml:133
+#, kde-format
+msgid "Recording of %1 paused at %2"
+msgstr "%1 の録画は %2 で一時停止中"
+
+#: plasmoid/contents/ui/main.qml:135
+#, kde-format
+msgid "Saving the recording of %1…"
+msgstr "%1 の録画を保存しています…"
+
+#: plasmoid/contents/ui/main.qml:137
+#, kde-format
+msgid "Recording %1: %2"
+msgstr "%1 を録画中: %2"
+
+#: plasmoid/contents/ui/main.qml:258
+#, kde-format
+msgid "Stop recording"
+msgstr "録画を停止"
+
+#: plasmoid/contents/ui/main.qml:301
 #, kde-format
 msgid "%1 s"
 msgstr "%1 秒"
 
-#: plasmoid/contents/ui/main.qml:230
+#: plasmoid/contents/ui/main.qml:302
 #, kde-format
 msgid "Delay"
 msgstr "遅延"
 
-#: plasmoid/contents/ui/main.qml:246
+#: plasmoid/contents/ui/main.qml:318
 #, kde-format
 msgid "No delay"
 msgstr "遅延なし"
 
-#: plasmoid/contents/ui/main.qml:253
+#: plasmoid/contents/ui/main.qml:325
 #, kde-format
 msgid "3 seconds"
 msgstr "3 秒"
 
-#: plasmoid/contents/ui/main.qml:259
+#: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "5 seconds"
 msgstr "5 秒"
 
-#: plasmoid/contents/ui/main.qml:265
+#: plasmoid/contents/ui/main.qml:337
 #, kde-format
 msgid "10 seconds"
 msgstr "10 秒"
 
-#: plasmoid/contents/ui/main.qml:272
+#: plasmoid/contents/ui/main.qml:344
 #, kde-format
 msgid "Keep delay active"
 msgstr "遅延を有効のままにする"
 
-#: plasmoid/contents/ui/main.qml:282
+#: plasmoid/contents/ui/main.qml:353
+#, kde-format
+msgid "Record"
+msgstr "録画"
+
+#: plasmoid/contents/ui/main.qml:360
 #, kde-format
 msgid "Pick Color"
 msgstr "色を取得"
 
-#: plasmoid/contents/ui/main.qml:289
+#: plasmoid/contents/ui/main.qml:367
 #, kde-format
 msgid "Add Area"
 msgstr "範囲を追加"
 
-#: plasmoid/contents/ui/main.qml:295
+#: plasmoid/contents/ui/main.qml:373
 #, kde-format
 msgid "Configure glimply…"
 msgstr "glimply を設定…"
 
-#: plasmoid/contents/ui/main.qml:313
+#: plasmoid/contents/ui/main.qml:391
 #, kde-format
 msgid "Open Last Capture"
 msgstr "最後のキャプチャを開く"
 
-#: plasmoid/contents/ui/main.qml:322
+#: plasmoid/contents/ui/main.qml:400
 #, kde-format
 msgid "Edit Last Capture"
 msgstr "最後のキャプチャを編集"
 
-#: plasmoid/contents/ui/main.qml:331
+#: plasmoid/contents/ui/main.qml:409
 #, kde-format
 msgid "Open Capture Folder"
 msgstr "キャプチャ用フォルダーを開く"
 
-#: plasmoid/contents/ui/main.qml:349
+#: plasmoid/contents/ui/main.qml:427
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
 msgstr "ショートカットとキャプチャには glimply サービスが必要です。"
 
-#: plasmoid/contents/ui/main.qml:352
+#: plasmoid/contents/ui/main.qml:430
 #, kde-format
 msgid "Start glimply"
 msgstr "glimply を開始"
 
-#: plasmoid/contents/ui/main.qml:381
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Pause"
+msgstr "一時停止"
+
+#: plasmoid/contents/ui/main.qml:461
+#, kde-format
+msgid "Resume"
+msgstr "再開"
+
+#: plasmoid/contents/ui/main.qml:466
+#, kde-format
+msgid "Stop"
+msgstr "停止"
+
+#: plasmoid/contents/ui/main.qml:495
 #, kde-format
 msgid "Stop All"
 msgstr "すべて停止"
 
-#: plasmoid/contents/ui/main.qml:447
+#: plasmoid/contents/ui/main.qml:561
 #, kde-format
 msgid "Loading…"
 msgstr "読み込み中…"
