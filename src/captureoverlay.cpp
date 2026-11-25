@@ -2027,6 +2027,7 @@ QPointF CaptureOverlay::toGlobalLogical(const QPointF &localPos) const
 void CaptureOverlay::buildPanel()
 {
     panel_ = new CapsulePanel(this);
+    panel_->installEventFilter(this);
     PanelModeCap *cap = panel_->modeCap();
     cap->setTexts(tr("Frozen"), tr("Live"), QStringLiteral("Space"));
     connect(cap, &QAbstractButton::clicked, this, [this] { session_->setFrozen(!session_->frozen()); });
@@ -2187,13 +2188,8 @@ QWidget *CaptureOverlay::buildDrawer(CaptureSession::PanelDrawer drawer)
         return buildAreaList();
     case Drawer::Delay:
         return buildDelayRow();
-    case Drawer::Markup: {
-        auto *toolbar = new AnnotationToolbar(&session_->annotationController(), nullptr);
-        toolbar->setCompactOverlayMode(true);
-        toolbar->setSettings(&session_->store().annotations);
-        connect(toolbar, &AnnotationToolbar::settingsModified, this, [this] { session_->persistAnnotationSettings(); });
-        return toolbar;
-    }
+    case Drawer::Markup:
+        return buildMarkupDrawer();
     case Drawer::More:
         return buildMoreRow();
     case Drawer::SaveArea:
@@ -2256,6 +2252,69 @@ QWidget *buttonRow(const QList<QWidget *> &buttons)
 }
 
 } // namespace
+
+// The Annotate drawer (#71, Q22): ten tools flat as panel buttons, then the slim property row of
+// the active tool with Undo/Redo. The drawer may be wider than the main row.
+QWidget *CaptureOverlay::buildMarkupDrawer()
+{
+    struct Tool
+    {
+        ToolKind kind;
+        QString icon;
+        QString title;
+        QString key;
+    };
+    const QList<Tool> tools{
+        {ToolKind::Select, QStringLiteral("edit-select"), tr("Select"), QStringLiteral("V")},
+        {ToolKind::Arrow, QStringLiteral("draw-arrow"), tr("Arrow"), QStringLiteral("A")},
+        {ToolKind::Rectangle, QStringLiteral("draw-rectangle"), tr("Rectangle"), QStringLiteral("R")},
+        {ToolKind::Ellipse, QStringLiteral("draw-ellipse"), tr("Ellipse"), QStringLiteral("E")},
+        {ToolKind::Pen, QStringLiteral("draw-freehand"), tr("Pen"), QStringLiteral("B")},
+        {ToolKind::Highlighter, QStringLiteral("draw-highlight"), tr("Marker"), QStringLiteral("M")},
+        {ToolKind::Text, QStringLiteral("draw-text"), tr("Text"), QStringLiteral("T")},
+        {ToolKind::Step, QStringLiteral("draw-number"), tr("Step"), QStringLiteral("N")},
+        {ToolKind::Redact, QStringLiteral("view-hidden"), tr("Redact"), QStringLiteral("X")},
+        {ToolKind::Spotlight, QStringLiteral("highlight-pointer-spot"), tr("Spotlight"), QStringLiteral("S")},
+    };
+
+    auto *box = new QWidget;
+    auto *layout = new QVBoxLayout(box);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(4);
+
+    auto *row = new QWidget(box);
+    row->setObjectName(QStringLiteral("markupToolRow"));
+    auto *rowLayout = new QHBoxLayout(row);
+    rowLayout->setContentsMargins(0, 0, 0, 0);
+    rowLayout->setSpacing(0);
+    QList<std::pair<ToolKind, QPointer<PanelButton>>> buttons;
+    for (const Tool &tool : tools) {
+        auto *button = new PanelButton(tool.icon, tool.title, tool.key, row);
+        connect(button, &QAbstractButton::clicked, this, [this, kind = tool.kind] { session_->activateMarkupTool(kind); });
+        rowLayout->addWidget(button);
+        buttons.append({tool.kind, button});
+    }
+    AnnotationController *controller = &session_->annotationController();
+    const auto syncActive = [buttons, controller] {
+        for (const auto &[kind, button] : buttons) {
+            if (button) {
+                button->setActive(controller->tool() == kind);
+            }
+        }
+    };
+    syncActive();
+    connect(controller, &AnnotationController::toolChanged, box, syncActive);
+    layout->addWidget(row, 0, Qt::AlignLeft);
+
+    auto *properties = new AnnotationToolbar(controller, box);
+    properties->setPanelMode(true);
+    properties->setSettings(&session_->store().annotations);
+    connect(properties, &AnnotationToolbar::settingsModified, this, [this] { session_->persistAnnotationSettings(); });
+    // One width for every tool: the tool row never shifts under the pointer while switching.
+    properties->setMinimumWidth(std::max(properties->widestPropertyRowWidth(), row->sizeHint().width()));
+    layout->addWidget(properties);
+    return box;
+}
 
 QWidget *CaptureOverlay::buildWindowList()
 {
@@ -2690,18 +2749,34 @@ void CaptureOverlay::refreshPanel()
     }
 
     panel_->adjustSize();
-    if (!panelDragging_ && !session_->isDragging() && drag_ == Drag::None) {
-        QRect covered;
-        for (const Selection &selection : session_->selections().stack()) {
-            covered = covered.united(toLocalRect(selection.rect).intersected(rect()));
-        }
-        const QPoint position =
-            placeOverlayPanel(panel_->size(), size(), covered, session_->panelPosition(screen_.connector), panelMargin);
-        panel_->move(position);
-    }
+    placePanel();
     panel_->show();
     panel_->raise();
     placeHint();
+}
+
+void CaptureOverlay::placePanel()
+{
+    if (!panel_ || panelDragging_ || session_->isDragging() || drag_ != Drag::None) {
+        return;
+    }
+    QRect covered;
+    for (const Selection &selection : session_->selections().stack()) {
+        covered = covered.united(toLocalRect(selection.rect).intersected(rect()));
+    }
+    panel_->move(
+        placeOverlayPanel(panel_->size(), size(), covered, session_->panelPosition(screen_.connector), panelMargin));
+}
+
+bool CaptureOverlay::eventFilter(QObject *watched, QEvent *event)
+{
+    // The panel's layout may settle after refreshPanel() (a drawer row changing its controls):
+    // place it again so it stays centred instead of growing from its old left edge.
+    if (watched == panel_ && event->type() == QEvent::Resize) {
+        placePanel();
+        placeHint();
+    }
+    return QWidget::eventFilter(watched, event);
 }
 
 void CaptureOverlay::placeHint()
@@ -3615,6 +3690,9 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             return;
         case Qt::Key_O:
             session_->copyText(screen_.connector);
+            return;
+        case Qt::Key_V:
+            session_->activateMarkupTool(ToolKind::Select);
             return;
         case Qt::Key_A:
             session_->activateMarkupTool(ToolKind::Arrow);

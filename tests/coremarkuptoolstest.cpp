@@ -34,6 +34,7 @@ private Q_SLOTS:
     void spotlightUnifiedDimAndCalloutLayering();
     void settingsConfigRoundTrip();
     void toolbarProgressiveDisclosureAndLiveSync();
+    void toolbarPanelModeKeepsOnlyThePropertyRow();
 };
 
 void CoreMarkupToolsTest::arrowSnapAndNonProtrudingTip()
@@ -366,6 +367,46 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     CoreMarkupToolsTest test;
     return QTest::qExec(&test, argc, argv);
+}
+
+void CoreMarkupToolsTest::toolbarPanelModeKeepsOnlyThePropertyRow()
+{
+    AnnotationDocument doc;
+    AnnotationController ctrl(&doc);
+    AnnotationToolbar toolbar(&ctrl);
+    QVERIFY(toolbar.isToolRowVisible());
+
+    // #71: the overlay panel draws the tools; Undo/Redo move into the property row.
+    toolbar.setPanelMode(true);
+    QVERIFY(!toolbar.isToolRowVisible());
+    QCOMPARE(toolbar.undoButton()->parentWidget(), toolbar.redoButton()->parentWidget());
+    QVERIFY(toolbar.undoButton()->parentWidget() != toolbar.toolButton(ToolKind::Arrow)->parentWidget());
+
+    // Select without a selection: the row stays for Undo/Redo, with no property group.
+    QCOMPARE(ctrl.tool(), ToolKind::Select);
+    QVERIFY(toolbar.isPropertyBarVisible());
+    QVERIFY(!toolbar.isColorGroupVisible());
+    QVERIFY(!toolbar.isSizeGroupVisible());
+
+    ctrl.setTool(ToolKind::Redact);
+    QVERIFY(toolbar.isRedactGroupVisible());
+    ctrl.setTool(ToolKind::Select);
+    QVERIFY(!toolbar.isRedactGroupVisible());
+
+    // The widest row is measured without changing what is shown.
+    const int widest = toolbar.widestPropertyRowWidth();
+    QVERIFY(widest > 0);
+    QVERIFY(!toolbar.isColorGroupVisible());
+    QVERIFY(!toolbar.isTextGroupVisible());
+    ctrl.setTool(ToolKind::Text);
+    QVERIFY(toolbar.sizeHint().width() <= widest + 1);
+    ctrl.setTool(ToolKind::Select);
+
+    // Back to the editor layout: Undo/Redo return to the tool row.
+    toolbar.setPanelMode(false);
+    QVERIFY(toolbar.isToolRowVisible());
+    QCOMPARE(toolbar.undoButton()->parentWidget(), toolbar.toolButton(ToolKind::Arrow)->parentWidget());
+    QVERIFY(!toolbar.isPropertyBarVisible());
 }
 
 #include "coremarkuptoolstest.moc"

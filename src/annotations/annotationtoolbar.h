@@ -32,6 +32,14 @@ public:
     void setAvailableTools(const QList<ToolKind> &tools);
     void setSettings(AnnotationSettings *settings);
     void setCompactOverlayMode(bool compact);
+    // Overlay panel drawer (#71): the panel draws the tool row itself, so this toolbar hides its
+    // own and keeps only the slim property row, with Undo/Redo at its trailing end. The property
+    // row then stays visible even when no tool property applies, for Undo/Redo.
+    void setPanelMode(bool panel);
+    [[nodiscard]] bool isToolRowVisible() const;
+    // Width of the property row in its widest state (text with Apply/Cancel, redaction with
+    // strength, filled shape), so a drawer can keep one width while the tool changes.
+    [[nodiscard]] int widestPropertyRowWidth();
 
     [[nodiscard]] QToolButton *toolButton(ToolKind tool) const;
     [[nodiscard]] QList<QToolButton *> swatchButtons() const;
@@ -77,6 +85,7 @@ private:
     AnnotationSettings *settings_ = nullptr;
     bool updating_ = false;
     bool compact_ = false;
+    bool panelMode_ = false;
 
     QWidget *toolRow_ = nullptr;
     QButtonGroup *toolGroup_ = nullptr;

@@ -801,6 +801,73 @@ void AnnotationToolbar::setCompactOverlayMode(bool compact)
     }
 }
 
+void AnnotationToolbar::setPanelMode(bool panel)
+{
+    if (panel == panelMode_) {
+        return;
+    }
+    panelMode_ = panel;
+    if (panel) {
+        setCompactOverlayMode(true);
+    }
+    toolRow_->setVisible(!panel);
+    auto *row1 = qobject_cast<QHBoxLayout *>(toolRow_->layout());
+    auto *row2 = qobject_cast<QHBoxLayout *>(propertyBar_->layout());
+    if (panel) {
+        // Only the trailing spacer takes free width; the groups keep their natural size.
+        row2->setStretch(row2->count() - 1, 1);
+    }
+    for (QToolButton *button : {undoButton_, redoButton_}) {
+        button->parentWidget()->layout()->removeWidget(button);
+        if (panel) {
+            button->setParent(propertyBar_);
+            row2->addWidget(button); // after the stretch: trailing end
+        } else {
+            button->setParent(toolRow_);
+            row1->insertWidget(row1->count() - 1, button); // before the stretch
+        }
+        button->show();
+    }
+    syncFromState();
+}
+
+int AnnotationToolbar::widestPropertyRowWidth()
+{
+    const QList<QWidget *> groups{colorGroup_, sizeGroup_, fillGroup_, spotlightGroup_, textGroup_, redactGroup_};
+    const QList<QList<QWidget *>> states{
+        {colorGroup_, sizeGroup_, fillGroup_, fillOpacityBox_},
+        {colorGroup_, textGroup_, textActionBox_},
+        {colorGroup_, redactGroup_, redactStrengthBox_},
+        {spotlightGroup_},
+    };
+    ensurePolished(); // style metrics change size hints, e.g. of the font box
+    const bool wasUpdating = updating_;
+    updating_ = true;
+    int widest = 0;
+    for (const QList<QWidget *> &state : states) {
+        for (QWidget *group : groups) {
+            group->setVisible(state.contains(group));
+        }
+        for (QWidget *box : {fillOpacityBox_, textActionBox_, redactStrengthBox_}) {
+            box->setVisible(state.contains(box));
+        }
+        for (QWidget *group : groups) {
+            group->layout()->invalidate();
+        }
+        propertyBar_->layout()->invalidate();
+        widest = std::max(widest, propertyBar_->layout()->sizeHint().width());
+    }
+    updating_ = wasUpdating;
+    syncFromState();
+    const QMargins margins = layout()->contentsMargins();
+    return widest + margins.left() + margins.right();
+}
+
+bool AnnotationToolbar::isToolRowVisible() const
+{
+    return !toolRow_->isHidden();
+}
+
 QToolButton *AnnotationToolbar::toolButton(ToolKind tool) const { return toolButtons_.value(int(tool), nullptr); }
 QList<QToolButton *> AnnotationToolbar::swatchButtons() const { return swatchButtons_; }
 QToolButton *AnnotationToolbar::customColorButton() const { return customColorButton_; }
@@ -937,7 +1004,15 @@ void AnnotationToolbar::syncFromState()
 
     ItemKind kind = ItemKind::Rectangle;
     if (!activeTargetKind(&kind)) {
-        propertyBar_->hide();
+        if (panelMode_) {
+            // Only Undo/Redo remain.
+            for (QWidget *group : {colorGroup_, sizeGroup_, fillGroup_, spotlightGroup_, textGroup_, redactGroup_}) {
+                group->hide();
+            }
+            propertyBar_->show();
+        } else {
+            propertyBar_->hide();
+        }
         updating_ = false;
         return;
     }
