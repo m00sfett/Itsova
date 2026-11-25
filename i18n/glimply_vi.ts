@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="vi" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>Thao tác che mờ #%1 yêu cầu x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>Loại chú thích không được hỗ trợ '%1' tại thao tác #%2.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>Loại chú thích không được hỗ trợ &apos;%1&apos; tại thao tác #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Không thể kết xuất ảnh có chú thích.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>Từ chối ghi đè tệp đầu vào '%1' khi không có overwrite=true.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>Từ chối ghi đè tệp đầu vào &apos;%1&apos; khi không có overwrite=true.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,8 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>Đã dừng chụp theo khoảng thời gian cho %1 sau %n lần chụp.</numerusform></translation>
+            <numerusform>Đã dừng chụp theo khoảng thời gian cho %1 sau %n lần chụp.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +869,8 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>và %n mục nữa</numerusform></translation>
+            <numerusform>và %n mục nữa</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +879,8 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>Đã lưu %n ảnh chụp màn hình</numerusform></translation>
+            <numerusform>Đã lưu %n ảnh chụp màn hình</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +951,8 @@
         <translation>Không thể chuyển vào thùng rác: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>Hành động không xác định "%1".</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>Hành động không xác định &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1059,8 @@
         <translation>Đếm ngược chụp đang chạy.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>Bộ chỉ định cửa sổ sau 'window:' không được trống.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>Bộ chỉ định cửa sổ sau &apos;window:&apos; không được trống.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,20 +1147,20 @@
         <translation>MCP đã chụp %1</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>Định dạng ảnh không được hỗ trợ '%1'.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>Định dạng ảnh không được hỗ trợ &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' phải là số nguyên từ 1 đến 100.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; phải là số nguyên từ 1 đến 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>Cần có 'target'.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>Cần có &apos;target&apos;.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp "%1" (%2).</translation>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp &quot;%1&quot; (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1167,12 +1171,12 @@
         <translation>Một ứng dụng khách MCP bên ngoài muốn chụp vùng %1x%2 tại (%3, %4) trên %5.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>Cần có 'window_id'.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>Cần có &apos;window_id&apos;.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp cửa sổ "%1".</translation>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp cửa sổ &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1183,28 +1187,28 @@
         <translation>Một ứng dụng khách MCP bên ngoài muốn đọc ảnh chụp cuối (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn bắt đầu chụp theo khoảng thời gian mỗi %1 giây cho "%2".</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn bắt đầu chụp theo khoảng thời gian mỗi %1 giây cho &quot;%2&quot;.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>Hãy chỉ định 'target' hoặc đặt 'all': true.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>Hãy chỉ định &apos;target&apos; hoặc đặt &apos;all&apos;: true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image yêu cầu input_path và mảng operations không trống.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>Ở chế độ Danh sách cho phép MCP, input_path phải là tệp hiện có bên trong thư mục ảnh chụp của glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>Ở chế độ Danh sách cho phép MCP, output_path phải nằm bên trong thư mục ảnh chụp của glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chú thích "%1" (%2 thao tác).</translation>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chú thích &quot;%1&quot; (%2 thao tác).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1241,304 +1245,92 @@
         <translation>Đóng băng</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Hiển thị khoảnh khắc bạn nhấn phím. Ảnh chụp sẽ cắt từ hình này. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Trực tiếp</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Xem màn hình tiếp tục chuyển động, ví dụ như video. Ảnh được chụp khi bạn lưu. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Màn hình này</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>Chụp toàn bộ %1</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Tất cả màn hình</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Chụp mọi màn hình trong một ảnh</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Cửa sổ</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Chụp một cửa sổ, kể cả khi bị che hoặc thu nhỏ</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Vùng</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Chụp một vùng hoặc nhóm đã lưu, hoặc thêm nó làm hình chữ nhật</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Thêm một vùng hoặc nhóm đã lưu làm hình chữ nhật</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Độ trễ</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Chụp lại ảnh màn hình sau khi đếm ngược để menu vẫn mở</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>Chú thích</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>Hiện hoặc ẩn công cụ đánh dấu (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Lấy màu</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Lấy mẫu màu điểm ảnh bằng kính lúp phóng đại (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Sửa trong cửa sổ</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Mở trong cửa sổ Trình sửa nhanh để cắt, thu phóng và chỉnh sửa chi tiết (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Trợ giúp</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Hiện hoặc ẩn các điều khiển (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Cài đặt</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Giữ ảnh chụp màn hình đầy đủ và mở cài đặt</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Đóng</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Giữ ảnh chụp màn hình đầy đủ và đóng (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>Hủy (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Kéo</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Vẽ hình chữ nhật (hoặc công cụ đánh dấu đang chọn)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>Kéo bên trong / cạnh</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Di chuyển / đổi kích thước hình chữ nhật hoặc chú thích đang chọn</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt khi đang kéo</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Giữ hình vuông hoặc bắt góc 15° / phóng từ tâm hoặc nhân đôi</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space khi đang kéo</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Đặt lại vị trí hình dạng hoặc vùng chọn trực tiếp</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl trong công cụ đánh dấu</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Tạm thời chuyển sang Chọn / Di chuyển</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Nhấp / Nhấp phải</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Kích hoạt / xóa chú thích hoặc hình chữ nhật trên cùng</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Nhấp đúp</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Sửa chú thích văn bản hoặc lưu hình chữ nhật</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Lưu hình chữ nhật thành vùng</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Nhấp, chưa vẽ gì</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Chụp màn hình này (trước khi chú thích)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Chuột</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Chọn / Mũi tên Chữ nhật Elip Bút Đánh dấu Văn bản Bước Che mờ Nổi bật</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Phím bổ trợ vùng chọn hoạt động trên mọi màn hình</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Đổi cỡ cọ hoặc cỡ chữ  ·  Hoàn tác / Làm lại</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Chuyển giữa Đóng băng và Trực tiếp (khi rảnh)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Mũi tên / Shift+Mũi tên</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Di chuyển chú thích hoặc hình chữ nhật đang chọn 1 px / 10 px</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Mũi tên / Ctrl+Mũi tên</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Đổi kích thước từ tâm / đổi kích thước hình vuông</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Lưu vùng chọn hoặc màn hình đã chú thích</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Lưu thành vùng</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Xóa chú thích hoặc hình chữ nhật đang chọn</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Xác nhận văn bản, quay lại một bước hoặc đóng</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Hủy</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Hiện hoặc ẩn trợ giúp này</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Lấy màu điểm ảnh (Tab đổi định dạng, Alt+Nhấp áp dụng cho đánh dấu)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Mở vùng chọn hoặc màn hình trong cửa sổ Trình sửa nhanh</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Ghim vùng chọn lên màn hình (một ghim cho mỗi hình chữ nhật)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Sao chép văn bản của vùng chọn (cần tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Phím</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1341,12 @@
         <translation>%1 (đã thu nhỏ)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Không trễ</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>Chụp lại sau %1 giây</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1367,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>Chưa có vùng nào được lưu. Vẽ một hình chữ nhật rồi chọn Lưu thành vùng.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Thêm</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Chọn</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Mũi tên</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Hình chữ nhật</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Hình elip</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Bút</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Đánh dấu</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Văn bản</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Bước</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Che mờ</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Nổi bật</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1437,40 @@
         <translation>Lưu</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Lưu vào thư mục ảnh chụp và sao chép vào bảng nhớ tạm (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Sao chép</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Chỉ sao chép vào bảng nhớ tạm</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Sao chép văn bản</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Nhận dạng văn bản và sao chép vào bảng nhớ tạm (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Ghim</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Giữ vùng chọn trên màn hình phía trên các cửa sổ khác (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Lưu thành…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Chọn nơi lưu</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Mở công cụ đánh dấu để vẽ hoặc che mờ</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Mở vùng chọn và chú thích trong cửa sổ Trình sửa nhanh (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Lưu thành vùng</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Ghi nhớ hình chữ nhật này để chụp lại chỉ với một lần nhấp hoặc phím tắt</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>Thêm hình chữ nhật</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Vẽ thêm hình chữ nhật khác, kể cả đè lên hình hiện có</translation>
+        <source>Go Live</source>
+        <translation>Trực tiếp</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Đóng (Escape)</translation>
+        <source>Freeze</source>
+        <translation>Đóng băng</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Phím tắt</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1499,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n giây</numerusform></translation>
+            <numerusform>%n giây</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1529,14 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>Lưu %n vùng thành một nhóm</numerusform></translation>
+            <numerusform>Lưu %n vùng thành một nhóm</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Một phím tắt chụp tất cả %n vùng cùng lúc, mỗi vùng vào tệp riêng.</numerusform></translation>
+            <numerusform>Một phím tắt chụp tất cả %n vùng cùng lúc, mỗi vùng vào tệp riêng.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1545,8 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>Lưu %n vùng</numerusform></translation>
+            <numerusform>Lưu %n vùng</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1555,128 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>Lưu %n vùng</numerusform></translation>
+            <numerusform>Lưu %n vùng</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Xóa hoặc hoàn tác chú thích để quay lại chế độ Trực tiếp</translation>
+        <source>New rectangle</source>
+        <translation>Hình chữ nhật mới</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Độ trễ: %1 giây</translation>
+        <source>New area</source>
+        <translation>Vùng mới</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift khi kéo</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Giữ hình vuông</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt khi kéo</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Mở rộng từ tâm</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Di chuyển khi trực tiếp</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>Di chuyển 1 px / 10 px</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Đổi kích thước từ tâm / thành hình vuông</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Xóa</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Xóa hình chữ nhật đang chọn</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Lưu hình chữ nhật thành ảnh</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Quay lại, hoặc đóng</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Chụp màn hình này</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Mở trong cửa sổ chỉnh sửa</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Chú thích</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Chọn công cụ</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift khi vẽ</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Hình vuông, hình tròn hoặc bước 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt khi vẽ</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+Kéo</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Nhân bản một chú thích</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space khi vẽ</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Chọn và di chuyển tạm thời</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Cỡ bút hoặc chữ nhỏ hơn / lớn hơn</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Hoàn tác / Làm lại</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Lấy màu; Alt+Nhấp để áp dụng</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1698,10 @@
         <translation>Không thể chụp màn hình.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Nhấp để sao chép màu · Alt+Nhấp để áp dụng vào chú thích · Tab để đổi định dạng · Escape để thoát</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>Đã áp dụng %1 và sao chép vào bảng nhớ tạm</translation>
     </message>
@@ -1781,48 +1710,8 @@
         <translation>Đã sao chép %1 vào bảng nhớ tạm</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Nhấp để sao chép màu, Alt+Nhấp để áp dụng cho công cụ đánh dấu đang chọn, Tab để đổi định dạng, Escape để thoát.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift giữ hình vuông, Alt phóng từ tâm, Space đặt lại vị trí khi đang kéo.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Nhập văn bản, kéo cạnh ngoài khung để di chuyển; Escape hoặc Ctrl+Enter để xác nhận.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Kéo để vẽ (Ctrl tạm thời chọn; Shift bắt góc, Alt từ tâm, Space di chuyển; V quay lại).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Kéo hình chữ nhật tiếp theo ở bất kỳ đâu, kể cả đè lên hình khác.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter lưu ảnh chụp đã chú thích, hoặc vẽ hình chữ nhật cắt trước. Escape đóng.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Kéo một hình chữ nhật, nhấp vào màn hình để chụp, hoặc mở Chú thích. Escape giữ ảnh chụp màn hình đầy đủ.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Kéo một hình chữ nhật cho vùng mới. Escape hủy.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Nhấp vào một hình chữ nhật để thay đổi nó, hoặc kéo để tạo hình mới.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Kéo bên trong để di chuyển, kéo ở các cạnh để đổi kích thước. Kéo ở nơi khác để tạo hình chữ nhật khác. Enter để lưu.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Kéo bên trong để di chuyển, kéo ở các cạnh để đổi kích thước. Kéo ở nơi khác để tạo hình chữ nhật khác.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Di chuột lên nút để xem tên và phím tắt · F1 hiển thị tất cả</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1760,8 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>Đã lưu %n vùng</numerusform></translation>
+            <numerusform>Đã lưu %n vùng</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1990,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Phím tắt: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2009,8 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>Gỡ vĩnh viễn %n ghim?</numerusform></translation>
+            <numerusform>Gỡ vĩnh viễn %n ghim?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2408,8 @@
         <translation>Hook sau khi chụp và tự động hóa bên ngoài</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2492,7 @@
         <translation>Chọn trên màn hình…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Điểm ảnh logic tương đối so với góc trên bên trái của màn hình. Ảnh chụp dùng độ phân giải gốc của màn hình.</translation>
     </message>
     <message>
@@ -2666,7 +2568,7 @@
         <translation>Tọa độ logic toàn cục qua các màn hình. Ảnh chụp ghép các màn hình giao nhau ở tỷ lệ cao nhất.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Không có màn hình nào của vùng này đang kết nối. Không có gì được lưu khi kích hoạt.</translation>
     </message>
     <message>
@@ -2928,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>Đóng băng hiển thị khoảnh khắc bạn nhấn Print. Trực tiếp cho phép video tiếp tục phát và chụp khi bạn lưu. Space chuyển đổi trong lớp phủ bất cứ lúc nào.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Đặt lại vị trí bảng</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>Hiện lại gợi ý khởi động lần đầu</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Bảng lớp phủ:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Đặt lại sẽ đưa bảng về chính giữa phía trên của mọi màn hình.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3181,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n giây</numerusform></translation>
+            <numerusform>%n giây</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3444,8 @@
         <translation>Thiếu giá trị cho --mode.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode phải là 'frozen' hoặc 'live'.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode phải là &apos;frozen&apos; hoặc &apos;live&apos;.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Không có ảnh chụp gần đây.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last yêu cầu một số dương.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>Chưa có lần chụp bằng phím Print nào được đo từ khi glimply khởi động.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

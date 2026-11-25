@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="tr" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>#%1 numaralı gizleme işlemi x, y, width &gt; 0, height &gt; 0 gerektirir.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>#%2 numaralı işlemde desteklenmeyen ek açıklama türü '%1'.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>#%2 numaralı işlemde desteklenmeyen ek açıklama türü &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Ek açıklamalı görsel işlenemedi.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>overwrite=true olmadan '%1' girdi dosyasının üzerine yazma reddedildi.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>overwrite=true olmadan &apos;%1&apos; girdi dosyasının üzerine yazma reddedildi.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,8 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>%1 için aralık %n yakalamadan sonra durduruldu.</numerusform></translation>
+            <numerusform>%1 için aralık %n yakalamadan sonra durduruldu.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +869,8 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>ve %n tane daha</numerusform></translation>
+            <numerusform>ve %n tane daha</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +879,8 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>%n ekran görüntüsü kaydedildi</numerusform></translation>
+            <numerusform>%n ekran görüntüsü kaydedildi</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +951,8 @@
         <translation>Çöp kutusuna taşınamadı: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>Bilinmeyen eylem "%1".</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>Bilinmeyen eylem &quot;%1&quot;.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1059,8 @@
         <translation>Bir yakalama geri sayımı zaten çalışıyor.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>'window:' sonrasındaki pencere belirtici boş olamaz.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>&apos;window:&apos; sonrasındaki pencere belirtici boş olamaz.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1124,7 +1128,7 @@
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation>Geçersiz MCP araç argümanları JSON'u: %1</translation>
+        <translation>Geçersiz MCP araç argümanları JSON&apos;u: %1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
@@ -1143,20 +1147,20 @@
         <translation>MCP %1 yakaladı</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>Desteklenmeyen görsel biçimi '%1'.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>Desteklenmeyen görsel biçimi &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' 1 ile 100 arasında bir tam sayı olmalıdır.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; 1 ile 100 arasında bir tam sayı olmalıdır.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target' gerekli.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos; gerekli.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
-        <translation>Harici bir MCP istemcisi "%1" (%2) hedefini yakalamak istiyor.</translation>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <translation>Harici bir MCP istemcisi &quot;%1&quot; (%2) hedefini yakalamak istiyor.</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1167,12 +1171,12 @@
         <translation>Harici bir MCP istemcisi %5 üzerindeki (%3, %4) konumunda %1x%2 bölgesini yakalamak istiyor.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id' gerekli.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos; gerekli.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
-        <translation>Harici bir MCP istemcisi "%1" penceresini yakalamak istiyor.</translation>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <translation>Harici bir MCP istemcisi &quot;%1&quot; penceresini yakalamak istiyor.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1183,28 +1187,28 @@
         <translation>Harici bir MCP istemcisi son yakalamayı (%1) okumak istiyor.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
-        <translation>Harici bir MCP istemcisi "%2" için her %1 sn'de bir aralıklı yakalama başlatmak istiyor.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <translation>Harici bir MCP istemcisi &quot;%2&quot; için her %1 sn&apos;de bir aralıklı yakalama başlatmak istiyor.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>'target' belirtin veya 'all': true ayarlayın.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>&apos;target&apos; belirtin veya &apos;all&apos;: true ayarlayın.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image boş olmayan input_path ve operations dizisi gerektirir.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>MCP İzin listesi modunda input_path, glimply yakalama dizini içindeki mevcut bir dosya olmalıdır.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>MCP İzin listesi modunda output_path, glimply yakalama dizini içinde olmalıdır.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
-        <translation>Harici bir MCP istemcisi "%1" (%2 işlem) üzerine ek açıklama eklemek istiyor.</translation>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <translation>Harici bir MCP istemcisi &quot;%1&quot; (%2 işlem) üzerine ek açıklama eklemek istiyor.</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1241,304 +1245,92 @@
         <translation>Dondurulmuş</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Tuşa bastığınız anı gösterir. Yakalamalar bu görüntüden kesilir. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Canlı</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Ekranın hareketini (örneğin bir videoyu) görün. Yakalamalar kaydettiğinizde alınır. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Bu Ekran</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>%1 ekranının tamamını yakala</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Tüm Ekranlar</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Bağlı tüm ekranları tek görüntüde yakala</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Pencere</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Üstü kapalı veya simge durumuna küçültülmüş olsa bile bir pencereyi yakala</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Alanlar</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Kayıtlı bir alanı veya grubu yakala ya da dikdörtgen olarak ekle</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Kayıtlı bir alanı veya grubu dikdörtgen olarak ekle</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Gecikme</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Menülerin açık kalması için geri sayımdan sonra ekran görüntüsünü yeniden al</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>Ek Açıklama</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>İşaretleme araçlarını göster veya gizle (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Renk Seç</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Büyüteçle piksel renklerini örnekle (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Pencerede Düzenle</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Kırpma, yakınlaştırma ve ince düzenlemeler için Hızlı Düzenleyici penceresinde aç (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Yardım</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Denetimleri göster veya gizle (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Tam ekran görüntüsünü koru ve ayarları aç</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Kapat</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Tam ekran görüntüsünü koru ve kapat (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>İptal (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Sürükle</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Bir dikdörtgen çiz (veya etkin işaretleme aracı)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>İçinden / kenardan sürükle</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Etkin dikdörtgeni veya ek açıklamayı taşı / yeniden boyutlandır</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Sürüklerken Shift / Alt</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Kare veya 15° yakalama / merkezden büyütme veya çoğaltma</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Sürüklerken Space</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Şekli veya seçimi canlı olarak yeniden konumlandır</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>İşaretleme aracında Ctrl</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Geçici olarak Seç / Taşı aracına geç</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Tıkla / Sağ tıkla</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>En üstteki ek açıklamayı veya dikdörtgeni etkinleştir / sil</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Çift tıkla</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Metin ek açıklamasını düzenle veya dikdörtgeni kaydet</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Dikdörtgeni alan olarak kaydet</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Tıkla, çizim yok</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Bu ekranı yakala (ek açıklama öncesi)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Fare</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Seç / Ok Dikdörtgen Elips Kalem İşaretleyici Metin Adım Gizle Spot</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Seçim değiştiricileri tüm ekranlarda çalışır</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Fırça veya yazı tipi boyutunu değiştir  ·  Geri Al / Yinele</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Dondurulmuş ve Canlı arasında geçiş yap (boştayken)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Oklar / Shift+Oklar</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Etkin ek açıklamayı veya dikdörtgeni 1 px / 10 px taşı</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Oklar / Ctrl+Oklar</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Merkezden yeniden boyutlandır / kare olarak yeniden boyutlandır</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Seçimi veya ek açıklamalı ekranı kaydet</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Alan olarak kaydet</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Etkin ek açıklamayı veya dikdörtgeni sil</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Metni onayla, geri al veya kapat</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Bu yardımı göster veya gizle</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Piksel rengi seç (Tab biçimi değiştirir, Alt+Tıkla işaretlemeye uygular)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Seçimi veya ekranı Hızlı Düzenleyici penceresinde aç</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Seçimi ekrana sabitle (dikdörtgen başına bir sabitleme)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Seçimin metnini kopyala (tesseract gerekir)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Tuşlar</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1341,12 @@
         <translation>%1 (simge durumunda)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Gecikme yok</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>%1 sn içinde yeniden al</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 sn</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1574,7 +1366,51 @@
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation>Henüz kayıtlı alan yok. Bir dikdörtgen çizin, ardından Alan Olarak Kaydet'i seçin.</translation>
+        <translation>Henüz kayıtlı alan yok. Bir dikdörtgen çizin, ardından Alan Olarak Kaydet&apos;i seçin.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Diğer</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Seç</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Dikdörtgen</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Elips</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Kalem</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Vurgu</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Metin</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Adım</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Gizle</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Spot Işığı</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1437,40 @@
         <translation>Kaydet</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Yakalama klasörüne kaydet ve panoya kopyala (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Kopyala</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Yalnızca panoya kopyala</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Metni Kopyala</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Metni tanı ve panoya kopyala (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Sabitle</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Seçimi ekranda diğer pencerelerin üstünde tut (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Farklı Kaydet…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Nereye kaydedileceğini seç</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Çizim yapmak veya gizlemek için işaretleme araçlarını aç</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Seçimi ve ek açıklamaları Hızlı Düzenleyici penceresinde aç (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Alan Olarak Kaydet</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Tek tıklama veya kısayolla tekrar yakalamak için bu dikdörtgeni hatırla</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>Dikdörtgen Ekle</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Mevcut bir dikdörtgenin üzerine de gelebilecek başka bir dikdörtgen çiz</translation>
+        <source>Go Live</source>
+        <translation>Canlıya Geç</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Kapat (Escape)</translation>
+        <source>Freeze</source>
+        <translation>Dondur</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Kısayol Özeti</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1499,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n saniye</numerusform></translation>
+            <numerusform>%n saniye</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1529,14 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>%n alanı grup olarak kaydet</numerusform></translation>
+            <numerusform>%n alanı grup olarak kaydet</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Tek bir kısayol, tüm %n alanı aynı anda her birini kendi dosyasına yakalar.</numerusform></translation>
+            <numerusform>Tek bir kısayol, tüm %n alanı aynı anda her birini kendi dosyasına yakalar.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1545,8 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>%n alanı kaydet</numerusform></translation>
+            <numerusform>%n alanı kaydet</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1555,128 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>%n Alanı Kaydet</numerusform></translation>
+            <numerusform>%n Alanı Kaydet</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Canlı moda dönmek için ek açıklamaları temizleyin veya geri alın</translation>
+        <source>New rectangle</source>
+        <translation>Yeni dikdörtgen</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Gecikme: %1 sn</translation>
+        <source>New area</source>
+        <translation>Yeni alan</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Sürüklerken Shift</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Kareyi koru</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Sürüklerken Alt</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Merkezden büyüt</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Canlıyken yeniden konumlandır</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>1 px / 10 px kadar taşı</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Merkezden boyutlandır / kare olarak</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Sil</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Etkin dikdörtgeni sil</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Dikdörtgeni kaydet</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Bir adım geri git veya kapat</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Bu ekranı yakala</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Düzenleyici pencerede aç</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Ek Açıklama</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Bir araç seç</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Çizerken Shift</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Kare, daire veya 15° adımlarla</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Çizerken Alt</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+Sürükle</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Ek açıklamayı çoğalt</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Çizerken Space</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Kısa süreliğine seç ve taşı</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Fırçayı veya yazı tipini küçült / büyüt</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Geri Al / Yinele</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Bir renk seç; Alt+Tıkla ile uygula</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1698,10 @@
         <translation>Ekran yakalanamadı.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Tıklayınca renk kopyalanır · Alt+Tıklayınca ek açıklamalara uygulanır · Tab biçimi değiştirir · Escape çıkar</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 uygulandı ve panoya kopyalandı</translation>
     </message>
@@ -1781,48 +1710,8 @@
         <translation>%1 panoya kopyalandı</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Rengi kopyalamak için tıklayın, etkin işaretleme aracına uygulamak için Alt+Tıkla, biçimi değiştirmek için Tab, çıkmak için Escape.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift kare tutar, Alt merkezden büyütür, sürüklerken Space yeniden konumlandırır.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Metin yazın, taşımak için çerçeve kenarının dışından sürükleyin; Escape veya Ctrl+Enter onaylar.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Çizmek için sürükleyin (Ctrl geçici olarak seçer; Shift yakalar, Alt merkezler, Space taşır; V geri döner).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Sonraki dikdörtgeni herhangi bir yere, başka birinin üzerine de sürükleyin.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter ek açıklamalı yakalamayı kaydeder veya önce bir kırpma dikdörtgeni çizin. Escape kapatır.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Bir dikdörtgen sürükleyin, yakalamak için bir ekrana tıklayın veya Ek Açıklama'yı açın. Escape tam ekran görüntüsünü korur.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Yeni alan için bir dikdörtgen sürükleyin. Escape iptal eder.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Değiştirmek için bir dikdörtgene tıklayın veya yeni bir tane sürükleyin.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Taşımak için içinden, yeniden boyutlandırmak için kenarlardan sürükleyin. Başka bir dikdörtgen için başka bir yere sürükleyin. Enter kaydeder.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Taşımak için içinden, yeniden boyutlandırmak için kenarlardan sürükleyin. Başka bir dikdörtgen için başka bir yere sürükleyin.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Ad ve kısayollar için düğmelerin üzerine gelin · F1 her şeyi gösterir</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1760,8 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>%n alan kaydedildi</numerusform></translation>
+            <numerusform>%n alan kaydedildi</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -1949,7 +1839,7 @@
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation>Geçersiz yakalama isteği JSON'u.</translation>
+        <translation>Geçersiz yakalama isteği JSON&apos;u.</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
@@ -2069,7 +1959,7 @@
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation>«%1» için aralıklı yakalama durduruldu: 100 MB'tan az boş disk alanı kaldı.</translation>
+        <translation>«%1» için aralıklı yakalama durduruldu: 100 MB&apos;tan az boş disk alanı kaldı.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
@@ -2100,6 +1990,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Kısayol: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2009,8 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>%n sabitleme kalıcı olarak kaldırılsın mı?</numerusform></translation>
+            <numerusform>%n sabitleme kalıcı olarak kaldırılsın mı?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2408,8 @@
         <translation>Yakalama sonrası kancalar ve harici otomasyon</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2492,7 @@
         <translation>Ekranda Seç…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Ekranın sol üst köşesine göre mantıksal pikseller. Yakalamalar ekranın doğal çözünürlüğünü kullanır.</translation>
     </message>
     <message>
@@ -2643,7 +2545,7 @@
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation>Genel: her uygulamada çalışır. Sistem Ayarları'ndan da düzenlenebilir.</translation>
+        <translation>Genel: her uygulamada çalışır. Sistem Ayarları&apos;ndan da düzenlenebilir.</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
@@ -2666,7 +2568,7 @@
         <translation>Ekranlar arası genel mantıksal koordinatlar. Yakalamalar kesişen ekranları en yüksek ölçekte birleştirir.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Bu alanın ekranlarından hiçbiri bağlı değil. Tetiklendiğinde hiçbir şey kaydedilmez.</translation>
     </message>
     <message>
@@ -2928,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>Dondurulmuş, Print tuşuna bastığınız anı gösterir. Canlı, videoların oynamaya devam etmesini sağlar ve kaydettiğinizde yakalar. Space katmanda istediğiniz zaman geçiş yapar.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Panel Konumunu Sıfırla</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>İlk Başlatma İpucunu Yeniden Göster</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Katman paneli:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Sıfırlama, paneli her ekranın üst ortasına geri yerleştirir.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3181,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n saniye</numerusform></translation>
+            <numerusform>%n saniye</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3444,8 @@
         <translation>--mode için değer eksik.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode 'frozen' veya 'live' olmalıdır.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode &apos;frozen&apos; veya &apos;live&apos; olmalıdır.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Son yakalama yok.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last pozitif bir sayı bekler.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>glimply başlatıldığından beri ölçülmüş Print yakalaması yok.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

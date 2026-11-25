@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="ja" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,7 +301,7 @@
         <translation>墨消しの操作 #%1 には x、y、width &gt; 0、height &gt; 0 が必要です。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
         <translation>操作 #%2 の注釈の種類「%1」はサポートされていません。</translation>
     </message>
     <message>
@@ -308,7 +309,7 @@
         <translation>注釈付き画像の描画に失敗しました。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
         <translation>overwrite=true を指定せずに入力ファイル「%1」を上書きすることはできません。</translation>
     </message>
 </context>
@@ -950,7 +951,7 @@
         <translation>ゴミ箱に移動できませんでした: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>不明な操作「%1」です。</translation>
     </message>
     <message>
@@ -1058,7 +1059,7 @@
         <translation>キャプチャのカウントダウンは既に実行中です。</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
         <translation>「window:」の後のウィンドウ指定は空にできません。</translation>
     </message>
     <message>
@@ -1146,19 +1147,19 @@
         <translation>MCP が %1 をキャプチャしました</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
+        <source>Unsupported image format &apos;%1&apos;.</source>
         <translation>サポートされていない画像形式「%1」です。</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
         <translation>「quality」は 1 から 100 までの整数である必要があります。</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
+        <source>&apos;target&apos; is required.</source>
         <translation>「target」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>外部の MCP クライアントが「%1」（%2）をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1170,11 +1171,11 @@
         <translation>外部の MCP クライアントが、%5 上の (%3, %4) にある %1x%2 の範囲をキャプチャしようとしています。</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
+        <source>&apos;window_id&apos; is required.</source>
         <translation>「window_id」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>外部の MCP クライアントがウィンドウ「%1」をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1186,11 +1187,11 @@
         <translation>外部の MCP クライアントが最後のキャプチャ（%1）を読み取ろうとしています。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>外部の MCP クライアントが「%2」について %1 秒ごとのインターバルキャプチャを開始しようとしています。</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
         <translation>「target」を指定するか、「all」: true を設定してください。</translation>
     </message>
     <message>
@@ -1198,15 +1199,15 @@
         <translation>annotate_image には空でない input_path と operations 配列が必要です。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>MCP の許可リストモードでは、input_path は glimply のキャプチャ用フォルダー内にある既存のファイルである必要があります。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>MCP の許可リストモードでは、output_path は glimply のキャプチャ用フォルダー内である必要があります。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>外部の MCP クライアントが「%1」（%2 件の操作）に注釈を付けようとしています。</translation>
     </message>
     <message>
@@ -1244,304 +1245,92 @@
         <translation>静止画</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>キーを押した瞬間を表示します。この画像からキャプチャを切り出します。(Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>ライブ</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>画面の動き（例: 動画）をそのまま表示します。キャプチャは保存時に撮影されます。(Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>このディスプレイ</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>%1 全体をキャプチャ</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>すべてのディスプレイ</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>すべてのディスプレイを 1 枚の画像にキャプチャ</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>ウィンドウ</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>1 つのウィンドウをキャプチャ。隠れている場合や最小化されている場合も対象</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>範囲</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>保存済みの範囲またはグループをキャプチャ、または四角形として追加</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>保存済みの範囲またはグループを四角形として追加</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>遅延</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>カウントダウン後に撮影し、メニューを開いたままにします</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>注釈</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>マークアップツールを表示または非表示 (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>色を取得</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>拡大ルーペでピクセルの色を取得 (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>ウィンドウで編集</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>クイックエディターウィンドウで開き、切り抜き、拡大、細かい編集を行います (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>ヘルプ</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>操作一覧を表示または非表示 (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>スクリーンショット全体を残して設定を開きます</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>閉じる</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>スクリーンショット全体を残して閉じます (Esc)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>キャンセル (Esc)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>ドラッグ</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>四角形を描画（または選択中のマークアップツール）</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>内側 / 辺をドラッグ</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>選択中の四角形または注釈を移動 / サイズ変更</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>ドラッグ中の Shift / Alt</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>正方形を維持、または 15° 単位で角度を固定 / 中心から拡大、または複製</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>ドラッグ中の Space</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>図形または選択範囲をリアルタイムに移動</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>マークアップツールで Ctrl</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>一時的に選択 / 移動に切り替え</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>クリック / 右クリック</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>最前面の注釈または四角形をアクティブ化 / 削除</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>ダブルクリック</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>テキスト注釈を編集、または四角形を保存</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>四角形を範囲として保存</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>クリック（何も描画されていない場合）</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>このディスプレイをキャプチャ（注釈の前）</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>マウス</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>選択 / 矢印・四角形・楕円・ペン・蛍光ペン・テキスト・ステップ・墨消し・スポットライト</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>選択時の修飾キーはすべてのディスプレイで使えます</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>ステップブラシまたはフォントサイズ  ·  元に戻す / やり直す</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>静止画とライブを切り替え（待機中のみ）</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>矢印キー / Shift+矢印キー</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>選択中の注釈または四角形を 1 px / 10 px 移動</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+矢印キー / Ctrl+矢印キー</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>中心から拡大縮小 / 正方形にサイズ変更</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>選択範囲または注釈付きの画面を保存</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>範囲として保存</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>選択中の注釈または四角形を削除</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Esc</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>テキストを確定、1 つ戻る、または閉じる</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>このヘルプを表示または非表示</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>ピクセルの色を取得（Tab で形式を切り替え、Alt+クリックでマークアップに適用）</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>選択範囲または画面をクイックエディターウィンドウで開く</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>選択範囲を画面に固定（四角形ごとに 1 つ）</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>選択範囲のテキストをコピー（tesseract が必要）</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>キー</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1552,12 +1341,12 @@
         <translation>%1（最小化）</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>遅延なし</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>%1 秒後に撮り直す</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 秒</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1578,6 +1367,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>保存済みの範囲はまだありません。四角形を描画してから「範囲として保存」を選択してください。</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>その他</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>選択</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>矢印</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>四角形</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>楕円</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>ペン</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>蛍光ペン</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>テキスト</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>ステップ</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>墨消し</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>スポットライト</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1604,68 +1437,40 @@
         <translation>保存</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>キャプチャ用フォルダーに保存してクリップボードにコピー (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>コピー</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>クリップボードにのみコピー</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>テキストをコピー</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>テキストを認識してクリップボードにコピー (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>固定</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>選択範囲を他のウィンドウより手前の画面上に固定 (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>名前を付けて保存…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>保存先を選択</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>マークアップツールを開き、描画または墨消しを行う</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>選択範囲と注釈をクイックエディターウィンドウで開く (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>範囲として保存</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>この四角形を記憶し、ワンクリックまたはショートカットで再びキャプチャできるようにします</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>四角形を追加</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>別の四角形を描画します（既存の四角形の上でも可）</translation>
+        <source>Go Live</source>
+        <translation>ライブに戻す</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>閉じる (Esc)</translation>
+        <source>Freeze</source>
+        <translation>静止画にする</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>ショートカット一覧</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1754,12 +1559,124 @@
         </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>注釈を消去または元に戻して、ライブモードに戻ります</translation>
+        <source>New rectangle</source>
+        <translation>新しい四角形</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>遅延: %1 秒</translation>
+        <source>New area</source>
+        <translation>新しい範囲</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>ドラッグ中のShift</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>正方形を保つ</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>ドラッグ中のAlt</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>中心から広げる</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>ライブ中に位置を変更</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>1 px / 10 px ずつ移動</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>中心からサイズ変更 / 正方形にサイズ変更</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>選択中の四角形を削除</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>四角形を保存</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>一段階戻る、または閉じる</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>このディスプレイを撮影</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>エディターウィンドウで開く</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>注釈</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>ツールを選ぶ</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>描画中のShift</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>正方形・正円、または15°刻み</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>描画中のAlt</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+ドラッグ</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>注釈を複製</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>描画中のSpace</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>一時的に選択 / 移動</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>ブラシやフォントを小さく / 大きく</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>元に戻す / やり直す</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>色を取得し、Alt+クリックで適用</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1781,6 +1698,10 @@
         <translation>画面をキャプチャできませんでした。</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>クリックで色をコピー · Alt+クリックで注釈に適用 · Tabで形式を切り替え · Escで終了</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 を適用し、クリップボードにコピーしました</translation>
     </message>
@@ -1789,48 +1710,8 @@
         <translation>%1 をクリップボードにコピーしました</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>クリックで色をコピー、Alt+クリックで選択中のマークアップツールに適用、Tab で形式を切り替え、Esc で終了します。</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift で正方形を維持、Alt で中心から拡大、ドラッグ中に Space で位置を変更します。</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>テキストを入力し、枠の外側の辺をドラッグして移動します。Esc または Ctrl+Enter で確定します。</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>ドラッグで描画（Ctrl で一時的に選択、Shift で角度を固定、Alt で中心から、Space で移動、V で戻る）。</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>次の四角形を任意の場所にドラッグで描画します（別の四角形の上でも可）。</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter で注釈付きのキャプチャを保存します。先に切り抜き用の四角形を描画することもできます。Esc で閉じます。</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>四角形をドラッグするか、ディスプレイをクリックしてキャプチャするか、注釈を開きます。Esc でスクリーンショット全体を残します。</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>新しい範囲の四角形をドラッグしてください。Esc でキャンセルします。</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>四角形をクリックして変更するか、新しい四角形をドラッグしてください。</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>内側をドラッグで移動、辺をドラッグでサイズ変更。それ以外の場所をドラッグすると別の四角形を描画します。Enter で保存します。</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>内側をドラッグで移動、辺をドラッグでサイズ変更。それ以外の場所をドラッグすると別の四角形を描画します。</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>ボタンにカーソルを合わせると名前とショートカットを表示 · F1ですべて表示</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -2106,6 +1987,17 @@
     <message>
         <source>Auto-denying in %1 s…</source>
         <translation>%1 秒後に自動的に拒否…</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>ショートカット: %1</translation>
     </message>
 </context>
 <context>
@@ -2516,8 +2408,8 @@
         <translation>キャプチャ後のフックと外部の自動化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2600,7 +2492,7 @@
         <translation>画面上で選択…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>ディスプレイの左上隅を基準とした論理ピクセルです。キャプチャはディスプレイのネイティブ解像度で行われます。</translation>
     </message>
     <message>
@@ -2676,7 +2568,7 @@
         <translation>ディスプレイ全体での論理座標です。キャプチャは、交差するディスプレイを最も高いスケールで合成します。</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>この範囲のディスプレイはいずれも接続されていません。実行しても何も保存されません。</translation>
     </message>
     <message>
@@ -2938,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>静止画では Print を押した瞬間を表示します。ライブでは動画を再生し続け、保存時にキャプチャします。オーバーレイ内では Space でいつでも切り替えられます。</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>パネルの位置をリセット</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>初回起動時のヒントを再表示</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>オーバーレイパネル:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>リセットすると、パネルはすべてのディスプレイの上部中央に戻ります。</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3536,8 +3444,8 @@
         <translation>--mode の値がありません。</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode には 'frozen' または 'live' を指定してください。</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode には &apos;frozen&apos; または &apos;live&apos; を指定してください。</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3550,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>最近のキャプチャはありません。</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last には正の数を指定してください。</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>glimplyの起動後に計測されたPrintの撮影はありません。</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

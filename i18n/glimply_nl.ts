@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="nl" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>Redactiebewerking #%1 vereist x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>Niet-ondersteund aantekeningstype '%1' bij bewerking #%2.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>Niet-ondersteund aantekeningstype &apos;%1&apos; bij bewerking #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Renderen van afbeelding met aantekeningen is mislukt.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>Weigering om invoerbestand '%1' te overschrijven zonder overwrite=true.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>Weigering om invoerbestand &apos;%1&apos; te overschrijven zonder overwrite=true.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,9 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>Interval voor %1 gestopt na %n opname.</numerusform><numerusform>Interval voor %1 gestopt na %n opnamen.</numerusform></translation>
+            <numerusform>Interval voor %1 gestopt na %n opname.</numerusform>
+            <numerusform>Interval voor %1 gestopt na %n opnamen.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +870,9 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>en nog %n andere</numerusform><numerusform>en nog %n andere</numerusform></translation>
+            <numerusform>en nog %n andere</numerusform>
+            <numerusform>en nog %n andere</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +881,9 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>%n schermafbeelding opgeslagen</numerusform><numerusform>%n schermafbeeldingen opgeslagen</numerusform></translation>
+            <numerusform>%n schermafbeelding opgeslagen</numerusform>
+            <numerusform>%n schermafbeeldingen opgeslagen</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +954,8 @@
         <translation>Kan niet verplaatsen naar de prullenbak: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>Onbekende actie '%1'.</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>Onbekende actie &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1062,8 @@
         <translation>Er loopt al een opname-aftelling.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>Vensterspecificatie na 'window:' mag niet leeg zijn.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>Vensterspecificatie na &apos;window:&apos; mag niet leeg zijn.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,19 +1150,19 @@
         <translation>MCP heeft %1 vastgelegd</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>Niet-ondersteund afbeeldingsformaat '%1'.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>Niet-ondersteund afbeeldingsformaat &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' moet een geheel getal zijn tussen 1 en 100.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; moet een geheel getal zijn tussen 1 en 100.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target' is vereist.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos; is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>Een externe MCP-client wil ‘%1’ (%2) vastleggen.</translation>
     </message>
     <message>
@@ -1167,11 +1174,11 @@
         <translation>Een externe MCP-client wil regio %1x%2 op (%3, %4) op %5 vastleggen.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id' is vereist.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos; is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>Een externe MCP-client wil venster ‘%1’ vastleggen.</translation>
     </message>
     <message>
@@ -1183,27 +1190,27 @@
         <translation>Een externe MCP-client wil de laatste opname (%1) lezen.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>Een externe MCP-client wil elke %1 s intervalopnamen starten voor ‘%2’.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>Geef 'target' op of stel 'all': true in.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>Geef &apos;target&apos; op of stel &apos;all&apos;: true in.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image vereist een niet-lege input_path en operations-array.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>In MCP-toelatingslijstmodus moet input_path een bestaand bestand zijn in de opnamemap van glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>In MCP-toelatingslijstmodus moet output_path in de opnamemap van glimply staan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>Een externe MCP-client wil ‘%1’ aantekenen (%2 bewerking(en)).</translation>
     </message>
     <message>
@@ -1241,304 +1248,92 @@
         <translation>Bevroren</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Toon het moment waarop u op de toets drukte. Opnamen worden uit dit beeld gesneden. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Live</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Zie het scherm doorlopen, bijvoorbeeld een video. Opnamen worden gemaakt wanneer u opslaat. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Dit scherm</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>Alles van %1 vastleggen</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Alle schermen</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Elk scherm vastleggen in één afbeelding</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Venster</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Eén venster vastleggen, ook als het bedekt of geminimaliseerd is</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Gebieden</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Een opgeslagen gebied of groep vastleggen, of toevoegen als rechthoek</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Een opgeslagen gebied of groep toevoegen als rechthoek</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Vertraging</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Schermafbeelding opnieuw maken na een aftelling zodat menu's geopend blijven</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>Aantekenen</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>Markeergereedschap tonen of verbergen (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Kleur kiezen</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Pixelkleuren bemonsteren met een vergrootglas (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Bewerken in venster</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Openen in het Snelle bewerker-venster voor bijsnijden, zoomen en fijne bewerkingen (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Help</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Bedieningselementen tonen of verbergen (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Volledige schermafbeelding behouden en instellingen openen</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Sluiten</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Volledige schermafbeelding behouden en sluiten (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>Annuleren (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Slepen</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Een rechthoek tekenen (of actief markeergereedschap)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>Binnenin / rand slepen</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Actieve rechthoek of aantekening verplaatsen / formaat wijzigen</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt tijdens slepen</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Vierkant of 15°-uitlijning behouden / vanuit midden vergroten of dupliceren</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space tijdens slepen</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Vorm of selectie live herpositioneren</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl in markeergereedschap</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Tijdelijk overschakelen naar Selecteren / Verplaatsen</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Klik / Rechtsklik</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Bovenste aantekening of rechthoek activeren / verwijderen</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Dubbelklik</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Tekstaantekening bewerken of rechthoek opslaan</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Rechthoek opslaan als gebied</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Klik, niets getekend</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Dit scherm vastleggen (vóór aantekenen)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Muis</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Selecteren / Pijl Rechthoek Ellips Pen Markeer Tekst Stap Onleesbaar Spotlight</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Selectiemodifiers werken op alle schermen</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Penseel- of lettergrootte aanpassen  ·  Ongedaan maken / Opnieuw</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Wisselen tussen Bevroren en Live (indien inactief)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Pijltjestoetsen / Shift+Pijltjestoetsen</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Actieve aantekening of rechthoek verplaatsen met 1 px / 10 px</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Pijltjestoetsen / Ctrl+Pijltjestoetsen</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Formaat wijzigen vanuit midden / vierkant formaat wijzigen</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Selectie of scherm met aantekeningen opslaan</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Opslaan als gebied</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Actieve aantekening of rechthoek verwijderen</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Tekst vastleggen, stap terug of sluiten</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Deze hulp tonen of verbergen</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Pixelkleur kiezen (Tab wisselt formaat, Alt+Klik past toe op markering)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Selectie of scherm openen in Snelle bewerker-venster</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Selectie vastpinnen op het scherm (één pin per rechthoek)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Tekst van de selectie kopiëren (vereist tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Toetsen</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1344,12 @@
         <translation>%1 (geminimaliseerd)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Geen vertraging</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>Opnieuw maken over %1 s</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1370,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>Nog geen opgeslagen gebieden. Teken een rechthoek en kies daarna Opslaan als gebied.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Meer</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Selecteren</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Pijl</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Rechthoek</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Ellips</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Pen</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Marker</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Tekst</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Stap</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Onleesbaar</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Spotlight</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1440,40 @@
         <translation>Opslaan</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Opslaan in opnamemap en kopiëren naar klembord (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Kopiëren</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Alleen naar klembord kopiëren</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Tekst kopiëren</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Tekst herkennen en kopiëren naar klembord (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Pin</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Selectie op scherm boven andere vensters houden (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Opslaan als…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Kiezen waar op te slaan</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Markeergereedschap openen om te tekenen of onleesbaar te maken</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Selectie en aantekeningen openen in het Snelle bewerker-venster (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Opslaan als gebied</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Deze rechthoek onthouden om deze met één klik of sneltoets opnieuw vast te leggen</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>Rechthoek toevoegen</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Nog een rechthoek tekenen, ook over een bestaande heen</translation>
+        <source>Go Live</source>
+        <translation>Naar live</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Sluiten (Escape)</translation>
+        <source>Freeze</source>
+        <translation>Bevriezen</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Sneltoetsen</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1502,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n seconde</numerusform><numerusform>%n seconden</numerusform></translation>
+            <numerusform>%n seconde</numerusform>
+            <numerusform>%n seconden</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1533,16 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>%n gebied opslaan als groep</numerusform><numerusform>%n gebieden opslaan als groep</numerusform></translation>
+            <numerusform>%n gebied opslaan als groep</numerusform>
+            <numerusform>%n gebieden opslaan als groep</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>Eén sneltoets legt %n gebied op hetzelfde moment vast in een eigen bestand.</numerusform><numerusform>Eén sneltoets legt alle %n gebieden op hetzelfde moment vast, elk in een eigen bestand.</numerusform></translation>
+            <numerusform>Eén sneltoets legt %n gebied op hetzelfde moment vast in een eigen bestand.</numerusform>
+            <numerusform>Eén sneltoets legt alle %n gebieden op hetzelfde moment vast, elk in een eigen bestand.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1551,9 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>%n gebied opslaan</numerusform><numerusform>%n gebieden opslaan</numerusform></translation>
+            <numerusform>%n gebied opslaan</numerusform>
+            <numerusform>%n gebieden opslaan</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1562,129 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>%n gebied opslaan</numerusform><numerusform>%n gebieden opslaan</numerusform></translation>
+            <numerusform>%n gebied opslaan</numerusform>
+            <numerusform>%n gebieden opslaan</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Wis of maak aantekeningen ongedaan om terug te keren naar Live-modus</translation>
+        <source>New rectangle</source>
+        <translation>Nieuwe rechthoek</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Vertraging: %1 s</translation>
+        <source>New area</source>
+        <translation>Nieuw gebied</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift tijdens slepen</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Vierkant aanhouden</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt tijdens slepen</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Vanuit midden vergroten</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Live herpositioneren</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>Verplaatsen met 1 px / 10 px</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Formaat wijzigen vanuit midden / als vierkant</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Verwijderen</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Actieve rechthoek verwijderen</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Rechthoek opslaan</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Eén stap terug of sluiten</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Dit scherm vastleggen</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Openen in het bewerkingsvenster</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Aantekenen</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Kies een gereedschap</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift tijdens tekenen</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Vierkant, cirkel of stappen van 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt tijdens tekenen</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+Slepen</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Een aantekening dupliceren</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space tijdens tekenen</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Tijdelijk selecteren en verplaatsen</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Kleiner / groter penseel of lettertype</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Ongedaan maken / Opnieuw</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Kleur kiezen; Alt+klik past deze toe</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1706,10 @@
         <translation>Het scherm kon niet worden vastgelegd.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Klik kopieert de kleur · Alt+klik past hem toe op aantekeningen · Tab wisselt het formaat · Escape stopt</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 toegepast en gekopieerd naar klembord</translation>
     </message>
@@ -1781,48 +1718,8 @@
         <translation>%1 gekopieerd naar klembord</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Klik om kleur te kopiëren, Alt+Klik om toe te passen op actief markeergereedschap, Tab wisselt formaat, Escape sluit af.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift behoudt een vierkant, Alt vergroot vanuit midden, Space herpositioneert tijdens slepen.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Typ tekst, sleep buiten kaderrand om te verplaatsen; Escape of Ctrl+Enter legt vast.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Sleep om te tekenen (Ctrl selecteert tijdelijk; Shift lijnt uit, Alt centreert, Space verplaatst; V keert terug).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Sleep de volgende rechthoek ergens heen, ook over een andere heen.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter slaat de opname met aantekeningen op, of teken eerst een bijsnijdrechthoek. Escape sluit.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Sleep een rechthoek, klik op een scherm om het vast te leggen, of open Aantekenen. Escape behoudt de volledige schermafbeelding.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Sleep een rechthoek voor het nieuwe gebied. Escape annuleert.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Klik op een rechthoek om deze te wijzigen, of sleep een nieuwe.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Sleep binnenin om te verplaatsen, aan de randen om formaat te wijzigen. Sleep elders voor nog een rechthoek. Enter slaat op.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Sleep binnenin om te verplaatsen, aan de randen om formaat te wijzigen. Sleep elders voor nog een rechthoek.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Beweeg de muis over knoppen voor namen en sneltoetsen · F1 toont alles</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1768,9 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>%n gebied opgeslagen</numerusform><numerusform>%n gebieden opgeslagen</numerusform></translation>
+            <numerusform>%n gebied opgeslagen</numerusform>
+            <numerusform>%n gebieden opgeslagen</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1999,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Sneltoets: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2018,9 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>%n pin permanent verwijderen?</numerusform><numerusform>%n pins permanent verwijderen?</numerusform></translation>
+            <numerusform>%n pin permanent verwijderen?</numerusform>
+            <numerusform>%n pins permanent verwijderen?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2418,8 @@
         <translation>Hooks na opname en externe automatisering</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2502,7 @@
         <translation>Selecteren op scherm…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Logische pixels ten opzichte van de linkerbovenhoek van het scherm. Opnamen gebruiken de eigen resolutie van het scherm.</translation>
     </message>
     <message>
@@ -2666,7 +2578,7 @@
         <translation>Globale logische coördinaten over schermen heen. Opnamen combineren doorsneden schermen op de hoogste schaal.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Geen van de schermen van dit gebied is aangesloten. Er wordt niets opgeslagen bij activering.</translation>
     </message>
     <message>
@@ -2927,7 +2839,23 @@
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation>Bevroren toont het moment waarop u op Print drukte. Live laat video's doorspelen en legt vast wanneer u opslaat. Space schakelt op elk moment in de overlay.</translation>
+        <translation>Bevroren toont het moment waarop u op Print drukte. Live laat video&apos;s doorspelen en legt vast wanneer u opslaat. Space schakelt op elk moment in de overlay.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Paneelpositie herstellen</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>Tip bij eerste start opnieuw tonen</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Overlay-paneel:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Herstellen zet het paneel terug bovenaan in het midden van elk scherm.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3191,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n seconde</numerusform><numerusform>%n seconden</numerusform></translation>
+            <numerusform>%n seconde</numerusform>
+            <numerusform>%n seconden</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3455,8 @@
         <translation>Ontbrekende waarde voor --mode.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode moet 'frozen' of 'live' zijn.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode moet &apos;frozen&apos; of &apos;live&apos; zijn.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3469,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Geen recente opnamen.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last verwacht een positief getal.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>Geen Print-opnamen gemeten sinds glimply is gestart.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
@@ -3563,7 +3501,7 @@ Scriptable CLI subcommands:
   mcp                Run the local stdio MCP server (disabled by default)</source>
         <translation>Lichtgewicht KDE-hulpmiddel voor schermafbeeldingen en aantekeningen
 
-Scriptbare CLI-subcommando's:
+Scriptbare CLI-subcommando&apos;s:
   capture &lt;target&gt;   Een gebied, groep, scherm, alle schermen of venster vastleggen
   list               Ingestelde doelen, schermen of geopende vensters tonen
   area               Opgeslagen gebieden toevoegen, bewerken, hernoemen of verwijderen

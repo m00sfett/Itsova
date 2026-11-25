@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="hi" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>छिपाएँ ऑपरेशन #%1 के लिए x, y, width &gt; 0, height &gt; 0 आवश्यक हैं।</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>ऑपरेशन #%2 पर असमर्थित एनोटेशन प्रकार '%1' है।</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>ऑपरेशन #%2 पर असमर्थित एनोटेशन प्रकार &apos;%1&apos; है।</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>एनोटेट की गई छवि रेंडर करने में विफल।</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>overwrite=true के बिना इनपुट फ़ाइल '%1' को अधिलेखित करने से इनकार।</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>overwrite=true के बिना इनपुट फ़ाइल &apos;%1&apos; को अधिलेखित करने से इनकार।</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,9 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>%n कैप्चर के बाद %1 के लिए अंतराल रोका गया।</numerusform><numerusform>%n कैप्चर के बाद %1 के लिए अंतराल रोका गया।</numerusform></translation>
+            <numerusform>%n कैप्चर के बाद %1 के लिए अंतराल रोका गया।</numerusform>
+            <numerusform>%n कैप्चर के बाद %1 के लिए अंतराल रोका गया।</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +870,9 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>और %n अन्य</numerusform><numerusform>और %n अन्य</numerusform></translation>
+            <numerusform>और %n अन्य</numerusform>
+            <numerusform>और %n अन्य</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +881,9 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>%n स्क्रीनशॉट सहेजा गया</numerusform><numerusform>%n स्क्रीनशॉट सहेजे गए</numerusform></translation>
+            <numerusform>%n स्क्रीनशॉट सहेजा गया</numerusform>
+            <numerusform>%n स्क्रीनशॉट सहेजे गए</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +954,8 @@
         <translation>ट्रैश में ले जाया नहीं जा सका: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>अज्ञात क्रिया "%1"।</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>अज्ञात क्रिया &quot;%1&quot;।</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1062,8 @@
         <translation>एक कैप्चर उलटी गिनती पहले से चल रही है।</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>'window:' के बाद विंडो निर्दिष्टकर्ता खाली नहीं हो सकता।</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>&apos;window:&apos; के बाद विंडो निर्दिष्टकर्ता खाली नहीं हो सकता।</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,20 +1150,20 @@
         <translation>MCP ने %1 कैप्चर किया</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>असमर्थित छवि प्रारूप '%1'।</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>असमर्थित छवि प्रारूप &apos;%1&apos;।</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality' 1 और 100 के बीच एक पूर्णांक होना चाहिए।</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos; 1 और 100 के बीच एक पूर्णांक होना चाहिए।</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target' आवश्यक है।</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos; आवश्यक है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
-        <translation>एक बाहरी MCP क्लाइंट "%1" (%2) को कैप्चर करना चाहता है।</translation>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <translation>एक बाहरी MCP क्लाइंट &quot;%1&quot; (%2) को कैप्चर करना चाहता है।</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1167,12 +1174,12 @@
         <translation>एक बाहरी MCP क्लाइंट %5 पर (%3, %4) पर %1x%2 क्षेत्र कैप्चर करना चाहता है।</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id' आवश्यक है।</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos; आवश्यक है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
-        <translation>एक बाहरी MCP क्लाइंट विंडो "%1" को कैप्चर करना चाहता है।</translation>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <translation>एक बाहरी MCP क्लाइंट विंडो &quot;%1&quot; को कैप्चर करना चाहता है।</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1183,28 +1190,28 @@
         <translation>एक बाहरी MCP क्लाइंट अंतिम कैप्चर (%1) को पढ़ना चाहता है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
-        <translation>एक बाहरी MCP क्लाइंट "%2" के लिए हर %1 सेकंड में अंतराल कैप्चर शुरू करना चाहता है।</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <translation>एक बाहरी MCP क्लाइंट &quot;%2&quot; के लिए हर %1 सेकंड में अंतराल कैप्चर शुरू करना चाहता है।</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>'target' निर्दिष्ट करें या 'all': true सेट करें।</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>&apos;target&apos; निर्दिष्ट करें या &apos;all&apos;: true सेट करें।</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image के लिए एक गैर-रिक्त input_path और operations सरणी आवश्यक है।</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>MCP अनुमति सूची मोड में, input_path glimply की कैप्चर निर्देशिका के भीतर एक मौजूदा फ़ाइल होनी चाहिए।</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>MCP अनुमति सूची मोड में, output_path glimply की कैप्चर निर्देशिका के भीतर होना चाहिए।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
-        <translation>एक बाहरी MCP क्लाइंट "%1" को एनोटेट करना चाहता है (%2 ऑपरेशन)।</translation>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <translation>एक बाहरी MCP क्लाइंट &quot;%1&quot; को एनोटेट करना चाहता है (%2 ऑपरेशन)।</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1241,304 +1248,92 @@
         <translation>फ़्रीज़</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>कुंजी दबाने के क्षण को दिखाएँ। कैप्चर इस चित्र से काटे जाते हैं। (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>लाइव</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>स्क्रीन को चलते हुए देखें, उदाहरण के लिए कोई वीडियो। सहेजने पर कैप्चर लिए जाते हैं। (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>यह मॉनिटर</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>संपूर्ण %1 कैप्चर करें</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>सभी मॉनिटर</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>एक चित्र में प्रत्येक मॉनिटर कैप्चर करें</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>विंडो</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>एक विंडो कैप्चर करें, तब भी जब वह ढकी हो या न्यूनतम हो</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>क्षेत्र</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>सहेजा गया क्षेत्र या समूह कैप्चर करें, या इसे आयत के रूप में जोड़ें</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>सहेजा गया क्षेत्र या समूह आयत के रूप में जोड़ें</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>विलंब</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>उलटी गिनती के बाद स्क्रीनशॉट फिर से लें ताकि मेनू खुले रहें</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>एनोटेट करें</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>मार्कअप टूल दिखाएँ या छिपाएँ (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>रंग चुनें</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>आवर्धित लूप के साथ पिक्सेल रंग चुनें (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>विंडो में संपादित करें</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>काटने, ज़ूम करने और बारीक संपादन के लिए त्वरित संपादक विंडो में खोलें (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>सहायता</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>नियंत्रण दिखाएँ या छिपाएँ (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>सेटिंग्स</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>पूरा स्क्रीनशॉट रखें और सेटिंग्स खोलें</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>बंद करें</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>पूरा स्क्रीनशॉट रखें और बंद करें (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>रद्द करें (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>खींचें</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>एक आयत बनाएँ (या सक्रिय मार्कअप टूल)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>अंदर / किनारे खींचें</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>सक्रिय आयत या एनोटेशन को ले जाएँ / आकार बदलें</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>खींचते समय Shift / Alt</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>वर्ग या 15° स्नैप रखें / केंद्र से बढ़ाएँ या डुप्लिकेट करें</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>खींचते समय Space</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>आकार या चयन को लाइव पुनः व्यवस्थित करें</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>मार्कअप टूल में Ctrl</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>अस्थायी रूप से चुनें / ले जाएँ पर स्विच करें</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>क्लिक / दायाँ-क्लिक</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>सबसे ऊपर का एनोटेशन या आयत सक्रिय / हटाएँ</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>डबल-क्लिक</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>पाठ एनोटेशन संपादित करें या आयत सहेजें</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>आयत को क्षेत्र के रूप में सहेजें</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>क्लिक करें, कुछ नहीं बनाया गया</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>इस मॉनिटर को कैप्चर करें (एनोटेट करने से पहले)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>माउस</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>चुनें / तीर आयत दीर्घवृत्त कलम मार्कर पाठ चरण छिपाएँ स्पॉटलाइट</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>चयन संशोधक सभी मॉनिटर पर काम करते हैं</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>ब्रश या फ़ॉन्ट आकार बदलें  ·  पूर्ववत / फिर से करें</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>फ़्रीज़ और लाइव के बीच स्विच करें (निष्क्रिय होने पर)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>तीर / Shift+तीर</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>सक्रिय एनोटेशन या आयत को 1 px / 10 px ले जाएँ</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+तीर / Ctrl+तीर</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>केंद्र से आकार बदलें / वर्ग आकार बदलें</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>चयन या एनोटेट की गई स्क्रीन सहेजें</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>क्षेत्र के रूप में सहेजें</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>सक्रिय एनोटेशन या आयत हटाएँ</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>पाठ लागू करें, पीछे जाएँ या बंद करें</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>रद्द करें</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>यह सहायता दिखाएँ या छिपाएँ</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>पिक्सेल रंग चुनें (Tab प्रारूप बदलता है, Alt+क्लिक मार्कअप पर लागू करता है)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>त्वरित संपादक विंडो में चयन या स्क्रीन खोलें</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>चयन को स्क्रीन पर पिन करें (प्रति आयत एक पिन)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>चयन का पाठ कॉपी करें (tesseract आवश्यक है)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>कुंजियाँ</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1344,12 @@
         <translation>%1 (न्यूनतम)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>कोई विलंब नहीं</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>%1 सेकंड में फिर से लें</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 सेकंड</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1370,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>अभी तक कोई सहेजा गया क्षेत्र नहीं है। एक आयत बनाएँ, फिर क्षेत्र के रूप में सहेजें चुनें।</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>और</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>चुनें</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>तीर</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>आयत</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>दीर्घवृत्त</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>कलम</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>हाइलाइटर</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>पाठ</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>चरण गणक</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>छिपाएँ</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>स्पॉटलाइट</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1440,40 @@
         <translation>सहेजें</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>कैप्चर फ़ोल्डर में सहेजें और क्लिपबोर्ड पर कॉपी करें (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>कॉपी करें</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>केवल क्लिपबोर्ड पर कॉपी करें</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>पाठ कॉपी करें</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>पाठ पहचानें और क्लिपबोर्ड पर कॉपी करें (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>पिन करें</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>चयन को अन्य विंडो के ऊपर स्क्रीन पर रखें (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>इस रूप में सहेजें…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>चुनें कि कहाँ सहेजना है</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>चित्र बनाने या छिपाने के लिए मार्कअप टूल खोलें</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>त्वरित संपादक विंडो में चयन और एनोटेशन खोलें (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>क्षेत्र के रूप में सहेजें</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>एक क्लिक या शॉर्टकट से फिर से कैप्चर करने के लिए इस आयत को याद रखें</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>आयत जोड़ें</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>एक और आयत बनाएँ, मौजूदा आयत के ऊपर भी</translation>
+        <source>Go Live</source>
+        <translation>लाइव करें</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>बंद करें (Escape)</translation>
+        <source>Freeze</source>
+        <translation>फ़्रीज़ करें</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>शॉर्टकट अवलोकन</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1502,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n सेकंड</numerusform><numerusform>%n सेकंड</numerusform></translation>
+            <numerusform>%n सेकंड</numerusform>
+            <numerusform>%n सेकंड</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1533,16 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>%n क्षेत्र को समूह के रूप में सहेजें</numerusform><numerusform>%n क्षेत्रों को समूह के रूप में सहेजें</numerusform></translation>
+            <numerusform>%n क्षेत्र को समूह के रूप में सहेजें</numerusform>
+            <numerusform>%n क्षेत्रों को समूह के रूप में सहेजें</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>एक शॉर्टकट सभी %n क्षेत्र को एक ही समय में, प्रत्येक को उसकी अपनी फ़ाइल में कैप्चर करता है।</numerusform><numerusform>एक शॉर्टकट सभी %n क्षेत्रों को एक ही समय में, प्रत्येक को उसकी अपनी फ़ाइल में कैप्चर करता है।</numerusform></translation>
+            <numerusform>एक शॉर्टकट सभी %n क्षेत्र को एक ही समय में, प्रत्येक को उसकी अपनी फ़ाइल में कैप्चर करता है।</numerusform>
+            <numerusform>एक शॉर्टकट सभी %n क्षेत्रों को एक ही समय में, प्रत्येक को उसकी अपनी फ़ाइल में कैप्चर करता है।</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1551,9 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>%n क्षेत्र सहेजें</numerusform><numerusform>%n क्षेत्र सहेजें</numerusform></translation>
+            <numerusform>%n क्षेत्र सहेजें</numerusform>
+            <numerusform>%n क्षेत्र सहेजें</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1562,129 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>%n क्षेत्र सहेजें</numerusform><numerusform>%n क्षेत्र सहेजें</numerusform></translation>
+            <numerusform>%n क्षेत्र सहेजें</numerusform>
+            <numerusform>%n क्षेत्र सहेजें</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>लाइव मोड पर लौटने के लिए एनोटेशन साफ़ करें या पूर्ववत करें</translation>
+        <source>New rectangle</source>
+        <translation>नया आयत</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>विलंब: %1 सेकंड</translation>
+        <source>New area</source>
+        <translation>नया क्षेत्र</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>खींचते समय Shift</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>वर्ग बनाए रखें</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>खींचते समय Alt</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>केंद्र से बढ़ाएँ</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>लाइव रहते हुए ले जाएँ</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>1 px / 10 px में ले जाएँ</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>केंद्र से आकार बदलें / वर्ग के रूप में</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>मिटाएँ</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>सक्रिय आयत मिटाएँ</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>आयत को छवि के रूप में सहेजें</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>एक कदम पीछे जाएँ, या बंद करें</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>यह मॉनिटर कैप्चर करें</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>एडिटर विंडो में खोलें</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>एनोटेशन</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>टूल चुनें</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>बनाते समय Shift</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>वर्ग, वृत्त या 15° के अंतराल में</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>बनाते समय Alt</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+खींचें</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>एनोटेशन डुप्लिकेट करें</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>बनाते समय Space</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>थोड़ी देर के लिए चुनें और ले जाएँ</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>छोटा / बड़ा ब्रश या फ़ॉन्ट</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>पूर्ववत करें / फिर से करें</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>रंग चुनें; Alt+क्लिक से उसे लागू करें</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1706,10 @@
         <translation>स्क्रीन कैप्चर नहीं की जा सकी।</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>क्लिक से रंग कॉपी करें · Alt+क्लिक से एनोटेशन पर लागू करें · Tab से प्रारूप बदलें · Escape से बाहर निकलें</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 लागू किया गया और क्लिपबोर्ड पर कॉपी किया गया</translation>
     </message>
@@ -1781,48 +1718,8 @@
         <translation>%1 क्लिपबोर्ड पर कॉपी किया गया</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>रंग कॉपी करने के लिए क्लिक करें, सक्रिय मार्कअप टूल पर लागू करने के लिए Alt+क्लिक करें, Tab प्रारूप बदलता है, Escape बाहर निकलता है।</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift वर्ग रखता है, Alt केंद्र से बढ़ाता है, Space खींचते समय स्थान बदलता है।</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>पाठ लिखें, ले जाने के लिए फ़्रेम किनारे के बाहर खींचें; Escape या Ctrl+Enter लागू करता है।</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>बनाने के लिए खींचें (Ctrl अस्थायी रूप से चुनता है; Shift स्नैप करता है, Alt केंद्र से, Space ले जाता है; V वापस लौटता है)।</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>अगला आयत कहीं भी खींचें, किसी अन्य आयत के ऊपर भी।</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter एनोटेट किए गए कैप्चर को सहेजता है, या पहले एक क्रॉप आयत बनाएँ। Escape बंद करता है।</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>एक आयत खींचें, कैप्चर करने के लिए मॉनिटर पर क्लिक करें, या एनोटेट खोलें। Escape पूरा स्क्रीनशॉट रखता है।</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>नए क्षेत्र के लिए एक आयत खींचें। Escape रद्द करता है।</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>इसे बदलने के लिए किसी आयत पर क्लिक करें, या एक नया आयत खींचें।</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>स्थानांतरित करने के लिए अंदर खींचें, आकार बदलने के लिए किनारों पर खींचें। किसी अन्य आयत के लिए कहीं और खींचें। Enter सहेजता है।</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>स्थानांतरित करने के लिए अंदर खींचें, आकार बदलने के लिए किनारों पर खींचें। किसी अन्य आयत के लिए कहीं और खींचें।</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>नाम और शॉर्टकट के लिए बटनों पर होवर करें · सब कुछ देखने के लिए F1 दबाएँ</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1768,9 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>%n क्षेत्र सहेजा गया</numerusform><numerusform>%n क्षेत्र सहेजे गए</numerusform></translation>
+            <numerusform>%n क्षेत्र सहेजा गया</numerusform>
+            <numerusform>%n क्षेत्र सहेजे गए</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1999,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>शॉर्टकट: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2018,9 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>%n पिन स्थायी रूप से हटाएँ?</numerusform><numerusform>%n पिन स्थायी रूप से हटाएँ?</numerusform></translation>
+            <numerusform>%n पिन स्थायी रूप से हटाएँ?</numerusform>
+            <numerusform>%n पिन स्थायी रूप से हटाएँ?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2418,8 @@
         <translation>कैप्चर-पश्चात हुक और बाहरी स्वचालन</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2502,7 @@
         <translation>स्क्रीन पर चुनें…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>मॉनिटर के ऊपरी बाएँ कोने के सापेक्ष तार्किक पिक्सेल। कैप्चर मॉनिटर के मूल रिज़ॉल्यूशन का उपयोग करते हैं।</translation>
     </message>
     <message>
@@ -2666,7 +2578,7 @@
         <translation>मॉनिटरों में वैश्विक तार्किक निर्देशांक। कैप्चर उच्चतम स्केल पर प्रतिच्छेदित मॉनिटरों को संयोजित करते हैं।</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>इस क्षेत्र का कोई भी मॉनिटर कनेक्ट नहीं है। ट्रिगर होने पर कुछ भी सहेजा नहीं जाता।</translation>
     </message>
     <message>
@@ -2928,6 +2840,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>फ़्रीज़ वह क्षण दिखाता है जब आपने Print दबाया था। लाइव वीडियो को चलने देता है और सहेजने पर कैप्चर करता है। Space किसी भी समय ओवरले में स्विच करता है।</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>पैनल की स्थिति रीसेट करें</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>पहली शुरुआत का संकेत फिर से दिखाएँ</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>ओवरले पैनल:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>रीसेट करने पर पैनल हर मॉनिटर में ऊपर बीचोबीच वापस आ जाता है।</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3191,9 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n सेकंड</numerusform><numerusform>%n सेकंड</numerusform></translation>
+            <numerusform>%n सेकंड</numerusform>
+            <numerusform>%n सेकंड</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3455,8 @@
         <translation>--mode के लिए मान अनुपस्थित है।</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode 'frozen' या 'live' होना चाहिए।</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode &apos;frozen&apos; या &apos;live&apos; होना चाहिए।</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3469,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>कोई हालिया कैप्चर नहीं।</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last को एक धनात्मक संख्या चाहिए।</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>glimply के शुरू होने के बाद से Print से कोई कैप्चर नहीं मापा गया।</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

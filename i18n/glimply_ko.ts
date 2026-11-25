@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="ko" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,16 +301,16 @@
         <translation>가리기 작업 #%1에는 x, y, width &gt; 0, height &gt; 0이 필요합니다.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
-        <translation>작업 #%2에서 지원되지 않는 주석 유형 '%1'입니다.</translation>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <translation>작업 #%2에서 지원되지 않는 주석 유형 &apos;%1&apos;입니다.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>주석이 달린 이미지를 렌더링하지 못했습니다.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
-        <translation>overwrite=true 없이 입력 파일 '%1'을(를) 덮어쓸 수 없습니다.</translation>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <translation>overwrite=true 없이 입력 파일 &apos;%1&apos;을(를) 덮어쓸 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -730,7 +731,8 @@
     <message numerus="yes">
         <source>Stopped interval for %1 after %n capture(s).</source>
         <translation>
-            <numerusform>%n회 캡처 후 %1의 간격 캡처를 중지했습니다.</numerusform></translation>
+            <numerusform>%n회 캡처 후 %1의 간격 캡처를 중지했습니다.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Interval capture stopped</source>
@@ -867,7 +869,8 @@
     <message numerus="yes">
         <source>and %n more</source>
         <translation>
-            <numerusform>외 %n개</numerusform></translation>
+            <numerusform>외 %n개</numerusform>
+        </translation>
     </message>
     <message>
         <source>Screenshot saved</source>
@@ -876,7 +879,8 @@
     <message numerus="yes">
         <source>%n screenshots saved</source>
         <translation>
-            <numerusform>스크린샷 %n개 저장됨</numerusform></translation>
+            <numerusform>스크린샷 %n개 저장됨</numerusform>
+        </translation>
     </message>
     <message>
         <source>Open</source>
@@ -947,8 +951,8 @@
         <translation>휴지통으로 이동할 수 없습니다: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
-        <translation>알 수 없는 작업 "%1"입니다.</translation>
+        <source>Unknown action &quot;%1&quot;.</source>
+        <translation>알 수 없는 작업 &quot;%1&quot;입니다.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1055,8 +1059,8 @@
         <translation>캡처 카운트다운이 이미 실행 중입니다.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
-        <translation>'window:' 뒤의 창 지정자는 비워 둘 수 없습니다.</translation>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <translation>&apos;window:&apos; 뒤의 창 지정자는 비워 둘 수 없습니다.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1143,20 +1147,20 @@
         <translation>MCP가 %1을(를) 캡처했습니다</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
-        <translation>지원되지 않는 이미지 형식 '%1'입니다.</translation>
+        <source>Unsupported image format &apos;%1&apos;.</source>
+        <translation>지원되지 않는 이미지 형식 &apos;%1&apos;입니다.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
-        <translation>'quality'는 1에서 100 사이의 정수여야 합니다.</translation>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <translation>&apos;quality&apos;는 1에서 100 사이의 정수여야 합니다.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
-        <translation>'target'이 필요합니다.</translation>
+        <source>&apos;target&apos; is required.</source>
+        <translation>&apos;target&apos;이 필요합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
-        <translation>외부 MCP 클라이언트가 "%1"(%2)을(를) 캡처하려고 합니다.</translation>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <translation>외부 MCP 클라이언트가 &quot;%1&quot;(%2)을(를) 캡처하려고 합니다.</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1167,12 +1171,12 @@
         <translation>외부 MCP 클라이언트가 %5의 (%3, %4) 위치에서 %1x%2 영역을 캡처하려고 합니다.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
-        <translation>'window_id'가 필요합니다.</translation>
+        <source>&apos;window_id&apos; is required.</source>
+        <translation>&apos;window_id&apos;가 필요합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
-        <translation>외부 MCP 클라이언트가 창 "%1"을(를) 캡처하려고 합니다.</translation>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <translation>외부 MCP 클라이언트가 창 &quot;%1&quot;을(를) 캡처하려고 합니다.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1183,28 +1187,28 @@
         <translation>외부 MCP 클라이언트가 마지막 캡처(%1)를 읽으려고 합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
-        <translation>외부 MCP 클라이언트가 "%2"에 대해 %1초마다 간격 캡처를 시작하려고 합니다.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <translation>외부 MCP 클라이언트가 &quot;%2&quot;에 대해 %1초마다 간격 캡처를 시작하려고 합니다.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
-        <translation>'target'을 지정하거나 'all': true를 설정하십시오.</translation>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <translation>&apos;target&apos;을 지정하거나 &apos;all&apos;: true를 설정하십시오.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image에는 비어 있지 않은 input_path와 operations 배열이 필요합니다.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>MCP 허용 목록 모드에서는 input_path가 glimply의 캡처 디렉터리 안에 있는 기존 파일이어야 합니다.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>MCP 허용 목록 모드에서는 output_path가 glimply의 캡처 디렉터리 안에 있어야 합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
-        <translation>외부 MCP 클라이언트가 "%1"에 주석을 추가하려고 합니다(작업 %2개).</translation>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <translation>외부 MCP 클라이언트가 &quot;%1&quot;에 주석을 추가하려고 합니다(작업 %2개).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1241,304 +1245,92 @@
         <translation>고정</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>키를 누른 순간을 표시합니다. 이 그림에서 캡처를 잘라냅니다. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>실시간</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>동영상처럼 화면이 계속 움직이는 상태를 봅니다. 저장할 때 캡처됩니다. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>이 모니터</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>%1 전체 캡처</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>모든 모니터</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>모든 모니터를 한 장의 그림으로 캡처</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>창</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>가려졌거나 최소화된 창도 포함해 창 하나 캡처</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>영역</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>저장된 영역이나 그룹을 캡처하거나 사각형으로 추가</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>저장된 영역이나 그룹을 사각형으로 추가</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>지연</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>메뉴가 열린 상태를 유지하도록 카운트다운 후 스크린샷 다시 찍기</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>주석</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>표시 도구 표시 또는 숨기기 (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>색상 추출</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>확대경으로 픽셀 색상 추출 (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>창에서 편집</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>자르기, 확대/축소 및 세밀한 편집을 위해 빠른 편집기 창에서 열기 (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>도움말</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>컨트롤 표시 또는 숨기기 (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>설정</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>전체 스크린샷을 유지하고 설정 열기</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>닫기</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>전체 스크린샷을 유지하고 닫기 (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>취소 (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>드래그</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>사각형 그리기(또는 활성 표시 도구)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>안쪽 / 가장자리 드래그</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>활성 사각형 또는 주석 이동 / 크기 조절</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>드래그 중 Shift / Alt</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>정사각형 또는 15° 맞춤 유지 / 중심에서 확장 또는 복제</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>드래그 중 Space</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>도형 또는 선택 영역 위치 실시간 재조정</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>표시 도구에서 Ctrl</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>선택 / 이동으로 일시 전환</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>클릭 / 오른쪽 클릭</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>최상위 주석 또는 사각형 활성화 / 삭제</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>두 번 클릭</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>텍스트 주석 편집 또는 사각형 저장</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>사각형을 영역으로 저장</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>그려진 항목 없을 때 클릭</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>이 모니터 캡처 (주석 달기 전)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>마우스</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>선택 / 화살표 사각형 타원 펜 형광펜 텍스트 단계 가리기 스포트라이트</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>선택 보조 키는 모든 모니터에서 작동합니다</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>브러시 또는 글꼴 크기 단계  ·  실행 취소 / 다시 실행</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>고정과 실시간 간 전환 (유휴 상태일 때)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>화살표 / Shift+화살표</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>활성 주석 또는 사각형을 1 px / 10 px씩 이동</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+화살표 / Ctrl+화살표</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>중심에서 크기 조절 / 정사각형 크기 조절</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>선택 영역 또는 주석이 달린 화면 저장</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>영역으로 저장</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>활성 주석 또는 사각형 삭제</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>텍스트 확정, 뒤로 가기 또는 닫기</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>이 도움말 표시 또는 숨기기</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>픽셀 색상 추출 (Tab으로 형식 전환, Alt+클릭으로 표시에 적용)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>선택 영역 또는 화면을 빠른 편집기 창에서 열기</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>선택 영역을 화면에 고정 (사각형당 핀 하나)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>선택 영역의 텍스트 복사 (tesseract 필요)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>키</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1549,12 +1341,12 @@
         <translation>%1 (최소화됨)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>지연 없음</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>%1초 후 다시 찍기</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1초</translation>
     </message>
     <message>
         <source>Retake in custom…</source>
@@ -1575,6 +1367,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>저장된 영역이 아직 없습니다. 사각형을 그린 다음 영역으로 저장을 선택하십시오.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>더 보기</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>선택</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>화살표</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>사각형</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>타원</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>펜</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>형광펜</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>텍스트</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>단계 번호</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>가리기</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>스포트라이트</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1601,68 +1437,40 @@
         <translation>저장</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>캡처 폴더에 저장하고 클립보드에 복사 (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>복사</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>클립보드에만 복사</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>텍스트 복사</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>텍스트를 인식하여 클립보드에 복사 (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>고정</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>선택 영역을 다른 창 위의 화면에 유지 (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>저장할 위치 선택</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>그리기 또는 가리기를 위한 표시 도구 열기</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>선택 영역과 주석을 빠른 편집기 창에서 열기 (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>영역으로 저장</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>이 사각형을 기억하여 한 번의 클릭이나 단축키로 다시 캡처</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>사각형 추가</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>기존 사각형 위에도 다른 사각형 그리기</translation>
+        <source>Go Live</source>
+        <translation>실시간</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>닫기 (Escape)</translation>
+        <source>Freeze</source>
+        <translation>고정</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>단축키 개요</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1691,7 +1499,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n초</numerusform></translation>
+            <numerusform>%n초</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -1720,12 +1529,14 @@
     <message numerus="yes">
         <source>Save %n areas as a group</source>
         <translation>
-            <numerusform>%n개 영역을 그룹으로 저장</numerusform></translation>
+            <numerusform>%n개 영역을 그룹으로 저장</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>One shortcut captures all %n areas at the same moment, each into its own file.</source>
         <translation>
-            <numerusform>단축키 하나로 %n개 영역을 동시에 각각 별도의 파일로 캡처합니다.</numerusform></translation>
+            <numerusform>단축키 하나로 %n개 영역을 동시에 각각 별도의 파일로 캡처합니다.</numerusform>
+        </translation>
     </message>
     <message>
         <source>Save Group</source>
@@ -1734,7 +1545,8 @@
     <message numerus="yes">
         <source>Save %n areas</source>
         <translation>
-            <numerusform>%n개 영역 저장</numerusform></translation>
+            <numerusform>%n개 영역 저장</numerusform>
+        </translation>
     </message>
     <message>
         <source>Each rectangle becomes its own area with an automatic name. You can rename them and give them shortcuts later in the widget or the settings.</source>
@@ -1743,15 +1555,128 @@
     <message numerus="yes">
         <source>Save %n Areas</source>
         <translation>
-            <numerusform>%n개 영역 저장</numerusform></translation>
+            <numerusform>%n개 영역 저장</numerusform>
+        </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>실시간 모드로 돌아가려면 주석을 지우거나 실행 취소하십시오</translation>
+        <source>New rectangle</source>
+        <translation>새 사각형</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>지연: %1초</translation>
+        <source>New area</source>
+        <translation>새 영역</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>드래그하는 동안 Shift</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>정사각형 유지</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>드래그하는 동안 Alt</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>중심에서 확장</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>실시간으로 위치 변경</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>1 px / 10 px씩 이동</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>중심에서 / 정사각형으로 크기 조절</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>삭제</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>현재 사각형 삭제</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>사각형 저장</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>한 단계 뒤로 가거나 닫기</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>이 모니터 캡처</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>편집 창에서 열기</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>주석</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>도구 선택</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>그리는 동안 Shift</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>정사각형, 원 또는 15° 단위</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>그리는 동안 Alt</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+드래그</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>주석 복제</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>그리는 동안 Space</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>잠깐 동안 선택 / 이동</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>브러시 또는 글꼴 작게 / 크게</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>실행 취소 / 다시 실행</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>색상 추출; Alt+클릭하면 적용</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1773,6 +1698,10 @@
         <translation>화면을 캡처할 수 없습니다.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>클릭하면 색상 복사 · Alt+클릭하면 주석에 적용 · Tab으로 형식 전환 · Escape로 종료</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1을(를) 적용하고 클립보드에 복사했습니다</translation>
     </message>
@@ -1781,48 +1710,8 @@
         <translation>%1을(를) 클립보드에 복사했습니다</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>클릭하여 색상 복사, Alt+클릭으로 활성 표시 도구에 적용, Tab으로 형식 전환, Escape로 종료합니다.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift는 정사각형 유지, Alt는 중심에서 확장, Space는 드래그 중 위치를 재조정합니다.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>텍스트를 입력하고 프레임 가장자리 밖을 드래그하여 이동합니다. Escape 또는 Ctrl+Enter로 확정합니다.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>드래그하여 그립니다(Ctrl로 일시 선택, Shift로 맞춤, Alt로 중심 기준, Space로 이동, V로 복귀).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>다음 사각형을 다른 사각형 위를 포함해 아무 곳에나 드래그하십시오.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter로 주석이 달린 캡처를 저장하거나 먼저 자르기 사각형을 그리십시오. Escape로 닫습니다.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>사각형을 드래그하거나 모니터를 클릭해 캡처하거나 주석을 여십시오. Escape는 전체 스크린샷을 유지합니다.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>새 영역의 사각형을 드래그하십시오. Escape로 취소합니다.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>사각형을 클릭하여 변경하거나 새 사각형을 드래그하십시오.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>안쪽을 드래그하여 이동하고 가장자리로 크기를 조절합니다. 다른 곳을 드래그하면 새 사각형이 됩니다. Enter로 저장합니다.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>안쪽을 드래그하여 이동하고 가장자리로 크기를 조절합니다. 다른 곳을 드래그하면 새 사각형이 됩니다.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>버튼에 마우스를 올리면 이름과 단축키 표시 · F1을 누르면 전체 보기</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -1871,7 +1760,8 @@
     <message numerus="yes">
         <source>%n areas saved</source>
         <translation>
-            <numerusform>영역 %n개 저장됨</numerusform></translation>
+            <numerusform>영역 %n개 저장됨</numerusform>
+        </translation>
     </message>
     <message>
         <source>Area not captured</source>
@@ -2100,6 +1990,17 @@
     </message>
 </context>
 <context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>단축키: %1</translation>
+    </message>
+</context>
+<context>
     <name>glimply::PinManager</name>
     <message>
         <source>Remove All Pins</source>
@@ -2108,7 +2009,8 @@
     <message numerus="yes">
         <source>Remove %n pin(s) permanently?</source>
         <translation>
-            <numerusform>핀 %n개를 영구적으로 제거하시겠습니까?</numerusform></translation>
+            <numerusform>핀 %n개를 영구적으로 제거하시겠습니까?</numerusform>
+        </translation>
     </message>
     <message>
         <source>Their images are deleted. Captures saved in the capture folder are not affected.</source>
@@ -2506,8 +2408,8 @@
         <translation>캡처 후 훅 및 외부 자동화</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2590,7 +2492,7 @@
         <translation>화면에서 선택…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>모니터 왼쪽 위 모서리 기준의 논리적 픽셀입니다. 캡처는 모니터의 기본 해상도를 사용합니다.</translation>
     </message>
     <message>
@@ -2666,7 +2568,7 @@
         <translation>모니터 전체의 전역 논리 좌표입니다. 캡처 시 교차된 모니터를 가장 높은 배율로 합성합니다.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>이 영역의 모니터 중 연결된 것이 없습니다. 트리거해도 아무것도 저장되지 않습니다.</translation>
     </message>
     <message>
@@ -2928,6 +2830,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>고정은 Print 키를 누른 순간을 표시합니다. 실시간은 동영상이 계속 재생되게 하며 저장할 때 캡처합니다. 오버레이에서 언제든지 Space 키로 전환할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>패널 위치 초기화</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>첫 실행 안내 다시 표시</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>오버레이 패널:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>초기화하면 모든 모니터의 상단 가운데로 패널이 돌아갑니다.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3263,7 +3181,8 @@
     <message numerus="yes">
         <source>%n seconds</source>
         <translation>
-            <numerusform>%n초</numerusform></translation>
+            <numerusform>%n초</numerusform>
+        </translation>
     </message>
     <message>
         <source>Custom…</source>
@@ -3525,8 +3444,8 @@
         <translation>--mode의 값이 누락되었습니다.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
-        <translation>--mode는 'frozen' 또는 'live'여야 합니다.</translation>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <translation>--mode는 &apos;frozen&apos; 또는 &apos;live&apos;여야 합니다.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3539,6 +3458,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>최근 캡처가 없습니다.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last에는 양수를 지정해야 합니다.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>glimply 시작 후 측정된 Print 캡처가 없습니다.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>

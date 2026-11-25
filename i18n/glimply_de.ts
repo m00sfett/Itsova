@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
 <context>
     <name>AnnotationCanvas</name>
@@ -300,7 +301,7 @@
         <translation>Unkenntlichmachen-Vorgang #%1 benötigt x, y, Breite &gt; 0 und Höhe &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
         <translation>Nicht unterstützter Anmerkungstyp „%1“ bei Vorgang #%2.</translation>
     </message>
     <message>
@@ -308,7 +309,7 @@
         <translation>Das Bild mit Anmerkungen konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
         <translation>Die Eingabedatei „%1“ wird ohne overwrite=true nicht überschrieben.</translation>
     </message>
 </context>
@@ -953,7 +954,7 @@
         <translation>Die Datei konnte nicht in den Papierkorb verschoben werden: %1</translation>
     </message>
     <message>
-        <source>Unknown action "%1".</source>
+        <source>Unknown action &quot;%1&quot;.</source>
         <translation>Unbekannte Aktion „%1“.</translation>
     </message>
     <message>
@@ -1061,7 +1062,7 @@
         <translation>Ein Countdown für ein Bildschirmfoto läuft bereits.</translation>
     </message>
     <message>
-        <source>Window specifier after 'window:' cannot be empty.</source>
+        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
         <translation>Die Fensterangabe nach „window:“ darf nicht leer sein.</translation>
     </message>
     <message>
@@ -1149,19 +1150,19 @@
         <translation>MCP hat %1 aufgenommen</translation>
     </message>
     <message>
-        <source>Unsupported image format '%1'.</source>
+        <source>Unsupported image format &apos;%1&apos;.</source>
         <translation>Nicht unterstütztes Bildformat „%1“.</translation>
     </message>
     <message>
-        <source>'quality' must be an integer between 1 and 100.</source>
+        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
         <translation>„quality“ muss eine ganze Zahl zwischen 1 und 100 sein.</translation>
     </message>
     <message>
-        <source>'target' is required.</source>
+        <source>&apos;target&apos; is required.</source>
         <translation>„target“ ist erforderlich.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
         <translation>Ein externer MCP-Client möchte „%1“ (%2) aufnehmen.</translation>
     </message>
     <message>
@@ -1173,11 +1174,11 @@
         <translation>Ein externer MCP-Client möchte den Bereich %1x%2 bei (%3, %4) auf %5 aufnehmen.</translation>
     </message>
     <message>
-        <source>'window_id' is required.</source>
+        <source>&apos;window_id&apos; is required.</source>
         <translation>„window_id“ ist erforderlich.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window "%1".</source>
+        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
         <translation>Ein externer MCP-Client möchte das Fenster „%1“ aufnehmen.</translation>
     </message>
     <message>
@@ -1189,11 +1190,11 @@
         <translation>Ein externer MCP-Client möchte das letzte Bildschirmfoto lesen (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
         <translation>Ein externer MCP-Client möchte für „%2“ Intervallaufnahmen alle %1 s starten.</translation>
     </message>
     <message>
-        <source>Specify 'target' or set 'all': true.</source>
+        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
         <translation>„target“ angeben oder „all“ auf „true“ setzen.</translation>
     </message>
     <message>
@@ -1201,15 +1202,15 @@
         <translation>annotate_image benötigt einen nicht leeren input_path und ein operations-Array.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
         <translation>Im Modus „MCP-Erlaubnisliste“ muss input_path eine vorhandene Datei im Ordner für Bildschirmfotos von glimply sein.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
         <translation>Im Modus „MCP-Erlaubnisliste“ muss output_path im Ordner für Bildschirmfotos von glimply liegen.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
         <translation>Ein externer MCP-Client möchte „%1“ (%2 Vorgang/Vorgänge) mit Anmerkungen versehen.</translation>
     </message>
     <message>
@@ -1247,304 +1248,92 @@
         <translation>Eingefroren</translation>
     </message>
     <message>
-        <source>Show the moment you pressed the key. Captures cut from this picture. (Space)</source>
-        <translation>Zeigt den Moment des Tastendrucks. Bildschirmfotos werden aus diesem Bild ausgeschnitten. (Space)</translation>
-    </message>
-    <message>
         <source>Live</source>
         <translation>Live</translation>
-    </message>
-    <message>
-        <source>See the screen move on, for example a video. Captures are taken when you save. (Space)</source>
-        <translation>Zeigt den laufenden Bildschirm, zum Beispiel ein Video. Bildschirmfotos werden beim Speichern aufgenommen. (Space)</translation>
     </message>
     <message>
         <source>This Monitor</source>
         <translation>Dieser Bildschirm</translation>
     </message>
     <message>
-        <source>Capture all of %1</source>
-        <translation>Alles auf %1 aufnehmen</translation>
-    </message>
-    <message>
         <source>All Monitors</source>
         <translation>Alle Bildschirme</translation>
-    </message>
-    <message>
-        <source>Capture every monitor in one picture</source>
-        <translation>Jeden Bildschirm in einem Bild aufnehmen</translation>
     </message>
     <message>
         <source>Window</source>
         <translation>Fenster</translation>
     </message>
     <message>
-        <source>Capture one window, also when it is covered or minimized</source>
-        <translation>Ein Fenster aufnehmen, auch wenn es verdeckt oder minimiert ist</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Bereiche</translation>
-    </message>
-    <message>
-        <source>Capture a saved area or group, or add it as a rectangle</source>
-        <translation>Einen gespeicherten Bereich oder eine Gruppe aufnehmen oder als Rechteck hinzufügen</translation>
-    </message>
-    <message>
-        <source>Add a saved area or group as a rectangle</source>
-        <translation>Einen gespeicherten Bereich oder eine Gruppe als Rechteck hinzufügen</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Verzögerung</translation>
     </message>
     <message>
-        <source>Retake the screenshot after a countdown so menus stay open</source>
-        <translation>Bildschirmfoto nach einem Countdown erneut aufnehmen, damit Menüs geöffnet bleiben</translation>
-    </message>
-    <message>
         <source>Annotate</source>
         <translation>Anmerken</translation>
-    </message>
-    <message>
-        <source>Show or hide markup tools (A, R, E, B, M, T, N, X, S)</source>
-        <translation>Auszeichnungswerkzeuge ein- oder ausblenden (A, R, E, B, M, T, N, X, S)</translation>
     </message>
     <message>
         <source>Pick Color</source>
         <translation>Farbe aufnehmen</translation>
     </message>
     <message>
-        <source>Sample pixel colors with a magnified loupe (I)</source>
-        <translation>Pixelfarben mit einer vergrößerten Lupe auslesen (I)</translation>
-    </message>
-    <message>
         <source>Edit in Window</source>
         <translation>Im Fenster bearbeiten</translation>
-    </message>
-    <message>
-        <source>Open in the Quick Editor window for crop, zoom, and fine edits (Ctrl+E)</source>
-        <translation>Im Schnell-Editor-Fenster zum Zuschneiden, Zoomen und für feine Bearbeitungen öffnen (Ctrl+E)</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation>Hilfe</translation>
-    </message>
-    <message>
-        <source>Show or hide the controls (F1)</source>
-        <translation>Bedienelemente ein- oder ausblenden (F1)</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <source>Keep the full screenshot and open the settings</source>
-        <translation>Vollständiges Bildschirmfoto behalten und Einstellungen öffnen</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Schließen</translation>
-    </message>
-    <message>
-        <source>Keep the full screenshot and close (Escape)</source>
-        <translation>Vollständiges Bildschirmfoto behalten und schließen (Escape)</translation>
-    </message>
-    <message>
-        <source>Cancel (Escape)</source>
-        <translation>Abbrechen (Escape)</translation>
     </message>
     <message>
         <source>Drag</source>
         <translation>Ziehen</translation>
     </message>
     <message>
-        <source>Draw a rectangle (or active markup tool)</source>
-        <translation>Rechteck zeichnen (oder aktives Auszeichnungswerkzeug)</translation>
-    </message>
-    <message>
-        <source>Drag inside / edge</source>
-        <translation>Innen / Kante ziehen</translation>
-    </message>
-    <message>
-        <source>Move / resize the active rectangle or annotation</source>
-        <translation>Aktives Rechteck oder aktive Anmerkung verschieben / in der Größe ändern</translation>
-    </message>
-    <message>
-        <source>Shift / Alt while dragging</source>
-        <translation>Shift / Alt beim Ziehen</translation>
-    </message>
-    <message>
-        <source>Keep a square or 15° snap / grow from centre or duplicate</source>
-        <translation>Quadrat beibehalten oder in 15°-Schritten einrasten / von der Mitte aus vergrößern oder duplizieren</translation>
-    </message>
-    <message>
         <source>Space while dragging</source>
         <translation>Space beim Ziehen</translation>
-    </message>
-    <message>
-        <source>Reposition shape or selection live</source>
-        <translation>Form oder Auswahl live neu positionieren</translation>
-    </message>
-    <message>
-        <source>Ctrl in markup tool</source>
-        <translation>Ctrl im Auszeichnungswerkzeug</translation>
-    </message>
-    <message>
-        <source>Temporarily switch to Select / Move</source>
-        <translation>Vorübergehend zu Auswählen / Verschieben wechseln</translation>
-    </message>
-    <message>
-        <source>Click / Right-click</source>
-        <translation>Klick / Rechtsklick</translation>
-    </message>
-    <message>
-        <source>Activate / delete topmost annotation or rectangle</source>
-        <translation>Oberste Anmerkung oder oberstes Rechteck aktivieren / löschen</translation>
     </message>
     <message>
         <source>Double-click</source>
         <translation>Doppelklick</translation>
     </message>
     <message>
-        <source>Edit text annotation or save rectangle</source>
-        <translation>Textanmerkung bearbeiten oder Rechteck speichern</translation>
-    </message>
-    <message>
-        <source>Save rectangle as area</source>
-        <translation>Rechteck als Bereich speichern</translation>
-    </message>
-    <message>
         <source>Click, nothing drawn</source>
         <translation>Klick ohne Zeichnung</translation>
-    </message>
-    <message>
-        <source>Capture this monitor (before annotating)</source>
-        <translation>Diesen Bildschirm aufnehmen (vor dem Anmerken)</translation>
-    </message>
-    <message>
-        <source>Mouse</source>
-        <translation>Maus</translation>
-    </message>
-    <message>
-        <source>V / A R E B M T N X S</source>
-        <translation>V / A R E B M T N X S</translation>
-    </message>
-    <message>
-        <source>Select / Arrow Rect Ellipse Pen Marker Text Step Redact Spotlight</source>
-        <translation>Auswählen / Pfeil Rechteck Ellipse Stift Markierstift Text Schritt Unkenntlichmachen Spotlight</translation>
-    </message>
-    <message>
-        <source>Selection modifiers work on all monitors</source>
-        <translation>Auswahl-Modifikatoren funktionieren auf allen Bildschirmen</translation>
-    </message>
-    <message>
-        <source>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</source>
-        <translation>[ / ]  ·  Ctrl+Z / Ctrl+Shift+Z</translation>
-    </message>
-    <message>
-        <source>Step brush or font size  ·  Undo / Redo</source>
-        <translation>Pinsel- oder Schriftgröße schrittweise ändern  ·  Rückgängig / Wiederholen</translation>
-    </message>
-    <message>
-        <source>Space</source>
-        <translation>Space</translation>
-    </message>
-    <message>
-        <source>Switch between Frozen and Live (when idle)</source>
-        <translation>Zwischen Eingefroren und Live wechseln (im Leerlauf)</translation>
     </message>
     <message>
         <source>Arrows / Shift+Arrows</source>
         <translation>Pfeiltasten / Shift+Pfeiltasten</translation>
     </message>
     <message>
-        <source>Move active annotation or rectangle by 1 px / 10 px</source>
-        <translation>Aktive Anmerkung oder aktives Rechteck um 1 px / 10 px verschieben</translation>
-    </message>
-    <message>
         <source>Alt+Arrows / Ctrl+Arrows</source>
         <translation>Alt+Pfeiltasten / Ctrl+Pfeiltasten</translation>
-    </message>
-    <message>
-        <source>Resize from centre / resize square</source>
-        <translation>Von der Mitte aus skalieren / Quadrat skalieren</translation>
-    </message>
-    <message>
-        <source>Enter</source>
-        <translation>Enter</translation>
-    </message>
-    <message>
-        <source>Save selection or annotated screen</source>
-        <translation>Auswahl oder Bildschirm mit Anmerkungen speichern</translation>
     </message>
     <message>
         <source>Save as area</source>
         <translation>Als Bereich speichern</translation>
     </message>
     <message>
-        <source>Delete / Backspace</source>
-        <translation>Delete / Backspace</translation>
-    </message>
-    <message>
-        <source>Delete active annotation or rectangle</source>
-        <translation>Aktive Anmerkung oder aktives Rechteck löschen</translation>
-    </message>
-    <message>
         <source>Escape</source>
         <translation>Escape</translation>
-    </message>
-    <message>
-        <source>Commit text, step back, or close</source>
-        <translation>Text übernehmen, zurückgehen oder schließen</translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Show or hide this help</source>
-        <translation>Diese Hilfe ein- oder ausblenden</translation>
-    </message>
-    <message>
         <source>I</source>
         <translation>I</translation>
     </message>
     <message>
-        <source>Pick pixel color (Tab cycles format, Alt+Click applies to markup)</source>
-        <translation>Pixelfarbe aufnehmen (Tab wechselt das Format, Alt+Klick wendet sie auf Auszeichnungen an)</translation>
-    </message>
-    <message>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Open selection or screen in Quick Editor window</source>
-        <translation>Auswahl oder Bildschirm im Schnell-Editor-Fenster öffnen</translation>
-    </message>
-    <message>
-        <source>P</source>
-        <translation>P</translation>
-    </message>
-    <message>
-        <source>Pin the selection to the screen (one pin per rectangle)</source>
-        <translation>Auswahl auf dem Bildschirm anheften (eine Anheftung pro Rechteck)</translation>
-    </message>
-    <message>
-        <source>O</source>
-        <translation>O</translation>
-    </message>
-    <message>
-        <source>Copy the text of the selection (needs tesseract)</source>
-        <translation>Text der Auswahl kopieren (benötigt tesseract)</translation>
-    </message>
-    <message>
-        <source>Keys</source>
-        <translation>Tasten</translation>
     </message>
     <message>
         <source>No windows found</source>
@@ -1555,16 +1344,16 @@
         <translation>%1 (minimiert)</translation>
     </message>
     <message>
-        <source>No delay</source>
-        <translation>Keine Verzögerung</translation>
-    </message>
-    <message>
         <source>Retake in %1 s</source>
         <translation>Erneut aufnehmen in %1 s</translation>
     </message>
     <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
         <source>Retake in custom…</source>
-        <translation>Erneut aufnehmen nach benutzerdefinierter Verzögerung…</translation>
+        <translation>Erneut mit Verzögerung…</translation>
     </message>
     <message>
         <source>Retake Delay</source>
@@ -1581,6 +1370,50 @@
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
         <translation>Noch keine gespeicherten Bereiche. Rechteck zeichnen und dann „Als Bereich speichern“ wählen.</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Mehr</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation>Auswählen</translation>
+    </message>
+    <message>
+        <source>Arrow</source>
+        <translation>Pfeil</translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation>Rechteck</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation>Ellipse</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>Stift</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>Marker</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Text</translation>
+    </message>
+    <message>
+        <source>Step</source>
+        <translation>Schritt</translation>
+    </message>
+    <message>
+        <source>Redact</source>
+        <translation>Unkenntlich machen</translation>
+    </message>
+    <message>
+        <source>Spotlight</source>
+        <translation>Spotlight</translation>
     </message>
     <message>
         <source>%1    %2</source>
@@ -1607,68 +1440,40 @@
         <translation>Speichern</translation>
     </message>
     <message>
-        <source>Save to the capture folder and copy to the clipboard (Enter)</source>
-        <translation>Im Ordner für Bildschirmfotos speichern und in die Zwischenablage kopieren (Enter)</translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation>Kopieren</translation>
-    </message>
-    <message>
-        <source>Copy to the clipboard only</source>
-        <translation>Nur in die Zwischenablage kopieren</translation>
     </message>
     <message>
         <source>Copy Text</source>
         <translation>Text kopieren</translation>
     </message>
     <message>
-        <source>Recognize the text and copy it to the clipboard (O)</source>
-        <translation>Text erkennen und in die Zwischenablage kopieren (O)</translation>
-    </message>
-    <message>
         <source>Pin</source>
         <translation>Anheften</translation>
-    </message>
-    <message>
-        <source>Keep the selection on screen above other windows (P)</source>
-        <translation>Auswahl über anderen Fenstern auf dem Bildschirm halten (P)</translation>
     </message>
     <message>
         <source>Save As…</source>
         <translation>Speichern unter…</translation>
     </message>
     <message>
-        <source>Choose where to save</source>
-        <translation>Speicherort auswählen</translation>
-    </message>
-    <message>
-        <source>Open markup tools to draw or redact</source>
-        <translation>Auszeichnungswerkzeuge zum Zeichnen oder Unkenntlichmachen öffnen</translation>
-    </message>
-    <message>
-        <source>Open selection and annotations in the Quick Editor window (Ctrl+E)</source>
-        <translation>Auswahl und Anmerkungen im Schnell-Editor-Fenster öffnen (Ctrl+E)</translation>
-    </message>
-    <message>
         <source>Save as Area</source>
         <translation>Als Bereich speichern</translation>
-    </message>
-    <message>
-        <source>Remember this rectangle to capture it again with one click or shortcut</source>
-        <translation>Dieses Rechteck merken, um es mit einem Klick oder Tastenkürzel erneut aufzunehmen</translation>
     </message>
     <message>
         <source>Add Rectangle</source>
         <translation>Rechteck hinzufügen</translation>
     </message>
     <message>
-        <source>Draw another rectangle, also over an existing one</source>
-        <translation>Weiteres Rechteck zeichnen, auch über einem vorhandenen</translation>
+        <source>Go Live</source>
+        <translation>Live zeigen</translation>
     </message>
     <message>
-        <source>Close (Escape)</source>
-        <translation>Schließen (Escape)</translation>
+        <source>Freeze</source>
+        <translation>Einfrieren</translation>
+    </message>
+    <message>
+        <source>Shortcut Overview</source>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <source>Combine into a group</source>
@@ -1762,12 +1567,124 @@
         </translation>
     </message>
     <message>
-        <source>Clear or undo annotations to return to Live mode</source>
-        <translation>Anmerkungen löschen oder rückgängig machen, um zum Live-Modus zurückzukehren</translation>
+        <source>New rectangle</source>
+        <translation>Neues Rechteck</translation>
     </message>
     <message>
-        <source>Delay: %1 s</source>
-        <translation>Verzögerung: %1 s</translation>
+        <source>New area</source>
+        <translation>Neuer Bereich</translation>
+    </message>
+    <message>
+        <source>Shift while dragging</source>
+        <translation>Shift beim Ziehen</translation>
+    </message>
+    <message>
+        <source>Keep a square</source>
+        <translation>Quadrat erzwingen</translation>
+    </message>
+    <message>
+        <source>Alt while dragging</source>
+        <translation>Alt beim Ziehen</translation>
+    </message>
+    <message>
+        <source>Grow from the centre</source>
+        <translation>Von der Mitte aus vergrößern</translation>
+    </message>
+    <message>
+        <source>Reposition live</source>
+        <translation>Live neu positionieren</translation>
+    </message>
+    <message>
+        <source>Move by 1 px / 10 px</source>
+        <translation>Um 1 px / 10 px verschieben</translation>
+    </message>
+    <message>
+        <source>Resize from the centre / as a square</source>
+        <translation>Von der Mitte aus / als Quadrat skalieren</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Löschen</translation>
+    </message>
+    <message>
+        <source>Delete the active rectangle</source>
+        <translation>Aktives Rechteck löschen</translation>
+    </message>
+    <message>
+        <source>Save the rectangle</source>
+        <translation>Rechteck speichern</translation>
+    </message>
+    <message>
+        <source>Step back, or close</source>
+        <translation>Einen Schritt zurück oder schließen</translation>
+    </message>
+    <message>
+        <source>Capture this monitor</source>
+        <translation>Diesen Bildschirm aufnehmen</translation>
+    </message>
+    <message>
+        <source>Open in the editor window</source>
+        <translation>Im Editor-Fenster öffnen</translation>
+    </message>
+    <message>
+        <source>Markup</source>
+        <translation>Anmerken</translation>
+    </message>
+    <message>
+        <source>Pick a tool</source>
+        <translation>Werkzeug auswählen</translation>
+    </message>
+    <message>
+        <source>Shift while drawing</source>
+        <translation>Shift beim Zeichnen</translation>
+    </message>
+    <message>
+        <source>Square, circle or 15° steps</source>
+        <translation>Quadrat, Kreis oder Schritte von 15°</translation>
+    </message>
+    <message>
+        <source>Alt while drawing</source>
+        <translation>Alt beim Zeichnen</translation>
+    </message>
+    <message>
+        <source>Alt+Drag</source>
+        <translation>Alt+Ziehen</translation>
+    </message>
+    <message>
+        <source>Duplicate an annotation</source>
+        <translation>Anmerkung duplizieren</translation>
+    </message>
+    <message>
+        <source>Space while drawing</source>
+        <translation>Space beim Zeichnen</translation>
+    </message>
+    <message>
+        <source>Ctrl</source>
+        <translation>Ctrl</translation>
+    </message>
+    <message>
+        <source>Select and move for a moment</source>
+        <translation>Vorübergehend auswählen und verschieben</translation>
+    </message>
+    <message>
+        <source>[ / ]</source>
+        <translation>[ / ]</translation>
+    </message>
+    <message>
+        <source>Smaller / larger brush or font</source>
+        <translation>Pinsel oder Schrift kleiner / größer</translation>
+    </message>
+    <message>
+        <source>Ctrl+Z / Ctrl+Shift+Z</source>
+        <translation>Ctrl+Z / Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <source>Undo / Redo</source>
+        <translation>Rückgängig / Wiederholen</translation>
+    </message>
+    <message>
+        <source>Pick a color; Alt+Click applies it</source>
+        <translation>Farbe aufnehmen; Alt+Klick übernimmt sie</translation>
     </message>
     <message>
         <source>%1 × %2</source>
@@ -1789,6 +1706,10 @@
         <translation>Der Bildschirm konnte nicht aufgenommen werden.</translation>
     </message>
     <message>
+        <source>Click copies the color · Alt+Click applies it to markup · Tab switches the format · Escape exits</source>
+        <translation>Klick kopiert die Farbe · Alt+Klick übernimmt sie für Anmerkungen · Tab wechselt das Format · Escape beendet</translation>
+    </message>
+    <message>
         <source>Applied %1 and copied to clipboard</source>
         <translation>%1 übernommen und in die Zwischenablage kopiert</translation>
     </message>
@@ -1797,48 +1718,8 @@
         <translation>%1 in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <source>Click to copy color, Alt+Click to apply to active markup tool, Tab switches format, Escape exits.</source>
-        <translation>Klick kopiert die Farbe, Alt+Klick wendet sie auf das aktive Auszeichnungswerkzeug an, Tab wechselt das Format, Escape beendet.</translation>
-    </message>
-    <message>
-        <source>Shift keeps a square, Alt grows from the centre, Space repositions while dragging.</source>
-        <translation>Shift behält ein Quadrat bei, Alt vergrößert von der Mitte aus, Space positioniert beim Ziehen neu.</translation>
-    </message>
-    <message>
-        <source>Type text, drag outside frame edge to move; Escape or Ctrl+Enter commits.</source>
-        <translation>Text eingeben; außerhalb der Rahmenkante ziehen, um zu verschieben. Escape oder Ctrl+Enter übernimmt den Text.</translation>
-    </message>
-    <message>
-        <source>Drag to draw (Ctrl temporarily selects; Shift snaps, Alt centres, Space moves; V returns).</source>
-        <translation>Ziehen zum Zeichnen (Ctrl wählt vorübergehend aus; Shift rastet ein, Alt zentriert, Space verschiebt; V kehrt zurück).</translation>
-    </message>
-    <message>
-        <source>Drag the next rectangle anywhere, also over another one.</source>
-        <translation>Das nächste Rechteck beliebig ziehen, auch über ein anderes.</translation>
-    </message>
-    <message>
-        <source>Enter saves the annotated capture, or draw a crop rectangle first. Escape closes.</source>
-        <translation>Enter speichert das Bildschirmfoto mit Anmerkungen; vorher kann ein Rechteck zum Zuschneiden gezeichnet werden. Escape schließt.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle, click a monitor to capture it, or open Annotate. Escape keeps the full screenshot.</source>
-        <translation>Rechteck ziehen, auf einen Bildschirm klicken, um ihn aufzunehmen, oder „Anmerken“ öffnen. Escape behält das vollständige Bildschirmfoto.</translation>
-    </message>
-    <message>
-        <source>Drag a rectangle for the new area. Escape cancels.</source>
-        <translation>Für den neuen Bereich ein Rechteck ziehen. Escape bricht ab.</translation>
-    </message>
-    <message>
-        <source>Click a rectangle to change it, or drag a new one.</source>
-        <translation>Rechteck anklicken, um es zu ändern, oder ein neues ziehen.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle. Enter saves.</source>
-        <translation>Innen ziehen zum Verschieben, an den Kanten zum Ändern der Größe. Woanders ziehen für ein weiteres Rechteck. Enter speichert.</translation>
-    </message>
-    <message>
-        <source>Drag inside to move, at the edges to resize. Drag elsewhere for another rectangle.</source>
-        <translation>Innen ziehen zum Verschieben, an den Kanten zum Ändern der Größe. Woanders ziehen für ein weiteres Rechteck.</translation>
+        <source>Hover over buttons for names and shortcuts · F1 shows everything</source>
+        <translation>Über Schaltflächen fahren für Namen und Tastenkürzel · F1 zeigt alles</translation>
     </message>
     <message>
         <source>Selection does not overlap any connected monitor.</source>
@@ -2115,6 +1996,17 @@
     <message>
         <source>Auto-denying in %1 s…</source>
         <translation>Wird in %1 s automatisch abgelehnt…</translation>
+    </message>
+</context>
+<context>
+    <name>glimply::PanelButton</name>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Shortcut: %1</source>
+        <translation>Tastenkürzel: %1</translation>
     </message>
 </context>
 <context>
@@ -2526,8 +2418,8 @@
         <translation>Hooks nach dem Bildschirmfoto und externe Automatisierung</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2610,7 +2502,7 @@
         <translation>Auf dem Bildschirm auswählen…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
+        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
         <translation>Logische Pixel relativ zur oberen linken Ecke des Bildschirms. Bildschirmfotos verwenden die native Auflösung des Bildschirms.</translation>
     </message>
     <message>
@@ -2686,7 +2578,7 @@
         <translation>Globale logische Koordinaten über alle Bildschirme. Bildschirmfotos setzen die betroffenen Bildschirme mit der höchsten Skalierung zusammen.</translation>
     </message>
     <message>
-        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
         <translation>Keiner der Bildschirme dieses Bereichs ist angeschlossen. Beim Auslösen wird nichts gespeichert.</translation>
     </message>
     <message>
@@ -2948,6 +2840,22 @@
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
         <translation>Eingefroren zeigt den Moment des Tastendrucks auf Print. Live lässt Videos weiterlaufen und nimmt beim Speichern auf. Space wechselt jederzeit im Overlay zwischen beiden Modi.</translation>
+    </message>
+    <message>
+        <source>Reset Panel Position</source>
+        <translation>Panel-Position zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Show First-Start Hint Again</source>
+        <translation>Erststart-Hinweis erneut anzeigen</translation>
+    </message>
+    <message>
+        <source>Overlay panel:</source>
+        <translation>Overlay-Panel:</translation>
+    </message>
+    <message>
+        <source>Reset puts the panel back at the top centre of every monitor.</source>
+        <translation>Zurücksetzen platziert das Panel oben mittig auf jedem Bildschirm.</translation>
     </message>
     <message>
         <source>Save as soon as the mouse is released</source>
@@ -3547,7 +3455,7 @@
         <translation>Wert für --mode fehlt.</translation>
     </message>
     <message>
-        <source>--mode must be 'frozen' or 'live'.</source>
+        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
         <translation>--mode muss „frozen“ oder „live“ sein.</translation>
     </message>
     <message>
@@ -3561,6 +3469,14 @@
     <message>
         <source>No recent captures.</source>
         <translation>Keine letzten Bildschirmfotos.</translation>
+    </message>
+    <message>
+        <source>--last expects a positive number.</source>
+        <translation>--last erwartet eine positive Zahl.</translation>
+    </message>
+    <message>
+        <source>No Print captures measured since glimply started.</source>
+        <translation>Seit dem Start von glimply wurden keine Print-Bildschirmfotos gemessen.</translation>
     </message>
     <message>
         <source>Missing subcommand.</source>
