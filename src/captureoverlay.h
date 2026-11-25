@@ -265,6 +265,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     enum class Drag { None, Pending, Create, Move, Resize };
@@ -280,9 +281,11 @@ private:
     [[nodiscard]] QWidget *buildWindowList();
     [[nodiscard]] QWidget *buildAreaList();
     [[nodiscard]] QWidget *buildDelayRow();
+    [[nodiscard]] QWidget *buildMarkupDrawer();
     [[nodiscard]] QWidget *buildMoreRow();
     [[nodiscard]] QWidget *buildAreaForm();
     void refreshPanel();
+    void placePanel();
     void placeHint();
     void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
