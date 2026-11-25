@@ -1,8 +1,8 @@
 # glimply
 
-> **Note:** `glimply` is currently a working name while in pre-release development (`0.9.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
+> **Note:** `glimply` is currently a working name while in pre-release development (`0.10.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
 
-**glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
+**glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, screen recording, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
 
 ---
 
@@ -10,6 +10,7 @@
 
 - **Fixed areas, groups, monitors, and windows:** Save named rectangular screen areas (single-monitor or spanning multiple monitors), group multiple targets, or capture an individual monitor, all monitors, or an open window via global KDE shortcuts (`KGlobalAccel`).
 - **Interactive capture overlay (`Print`):** Capture in frozen or live mode, adjust selections with a pixel loupe and color picker, trigger saved areas directly, or annotate before saving/copying.
+- **Screen recording:** Record a monitor, all monitors, a saved area, a drawn rectangle, or a single window to MP4 (H.264), GIF, or WebM (VP9) from the overlay (`Ctrl+R`), the widget, or a global start/stop shortcut, with pause and a recording indicator in the tray. Recordings keep each monitor's native resolution and have no sound.
 - **Non-destructive annotations & Quick Editor:** Annotate inside the capture overlay or open images standalone via `glimply -e <file>` (`glimply <files...>`). Available tools: `Select`, `Crop`, `Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Highlighter`, `Text`, numbered `Step` counters, `Redact` (*Solid*, *Pixelate*, *Blur*), and `Spotlight` (*Rectangle*, *Ellipse*).
 - **Pinned floating captures:** Keep screenshots floating always-on-top on your desktop. Pinned windows stay hidden from subsequent KWin captures via a KWin window script and can be restored across restarts.
 - **Countdowns, intervals, history, and hooks:** Pre-capture countdown timers, timed interval captures (`--seconds`, `--max-captures`, `--max-minutes`, `--only-changed`), recent capture history (`glimply history`), desktop notifications, tray controls, and optional post-capture hooks.
@@ -23,7 +24,7 @@
 
 ## The Capture Overlay
 
-`Print` saves every monitor right away; then the overlay opens on top, frozen (the moment you pressed the key) or live (`Space` switches). One panel shows the actions of the current state: at the start *This Monitor*, *All Monitors*, *Window*, *Areas*, *Delay*, *Annotate* and *More*; with a selection *Save*, *Copy*, *Pin*, *Copy Text*, *Annotate* and *More*. Buttons carry no labels: hovering shows the title, and after half a second a tooltip adds the shortcut. Windows, saved areas, the delay, the markup tools and less frequent actions open as drawers inside the panel. Drag the panel by its grip to move it, also to another monitor; it remembers its place per monitor. `F1` shows every title and key at once, together with the modifier keys.
+`Print` saves every monitor right away; then the overlay opens on top, frozen (the moment you pressed the key) or live (`Space` switches). One panel shows the actions of the current state: at the start *This Monitor*, *All Monitors*, *Window*, *Areas*, *Record*, *Delay*, *Annotate* and *More*; with a selection *Save*, *Copy*, *Pin*, *Copy Text*, *Record*, *Annotate* and *More*. Buttons carry no labels: hovering shows the title, and after half a second a tooltip adds the shortcut. Windows, saved areas, the delay, the markup tools and less frequent actions open as drawers inside the panel. Drag the panel by its grip to move it, also to another monitor; it remembers its place per monitor. `F1` shows every title and key at once, together with the modifier keys.
 
 | Key | Action |
 |---|---|
@@ -35,6 +36,7 @@
 | `Ctrl+Shift+S` / `Ctrl+B` | Save as… / save as area |
 | `I` | Pick a colour (`Tab` cycles the format) |
 | `Ctrl+E` | Open in the editor window |
+| `Ctrl+R` | Record the selection as a video; without one, choose what to record |
 | `F10` / `Ctrl+,` | More actions / settings |
 | `Tab`, arrows | Move through the panel; `Enter` or `Space` presses the focused button |
 | `F1` | Overview of all buttons, keys and modifiers |
@@ -54,6 +56,7 @@ glimply runs strictly locally on your machine:
 ## Permissions & KDE Plasma Integration
 
 - **Screen capture (`org.kde.KWin.ScreenShot2`):** KWin only permits `ScreenShot2` requests from binaries launched via an installed `.desktop` file declaring `X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` whose `Exec=` matches the running executable. Install glimply with a matching prefix (or use `scripts/install.sh` for `~/.local`) and run the installed binary rather than running straight from a temporary build directory. When Autostart is enabled in settings, glimply keeps the autostart `.desktop` entry pointing at the active binary.
+- **Screen recording (`zkde_screencast_unstable_v1`):** KWin grants its screencast protocol through the same desktop file (`X-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1`); KPipeWire encodes the stream. After a recording, glimply runs `ffprobe`/`ffmpeg` once on the file to hold the last frame until *Stop* (container timing only).
 - **Global `Print` key shortcut:** glimply can register `Print` through KDE GlobalAccel to launch its capture overlay. To release the `Print` binding cleanly (for example before switching back to Spectacle or uninstalling), run:
   ```bash
   glimply --release-print-key
@@ -73,6 +76,7 @@ Minimum supported toolchain (verified in Debian 13 `trixie` via [`scripts/check-
 - **CMake** >= `3.25` (verified on Debian 13 `trixie` with CMake `3.31`, Qt `6.8`, KF6 `6.13`), **Ninja**, C++ compiler
 - **Qt 6** >= `6.8` (`qt6-base`, `qt6-tools` / `linguist` tools)
 - **KDE Frameworks 6** >= `6.13` (`KConfig`, `KDBusAddons`, `KGlobalAccel`, `KI18n`, `KNotifications`, `KStatusNotifierItem`, `KWidgetsAddons`, `KXmlGui`)
+- **Screen recording:** Qt Wayland (`qt6-wayland`, Debian `qt6-wayland-dev`), `plasma-wayland-protocols` (build), KPipeWire >= `6.3` (`kpipewire`, Debian `libkpipewire-dev`), and FFmpeg (`ffmpeg`)
 - **Python 3** (build/test translation validation) & **gettext** (`msgfmt` for Plasma widget catalogs)
 - **Runtime:** KDE Plasma Wayland (`kwin` with `ScreenShot2`), `hicolor-icon-theme`
 - **Optional runtime:**
