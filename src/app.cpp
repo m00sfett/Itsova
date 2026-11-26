@@ -1,9 +1,11 @@
 #include "app.h"
 
+#include "notifyconfig.h"
 #include "annotations/annotationdocument.h"
 #include "annotations/programmaticannotator.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
+#include "logging.h"
 #include "captureservice.h"
 #include "cli.h"
 #include "colorpicker.h"
@@ -104,6 +106,8 @@ App::App(QObject *parent)
     , hooks_(new HookRunner(this))
 {
     store_.load(*config_);
+    setVerboseLogging(store_.verboseLogging);
+    qCInfo(lcApp) << "glimply" << GLIMPLY_VERSION << "started";
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
 
     ocr_ = std::make_shared<TesseractOcrEngine>();
@@ -330,9 +334,16 @@ ShortcutManager *App::shortcuts() const
     return shortcuts_;
 }
 
+void App::setVerboseFromCommandLine(bool on)
+{
+    verboseFromCommandLine_ = on;
+    setVerboseLogging(store_.verboseLogging || verboseFromCommandLine_);
+}
+
 void App::storeChanged(const QStringList &deletedIds)
 {
     store_.save(*config_);
+    setVerboseLogging(store_.verboseLogging || verboseFromCommandLine_);
     if (history_->setLimit(store_.historyLimit)) {
         historyModified(true);
     }
@@ -343,6 +354,7 @@ void App::storeChanged(const QStringList &deletedIds)
 
 void App::saveSettings()
 {
+    qCDebug(lcSettings) << "settings saved";
     store_.save(*config_);
 }
 
@@ -488,6 +500,9 @@ void App::startPrintNow(std::optional<bool> forcedFrozen, bool forceOverlay)
         session->printPressed();
         return;
     }
+    qCInfo(lcOverlay) << "Print overlay requested, mode"
+                      << (!forcedFrozen ? "default" : *forcedFrozen ? "frozen" : "live") << "force overlay"
+                      << forceOverlay;
     LatencyTrace::begin(int(QGuiApplication::screens().size()));
     auto *session = new CaptureSession(this, CaptureSession::Purpose::Print);
     session->setForcedFrozen(forcedFrozen);
@@ -611,6 +626,7 @@ void App::cancelCountdown()
 QString App::startInterval(const QString &id, const std::optional<IntervalConfig> &overrideConfig)
 {
     const IntervalConfig cfg = overrideConfig ? *overrideConfig : store_.targetIntervalConfig(id);
+    qCInfo(lcCapture) << "interval start" << id << cfg.seconds << "s";
     const QString error = intervals_->start(id, targetLabel(store_, id), cfg);
     if (!error.isEmpty()) {
         notifyError(tr("Could not start interval"), {error});
@@ -620,11 +636,13 @@ QString App::startInterval(const QString &id, const std::optional<IntervalConfig
 
 bool App::stopInterval(const QString &id)
 {
+    qCInfo(lcCapture) << "interval stop" << id;
     return intervals_->stop(id);
 }
 
 void App::stopAllIntervals()
 {
+    qCInfo(lcCapture) << "interval stop all";
     intervals_->stopAll();
 }
 
@@ -703,6 +721,7 @@ void App::recordCapture(const QStringList &paths, const QString &displayName, co
     if (paths.isEmpty()) {
         return;
     }
+    qCInfo(lcCapture) << "saved" << triggerKind << targetId << paths;
     HistoryEntry entry;
     entry.targetId = targetId;
     entry.targetName = displayName;
@@ -761,12 +780,10 @@ void App::notifySaved(const QString &title, const QStringList &paths, const QStr
     const QString heading = !title.isEmpty() ? title
                             : paths.size() == 1 ? tr("Screenshot saved")
                                                 : tr("%n screenshots saved", nullptr, int(paths.size()));
-    static const bool haveEvents = !QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                                           QStringLiteral("knotifications6/glimply.notifyrc"))
-                                        .isEmpty();
+    const bool haveEvents = haveNotifyEvents();
     auto *notification = new KNotification(haveEvents ? QStringLiteral("captureSaved") : QStringLiteral("notification"));
     if (haveEvents) {
-        notification->setComponentName(QStringLiteral("io.github.m00sfett.glimply"));
+        notification->setComponentName(notifyComponentName());
     }
     notification->setTitle(heading);
     notification->setText(lines.join(QLatin1Char('\n')));
@@ -806,6 +823,7 @@ void App::notifySaved(const QString &title, const QStringList &paths, const QStr
 
 void App::trigger(const QString &id)
 {
+    qCInfo(lcApp) << "trigger" << id;
     if (countdown_->isActive()) {
         cancelCountdown();
         return;
@@ -835,7 +853,7 @@ void App::trigger(const QString &id)
         return;
     }
     if (id == recordToggleActionId()) {
-        toggleRecording();
+        toggleRecording(QStringLiteral("shortcut"));
         return;
     }
     if (id == recordPauseActionId()) {
@@ -901,13 +919,11 @@ void App::notifyPartialCapture(const QString &title, const QStringList &messages
 void App::notify(const QString &eventId, const QString &title, const QStringList &messages)
 {
     const QString text = messages.join(QLatin1Char('\n'));
-    // Installed builds ship glimply.notifyrc, so notifications carry glimply's name and can be
+    // Installed builds ship io.github.m00sfett.glimply.notifyrc, so notifications carry glimply's name and can be
     // configured in System Settings. Uninstalled development builds fall back to the system events.
-    static const bool haveEvents = !QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                                           QStringLiteral("knotifications6/glimply.notifyrc"))
-                                        .isEmpty();
+    const bool haveEvents = haveNotifyEvents();
     if (haveEvents) {
-        KNotification::event(eventId, title, text, QStringLiteral("io.github.m00sfett.glimply"));
+        KNotification::event(eventId, title, text, notifyComponentName());
     } else {
         KNotification::StandardEvent fallback = KNotification::Error;
         if (eventId == QLatin1String("monitorChanged")) {
@@ -924,6 +940,7 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
 
 void App::notifyError(const QString &title, const QStringList &messages)
 {
+    qCWarning(lcApp).noquote() << title << ":" << messages.join(QStringLiteral(" | "));
     notify(QStringLiteral("captureFailed"), title, messages);
 }
 
@@ -2114,6 +2131,7 @@ std::optional<McpImagePayload> buildMcpImagePayload(const QString &filePath, int
 void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson,
                            std::function<void(const McpToolResponse &)> callback)
 {
+    qCInfo(lcMcp) << "tool call" << toolName;
     const auto fail = [callback](const QString &message) {
         if (callback) {
             callback({false, {}, message, std::nullopt});
@@ -2844,6 +2862,7 @@ std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, 
 
 QString App::startRecording(const QString &targetId, int delaySeconds)
 {
+    qCInfo(lcRecord) << "start requested for" << targetId << "delay" << delaySeconds;
     if (recorder_->isBusy()) {
         return tr("A recording is already running.");
     }
@@ -2925,7 +2944,7 @@ void App::beginRecording(const QString &targetId)
             if (!result.image.isNull() && logical > 0) {
                 scales.insert(connector, qreal(result.image.width()) / logical);
             } else {
-                qWarning("glimply: no native scale for %s: %s", qPrintable(connector), qPrintable(result.error));
+                qCWarning(lcRecord) << "no native scale for" << connector << ":" << result.error;
             }
         }
         return scales;
@@ -2955,9 +2974,9 @@ void App::startRecorder(const QString &targetId)
     recorder_->start(*target, options); // reports its own errors through failed()
 }
 
-void App::stopRecording()
+void App::stopRecording(const QString &origin)
 {
-    recorder_->stop();
+    recorder_->stop(origin);
 }
 
 void App::setRecordingPaused(bool paused)
@@ -2965,10 +2984,10 @@ void App::setRecordingPaused(bool paused)
     recorder_->setPaused(paused);
 }
 
-void App::toggleRecording()
+void App::toggleRecording(const QString &origin)
 {
     if (recorder_->isBusy()) {
-        recorder_->stop();
+        recorder_->stop(origin);
         return;
     }
     if (!store_.lastRecordingTarget.isEmpty() && recordingTargetFor(store_.lastRecordingTarget, nullptr)) {
@@ -2983,6 +3002,7 @@ void App::toggleRecording()
 
 void App::openOverlayForRecording()
 {
+    qCInfo(lcOverlay) << "record overlay requested";
     if (session_ || selector_ || colorPicker_ || recorder_->isBusy()) {
         return;
     }
@@ -3008,7 +3028,7 @@ void App::quit()
         }
     });
     QTimer::singleShot(10000, qApp, &QCoreApplication::quit);
-    recorder_->stop();
+    recorder_->stop(QStringLiteral("quit"));
 }
 
 bool App::isRecording() const

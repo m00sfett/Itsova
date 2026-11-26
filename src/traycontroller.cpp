@@ -1,5 +1,6 @@
 #include "traycontroller.h"
 
+#include "logging.h"
 #include "recordingplan.h"
 
 #include "targets.h"
@@ -63,8 +64,9 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     item_->setIsMenu(true); // a click opens the menu
 #endif
     connect(item_, &KStatusNotifierItem::activateRequested, this, [this](bool, const QPoint &pos) {
+        qCInfo(lcTray) << "tray icon activated, recording state" << recordingState_;
         if (recordingState_ == 1 || recordingState_ == 2 || recordingState_ == 3) {
-            Q_EMIT stopRecordingRequested();
+            Q_EMIT stopRecordingRequested(QStringLiteral("tray icon click"));
             return;
         }
 #if KSTATUSNOTIFIERITEM_VERSION < QT_VERSION_CHECK(6, 14, 0)
@@ -320,7 +322,8 @@ void TrayController::rebuildMenu()
     if (recordingState_ == 1 || recordingState_ == 2 || recordingState_ == 3) {
         auto *stop = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
                                      tr("Stop Recording (%1)").arg(formatElapsed(recordingElapsedMs_)), menu_));
-        connect(stop, &QAction::triggered, this, &TrayController::stopRecordingRequested);
+        connect(stop, &QAction::triggered, this,
+                [this] { Q_EMIT stopRecordingRequested(QStringLiteral("tray menu")); });
         if (recordingState_ != 1 && recordingPauseAvailable_) {
             const bool paused = recordingState_ == 3;
             auto *pause = add(new QAction(QIcon::fromTheme(paused ? QStringLiteral("media-record")

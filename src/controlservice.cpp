@@ -1,5 +1,6 @@
 #include "controlservice.h"
 
+#include "logging.h"
 #include "app.h"
 #include "cli.h"
 #include "intervalcontroller.h"
@@ -132,6 +133,7 @@ bool ControlService::HasLastCapture() const
 
 void ControlService::Trigger(const QString &id)
 {
+    qCInfo(lcDbus) << "Trigger" << id;
     app_->trigger(id);
 }
 
@@ -182,6 +184,7 @@ void ControlService::PinMoved(const QString &id, int x, int y)
 
 void ControlService::PinLastCapture()
 {
+    qCInfo(lcDbus) << "PinLastCapture";
     app_->pinLastCapture();
 }
 
@@ -232,6 +235,7 @@ void ControlService::CancelCountdown()
 
 void ControlService::PickColor()
 {
+    qCInfo(lcDbus) << "PickColor";
     app_->startColorPicker();
 }
 
@@ -257,6 +261,7 @@ QString ControlService::Intervals() const
 QString ControlService::StartInterval(const QString &id, int seconds, int maxCaptures, int maxMinutes,
                                       bool onlyWhenChanged)
 {
+    qCInfo(lcDbus) << "StartInterval" << id;
     if (seconds <= 0 && maxCaptures <= 0 && maxMinutes <= 0 && !onlyWhenChanged) {
         return app_->startInterval(id);
     }
@@ -276,16 +281,19 @@ QString ControlService::StartInterval(const QString &id, int seconds, int maxCap
 
 void ControlService::StopInterval(const QString &id)
 {
+    qCInfo(lcDbus) << "StopInterval";
     app_->stopInterval(id);
 }
 
 void ControlService::StopAllIntervals()
 {
+    qCInfo(lcDbus) << "StopAllIntervals";
     app_->stopAllIntervals();
 }
 
 QString ControlService::CaptureSync(const QString &requestJson)
 {
+    qCInfo(lcDbus) << "CaptureSync";
     QJsonParseError parseErr{};
     const QJsonDocument doc = QJsonDocument::fromJson(requestJson.toUtf8(), &parseErr);
     if (parseErr.error != QJsonParseError::NoError || !doc.isObject()) {
@@ -385,11 +393,12 @@ QString ControlService::AddAreaRect(const QString &name, const QString &connecto
 
 QString ControlService::StartRecording(const QString &targetId, int delaySeconds)
 {
+    qCInfo(lcDbus) << "StartRecording" << targetId << delaySeconds;
     if (targetId.isEmpty()) {
         if (app_->isRecording()) {
             return tr("A recording is already running.");
         }
-        app_->toggleRecording();
+        app_->toggleRecording(QStringLiteral("D-Bus StartRecording"));
         return {};
     }
     return app_->startRecording(targetId, delaySeconds);
@@ -397,16 +406,19 @@ QString ControlService::StartRecording(const QString &targetId, int delaySeconds
 
 void ControlService::StopRecording()
 {
-    app_->stopRecording();
+    qCInfo(lcDbus) << "StopRecording";
+    app_->stopRecording(QStringLiteral("D-Bus StopRecording"));
 }
 
 void ControlService::OpenRecordOverlay()
 {
+    qCInfo(lcDbus) << "OpenRecordOverlay";
     app_->openOverlayForRecording();
 }
 
 void ControlService::PauseRecording(bool paused)
 {
+    qCInfo(lcDbus) << "PauseRecording";
     app_->setRecordingPaused(paused);
 }
 
@@ -417,6 +429,7 @@ QString ControlService::RecordingState() const
 
 QString ControlService::OpenOverlay(const QString &mode, int delaySeconds)
 {
+    qCInfo(lcDbus) << "OpenOverlay" << mode << delaySeconds;
     return app_->openOverlay(mode, delaySeconds);
 }
 
@@ -439,6 +452,7 @@ QString ControlService::McpDispatch(const QString &toolName, const QString &argu
 
 void ControlService::RegisterWidget()
 {
+    qCInfo(lcDbus) << "RegisterWidget";
     if (!calledFromDBus()) {
         return;
     }

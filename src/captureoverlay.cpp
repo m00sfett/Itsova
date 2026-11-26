@@ -1,5 +1,6 @@
 #include "captureoverlay.h"
 
+#include "logging.h"
 #include "annotations/annotationrenderer.h"
 #include "annotations/annotationtoolbar.h"
 #include "annotations/inlinetexteditor.h"
@@ -188,6 +189,7 @@ CaptureSession::~CaptureSession()
 void CaptureSession::start()
 {
     screens_ = currentScreens();
+    qCInfo(lcOverlay) << "session start," << screens_.size() << "monitors";
     if (screens_.isEmpty()) {
         finish({}, {}, {tr("No monitor is connected.")});
         return;
@@ -1972,6 +1974,7 @@ void CaptureSession::finish(const QString &title, const QStringList &paths, cons
         return; // the pending write failed and finished the session with its error
     }
     finished_ = true;
+    qCInfo(lcOverlay) << "session end" << title << paths << errors;
     for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
         if (overlay) {
             overlay->close();

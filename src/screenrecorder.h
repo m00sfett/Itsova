@@ -50,7 +50,8 @@ public:
     // Returns false (and emits failed) when a recording is already running or KWin offers no
     // screen streams to glimply.
     bool start(const RecordingTarget &target, const Options &options);
-    void stop();
+    // origin names who asked (tray, shortcut, D-Bus, quit, …) for the journal (#92).
+    void stop(const QString &origin);
     // KPipeWire before 6.4 cannot pause; the tray, widget and shortcut leave pausing out then.
     [[nodiscard]] static bool canPause();
     void setPaused(bool paused);

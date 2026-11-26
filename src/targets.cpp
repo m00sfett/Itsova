@@ -420,6 +420,7 @@ void TargetStore::load(const KConfig &config)
     overlayFirstHintShown = general.readEntry("OverlayFirstHintShown", false);
     captureOnRelease = general.readEntry("CaptureOnRelease", false);
     showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
+    verboseLogging = general.readEntry("VerboseLogging", false);
     {
         const KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recordingFormat = recordingFormatFromKey(recording.readEntry("Format", QStringLiteral("mp4")));
@@ -601,6 +602,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("OverlayFirstHintShown", overlayFirstHintShown);
     general.writeEntry("CaptureOnRelease", captureOnRelease);
     general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
+    general.writeEntry("VerboseLogging", verboseLogging);
     {
         KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recording.writeEntry("Format", recordingFormatKey(recordingFormat));

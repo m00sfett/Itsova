@@ -44,6 +44,8 @@ widget_metadata="${prefix}/share/plasma/plasmoids/io.github.m00sfett.glimply.wid
 widget_before="$(sha256sum "${widget_metadata}" 2>/dev/null || true)"
 
 cmake --install "${build_dir}"
+# Before 0.11.0 the notification events were installed under a name KNotification never looked up.
+rm -f -- "${prefix}/share/knotifications6/glimply.notifyrc"
 
 widget_after="$(sha256sum "${widget_metadata}" 2>/dev/null || true)"
 

@@ -1,5 +1,6 @@
 #include "pinmanager.h"
 
+#include "notifyconfig.h"
 #include "kwinpinscript.h"
 #include "pinwindow.h"
 
@@ -84,12 +85,10 @@ private:
 
 KNotification *makeNotification(const QString &eventId)
 {
-    static const bool haveEvents = !QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                                           QStringLiteral("knotifications6/glimply.notifyrc"))
-                                        .isEmpty();
+    const bool haveEvents = haveNotifyEvents();
     auto *notification = new KNotification(haveEvents ? eventId : QStringLiteral("notification"));
     if (haveEvents) {
-        notification->setComponentName(QStringLiteral("io.github.m00sfett.glimply"));
+        notification->setComponentName(notifyComponentName());
     }
     return notification;
 }

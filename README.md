@@ -1,6 +1,6 @@
 # glimply
 
-> **Note:** `glimply` is currently a working name while in pre-release development (`0.10.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
+> **Note:** `glimply` is currently a working name while in pre-release development (`0.11.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
 
 **glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, screen recording, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
 
@@ -134,12 +134,18 @@ glimply area add|edit|rename|remove ...
 glimply interval start|stop|status ...
 glimply history [--limit N] [--json]
 glimply latency [--last N] [--json]
+glimply logs [journalctl options]
 glimply -e <file>
 glimply mcp
+glimply --verbose
 glimply --release-print-key
 ```
 
 Run `glimply <subcommand> --help` for full options.
+
+### Logs
+
+glimply writes every capture, overlay session, recording start and stop (with who asked: tray, shortcut, D-Bus, quit, KWin) and every error to the user journal. `glimply logs` shows the last hour; pass `journalctl` options such as `-f`, `-n 200` or `--since today`. Detailed (debug) lines are off by default; turn them on in *Settings → General → Logging* or start the daemon with `glimply --verbose`. Logs never contain secrets, hook commands or file contents, only paths.
 
 ---
 

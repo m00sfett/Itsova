@@ -2,6 +2,7 @@
 #include "cli.h"
 #include "i18n.h"
 #include "mcpserver.h"
+#include "logging.h"
 #include "printkey.h"
 
 #include <KConfig>
@@ -24,6 +25,8 @@
 #include <QUrl>
 
 #include <cstdio>
+#include <unistd.h>
+#include <vector>
 
 namespace
 {
@@ -52,6 +55,8 @@ void configureParser(QCommandLineParser &parser, const QCommandLineOption &editO
     parser.addVersionOption();
     parser.addOption(editOption);
     parser.addOption(releaseOption);
+    parser.addOption(QCommandLineOption(QStringLiteral("verbose"),
+                                        QApplication::translate("main", "Write detailed logs to the system journal.")));
     parser.addPositionalArgument(
         QStringLiteral("files"),
         QApplication::translate("main", "Image file(s) to open in the Quick Editor window."),
@@ -193,6 +198,34 @@ QString effectiveUiLanguage()
 
 int main(int argc, char *argv[])
 {
+    // `glimply logs [journalctl options]` (#92): glimply's lines from the user journal.
+    if (argc >= 2 && qstrcmp(argv[1], "logs") == 0) {
+        QStringList extra;
+        for (int i = 2; i < argc; ++i) {
+            extra.append(QString::fromLocal8Bit(argv[i]));
+        }
+        if (extra.contains(QStringLiteral("-h")) || extra.contains(QStringLiteral("--help"))) {
+            std::fputs("Usage: glimply logs [journalctl options]\n"
+                       "Shows glimply's lines from the user journal (last hour without options).\n"
+                       "Examples: glimply logs -f, glimply logs -n 200, glimply logs --since today\n",
+                       stdout);
+            return 0;
+        }
+        const QStringList args = glimply::journalctlArguments(extra);
+        std::vector<QByteArray> storage{QByteArrayLiteral("journalctl")};
+        for (const QString &arg : args) {
+            storage.push_back(arg.toLocal8Bit());
+        }
+        std::vector<char *> argvOut;
+        for (QByteArray &arg : storage) {
+            argvOut.push_back(arg.data());
+        }
+        argvOut.push_back(nullptr);
+        execvp("journalctl", argvOut.data());
+        std::fputs("glimply: journalctl not found.\n", stderr);
+        return 1;
+    }
+
     if (argc >= 2 && glimply::isCliSubcommand(QString::fromLocal8Bit(argv[1]))) {
         qInstallMessageHandler(routeQtLogsToStderr);
         // JSON output stays English whatever the UI language (#51); human-readable text follows it.
@@ -291,8 +324,14 @@ int main(int argc, char *argv[])
     KDBusService service(KDBusService::Unique);
 
     glimply::App app;
+    if (QApplication::arguments().contains(QStringLiteral("--verbose"))) {
+        app.setVerboseFromCommandLine(true);
+    }
     QObject::connect(&service, &KDBusService::activateRequested, &app,
                      [&app](const QStringList &arguments, const QString &workingDirectory) {
+                         if (arguments.contains(QStringLiteral("--verbose"))) {
+                             app.setVerboseFromCommandLine(true);
+                         }
                          const QStringList paths = extractEditPaths(arguments, workingDirectory);
                          for (const QString &path : paths) {
                              app.openEditorForFile(path);

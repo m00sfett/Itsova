@@ -164,11 +164,13 @@ public:
     // "window:<uuid>" or "region:x,y,w,h". Starts after delaySeconds (0: at once) and remembers
     // the target for the start/stop shortcut. Returns an error message, or an empty string.
     QString startRecording(const QString &targetId, int delaySeconds = 0);
-    void stopRecording();
+    void stopRecording(const QString &origin);
+    // `glimply --verbose` adds debug logging on top of the setting (#92).
+    void setVerboseFromCommandLine(bool on);
     void setRecordingPaused(bool paused);
     // The start/stop shortcut: stops a running recording, records the last target again, or opens
     // the overlay to choose one.
-    void toggleRecording();
+    void toggleRecording(const QString &origin);
     [[nodiscard]] bool isRecording() const;
     // {state: idle|starting|recording|paused|finishing, elapsedMs, target, targetName, format}
     [[nodiscard]] QJsonObject recordingState() const;
@@ -242,6 +244,7 @@ private:
     QHash<QString, QPair<QRect, qreal>> nativeScales_;
     bool recordingPending_ = false;
     QTimer *recordingTicker_ = nullptr;
+    bool verboseFromCommandLine_ = false;
 };
 
 } // namespace glimply
