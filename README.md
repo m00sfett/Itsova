@@ -24,7 +24,7 @@
 
 ## The Capture Overlay
 
-`Print` saves every monitor right away; then the overlay opens on top, frozen (the moment you pressed the key) or live (`Space` switches). One panel shows the actions of the current state: at the start *This Monitor*, *All Monitors*, *Window*, *Areas*, *Record*, *Delay*, *Markup* and *More*; with a selection *Save*, *Copy*, *Pin*, *Copy Text*, *Record*, *Markup* and *More*. Buttons carry no labels: hovering shows the title, and after half a second a tooltip adds the shortcut. Windows, saved areas, the delay, the markup tools and less frequent actions open as drawers inside the panel. Drag the panel by its grip to move it, also to another monitor; it remembers its place per monitor. `F1` shows every title and key at once, together with the modifier keys.
+`Print` saves every monitor right away; then the overlay opens on top, frozen (the moment you pressed the key) or live (`Space` switches). One panel shows the actions of the current state: at the start *This Monitor*, *Monitors* (each monitor and *All Monitors*), *Windows*, *Areas*, *Record* (the same targets as a video), *Delay*, *Markup* and *More*; with a selection *Save*, *Copy*, *Pin*, *Copy Text*, *Record*, *Markup* and *More*. Buttons carry no labels: hovering shows the title, and after half a second a tooltip adds the shortcut. Windows, saved areas, the delay, the markup tools and less frequent actions open as drawers inside the panel. Drag the panel by its grip to move it, also to another monitor; it remembers its place per monitor. `F1` shows every title and key at once, together with the modifier keys.
 
 | Key | Action |
 |---|---|

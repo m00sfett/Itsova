@@ -19,6 +19,7 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 - The Freeze/Live end cap of the overlay panel names the action a click performs (#94): while live it shows *Freeze* with a pause icon, while frozen *Live* with a play icon (tooltip and accessible name likewise; the *More* entry follows, *Go Live* became *Live*). At rest it no longer carries a fill and a ring, so it weighs like the other buttons; hover fills it and keyboard focus adds the ring. "Freeze" and "Live" are fixed product terms in every language.
 
+- Overlay panel restructured (#95): *Freeze/Live · This Monitor · Monitors · Windows · Areas · Record · Delay · Markup · More · Close*. *All Monitors* left the row; the new *Monitors* drawer (`2`) lists every monitor by name, the panel's own first, then *All Monitors* (left out with a single monitor). *Record* lists the same targets in the same order (monitors, windows, areas) instead of its own mix, and its footer line is gone. Opened to record (widget, shortcut), the panel shows the same row with every target recording and no drawer open. While a drawer is open the main row shows no tooltips, so only the drawer's digits speak. Hovering *All Monitors* frames every monitor, like a single monitor or window.
 - The overlay's markup drawer is called *Markup* (German *Beschriften*) instead of *Annotate* (#100).
 
 ### Fixed

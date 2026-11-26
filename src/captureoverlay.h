@@ -109,7 +109,7 @@ public:
 
     // The one panel of the session (#69). It shows on one monitor: where the pointer is while
     // nothing is selected, then where the selection is; a monitor the user dragged it to wins.
-    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help, Record };
+    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help, Record, Monitors };
     [[nodiscard]] PanelDrawer panelDrawer() const;
     void setPanelDrawer(PanelDrawer drawer);
     // A second click on the button of the open drawer closes it.
@@ -135,6 +135,8 @@ public:
     [[nodiscard]] bool isConnected(const QString &connector) const;
     // The user's name for the monitor, or its connector.
     [[nodiscard]] QString monitorName(const QString &connector) const;
+    // The monitors of the session, left to right, top to bottom (#95).
+    [[nodiscard]] QList<ScreenInfo> orderedScreens() const;
 
     // Actions.
     void save(const QString &preferredConnector = QString());
@@ -293,6 +295,7 @@ private:
     [[nodiscard]] QWidget *buildHelpPanel(QWidget *parent) const;
     [[nodiscard]] QWidget *buildWindowList();
     [[nodiscard]] QWidget *buildRecordList();
+    [[nodiscard]] QWidget *buildMonitorList();
     [[nodiscard]] QWidget *buildAreaList();
     [[nodiscard]] QWidget *buildDelayRow();
     [[nodiscard]] QWidget *buildMarkupDrawer();

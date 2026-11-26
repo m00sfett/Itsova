@@ -79,7 +79,7 @@ private Q_SLOTS:
         };
         // Start (Q11/Q24).
         QCOMPARE(action(S::Start, false, Qt::Key_1), A::ThisMonitor);
-        QCOMPARE(action(S::Start, false, Qt::Key_2), A::AllMonitors);
+        QCOMPARE(action(S::Start, false, Qt::Key_2), A::Monitors);
         QCOMPARE(action(S::Start, false, Qt::Key_3), A::None);
         QCOMPARE(action(S::Start, false, Qt::Key_W), A::Window);
         QCOMPARE(action(S::Start, false, Qt::Key_G), A::Areas);
