@@ -980,6 +980,14 @@
         <translation>%1 скопирован в буфер обмена</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Запись приостановлена</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Запись продолжена</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Запись завершилась досрочно</translation>
     </message>
@@ -1292,6 +1300,10 @@
         <translation>Запись уже выполняется.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Ни одно окно не в фокусе.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Запись</translation>
     </message>
@@ -1304,16 +1316,36 @@
         <translation>Запись %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Нажмите значок glimply в системном трее, чтобы остановить.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Запись %1 начинается…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Нажмите значок glimply в системном трее или %1, чтобы остановить.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Остановить значком glimply в системном лотке</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Остановить</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Остановить значком glimply или %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Запись продолжается…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Активное окно</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Прямоугольник %1 × %2 в %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Окно %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Окно, которое уже закрыто</translation>
     </message>
 </context>
 <context>
@@ -1564,12 +1596,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>По умолчанию для сочетания записи</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>По умолчанию для %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Экраны, окна и области</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Экраны</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Активное окно</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1762,6 +1806,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Снимок окна или экрана под указателем</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Закрепить выбранный пункт или прямоугольник как цель по умолчанию для сочетания записи</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2980,6 +3032,14 @@
         <translation>Частота кадров:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Показывать короткую подсказку, когда запись начинается, приостанавливается или останавливается</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Подсказки:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Сочетание клавиш для начала или остановки записи</translation>
     </message>
@@ -3000,8 +3060,20 @@
         <translation>Сочетания клавиш:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Запись можно начать из оверлея (Ctrl+R) или сочетанием клавиш старта и остановки: оно снова записывает последний объект. Для записей GIF частота не выше %1 кадр/с. В записях нет звука.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Убрать цель записи по умолчанию</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Цель по умолчанию:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Записывайте из оверлея (Ctrl+R) или сочетанием старт/стоп, которое записывает цель по умолчанию: закрепите её булавкой рядом с пунктом в меню записи оверлея (или P). Без неё сочетание открывает оверлей для выбора. Подсказки появляются рядом с записываемым; если записывается всё, запись начинается, когда подсказка о старте исчезнет. Записи GIF используют не более %1 кадр/с. Записи без звука.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Нет: сочетание открывает оверлей</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3042,6 +3114,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Горячие клавиши работают только пока запущен glimply.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Всегда</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Только пока что-то работает</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Только во время записи</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Значок в лотке:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Появляется, пока идёт запись (или снимки по интервалу при «Только пока что-то работает»), чтобы её можно было остановить. Чтобы снова открыть эти настройки, запустите glimply из меню приложений или выполните glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

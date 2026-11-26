@@ -974,6 +974,14 @@
         <translation>%1 disalin ke papan klip</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Perekaman dijeda</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Perekaman dilanjutkan</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Rekaman berakhir lebih awal</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>Rekaman sudah berjalan.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Tidak ada jendela yang fokus.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Rekaman</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>Merekam %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Klik ikon glimply di baki sistem untuk berhenti.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Perekaman %1 dimulai…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Klik ikon glimply di baki sistem atau tekan %1 untuk berhenti.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Hentikan dengan ikon glimply di baki sistem</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Berhenti</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Hentikan dengan ikon glimply atau %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Perekaman berlanjut…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Jendela aktif</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Persegi %1 × %2 di %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Jendela %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Jendela yang sudah tidak terbuka</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Bawaan pintasan perekaman</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Bawaan untuk %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Monitor, Jendela, dan Area</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Monitor</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Jendela Aktif</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Tangkap jendela atau monitor di bawah penunjuk</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Sematkan entri yang difokus atau persegi sebagai bawaan pintasan perekaman</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>Laju bingkai:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Tampilkan petunjuk singkat saat perekaman dimulai, dijeda, atau berhenti</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Petunjuk:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Pintasan untuk mulai atau hentikan rekaman</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>Pintasan:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Rekam dari overlay (Ctrl+R) atau dengan pintasan mulai/hentikan, yang merekam ulang target terakhir. Rekaman GIF memakai paling banyak %1 fps. Rekaman tidak berisi suara.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Hapus target perekaman bawaan</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Target bawaan:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Rekam dari overlay (Ctrl+R) atau dengan pintasan mulai/berhenti, yang merekam target bawaan: sematkan dengan pin di samping entri pada menu rekam overlay (atau P). Tanpa target, pintasan membuka overlay untuk memilih. Petunjuk muncul di samping yang direkam; jika semuanya direkam, perekaman dimulai setelah petunjuk mulai hilang. Rekaman GIF memakai paling banyak %1 fps. Rekaman tidak bersuara.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Tidak ada: pintasan membuka overlay</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Pintasan hanya berfungsi saat glimply berjalan.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Selalu</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Hanya saat ada yang berjalan</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Hanya saat merekam</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Ikon baki:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Muncul selama perekaman berjalan (atau tangkapan berkala, dengan “Hanya saat ada yang berjalan”) agar Anda bisa menghentikannya. Untuk membuka pengaturan ini lagi, jalankan glimply dari peluncur aplikasi atau jalankan glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

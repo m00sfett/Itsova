@@ -977,6 +977,14 @@
         <translation>%1 in die Zwischenablage kopiert</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Aufnahme pausiert</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Aufnahme fortgesetzt</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Aufnahme vorzeitig beendet</translation>
     </message>
@@ -1289,6 +1297,10 @@
         <translation>Eine Aufnahme läuft bereits.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Kein Fenster hat den Fokus.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Aufnahme</translation>
     </message>
@@ -1301,16 +1313,36 @@
         <translation>Aufnahme von %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Zum Beenden auf das glimply-Symbol im Infobereich klicken.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Aufnahme von %1 beginnt…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Zum Beenden auf das glimply-Symbol im Infobereich klicken oder %1 drücken.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Beenden über das glimply-Symbol im Infobereich</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Beenden</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Beenden über das glimply-Symbol oder %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Aufnahme geht weiter…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Aktives Fenster</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Rechteck %1 × %2 bei %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Fenster %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Ein Fenster, das nicht mehr offen ist</translation>
     </message>
 </context>
 <context>
@@ -1561,12 +1593,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Standard für das Aufnahme-Tastenkürzel</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Standard für %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Bildschirme, Fenster und Bereiche</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Bildschirme</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Aktives Fenster</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1754,6 +1798,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Fenster oder Bildschirm unter dem Zeiger aufnehmen</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Den fokussierten Eintrag oder das Rechteck als Standard des Aufnahme-Tastenkürzels anheften</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2970,6 +3022,14 @@
         <translation>Bildrate:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Kurzen Hinweis zeigen, wenn eine Aufnahme beginnt, pausiert oder endet</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Hinweise:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Tastenkürzel zum Starten oder Stoppen der Aufnahme</translation>
     </message>
@@ -2990,8 +3050,20 @@
         <translation>Tastenkürzel:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Aufnehmen über das Overlay (Ctrl+R) oder mit dem Tastenkürzel zum Starten und Stoppen; letzteres nimmt das zuletzt gewählte Ziel erneut auf. GIF-Aufnahmen verwenden höchstens %1 fps. Aufnahmen haben keinen Ton.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Standard-Aufnahmeziel entfernen</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Standardziel:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Aufnehmen über das Overlay (Strg+R) oder mit dem Start/Stopp-Tastenkürzel, das das Standardziel aufnimmt: Heften Sie es mit der Nadel neben einem Eintrag in den Aufnahme-Menüs des Overlays an (oder P). Ohne Standardziel öffnet das Tastenkürzel das Overlay zur Auswahl. Hinweise erscheinen neben dem Aufgenommenen; wird alles aufgenommen, beginnt die Aufnahme, sobald der Start-Hinweis verschwunden ist. GIF-Aufnahmen nutzen höchstens %1 fps. Aufnahmen haben keinen Ton.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Keines: Das Tastenkürzel öffnet das Overlay</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3032,6 +3104,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Tastenkürzel funktionieren nur, solange glimply läuft.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Immer</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Nur solange etwas läuft</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Nur während einer Aufnahme</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Symbol im Infobereich:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Erscheint, solange eine Aufnahme läuft (bei „Nur solange etwas läuft“ auch bei Intervall-Aufnahmen), damit Sie sie beenden können. Die Einstellungen öffnen Sie wieder, indem Sie glimply aus dem Anwendungsstarter starten oder glimply ausführen.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

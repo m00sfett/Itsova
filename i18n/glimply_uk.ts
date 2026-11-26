@@ -980,6 +980,14 @@
         <translation>%1 скопійовано до буфера обміну</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Запис призупинено</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Запис продовжено</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Запис завершено достроково</translation>
     </message>
@@ -1292,6 +1300,10 @@
         <translation>Запис уже виконується.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Жодне вікно не у фокусі.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Запис</translation>
     </message>
@@ -1304,16 +1316,36 @@
         <translation>Запис %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Клацніть значок glimply у системному лотку, щоб зупинити.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Запис %1 починається…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Клацніть значок glimply у системному лотку або натисніть %1, щоб зупинити.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Зупинити значком glimply у системному лотку</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Зупинити</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Зупинити значком glimply або %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Запис продовжується…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Активне вікно</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Прямокутник %1 × %2 у %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Вікно %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Вікно, яке вже закрито</translation>
     </message>
 </context>
 <context>
@@ -1564,12 +1596,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Типово для поєднання запису</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Типово для %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Монітори, вікна та області</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Монітори</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Активне вікно</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1762,6 +1806,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Зняти вікно або монітор під вказівником</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Закріпити вибраний пункт або прямокутник як типову ціль поєднання запису</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2980,6 +3032,14 @@
         <translation>Частота кадрів:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Показувати коротку підказку, коли запис починається, призупиняється або зупиняється</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Підказки:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Комбінація клавіш для початку або зупинки запису</translation>
     </message>
@@ -3000,8 +3060,20 @@
         <translation>Гарячі клавіші:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Запис можна почати з накладення (Ctrl+R) або комбінацією початку/зупинки, яка знову записує останню ціль. Записи GIF використовують не більше %1 к/с. Звуку в записах немає.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Прибрати типову ціль запису</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Типова ціль:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Записуйте з оверлею (Ctrl+R) або поєднанням старт/стоп, яке записує типову ціль: закріпіть її шпилькою біля пункту в меню запису оверлею (або P). Без неї поєднання відкриває оверлей для вибору. Підказки з’являються поруч із записуваним; якщо записується все, запис починається, коли підказка про старт зникне. Записи GIF використовують не більше %1 кадр/с. Записи без звуку.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Немає: поєднання відкриває оверлей</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3042,6 +3114,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Комбінації клавіш працюють лише тоді, коли glimply запущено.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Завжди</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Лише поки щось працює</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Лише під час запису</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Значок у лотку:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>З’являється, поки триває запис (або знімки за інтервалом при «Лише поки щось працює»), щоб його можна було зупинити. Щоб знову відкрити ці налаштування, запустіть glimply з меню програм або виконайте glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

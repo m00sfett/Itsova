@@ -974,6 +974,14 @@
         <translation>%1 をクリップボードにコピーしました</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>録画を一時停止しました</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>録画を再開しました</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>録画が途中で終了しました</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>既に録画中です。</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>フォーカスのあるウィンドウがありません。</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>録画</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>%1 を録画中</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>システムトレイの glimply アイコンをクリックして停止します。</translation>
+        <source>Recording %1 starts…</source>
+        <translation>%1 の録画を開始します…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>システムトレイの glimply アイコンをクリックするか、%1 キーを押して停止します。</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>システムトレイの glimply アイコンで停止</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>停止</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>glimply アイコンまたは %1 で停止</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>録画を続けます…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>アクティブなウィンドウ</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>矩形 %1 × %2（%3, %4）</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>ウィンドウ %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>すでに閉じられたウィンドウ</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>録画ショートカットの既定</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>%1 の既定</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>ディスプレイ、ウィンドウ、範囲</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>ディスプレイ</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>アクティブなウィンドウ</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>ポインターの下のウィンドウまたはディスプレイをキャプチャ</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>フォーカス中の項目または矩形を録画ショートカットの既定としてピン留め</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>フレームレート:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>録画の開始・一時停止・停止時に短いヒントを表示</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>ヒント:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>録画の開始/停止のショートカット</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>ショートカット:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>オーバーレイ(Ctrl+R)から録画するか、開始/停止のショートカットで録画します。ショートカットは前回の対象を再び録画します。GIF の録画では最大 %1 fps を使います。録画に音声は含まれません。</translation>
+        <source>Remove the default recording target</source>
+        <translation>既定の録画対象を削除</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>既定の対象:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>オーバーレイ（Ctrl+R）または開始/停止ショートカットで録画します。ショートカットは既定の対象を録画します。オーバーレイの録画メニューで項目の横のピン（または P）で固定してください。既定がない場合、ショートカットは選択用にオーバーレイを開きます。ヒントは録画範囲の外に表示され、すべてを録画する場合は開始ヒントが消えてから録画が始まります。GIF 録画は最大 %1 fps です。録画に音声はありません。</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>なし: ショートカットはオーバーレイを開きます</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>ショートカットは glimply の実行中のみ機能します。</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>常に</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>何かが動作中のみ</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>録画中のみ</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>トレイアイコン:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>録画中（「何かが動作中のみ」ではインターバル撮影中も）に表示され、停止できます。この設定を再び開くには、アプリケーションランチャーから glimply を起動するか glimply を実行します。</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

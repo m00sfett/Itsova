@@ -974,6 +974,14 @@
         <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>錄影已暫停</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>錄影已繼續</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>錄影意外結束</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>已有錄影正在進行。</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>沒有視窗取得焦點。</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>錄影</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>正在錄影 %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>點擊系統匣中的 glimply 圖示即可停止。</translation>
+        <source>Recording %1 starts…</source>
+        <translation>%1 的錄影即將開始…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>點擊系統匣中的 glimply 圖示或按 %1 即可停止。</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>用系統匣中的 glimply 圖示停止</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>停止</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>用 glimply 圖示或 %1 停止</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>錄影即將繼續…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>作用中視窗</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>位於 %3, %4 的矩形 %1 × %2</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>視窗 %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>已不再開啟的視窗</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>錄影快捷鍵的預設目標</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>%1 的預設目標</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>螢幕、視窗與區域</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>螢幕</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>作用中視窗</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>擷取游標下的視窗或螢幕</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>將聚焦的項目或矩形釘選為錄影快捷鍵的預設目標</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>影格速率：</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>錄影開始、暫停或停止時顯示簡短提示</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>提示：</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>開始或停止錄影快速鍵</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>快速鍵：</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>從覆疊層錄影 (Ctrl+R)，或使用開始/停止快速鍵，後者會重新錄製上次的目標。GIF 錄影最多使用 %1 fps。錄影不含聲音。</translation>
+        <source>Remove the default recording target</source>
+        <translation>移除預設錄影目標</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>預設目標：</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>從覆蓋層（Ctrl+R）或用開始/停止快捷鍵錄影，快捷鍵會錄製預設目標：在覆蓋層的錄影選單中點擊項目旁的圖釘（或按 P）釘選。沒有預設目標時，快捷鍵會開啟覆蓋層供選擇。提示顯示在錄製內容之外；錄製全部內容時，開始提示消失後才開始錄影。GIF 錄影最多 %1 fps。錄影沒有聲音。</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>無：快捷鍵開啟覆蓋層</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>快捷鍵僅在 glimply 執行時有效。</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>永遠</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>僅在有工作執行時</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>僅在錄影時</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>系統匣圖示：</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>錄影期間顯示（選擇「僅在有工作執行時」時，定時擷取期間也顯示），方便停止。要再次開啟這些設定，請從應用程式啟動器啟動 glimply 或執行 glimply。</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
