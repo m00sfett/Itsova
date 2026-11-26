@@ -49,6 +49,7 @@ private:
     QWidget *createAutomationPage();
 
     void refresh();
+    void refreshRecordingDefault();
     void refreshTargets();
     void refreshTargetDetails();
     void refreshGroups();
@@ -137,6 +138,8 @@ private:
     QComboBox *overlayStart_ = nullptr;
     QComboBox *trayVisibility_ = nullptr;
     QLabel *trayHint_ = nullptr;
+    QLabel *recordingDefault_ = nullptr;
+    QPushButton *recordingDefaultRemove_ = nullptr;
     QPushButton *resetPanelPosition_ = nullptr;
     QPushButton *showFirstHintAgain_ = nullptr;
     QCheckBox *captureOnRelease_ = nullptr;

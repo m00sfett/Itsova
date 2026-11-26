@@ -192,6 +192,13 @@ public:
     void record(const QString &targetId);
     // Records the selection (all rectangles: their bounding box).
     void recordSelection();
+    // The default recording target (#124): pinned in record mode, recorded by the shortcut.
+    [[nodiscard]] QString defaultRecordingTarget() const;
+    void toggleDefaultRecordingTarget(const QString &targetId);
+    // The recording target of the current selection ("region:…"), empty without one.
+    [[nodiscard]] QString selectionRecordingTargetId() const;
+    // "Default for <shortcut>", or without a bound shortcut "Default for the recording shortcut".
+    [[nodiscard]] QString defaultRecordingTip() const;
     [[nodiscard]] bool textMode() const;
     // Returns an error message, or an empty string when the areas were saved.
     QString saveAsAreas(const QString &name, const QKeySequence &shortcut, bool combine, int delaySeconds = 0);
@@ -216,6 +223,7 @@ public:
 
 Q_SIGNALS:
     void finished();
+    void defaultRecordingTargetChanged();
 
 private:
     void captureFrames(const QStringList &connectors);

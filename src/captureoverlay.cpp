@@ -159,6 +159,111 @@ private:
 
 // The rows of a list drawer (#95): section captions, numbered rows (keys 1–9), and the on-screen
 // outline of what a row picks while it is hovered.
+// The default-target pin of a record-mode entry (#124): faint while the row is hovered or has the
+// keyboard, filled on the default; a click sets or clears the default (P does it from the keyboard).
+// Not a button, so the arrow keys keep moving between the entries only.
+class PinMark : public QWidget
+{
+public:
+    PinMark(CaptureSession *session, QString targetId, QWidget *row, QAbstractButton *main)
+        : QWidget(row)
+        , session_(session)
+        , targetId_(std::move(targetId))
+    {
+        setFixedSize(26, 26);
+        setCursor(Qt::PointingHandCursor);
+        setAttribute(Qt::WA_Hover);
+        setToolTip(session->defaultRecordingTip());
+        setAccessibleName(session->defaultRecordingTip());
+        row->setAttribute(Qt::WA_Hover);
+        row->installEventFilter(this);
+        main->installEventFilter(this);
+        main->setProperty(pinTargetProperty, targetId_);
+        QObject::connect(session, &CaptureSession::defaultRecordingTargetChanged, this, [this] { update(); });
+    }
+
+    static constexpr const char *pinTargetProperty = "glimplyPinTarget";
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        switch (event->type()) {
+        case QEvent::Enter:
+        case QEvent::HoverEnter:
+            if (watched == parent()) {
+                rowHovered_ = true;
+                update();
+            }
+            break;
+        case QEvent::Leave:
+        case QEvent::HoverLeave:
+            if (watched == parent()) {
+                rowHovered_ = false;
+                update();
+            }
+            break;
+        case QEvent::FocusIn:
+            focused_ = true;
+            update();
+            break;
+        case QEvent::FocusOut:
+            focused_ = false;
+            update();
+            break;
+        default:
+            break;
+        }
+        return false;
+    }
+
+    void paintEvent(QPaintEvent *) override
+    {
+        const bool pinned = session_->defaultRecordingTarget() == targetId_;
+        const bool hovered = underMouse();
+        if (!pinned && !rowHovered_ && !focused_ && !hovered) {
+            return;
+        }
+        constexpr int iconSize = 16;
+        const qreal dpr = devicePixelRatioF();
+        QPixmap pixmap = QIcon::fromTheme(QStringLiteral("pin")).pixmap(QSize(iconSize, iconSize), dpr);
+        QColor color = palette().color(pinned ? QPalette::Highlight : QPalette::WindowText);
+        if (!pinned) {
+            color.setAlphaF(hovered ? 0.85 : 0.4);
+        }
+        // One colour for the symbolic shape: the accent on the default, faint text colour otherwise.
+        QPainter tint(&pixmap);
+        tint.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        tint.fillRect(pixmap.rect(), color);
+        tint.end();
+        QPainter painter(this);
+        if (pinned || hovered) {
+            QColor back = palette().color(QPalette::Highlight);
+            back.setAlphaF(pinned ? 0.18 : 0.10);
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(back);
+            painter.drawRoundedRect(QRectF(rect()).adjusted(2, 2, -2, -2), 5, 5);
+        }
+        painter.drawPixmap((width() - iconSize) / 2, (height() - iconSize) / 2, pixmap);
+    }
+
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        if (event->button() == Qt::LeftButton) {
+            session_->toggleDefaultRecordingTarget(targetId_);
+            event->accept();
+            return;
+        }
+        QWidget::mousePressEvent(event);
+    }
+
+private:
+    CaptureSession *session_;
+    QString targetId_;
+    bool rowHovered_ = false;
+    bool focused_ = false;
+};
+
 class EntryList
 {
 public:
@@ -194,7 +299,7 @@ public:
     // Returns the row's layout so a caller can add a second button.
     QHBoxLayout *addRow(const QString &icon, const QString &text, bool available,
                         const QList<CaptureSession::Highlight> &outline, const std::function<void()> &action,
-                        QToolButton **mainOut = nullptr)
+                        QToolButton **mainOut = nullptr, const QString &pinTarget = QString())
     {
         auto *row = new QWidget(content_);
         auto *layout = new QHBoxLayout(row);
@@ -210,6 +315,9 @@ public:
             auto *hover = new HoverOutline(row, session_, outline);
             row->installEventFilter(hover);
             main->installEventFilter(hover);
+        }
+        if (!pinTarget.isEmpty()) {
+            layout->addWidget(new PinMark(session_, pinTarget, row, main));
         }
         QObject::connect(main, &QToolButton::clicked, row, action);
         entries_->append(available ? action : std::function<void()>());
@@ -257,6 +365,7 @@ CaptureSession::CaptureSession(App *app, Purpose purpose)
     , annotationController_(&annotations_, this)
     , transientHintTimer_(new QTimer(this))
 {
+    connect(app, &App::defaultRecordingTargetChanged, this, &CaptureSession::defaultRecordingTargetChanged);
     transientHintTimer_->setSingleShot(true);
     transientHintTimer_->setInterval(2000); // feedback pills (#72, Q16)
     connect(transientHintTimer_, &QTimer::timeout, this, [this] {
@@ -2017,14 +2126,42 @@ void CaptureSession::record(const QString &targetId)
 
 void CaptureSession::recordSelection()
 {
+    const QString targetId = selectionRecordingTargetId();
+    if (!targetId.isEmpty()) {
+        record(targetId);
+    }
+}
+
+QString CaptureSession::selectionRecordingTargetId() const
+{
     if (selections_.isEmpty()) {
-        return;
+        return {};
     }
     QRect bounds;
     for (const Selection &selection : selections_.stack()) {
         bounds = bounds.united(selection.rect);
     }
-    record(regionRecordingTargetId(bounds));
+    return regionRecordingTargetId(bounds);
+}
+
+QString CaptureSession::defaultRecordingTarget() const
+{
+    return store().defaultRecordingTarget;
+}
+
+void CaptureSession::toggleDefaultRecordingTarget(const QString &targetId)
+{
+    if (targetId.isEmpty()) {
+        return;
+    }
+    app_->setDefaultRecordingTarget(defaultRecordingTarget() == targetId ? QString() : targetId);
+}
+
+QString CaptureSession::defaultRecordingTip() const
+{
+    const QKeySequence key = shortcut(recordToggleActionId());
+    return key.isEmpty() ? CaptureOverlay::tr("Default for the recording shortcut")
+                         : CaptureOverlay::tr("Default for %1").arg(key.toString(QKeySequence::NativeText));
 }
 
 void CaptureSession::setFrozen(bool frozen)
@@ -2445,6 +2582,18 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         PanelButton *record = add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Enter"),
                                   [this] { session_->recordSelection(); });
         record->setPrimary(true);
+        // #124: the drawn rectangle as the default of the recording shortcut.
+        PanelButton *pin = add(QStringLiteral("pin"), session_->defaultRecordingTip(), QStringLiteral("P"),
+                               [this] { session_->toggleDefaultRecordingTarget(session_->selectionRecordingTargetId()); });
+        const QPointer<PanelButton> pinButton = pin;
+        const auto syncPin = [this, pinButton] {
+            if (pinButton) {
+                pinButton->setActive(!session_->defaultRecordingTarget().isEmpty()
+                                     && session_->defaultRecordingTarget() == session_->selectionRecordingTargetId());
+            }
+        };
+        syncPin();
+        connect(session_, &CaptureSession::defaultRecordingTargetChanged, pin, syncPin);
         panel_->addGroupGap();
         drawer(Drawer::Record, QStringLiteral("view-list-details"), tr("Monitors, Windows and Areas"), QString());
         panel_->addGroupGap();
@@ -2666,10 +2815,22 @@ QWidget *CaptureOverlay::buildMarkupDrawer()
     return box;
 }
 
+// "Active Window" (#124): whichever window has the focus when the recording starts, so it can be
+// the default of the recording shortcut.
+static void addActiveWindowRow(EntryList &list, CaptureSession *session)
+{
+    const QString id = activeWindowRecordingTargetId();
+    list.addRow(QStringLiteral("window-duplicate"), CaptureOverlay::tr("Active Window"), true, {},
+                [session, id] { session->record(id); }, nullptr, id);
+}
+
 QWidget *CaptureOverlay::buildWindowList()
 {
     const bool record = session_->recordMode();
     EntryList list(session_, &listEntries_);
+    if (record) {
+        addActiveWindowRow(list, session_);
+    }
     for (const WindowInfo &window : session_->windows()) {
         if (record && window.minimized) {
             continue; // a minimized window has nothing to show
@@ -2679,15 +2840,18 @@ QWidget *CaptureOverlay::buildWindowList()
             text = tr("%1 (minimized)").arg(text);
         }
         const QString icon = QIcon::hasThemeIcon(window.iconName) ? window.iconName : QStringLiteral("window");
-        list.addRow(icon, text, true, {{window.geometry, window.caption}}, [this, window, record] {
-            if (record) {
-                session_->record(windowRecordingTargetId(window.handle));
-            } else {
-                session_->captureWindow(window);
-            }
-        });
+        list.addRow(
+            icon, text, true, {{window.geometry, window.caption}},
+            [this, window, record] {
+                if (record) {
+                    session_->record(windowRecordingTargetId(window.handle));
+                } else {
+                    session_->captureWindow(window);
+                }
+            },
+            nullptr, record ? windowRecordingTargetId(window.handle) : QString());
     }
-    if (list.isEmpty()) {
+    if (list.isEmpty() || (record && list.content()->findChildren<QToolButton *>().size() <= 1)) {
         list.column()->addWidget(new QLabel(tr("No windows found"), list.content()));
         return list.content();
     }
@@ -2717,7 +2881,8 @@ QList<CaptureSession::Highlight> allMonitorsOutline(CaptureSession *session)
 // The monitors (#95): each one by name, the panel's own first marked, then all of them. With a
 // single monitor "All Monitors" would repeat it and is left out.
 static void addMonitorRows(EntryList &list, CaptureSession *session, const QString &panelConnector,
-                           const std::function<void(const QString &)> &pickMonitor, const std::function<void()> &pickAll)
+                           const std::function<void(const QString &)> &pickMonitor, const std::function<void()> &pickAll,
+                           bool pins = false)
 {
     QList<ScreenInfo> screens = session->orderedScreens();
     std::stable_partition(screens.begin(), screens.end(),
@@ -2729,11 +2894,12 @@ static void addMonitorRows(EntryList &list, CaptureSession *session, const QStri
         }
         const QString connector = screen.connector;
         list.addRow(QStringLiteral("monitor-symbolic"), elided(name, 70), true, monitorOutline(session, screen),
-                    [pickMonitor, connector] { pickMonitor(connector); });
+                    [pickMonitor, connector] { pickMonitor(connector); }, nullptr,
+                    pins ? screenTargetId(connector) : QString());
     }
     if (screens.size() > 1) {
         list.addRow(QStringLiteral("view-fullscreen"), CaptureOverlay::tr("All Monitors"), true,
-                    allMonitorsOutline(session), pickAll);
+                    allMonitorsOutline(session), pickAll, nullptr, pins ? allMonitorsTargetId() : QString());
     }
 }
 
@@ -2756,7 +2922,8 @@ QWidget *CaptureOverlay::buildMonitorList()
             } else {
                 session_->captureAllMonitors();
             }
-        });
+        },
+        record);
     return listDrawer(list.content());
 }
 
@@ -2770,21 +2937,19 @@ QWidget *CaptureOverlay::buildRecordList()
     addMonitorRows(
         list, session_, session_->panelConnector(),
         [this](const QString &connector) { session_->record(screenTargetId(connector)); },
-        [this] { session_->record(allMonitorsTargetId()); });
+        [this] { session_->record(allMonitorsTargetId()); }, true);
 
-    bool windowCaption = false;
+    list.caption(tr("Windows"));
+    addActiveWindowRow(list, session_);
     for (const WindowInfo &window : session_->windows()) {
         if (window.minimized) {
             continue; // a minimized window has nothing to show
         }
-        if (!windowCaption) {
-            list.caption(tr("Windows"));
-            windowCaption = true;
-        }
         const QString icon = QIcon::hasThemeIcon(window.iconName) ? window.iconName : QStringLiteral("window");
         const QString targetId = windowRecordingTargetId(window.handle);
         list.addRow(icon, elided(window.caption.isEmpty() ? window.appName : window.caption, 70), true,
-                    {{window.geometry, window.caption}}, [this, targetId] { session_->record(targetId); });
+                    {{window.geometry, window.caption}}, [this, targetId] { session_->record(targetId); }, nullptr,
+                    targetId);
     }
 
     bool areaCaption = false;
@@ -2805,7 +2970,7 @@ QWidget *CaptureOverlay::buildRecordList()
         }
         const QString id = area.id;
         list.addRow(QStringLiteral("select-rectangular"), elided(area.name, 70), available, outline,
-                    [this, id] { session_->record(id); });
+                    [this, id] { session_->record(id); }, nullptr, id);
     }
     return listDrawer(list.content());
 }
@@ -2842,6 +3007,9 @@ QWidget *CaptureOverlay::buildAreaList()
         main->setEnabled(available);
         layout->addWidget(main);
         layout->addStretch();
+        if (record) {
+            layout->addWidget(new PinMark(session_, id, row, main)); // #124
+        }
         const auto pick = [this, id, print, record] {
             if (record) {
                 session_->record(id);
@@ -3358,6 +3526,9 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         select.insert(1, {tr("Click, nothing drawn"), tr("Capture the window or monitor under the pointer")});
         select.append({tr("Ctrl+E"), tr("Open in the editor window")});
         select.append({tr("Ctrl+R"), tr("Record the rectangle as a video, or choose what to record")});
+    }
+    if (session_->recordMode()) {
+        select.append({tr("P"), tr("Pin the focused entry or the rectangle as the default of the recording shortcut")});
     }
     section(tr("Select"), select);
     if (print) {
@@ -4317,6 +4488,23 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     if (session_->purpose() == CaptureSession::Purpose::Print && session_->annotationController().isEditingText()) {
         event->accept();
         return;
+    }
+
+    // #124: P pins the focused record entry (or the drawn rectangle) as the shortcut's default.
+    if (session_->recordMode() && event->key() == Qt::Key_P
+        && (event->modifiers() & ~Qt::KeypadModifier) == Qt::NoModifier) {
+        QString targetId;
+        if (const QWidget *focus = QApplication::focusWidget()) {
+            targetId = focus->property(PinMark::pinTargetProperty).toString();
+        }
+        if (targetId.isEmpty()) {
+            targetId = session_->selectionRecordingTargetId();
+        }
+        if (!targetId.isEmpty()) {
+            session_->toggleDefaultRecordingTarget(targetId);
+            event->accept();
+            return;
+        }
     }
 
     if (session_->panelDrawer() == CaptureSession::PanelDrawer::SaveArea) {

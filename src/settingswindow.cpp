@@ -1680,9 +1680,23 @@ QWidget *SettingsWindow::createStoragePage()
     }
     shortcutRow->addStretch(1);
     form->addRow(tr("Shortcuts:"), shortcutRow);
+    // #124: what the start/stop shortcut records, pinned in the overlay.
+    recordingDefault_ = new QLabel(page);
+    recordingDefault_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    recordingDefaultRemove_ = new QPushButton(QIcon::fromTheme(QStringLiteral("edit-delete-remove")), tr("Remove"), page);
+    recordingDefaultRemove_->setAccessibleName(tr("Remove the default recording target"));
+    auto *defaultRow = new QHBoxLayout;
+    defaultRow->addWidget(recordingDefault_);
+    defaultRow->addSpacing(12);
+    defaultRow->addWidget(recordingDefaultRemove_);
+    defaultRow->addStretch(1);
+    form->addRow(tr("Default target:"), defaultRow);
+    connect(recordingDefaultRemove_, &QPushButton::clicked, this, [this] { app_->setDefaultRecordingTarget(QString()); });
+    connect(app_, &App::defaultRecordingTargetChanged, this, &SettingsWindow::refreshRecordingDefault);
     form->addRow(QString(), makeHint(tr("Record from the overlay (Ctrl+R) or with the start/stop shortcut, which "
-                                        "records the last target again. GIF recordings use at most %1 fps. "
-                                        "Recordings have no sound.")
+                                        "records the default target: pin it with the pin next to an entry in the "
+                                        "overlay's record menus (or P). Without one, the shortcut opens the overlay "
+                                        "to choose. GIF recordings use at most %1 fps. Recordings have no sound.")
                                          .arg(maxGifFrameRate),
                                      page));
     connect(recordingFormat_, &QComboBox::currentIndexChanged, this, [this] {
@@ -2300,6 +2314,7 @@ void SettingsWindow::refreshStorage()
     recordingFrameRate_->setCurrentIndex(
         std::max(0, recordingFrameRate_->findData(effectiveFrameRate(RecordingFormat::Mp4, store.recordingFrameRate))));
     recordingCursor_->setChecked(store.recordingCursor);
+    refreshRecordingDefault();
     recordToggleShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordToggleActionId()));
     recordPauseShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordPauseActionId()));
     templatePreview_->setText(
@@ -2374,6 +2389,13 @@ void SettingsWindow::refresh()
     refreshGroups();
     refreshStorage();
     refreshAutomation();
+}
+
+void SettingsWindow::refreshRecordingDefault()
+{
+    const QString id = app_->store().defaultRecordingTarget;
+    recordingDefault_->setText(id.isEmpty() ? tr("None: the shortcut opens the overlay") : app_->recordingTargetName(id));
+    recordingDefaultRemove_->setVisible(!id.isEmpty());
 }
 
 } // namespace glimply

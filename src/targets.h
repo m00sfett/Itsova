@@ -148,6 +148,16 @@ struct Group
 [[nodiscard]] bool isWindowRecordingTargetId(const QString &id);
 [[nodiscard]] QString windowHandleFromRecordingTargetId(const QString &id);
 [[nodiscard]] std::optional<QRect> regionFromRecordingTargetId(const QString &id);
+// The window that has focus when the recording starts (#124), resolved at that moment.
+[[nodiscard]] QString activeWindowRecordingTargetId();
+
+struct WindowInfo;
+// What the recording shortcut records for the default target (#124): the default itself, the
+// active window's id for activeWindowRecordingTargetId(), or empty when there is nothing to
+// record (no default, no active window, or a default window that is no longer open; the latter
+// sets *windowGone so the caller can drop the default). windows in KWin's most-recently-used order.
+[[nodiscard]] QString resolveDefaultRecordingTarget(const QString &defaultId, const QList<WindowInfo> &windows,
+                                                    bool *windowGone = nullptr);
 [[nodiscard]] bool isScreenTargetId(const QString &id);
 [[nodiscard]] QString connectorFromScreenTargetId(const QString &id);
 [[nodiscard]] QString intervalShortcutId(const QString &targetId);
@@ -198,7 +208,9 @@ public:
     int recordingFrameRate = 30;
     int recordingStopHintsShown = 0; // #98: notifications that said how to stop
     bool recordingCursor = true;
-    QString lastRecordingTarget; // what the start/stop shortcut records; empty: ask in the overlay
+    // What the start/stop shortcut records (#124), pinned in the overlay; empty: ask in the overlay.
+    // Taken once from the old [Recording] LastTarget.
+    QString defaultRecordingTarget;
     ColorFormat colorPickerFormat = ColorFormat::Hex;
 
     AnnotationSettings annotations;
