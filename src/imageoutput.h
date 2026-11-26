@@ -47,6 +47,11 @@ struct ExportOptions {
 [[nodiscard]] bool formatSupportsLosslessToggle(ImageFormat format);
 [[nodiscard]] QString replaceImageExtension(const QString &filename, ImageFormat format);
 
+// The native pixels a logical area covers on a monitor of this scale (#101): every edge rounds to
+// the nearest native pixel boundary. cropLogicalArea() cuts exactly these pixels, and the loupe
+// draws the same boundary. Empty when an edge is out of range.
+[[nodiscard]] QRect nativeAreaFor(const QRect &logicalArea, qreal scale);
+
 [[nodiscard]] QImage cropLogicalArea(const QImage &nativeFrame,
                                        const QRect &logicalArea,
                                        qreal scale,
