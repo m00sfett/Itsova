@@ -22,6 +22,8 @@ find_package(KF6I18n 6.13 REQUIRED)
 find_package(Qt6 6.8 REQUIRED COMPONENTS WaylandClient)
 find_package(PlasmaWaylandProtocols 1.10 REQUIRED)
 find_package(KPipeWire 6.3 REQUIRED)
+# Recording hints (#125) are layer-shell surfaces, placed exactly beside what is recorded.
+find_package(LayerShellQt 6.3 REQUIRED)
 
 add_executable(glimply
     src/main.cpp
@@ -141,10 +143,11 @@ add_library(glimply_ui STATIC
     src/pinwindow.cpp
     src/pixelloupe.cpp
     src/quickeditorwindow.cpp
+    src/recordinghint.cpp
     src/trayicon.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
-target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n PRIVATE Qt6::Concurrent)
+target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n PRIVATE Qt6::Concurrent LayerShellQt::Interface)
 
 # Translations (#51). The application uses Qt catalogs (i18n/glimply_<lang>.ts, compiled to .qm);
 # the Plasma widget uses gettext catalogs (plasmoid/po). English is the source language;
@@ -321,7 +324,7 @@ if(BUILD_TESTING)
         glimply_nested_test(pick OPTIONS --apps kcalc)
         glimply_nested_test(loupe OPTIONS --scheme BreezeLight)
         glimply_nested_test(nudge OPTIONS --apps kcalc --scheme BreezeLight)
-        glimply_nested_test(stop-hints)
+        glimply_nested_test(recording-hints)
         glimply_nested_test(record-metadata OPTIONS --apps kcalc)
         glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
         glimply_nested_test(record-window-closed OPTIONS --apps kcalc)

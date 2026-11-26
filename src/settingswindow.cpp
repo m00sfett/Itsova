@@ -1660,6 +1660,15 @@ QWidget *SettingsWindow::createStoragePage()
     recordingRow->addWidget(recordingCursor_);
     recordingRow->addStretch(1);
     form->addRow(tr("Frame rate:"), recordingRow);
+    // #125: short hints for start, stop, pause and errors, placed where the recording does not see them.
+    recordingHints_ = new QCheckBox(tr("Show a short hint when a recording starts, pauses or stops"), page);
+    form->addRow(tr("Hints:"), recordingHints_);
+    connect(recordingHints_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().recordingHints = on;
+            app_->storeChanged();
+        }
+    });
     recordToggleShortcut_ = new KKeySequenceWidget(page);
     recordToggleShortcut_->setAccessibleName(tr("Start or stop recording shortcut"));
     recordPauseShortcut_ = new KKeySequenceWidget(page);
@@ -1696,7 +1705,9 @@ QWidget *SettingsWindow::createStoragePage()
     form->addRow(QString(), makeHint(tr("Record from the overlay (Ctrl+R) or with the start/stop shortcut, which "
                                         "records the default target: pin it with the pin next to an entry in the "
                                         "overlay's record menus (or P). Without one, the shortcut opens the overlay "
-                                        "to choose. GIF recordings use at most %1 fps. Recordings have no sound.")
+                                        "to choose. Hints show beside what is recorded; when everything is recorded, the recording "
+                                        "starts once the start hint has gone. GIF recordings use at most %1 fps. "
+                                        "Recordings have no sound.")
                                          .arg(maxGifFrameRate),
                                      page));
     connect(recordingFormat_, &QComboBox::currentIndexChanged, this, [this] {
@@ -2314,6 +2325,7 @@ void SettingsWindow::refreshStorage()
     recordingFrameRate_->setCurrentIndex(
         std::max(0, recordingFrameRate_->findData(effectiveFrameRate(RecordingFormat::Mp4, store.recordingFrameRate))));
     recordingCursor_->setChecked(store.recordingCursor);
+    recordingHints_->setChecked(store.recordingHints);
     refreshRecordingDefault();
     recordToggleShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordToggleActionId()));
     recordPauseShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordPauseActionId()));

@@ -23,6 +23,7 @@
 #include "printkey.h"
 #include "quickeditorwindow.h"
 #include "recordingplan.h"
+#include "recordinghint.h"
 #include "screenrecorder.h"
 #include "controlservice.h"
 
@@ -77,6 +78,16 @@
 
 namespace glimply
 {
+
+namespace
+{
+// Recording hints (#125): short enough not to be in the way, long enough to read the title.
+constexpr int recordingHintMs = 1500;
+// The stop hint can be clicked to open the file.
+constexpr int recordingSavedHintMs = 4000;
+// After hiding the hint, until the compositor has taken it off the screen.
+constexpr int recordingHintGoneMs = 200;
+} // namespace
 
 App::App(QObject *parent)
     : QObject(parent)
@@ -239,18 +250,30 @@ App::App(QObject *parent)
         } else {
             recordingTicker_->stop();
         }
-        if (state == ScreenRecorder::State::Starting) {
-            stopHintPending_ = true;
-        } else if (state == ScreenRecorder::State::Recording && std::exchange(stopHintPending_, false)) {
-            showRecordingStopHint();
+        // #125: pause and resume say so; the start hint went out with the start request.
+        if (state == ScreenRecorder::State::Paused) {
+            showRecordingHint(QStringLiteral("media-playback-pause"), tr("Recording paused"),
+                              recorder_->target().displayName, recordingHintMs);
+        } else if (state == ScreenRecorder::State::Recording && previousRecorderState_ == int(ScreenRecorder::State::Paused)
+                   && !std::exchange(resumeHintShown_, false)) {
+            showRecordingHint(QStringLiteral("media-record"), tr("Recording resumed"), recordingStopInstruction(),
+                              recordingHintMs);
         }
+        previousRecorderState_ = int(state);
         syncRecordingUi();
     });
     connect(recorder_, &ScreenRecorder::finished, this,
             [this](const QString &path, const RecordingTarget &target, qint64) {
                 const QDateTime now = QDateTime::currentDateTime();
                 recordCapture({path}, target.displayName, target.targetId, QStringLiteral("record"));
-                notifySaved(tr("Recording saved"), {path}, {});
+                if (store_.recordingHints) {
+                    // #125: the stop hint names the file; a click opens it.
+                    showRecordingHint(QStringLiteral("document-save"), tr("Recording saved"),
+                                      QFileInfo(path).fileName(), recordingSavedHintMs,
+                                      [path] { QDesktopServices::openUrl(QUrl::fromLocalFile(path)); });
+                } else {
+                    notifySaved(tr("Recording saved"), {path}, {});
+                }
                 runPostCaptureHook(target.targetId, target.displayName, {path}, now,
                                    recordingFormatKey(store_.recordingFormat), QStringLiteral("record"));
             });
@@ -259,8 +282,10 @@ App::App(QObject *parent)
         notify(QStringLiteral("recordingInterrupted"), tr("Recording ended early"),
                {reason, tr("What was recorded until then is saved.")});
     });
-    connect(recorder_, &ScreenRecorder::failed, this,
-            [this](const QString &error) { notifyError(tr("Recording failed"), {error}); });
+    connect(recorder_, &ScreenRecorder::failed, this, [this](const QString &error) {
+        showRecordingHint(QStringLiteral("dialog-error"), tr("Recording failed"), error, recordingHintMs);
+        notifyError(tr("Recording failed"), {error});
+    });
     connect(tray_, &TrayController::stopRecordingRequested, this, &App::stopRecording);
     connect(tray_, &TrayController::quitRequested, this, &App::quit);
     connect(tray_, &TrayController::pauseRecordingRequested, this, &App::setRecordingPaused);
@@ -2877,7 +2902,7 @@ std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, 
 QString App::startRecording(const QString &targetId, int delaySeconds)
 {
     qCInfo(lcRecord) << "start requested for" << targetId << "delay" << delaySeconds;
-    if (recorder_->isBusy()) {
+    if (recorder_->isBusy() || recordingStartPending()) {
         return tr("A recording is already running.");
     }
     if (targetId == activeWindowRecordingTargetId()) {
@@ -3001,21 +3026,162 @@ void App::startRecorder(const QString &targetId)
     options.path = uniqueRecordingPath(
         directory, recordingFileName(store_.effectiveFilenameTemplate(), target->token, QDateTime::currentDateTime(),
                                      options.format));
-    recorder_->start(*target, options); // reports its own errors through failed()
+    if (!store_.recordingHints) {
+        recorder_->start(*target, options); // reports its own errors through failed()
+        return;
+    }
+    // #125: say it at once, where the recording does not see it. If it would see it everywhere,
+    // the recording starts once the hint has gone.
+    const QList<ScreenInfo> screens = currentScreens();
+    QList<QRect> rects;
+    for (const ScreenInfo &screen : screens) {
+        rects.append(screen.geometry);
+    }
+    if (!recordingHint_) {
+        recordingHint_ = new RecordingHint;
+    }
+    recordingHint_->setContent(QStringLiteral("media-record"), tr("Recording %1").arg(target->displayName),
+                               recordingStopInstruction(), false);
+    recordingHintPlacement_ = planRecordingHint(target->kind == RecordingTarget::Kind::Window, target->region, rects,
+                                                recordingHint_->size());
+    recordingHintConnector_ =
+        recordingHintPlacement_.screen >= 0 ? screens.at(recordingHintPlacement_.screen).connector : QString();
+    if (!recordingHintPlacement_.waitBeforeRecording) {
+        showRecordingHint(QStringLiteral("media-record"), tr("Recording %1").arg(target->displayName),
+                          recordingStopInstruction(), recordingHintMs);
+        recorder_->start(*target, options);
+        return;
+    }
+    showRecordingHint(QStringLiteral("media-record"), tr("Recording %1 starts…").arg(target->displayName),
+                      recordingStopInstruction(), recordingHintMs);
+    qCInfo(lcRecord) << "recording waits for its start hint";
+    if (!recordingStartAfterHint_) {
+        recordingStartAfterHint_ = new QTimer(this);
+        recordingStartAfterHint_->setSingleShot(true);
+    }
+    recordingStartAfterHint_->disconnect();
+    connect(recordingStartAfterHint_, &QTimer::timeout, this, [this, target = *target, options] {
+        qCInfo(lcRecord) << "start hint gone, starting the recording";
+        syncRecordingUi();
+        recorder_->start(target, options);
+    });
+    // The hint goes after recordingHintMs; the compositor needs a moment to take it off the screen.
+    recordingStartAfterHint_->start(recordingHintMs + recordingHintGoneMs);
+    syncRecordingUi();
+}
+
+void App::cancelPendingRecordingStart()
+{
+    if (recordingStartAfterHint_ && recordingStartAfterHint_->isActive()) {
+        recordingStartAfterHint_->stop();
+        qCInfo(lcRecord) << "recording cancelled before it started";
+        if (recordingHint_) {
+            recordingHint_->dismiss();
+        }
+        syncRecordingUi();
+    }
+}
+
+bool App::recordingStartPending() const
+{
+    return recordingStartAfterHint_ && recordingStartAfterHint_->isActive();
+}
+
+QString App::recordingStopInstruction() const
+{
+    const QString shortcut = recordingStopShortcutText();
+    return shortcut.isEmpty() ? tr("Stop with the glimply icon in the system tray")
+                              : tr("Stop with the glimply tray icon or %1").arg(shortcut);
+}
+
+void App::showRecordingHint(const QString &iconName, const QString &title, const QString &detail, int durationMs,
+                            const std::function<void()> &onClick)
+{
+    if (!store_.recordingHints) {
+        return;
+    }
+    if (!recordingHint_) {
+        recordingHint_ = new RecordingHint;
+    }
+    recordingHint_->disconnect(this);
+    recordingHint_->dismiss();
+    recordingHint_->setContent(iconName, title, detail, bool(onClick));
+    if (onClick) {
+        connect(recordingHint_, &RecordingHint::clicked, this, onClick);
+    }
+    // The place planned at the start, with this hint's size; without one (a failed start before
+    // planning), the top of the first monitor.
+    const QList<ScreenInfo> screens = currentScreens();
+    QList<QRect> rects;
+    for (const ScreenInfo &screen : screens) {
+        rects.append(screen.geometry);
+    }
+    int index = -1;
+    for (int i = 0; i < screens.size(); ++i) {
+        if (screens.at(i).connector == recordingHintConnector_) {
+            index = i;
+        }
+    }
+    QRect rect;
+    if (index >= 0) {
+        rect = QRect(recordingHintPlacement_.rect.center() - QPoint(recordingHint_->width() / 2, recordingHint_->height() / 2),
+                     recordingHint_->size());
+        rect.moveLeft(std::clamp(rect.left(), rects.at(index).left(), rects.at(index).right() - rect.width()));
+    } else if (!rects.isEmpty()) {
+        index = 0;
+        rect = QRect(QPoint(rects.first().center().x() - recordingHint_->width() / 2, rects.first().top() + 24),
+                     recordingHint_->size());
+    } else {
+        return;
+    }
+    QScreen *screen = nullptr;
+    for (QScreen *candidate : QGuiApplication::screens()) {
+        if (candidate->name() == screens.at(index).connector) {
+            screen = candidate;
+        }
+    }
+    qCInfo(lcRecord) << "recording hint" << title << "at" << rect << "on" << screens.at(index).connector;
+    recordingHint_->showAt(screen, rect, durationMs);
 }
 
 void App::stopRecording(const QString &origin)
 {
+    if (recordingStartPending()) {
+        cancelPendingRecordingStart();
+        return;
+    }
     recorder_->stop(origin);
 }
 
 void App::setRecordingPaused(bool paused)
 {
+    // #125: when everything is recorded, the resume hint shows while still paused and the
+    // recording goes on once it has gone.
+    if (!paused && store_.recordingHints && recordingHintPlacement_.waitBeforeRecording
+        && recorder_->state() == ScreenRecorder::State::Paused) {
+        if (recordingResumeAfterHint_ && recordingResumeAfterHint_->isActive()) {
+            return;
+        }
+        showRecordingHint(QStringLiteral("media-record"), tr("Recording resumes…"), recordingStopInstruction(),
+                          recordingHintMs);
+        resumeHintShown_ = true;
+        if (!recordingResumeAfterHint_) {
+            recordingResumeAfterHint_ = new QTimer(this);
+            recordingResumeAfterHint_->setSingleShot(true);
+            connect(recordingResumeAfterHint_, &QTimer::timeout, this, [this] { recorder_->setPaused(false); });
+        }
+        recordingResumeAfterHint_->start(recordingHintMs + recordingHintGoneMs);
+        return;
+    }
     recorder_->setPaused(paused);
 }
 
 void App::toggleRecording(const QString &origin)
 {
+    if (recordingStartPending()) {
+        cancelPendingRecordingStart();
+        return;
+    }
     if (recorder_->isBusy()) {
         recorder_->stop(origin);
         return;
@@ -3120,32 +3286,6 @@ QJsonObject App::recordingState() const
 QString App::recordingStopShortcutText() const
 {
     return shortcuts()->shortcut(recordToggleActionId()).toString(QKeySequence::NativeText);
-}
-
-void App::showRecordingStopHint()
-{
-    // The first recordings say how to stop them (#98); later ones only in the tooltip.
-    if (!shouldShowRecordingStopHint(store_.recordingStopHintsShown)) {
-        return;
-    }
-    ++store_.recordingStopHintsShown;
-    saveSettings();
-    qCInfo(lcRecord) << "stop hint shown" << store_.recordingStopHintsShown << "of" << recordingStopHintCount;
-    const QString shortcut = recordingStopShortcutText();
-    auto *notification = new KNotification(haveNotifyEvents() ? QStringLiteral("recordingStarted")
-                                                              : QStringLiteral("notification"));
-    if (haveNotifyEvents()) {
-        notification->setComponentName(notifyComponentName());
-    }
-    notification->setTitle(tr("Recording %1").arg(recorder_->target().displayName));
-    notification->setText(shortcut.isEmpty()
-                              ? tr("Click the glimply icon in the system tray to stop.")
-                              : tr("Click the glimply icon in the system tray or press %1 to stop.").arg(shortcut));
-    notification->setIconName(QStringLiteral("media-record"));
-    KNotificationAction *stop = notification->addAction(tr("Stop"));
-    connect(stop, &KNotificationAction::activated, this,
-            [this] { stopRecording(QStringLiteral("notification Stop action")); });
-    notification->sendEvent();
 }
 
 void App::syncRecordingUi()

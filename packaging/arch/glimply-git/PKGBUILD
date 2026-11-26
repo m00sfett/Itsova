@@ -7,7 +7,7 @@ arch=('x86_64')
 url='https://github.com/m00sfett/glimply'
 license=('AGPL-3.0-or-later')
 depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
-         'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'kwidgetsaddons' 'kwin' 'kxmlgui'
+         'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'layer-shell-qt' 'kwidgetsaddons' 'kwin' 'kxmlgui'
          'qt6-base' 'qt6-wayland' 'wayland')
 makedepends=('cmake' 'git' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
 checkdepends=('python' 'qt6-imageformats')
