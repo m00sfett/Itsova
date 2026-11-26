@@ -16,7 +16,9 @@ const QColor yellow(0xFF, 0xD2, 0x1F);
 
 QPixmap renderGlyph(int size, TrayIconState state)
 {
-    const bool flash = state == TrayIconState::Flash;
+    // The capture flash and a running recording (#99) use the inverted tile: yellow with red marks.
+    const bool recording = state == TrayIconState::Recording || state == TrayIconState::RecordingPaused;
+    const bool flash = state == TrayIconState::Flash || recording;
     QPixmap pixmap(size, size);
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
@@ -42,13 +44,13 @@ QPixmap renderGlyph(int size, TrayIconState state)
     for (const QPolygonF &corner : corners) {
         painter.drawPolygon(corner);
     }
-    if (flash) {
-        painter.drawRoundedRect(QRectF(6, 6, 10, 10), 1.5, 1.5);
-    } else if (state == TrayIconState::Recording) {
-        painter.drawEllipse(QPointF(11, 11), 4.2, 4.2);
+    if (state == TrayIconState::Recording) {
+        painter.drawEllipse(QPointF(11, 11), 5, 5); // a filled red dot, as large as the flash square
     } else if (state == TrayIconState::RecordingPaused) {
-        painter.drawRoundedRect(QRectF(7.5, 7, 2.6, 8), 0.8, 0.8);
-        painter.drawRoundedRect(QRectF(11.9, 7, 2.6, 8), 0.8, 0.8);
+        painter.drawRoundedRect(QRectF(6.5, 6, 3.4, 10), 0.9, 0.9);
+        painter.drawRoundedRect(QRectF(12.1, 6, 3.4, 10), 0.9, 0.9);
+    } else if (flash) {
+        painter.drawRoundedRect(QRectF(6, 6, 10, 10), 1.5, 1.5);
     } else {
         painter.drawRoundedRect(QRectF(9, 9, 4, 4), 1, 1);
     }
@@ -71,7 +73,8 @@ QPixmap renderGlyph(int size, TrayIconState state)
 QIcon trayIcon(TrayIconState state)
 {
     QIcon icon;
-    for (const int size : {16, 22, 24, 32, 44, 48, 64}) {
+    // Tray sizes and the same at 125 % (20, 28, 30, 40, 60), so fractional scaling stays crisp.
+    for (const int size : {16, 20, 22, 24, 28, 30, 32, 40, 44, 48, 60, 64}) {
         icon.addPixmap(renderGlyph(size, state));
     }
     return icon;
