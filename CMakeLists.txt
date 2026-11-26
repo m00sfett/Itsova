@@ -326,6 +326,7 @@ if(BUILD_TESTING)
         glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
         glimply_nested_test(record-window-closed OPTIONS --apps kcalc)
         glimply_nested_test(record-window-move OPTIONS --apps kcalc)
+        glimply_nested_test(tray-visibility OPTIONS --apps kcalc --rc "[General]\\nTrayIcon=recording")
     endif()
 
     # Opt-in check that translated panel button titles fit (#73); never run by CTest.

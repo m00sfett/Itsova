@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Tray, recording shortcut and recording feedback from the 0.11.0 hand test (milestone 0.12.0).
 
+### Added
+
+- Tray icon visibility (#123): *Settings → General → Tray icon* offers *Always* (default, as before), *Only while something runs* (a recording or interval captures) and *Only while recording*. Hidden, the status notifier item is removed, not only moved to the hidden part of the tray; it comes back with the recording icon as soon as a recording starts, so it can always be stopped, and goes when it ends. A hint under the setting says how to get back to the settings: a second start of `glimply` without arguments (launcher entry or command line) now opens the settings of the running instance, whatever the tray setting. glimply no longer quits when its last notification closes while no window and no tray icon is left.
+
 ### Fixed
 
 - Moving a recorded window (#122): checked, the recording does not stop. KWin sends a window frame only when the window's content changes, and a move is no change, so the video holds the last picture until the window draws again; the file is as long as the recording. New nested regression test `record-window-move`; the README says what a window recording contains.

@@ -24,6 +24,26 @@ class TrayIconTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    // #123: hidden modes remove the item unless something runs; the widget standby applies only
+    // to "Always".
+    void presenceFollowsModeAndActivity()
+    {
+        // mode 0 = always
+        QCOMPARE(trayPresence(0, false, false, false), TrayPresence::Shown);
+        QCOMPARE(trayPresence(0, false, false, true), TrayPresence::Standby);
+        QCOMPARE(trayPresence(0, true, false, true), TrayPresence::Standby);
+        // mode 1 = while something runs
+        QCOMPARE(trayPresence(1, false, false, false), TrayPresence::Hidden);
+        QCOMPARE(trayPresence(1, true, false, false), TrayPresence::Shown);
+        QCOMPARE(trayPresence(1, false, true, false), TrayPresence::Shown);
+        QCOMPARE(trayPresence(1, false, true, true), TrayPresence::Shown);
+        QCOMPARE(trayPresence(1, false, false, true), TrayPresence::Hidden);
+        // mode 2 = while recording
+        QCOMPARE(trayPresence(2, false, true, false), TrayPresence::Hidden);
+        QCOMPARE(trayPresence(2, true, false, false), TrayPresence::Shown);
+        QCOMPARE(trayPresence(2, true, true, true), TrayPresence::Shown);
+    }
+
     // #99: while recording, the tile is inverted like the capture flash with a red dot in the
     // middle; paused, two red bars.
     void recordingIsAnInvertedTileWithARedDot()

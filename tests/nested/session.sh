@@ -13,7 +13,7 @@
 #   --out DIR           keep screenshots and files there (default: a temporary directory)
 #
 # The test script runs with bash, sources tests/nested/lib.sh and gets $socket, $fakekey,
-# $kwinshot, $out and $home. Its exit code is the test result (77 = skipped).
+# $kwinshot, $out, $home and $binary. Its exit code is the test result (77 = skipped).
 set -euo pipefail
 
 monitors=1
@@ -152,7 +152,7 @@ if ((!ready)); then
 fi
 
 status=0
-socket="$socket" fakekey="$fakekey" kwinshot="$here/kwinshot.py" out="$out" home="$home" \
+socket="$socket" fakekey="$fakekey" kwinshot="$here/kwinshot.py" out="$out" home="$home" binary="$binary" \
     GLIMPLY_NESTED_LIB="$here/lib.sh" bash -c 'source "$GLIMPLY_NESTED_LIB"; source "$0"' "$test_script" || status=$?
 mkdir -p "$out/files" && cp -r "$home/Pictures/." "$out/files/" 2>/dev/null || true
 if ((status != 0)); then

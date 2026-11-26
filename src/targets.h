@@ -190,6 +190,9 @@ public:
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
     bool showSelectionLoupe = true;
     bool verboseLogging = false; // debug lines of every glimply category in the journal (#92)
+    // When the tray icon is there (#123). Hidden, the status notifier item is removed.
+    enum class TrayVisibility { Always, WhileRunning, WhileRecording };
+    TrayVisibility trayVisibility = TrayVisibility::Always;
     // Screen recording (#30).
     RecordingFormat recordingFormat = RecordingFormat::Mp4;
     int recordingFrameRate = 30;

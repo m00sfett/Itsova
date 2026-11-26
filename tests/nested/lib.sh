@@ -85,3 +85,15 @@ start_fake_notifications() {
     done
     fail "fake notification server did not start"
 }
+
+# start_fake_sni_watcher: a StatusNotifierWatcher with a host (#123), logging to $out/sni.log, so
+# the tray item registers on the private bus.
+start_fake_sni_watcher() {
+    : >"$out/sni.log"
+    python3 "$(dirname "$kwinshot")/fakesniwatcher.py" "$out/sni.log" >/dev/null 2>&1 &
+    for _ in $(seq 50); do
+        busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1 && return 0
+        sleep 0.1
+    done
+    fail "fake status notifier watcher did not start"
+}

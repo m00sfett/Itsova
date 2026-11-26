@@ -422,6 +422,12 @@ void TargetStore::load(const KConfig &config)
     showSelectionLoupe = general.readEntry("ShowSelectionLoupe", true);
     verboseLogging = general.readEntry("VerboseLogging", false);
     {
+        const QString tray = general.readEntry("TrayIcon", QString());
+        trayVisibility = tray == QLatin1String("running")     ? TrayVisibility::WhileRunning
+                         : tray == QLatin1String("recording") ? TrayVisibility::WhileRecording
+                                                              : TrayVisibility::Always;
+    }
+    {
         const KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recordingFormat = recordingFormatFromKey(recording.readEntry("Format", QStringLiteral("mp4")));
         recordingFrameRate = effectiveFrameRate(RecordingFormat::Mp4, recording.readEntry("FrameRate", 30));
@@ -604,6 +610,17 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("CaptureOnRelease", captureOnRelease);
     general.writeEntry("ShowSelectionLoupe", showSelectionLoupe);
     general.writeEntry("VerboseLogging", verboseLogging);
+    switch (trayVisibility) {
+    case TrayVisibility::Always:
+        general.writeEntry("TrayIcon", QStringLiteral("always"));
+        break;
+    case TrayVisibility::WhileRunning:
+        general.writeEntry("TrayIcon", QStringLiteral("running"));
+        break;
+    case TrayVisibility::WhileRecording:
+        general.writeEntry("TrayIcon", QStringLiteral("recording"));
+        break;
+    }
     {
         KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recording.writeEntry("Format", recordingFormatKey(recordingFormat));

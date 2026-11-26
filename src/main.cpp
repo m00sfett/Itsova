@@ -295,6 +295,9 @@ int main(int argc, char *argv[])
     QGuiApplication::setLayoutDirection(QLocale(language.language()).textDirection());
     // A tray application keeps running when the settings window closes.
     QApplication::setQuitOnLastWindowClosed(false);
+    // Nor when the last QEventLoopLocker goes (a finished notification): with the tray icon hidden
+    // (#123) there may be no window and no item left, and glimply only quits when asked to.
+    QCoreApplication::setQuitLockEnabled(false);
 
     // Used by the uninstaller: give the Print key back to its previous owner (usually Spectacle).
     if (QApplication::arguments().contains(QStringLiteral("--release-print-key"))) {
@@ -335,6 +338,12 @@ int main(int argc, char *argv[])
                          const QStringList paths = extractEditPaths(arguments, workingDirectory);
                          for (const QString &path : paths) {
                              app.openEditorForFile(path);
+                         }
+                         // A plain second start (launcher, `glimply`) opens the settings, the way
+                         // back when the tray icon is hidden (#123).
+                         if (arguments.size() <= 1) {
+                             qCInfo(lcApp) << "second start without arguments: opening the settings";
+                             app.showSettings();
                          }
                      });
 

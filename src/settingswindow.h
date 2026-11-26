@@ -135,6 +135,8 @@ private:
     QCheckBox *usePrintKey_ = nullptr;
     QCheckBox *printOpensOverlay_ = nullptr;
     QComboBox *overlayStart_ = nullptr;
+    QComboBox *trayVisibility_ = nullptr;
+    QLabel *trayHint_ = nullptr;
     QPushButton *resetPanelPosition_ = nullptr;
     QPushButton *showFirstHintAgain_ = nullptr;
     QCheckBox *captureOnRelease_ = nullptr;

@@ -48,11 +48,64 @@ QString sectionIcon(MenuTarget::Section section)
 TrayController::TrayController(TargetProvider provider, QObject *parent)
     : QObject(parent)
     , provider_(std::move(provider))
-    , item_(new KStatusNotifierItem(QStringLiteral("glimply"), this))
-    , menu_(new QMenu)
     , blinkTimer_(new QTimer(this))
     , statusText_(tr("Ready"))
 {
+    blinkTimer_->setSingleShot(true);
+    blinkTimer_->setInterval(blinkDurationMs);
+    connect(blinkTimer_, &QTimer::timeout, this, [this] {
+        flashing_ = false;
+        updateIcon();
+    });
+    // The providers call back into the owner, which may still be under construction (App creates
+    // the tray before its interval controller and sets the visibility mode after loading its
+    // settings). Show the icon, if at all, and build the first menu once the event loop runs.
+    QTimer::singleShot(0, this, [this] {
+        started_ = true;
+        applyPresence();
+        rebuildMenu();
+    });
+}
+
+void TrayController::setVisibilityMode(int mode)
+{
+    visibilityMode_ = mode;
+    applyPresence();
+}
+
+bool TrayController::isShown() const
+{
+    return item_ != nullptr;
+}
+
+void TrayController::applyPresence()
+{
+    if (!started_) {
+        return;
+    }
+    const TrayPresence presence = trayPresence(visibilityMode_, recordingState_ != 0, !activeIntervals_.isEmpty(),
+                                               widgetActive_);
+    if (presence == TrayPresence::Hidden) {
+        if (item_) {
+            qCInfo(lcTray) << "tray icon hidden";
+            // Possibly inside one of the item's own signals (a click that ended a recording).
+            item_->deleteLater();
+            item_ = nullptr;
+            menu_ = nullptr; // owned by the item
+        }
+        return;
+    }
+    if (!item_) {
+        createItem();
+        qCInfo(lcTray) << "tray icon shown";
+    }
+    item_->setStatus(presence == TrayPresence::Standby ? KStatusNotifierItem::Passive : KStatusNotifierItem::Active);
+}
+
+void TrayController::createItem()
+{
+    item_ = new KStatusNotifierItem(QStringLiteral("glimply"), this);
+    menu_ = new QMenu;
     item_->setCategory(KStatusNotifierItem::ApplicationStatus);
     item_->setStatus(KStatusNotifierItem::Active);
     item_->setTitle(tr("glimply"));
@@ -61,7 +114,8 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
     item_->setStandardActionsEnabled(false); // the menu adds its own Quit
     item_->setContextMenu(menu_); // the item takes ownership
 #if KSTATUSNOTIFIERITEM_VERSION >= QT_VERSION_CHECK(6, 14, 0)
-    item_->setIsMenu(true); // a click opens the menu
+    // A click opens the menu; while recording it stops instead (Q6), the menu stays on right click.
+    item_->setIsMenu(recordingState_ == 0);
 #endif
     connect(item_, &KStatusNotifierItem::activateRequested, this, [this](bool, const QPoint &pos) {
         qCInfo(lcTray) << "tray icon activated, recording state" << recordingState_;
@@ -71,23 +125,16 @@ TrayController::TrayController(TargetProvider provider, QObject *parent)
         }
 #if KSTATUSNOTIFIERITEM_VERSION < QT_VERSION_CHECK(6, 14, 0)
         // KF6 before 6.14 (Debian 13) has no setIsMenu: open the menu on activation instead.
-        menu_->popup(pos);
+        if (menu_) {
+            menu_->popup(pos);
+        }
 #else
         Q_UNUSED(pos)
 #endif
     });
-
-    blinkTimer_->setSingleShot(true);
-    blinkTimer_->setInterval(blinkDurationMs);
-    connect(blinkTimer_, &QTimer::timeout, this, [this] {
-        flashing_ = false;
-        updateIcon();
-    });
     connect(menu_, &QMenu::aboutToShow, this, &TrayController::rebuildMenu);
     updateIcon();
-    // The providers call back into the owner, which may still be under construction (App creates
-    // the tray before its interval controller). Build the first menu once the event loop runs.
-    QTimer::singleShot(0, this, &TrayController::rebuildMenu);
+    updateToolTip();
 }
 
 void TrayController::setHistoryProvider(HistoryProvider provider)
@@ -193,10 +240,13 @@ void TrayController::setRecordingState(int state, qint64 elapsedMs, const QStrin
     recordingElapsedMs_ = elapsedMs;
     recordingTarget_ = targetName;
     if (changed) {
+        applyPresence();
 #if KSTATUSNOTIFIERITEM_VERSION >= QT_VERSION_CHECK(6, 14, 0)
         // While recording, a click stops instead of opening the menu (Q6); the menu stays on
         // right click.
-        item_->setIsMenu(state == 0);
+        if (item_) {
+            item_->setIsMenu(state == 0);
+        }
 #endif
         updateIcon();
     }
@@ -223,6 +273,7 @@ void TrayController::setCountdownState(bool active, int remainingSeconds)
 void TrayController::setActiveIntervals(const QList<ActiveIntervalStatus> &active)
 {
     activeIntervals_ = active;
+    applyPresence();
     updateIcon();
     updateToolTip();
 }
@@ -235,7 +286,8 @@ void TrayController::setStatusText(const QString &text)
 
 void TrayController::setStandby(bool standby)
 {
-    item_->setStatus(standby ? KStatusNotifierItem::Passive : KStatusNotifierItem::Active);
+    widgetActive_ = standby;
+    applyPresence();
 }
 
 void TrayController::blink()
@@ -247,6 +299,9 @@ void TrayController::blink()
 
 void TrayController::updateIcon()
 {
+    if (!item_) {
+        return;
+    }
     if (recordingState_ != 0) {
         const TrayIconState recording =
             recordingState_ == 3 ? TrayIconState::RecordingPaused : TrayIconState::Recording;
@@ -265,6 +320,9 @@ void TrayController::updateIcon()
 
 void TrayController::updateToolTip()
 {
+    if (!item_) {
+        return;
+    }
     if (recordingState_ != 0) {
         const QString time = formatElapsed(recordingElapsedMs_);
         switch (recordingState_) {
@@ -303,6 +361,9 @@ void TrayController::updateToolTip()
 
 void TrayController::rebuildMenu()
 {
+    if (!menu_) {
+        return;
+    }
     for (QAction *action : menu_->actions()) {
         menu_->removeAction(action);
         action->deleteLater();
