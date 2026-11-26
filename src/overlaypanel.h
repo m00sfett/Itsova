@@ -58,6 +58,38 @@ struct PanelKey
 };
 [[nodiscard]] PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::KeyboardModifiers modifiers);
 
+// Keyboard navigation through the panel and its drawers (#96). The overlay describes where the
+// focus is; panelNavigate() says what a plain arrow, Enter, Space or Escape does there.
+enum class PanelNavFocus { None, Main, Entry };
+struct PanelNavState
+{
+    PanelNavFocus focus = PanelNavFocus::None;
+    QList<bool> mainOpensDrawer; // per main-row item (the Freeze/Live cap is not part of it)
+    int mainIndex = -1;          // focused main item
+    int drawerOwner = -1;        // main item whose drawer is open, -1 if none
+    int entryCount = 0;          // entries of the open drawer
+    int entryIndex = -1;         // focused entry
+    bool hasSelection = false;   // arrows edit the selection while the panel has no focus
+};
+enum class PanelNavAction {
+    Pass,                 // not a navigation key here: the overlay handles it as before
+    Swallow,              // handled, nothing happens (an end of the row, Down on an action)
+    FocusMain,            // focus main item index
+    FocusEntry,           // focus entry index of the open drawer
+    OpenDrawer,           // open the drawer of main item index and focus its first entry
+    CloseDrawerFocusMain, // close the open drawer, focus main item index
+    CloseDrawer,          // close the open drawer, focus stays
+    ClickMain,            // press the focused main item
+    ClickEntry,           // press the focused entry
+    CloseOverlay,
+};
+struct PanelNav
+{
+    PanelNavAction action = PanelNavAction::Pass;
+    int index = -1;
+};
+[[nodiscard]] PanelNav panelNavigate(const PanelNavState &state, int key, bool rightToLeft = false);
+
 // A 64 × 64 button without a label (#69). On hover the icon fades to about 15 % and blurs, and the
 // title shows on top of it; after 500 ms a tooltip adds the shortcut.
 class PanelButton : public QAbstractButton
@@ -87,6 +119,7 @@ public:
     [[nodiscard]] bool isActive() const;
     // Opens a drawer: a small dot at the bottom edge.
     void setOpensDrawer(bool opens);
+    [[nodiscard]] bool opensDrawer() const;
     // A small counter or value in the corner, e.g. the chosen delay.
     void setBadge(const QString &badge);
     // Shows the hover state without the pointer (F1 overview, #72).

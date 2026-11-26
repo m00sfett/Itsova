@@ -191,6 +191,97 @@ private Q_SLOTS:
         QCOMPARE(panel.size(), closed);
     }
 
+    // #96: arrow-key navigation through the panel and its drawers.
+    void navigationFromNothingFocused()
+    {
+        PanelNavState s;
+        s.mainOpensDrawer = {false, true, true, true, true, false, true, true, false}; // last = Close
+        // No selection: Right/Down focus the first item, Left/Up the last.
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).action, PanelNavAction::FocusMain);
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).index, 0);
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).index, 0);
+        QCOMPARE(panelNavigate(s, Qt::Key_Left).index, 8);
+        QCOMPARE(panelNavigate(s, Qt::Key_Up).index, 8);
+        QCOMPARE(panelNavigate(s, Qt::Key_Left, true).index, 0); // mirrored right to left
+        // A selection exists: arrows stay with the selection.
+        s.hasSelection = true;
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).action, PanelNavAction::Pass);
+        QCOMPARE(panelNavigate(s, Qt::Key_Escape).action, PanelNavAction::Pass);
+    }
+
+    void navigationAlongThePanelDoesNotWrap()
+    {
+        PanelNavState s;
+        s.mainOpensDrawer = {false, true, false};
+        s.focus = PanelNavFocus::Main;
+        s.mainIndex = 0;
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).action, PanelNavAction::FocusMain);
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).index, 1);
+        QCOMPARE(panelNavigate(s, Qt::Key_Left).action, PanelNavAction::Swallow); // no wrap
+        s.mainIndex = 2;
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).action, PanelNavAction::Swallow);
+        QCOMPARE(panelNavigate(s, Qt::Key_Up).action, PanelNavAction::Swallow);
+    }
+
+    void downAndEnterOpenMenusOrTrigger()
+    {
+        PanelNavState s;
+        s.mainOpensDrawer = {false, true};
+        s.focus = PanelNavFocus::Main;
+        s.mainIndex = 1;
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).action, PanelNavAction::OpenDrawer);
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).index, 1);
+        QCOMPARE(panelNavigate(s, Qt::Key_Return).action, PanelNavAction::OpenDrawer);
+        s.mainIndex = 0;
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).action, PanelNavAction::Swallow);
+        QCOMPARE(panelNavigate(s, Qt::Key_Return).action, PanelNavAction::ClickMain);
+        // An already open drawer of the focused item: Down goes into it.
+        s.mainIndex = 1;
+        s.drawerOwner = 1;
+        s.entryCount = 3;
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).action, PanelNavAction::FocusEntry);
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).index, 0);
+    }
+
+    void menuEntriesUpDownLeftRight()
+    {
+        PanelNavState s;
+        s.mainOpensDrawer = {false, true, true, false};
+        s.focus = PanelNavFocus::Entry;
+        s.drawerOwner = 1;
+        s.entryCount = 3;
+        s.entryIndex = 0;
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).action, PanelNavAction::FocusEntry);
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).index, 1);
+        // Up on the top entry returns to the pill.
+        QCOMPARE(panelNavigate(s, Qt::Key_Up).action, PanelNavAction::CloseDrawerFocusMain);
+        QCOMPARE(panelNavigate(s, Qt::Key_Up).index, 1);
+        s.entryIndex = 2;
+        QCOMPARE(panelNavigate(s, Qt::Key_Down).action, PanelNavAction::Swallow); // no wrap
+        QCOMPARE(panelNavigate(s, Qt::Key_Return).action, PanelNavAction::ClickEntry);
+        // Right: the neighbour opens its menu; Left: the neighbour has none, the menu closes.
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).action, PanelNavAction::OpenDrawer);
+        QCOMPARE(panelNavigate(s, Qt::Key_Right).index, 2);
+        QCOMPARE(panelNavigate(s, Qt::Key_Left).action, PanelNavAction::CloseDrawerFocusMain);
+        QCOMPARE(panelNavigate(s, Qt::Key_Left).index, 0);
+    }
+
+    void escapeLevels()
+    {
+        PanelNavState s;
+        s.mainOpensDrawer = {false, true};
+        s.focus = PanelNavFocus::Entry;
+        s.drawerOwner = 1;
+        s.entryCount = 2;
+        s.entryIndex = 1;
+        QCOMPARE(panelNavigate(s, Qt::Key_Escape).action, PanelNavAction::CloseDrawerFocusMain);
+        s.focus = PanelNavFocus::Main;
+        s.mainIndex = 1;
+        QCOMPARE(panelNavigate(s, Qt::Key_Escape).action, PanelNavAction::CloseDrawer); // menu first
+        s.drawerOwner = -1;
+        QCOMPARE(panelNavigate(s, Qt::Key_Escape).action, PanelNavAction::CloseOverlay);
+    }
+
     // #94: the mode cap shows what a click does, never the current state.
     void modeCapShowsTheNextState()
     {

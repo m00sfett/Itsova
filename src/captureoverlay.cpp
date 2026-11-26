@@ -142,9 +142,11 @@ public:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
     {
-        if (event->type() == QEvent::Enter || event->type() == QEvent::HoverEnter) {
+        // Keyboard focus on the row's button outlines it like the pointer does (#96).
+        if (event->type() == QEvent::Enter || event->type() == QEvent::HoverEnter || event->type() == QEvent::FocusIn) {
             session_->setHighlights(outline_);
-        } else if (event->type() == QEvent::Leave || event->type() == QEvent::HoverLeave) {
+        } else if (event->type() == QEvent::Leave || event->type() == QEvent::HoverLeave
+                   || event->type() == QEvent::FocusOut) {
             session_->setHighlights({});
         }
         return QObject::eventFilter(watched, event);
@@ -205,7 +207,9 @@ public:
         layout->addStretch(); // rows start at their number, not centred
         if (!outline.isEmpty()) {
             row->setAttribute(Qt::WA_Hover);
-            row->installEventFilter(new HoverOutline(row, session_, outline));
+            auto *hover = new HoverOutline(row, session_, outline);
+            row->installEventFilter(hover);
+            main->installEventFilter(hover);
         }
         QObject::connect(main, &QToolButton::clicked, row, action);
         entries_->append(available ? action : std::function<void()>());
@@ -615,6 +619,17 @@ void CaptureSession::pickPanelEntry(int index)
             return;
         }
     }
+}
+
+CaptureOverlay *CaptureSession::panelOverlay() const
+{
+    const QString connector = panelConnector();
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay && overlay->connector() == connector) {
+            return overlay.data();
+        }
+    }
+    return nullptr;
 }
 
 QString CaptureSession::panelConnector() const
@@ -1049,7 +1064,7 @@ void CaptureSession::changed()
     // rectangle.
     if (purpose_ == Purpose::Print && !selections_.isEmpty()
         && (panelDrawer_ == PanelDrawer::Window || panelDrawer_ == PanelDrawer::Areas
-            || panelDrawer_ == PanelDrawer::Delay)) {
+            || panelDrawer_ == PanelDrawer::Delay || panelDrawer_ == PanelDrawer::Monitors)) {
         panelDrawer_ = PanelDrawer::None;
         highlights_.clear();
     }
@@ -2239,6 +2254,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
                             const std::function<void()> &action) {
         auto *button = new PanelButton(icon, title, shortcut, panel_);
         connect(button, &QAbstractButton::clicked, this, action);
+        button->installEventFilter(this); // arrow-key navigation (#96)
         panel_->addMainButton(button);
         mainButtons_.append(button);
         return button;
@@ -2695,7 +2711,9 @@ QWidget *CaptureOverlay::buildAreaList()
         }
         // Hovering a row outlines the area on screen.
         row->setAttribute(Qt::WA_Hover);
-        row->installEventFilter(new HoverOutline(row, session_, outline));
+        auto *hover = new HoverOutline(row, session_, outline);
+        row->installEventFilter(hover);
+        main->installEventFilter(hover);
         column->addWidget(row);
     };
 
@@ -3019,6 +3037,11 @@ void CaptureOverlay::refreshPanel()
         panel_->setDrawer(buildDrawer(drawer));
         builtDrawer_ = drawer;
         builtDrawerSignature_ = signature;
+        if (QWidget *content = panel_->drawer()) {
+            for (QAbstractButton *entry : content->findChildren<QAbstractButton *>()) {
+                entry->installEventFilter(this); // arrow-key navigation (#96)
+            }
+        }
     }
 
     PanelModeCap *cap = panel_->modeCap();
@@ -3073,6 +3096,18 @@ void CaptureOverlay::placePanel()
 
 bool CaptureOverlay::eventFilter(QObject *watched, QEvent *event)
 {
+    if (auto *button = qobject_cast<QAbstractButton *>(watched); button && panel_ && panel_->isAncestorOf(button)) {
+        if (event->type() == QEvent::KeyPress && navigatePanel(static_cast<QKeyEvent *>(event))) {
+            return true;
+        }
+        // A drawer entry with keyboard focus looks hovered (#96).
+        if ((event->type() == QEvent::FocusIn || event->type() == QEvent::FocusOut)
+            && !qobject_cast<PanelButton *>(button) && panel_->drawer() && panel_->drawer()->isAncestorOf(button)) {
+            const bool focused = event->type() == QEvent::FocusIn;
+            button->setAttribute(Qt::WA_UnderMouse, focused || button->rect().contains(button->mapFromGlobal(QCursor::pos())));
+            button->update();
+        }
+    }
     // The panel's layout may settle after refreshPanel() (a drawer row changing its controls):
     // place it again so it stays centred instead of growing from its old left edge.
     if (watched == panel_ && event->type() == QEvent::Resize) {
@@ -3152,6 +3187,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         {tr("Shift while dragging"), tr("Keep a square")},
         {tr("Alt while dragging"), tr("Grow from the centre")},
         {tr("Space while dragging"), tr("Reposition live")},
+        {tr("Arrows, nothing selected"), tr("Move through the panel and its menus")},
         {tr("Arrows / Shift+Arrows"), tr("Move by 1 px / 10 px")},
         {tr("Alt+Arrows / Ctrl+Arrows"), tr("Resize from the centre / as a square")},
         {tr("Delete"), tr("Delete the active rectangle")},
@@ -3888,6 +3924,148 @@ bool CaptureOverlay::handlePanelKey(int key, Qt::KeyboardModifiers modifiers)
     return false;
 }
 
+QList<QAbstractButton *> CaptureOverlay::drawerEntries() const
+{
+    QList<QAbstractButton *> entries;
+    QWidget *content = panel_ ? panel_->drawer() : nullptr;
+    if (!content) {
+        return entries;
+    }
+    for (QAbstractButton *button : content->findChildren<QAbstractButton *>()) {
+        if (button->isVisibleTo(content) && button->isEnabled()) {
+            entries.append(button);
+        }
+    }
+    // Reading order: rows top to bottom, then along the row (mirrored right to left).
+    const bool rtl = layoutDirection() == Qt::RightToLeft;
+    std::stable_sort(entries.begin(), entries.end(), [content, rtl](QAbstractButton *a, QAbstractButton *b) {
+        const QPoint pa = a->mapTo(content, QPoint(0, 0));
+        const QPoint pb = b->mapTo(content, QPoint(0, 0));
+        if (std::abs(pa.y() - pb.y()) > 4) {
+            return pa.y() < pb.y();
+        }
+        return rtl ? pa.x() > pb.x() : pa.x() < pb.x();
+    });
+    return entries;
+}
+
+bool CaptureOverlay::navigatePanel(QKeyEvent *event)
+{
+    if ((event->modifiers() & ~Qt::KeypadModifier) != Qt::NoModifier) {
+        return false;
+    }
+    if (session_->panelConnector() != screen_.connector) {
+        // The keyboard is on another monitor's overlay; the panel decides.
+        CaptureOverlay *host = session_->panelOverlay();
+        return host && host != this && host->navigatePanel(event);
+    }
+    if (!panel_ || panel_->isHidden()) {
+        return false;
+    }
+    PanelNavState state;
+    for (const QPointer<PanelButton> &button : std::as_const(mainButtons_)) {
+        state.mainOpensDrawer.append(button && button->opensDrawer());
+    }
+    const QList<QAbstractButton *> entries = drawerEntries();
+    const CaptureSession::PanelDrawer open = session_->panelDrawer();
+    if (open != CaptureSession::PanelDrawer::None && open != CaptureSession::PanelDrawer::Help) {
+        state.drawerOwner = int(mainButtons_.indexOf(drawerButtons_.value(int(open))));
+        state.entryCount = int(entries.size());
+    }
+    QWidget *focus = QApplication::focusWidget();
+    if (const int index = int(mainButtons_.indexOf(qobject_cast<PanelButton *>(focus))); focus && index >= 0) {
+        state.focus = PanelNavFocus::Main;
+        state.mainIndex = index;
+    } else if (const int entry = int(entries.indexOf(qobject_cast<QAbstractButton *>(focus))); focus && entry >= 0) {
+        state.focus = PanelNavFocus::Entry;
+        state.entryIndex = entry;
+    } else if (focus && focus != this && panel_->isAncestorOf(focus)) {
+        return false; // the Freeze/Live cap or a drawer control keeps its own keys
+    }
+    state.hasSelection = !session_->selections().isEmpty();
+
+    const PanelNav nav = panelNavigate(state, event->key(), layoutDirection() == Qt::RightToLeft);
+    const auto focusMain = [this](int index) {
+        if (index >= 0 && index < mainButtons_.size() && mainButtons_.at(index)) {
+            if (!isActiveWindow()) {
+                activateWindow();
+            }
+            mainButtons_.at(index)->setFocus(Qt::TabFocusReason);
+        }
+    };
+    const auto focusEntry = [this](int index) {
+        const QList<QAbstractButton *> current = drawerEntries();
+        if (current.isEmpty()) {
+            return false;
+        }
+        QAbstractButton *entry = current.at(std::clamp(index, 0, int(current.size()) - 1));
+        if (!isActiveWindow()) {
+            activateWindow();
+        }
+        entry->setFocus(Qt::TabFocusReason);
+        for (QWidget *w = entry->parentWidget(); w; w = w->parentWidget()) {
+            if (auto *scroll = qobject_cast<QScrollArea *>(w)) {
+                scroll->ensureWidgetVisible(entry);
+                break;
+            }
+        }
+        return true;
+    };
+    switch (nav.action) {
+    case PanelNavAction::Pass:
+        return false;
+    case PanelNavAction::Swallow:
+        return true;
+    case PanelNavAction::FocusMain:
+        focusMain(nav.index);
+        return true;
+    case PanelNavAction::FocusEntry:
+        focusEntry(nav.index);
+        return true;
+    case PanelNavAction::OpenDrawer: {
+        PanelButton *button = mainButtons_.value(nav.index);
+        if (!button) {
+            return true;
+        }
+        const int kind = drawerButtons_.key(button, -1);
+        if (kind >= 0 && session_->panelDrawer() != CaptureSession::PanelDrawer(kind)) {
+            session_->setPanelDrawer(CaptureSession::PanelDrawer(kind));
+        }
+        if (!focusEntry(0)) {
+            focusMain(nav.index); // an empty drawer: stay on its button
+        }
+        return true;
+    }
+    case PanelNavAction::CloseDrawerFocusMain:
+        // Move the keyboard out of the drawer before it goes away.
+        focusMain(nav.index);
+        session_->setPanelDrawer(CaptureSession::PanelDrawer::None);
+        return true;
+    case PanelNavAction::CloseDrawer:
+        session_->setPanelDrawer(CaptureSession::PanelDrawer::None);
+        return true;
+    case PanelNavAction::ClickMain:
+        if (PanelButton *button = mainButtons_.value(nav.index)) {
+            button->click();
+        }
+        return true;
+    case PanelNavAction::ClickEntry: {
+        if (nav.index >= 0 && nav.index < entries.size()) {
+            entries.at(nav.index)->click();
+        }
+        // A drawer that rebuilt itself (Delay) keeps the keyboard on the same entry.
+        if (panel_ && panel_->drawer() && !panel_->isAncestorOf(QApplication::focusWidget())) {
+            focusEntry(nav.index);
+        }
+        return true;
+    }
+    case PanelNavAction::CloseOverlay:
+        session_->close();
+        return true;
+    }
+    return false;
+}
+
 void CaptureOverlay::pickListEntry(int index)
 {
     // A missing or unavailable entry is a no-op.
@@ -4057,6 +4235,11 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             updateCursor(lastPosition_);
             return;
         }
+    }
+
+    // Nothing in the panel has focus: without a selection the first arrow moves into it (#96).
+    if (navigatePanel(event)) {
+        return;
     }
 
     const int step = modifiers.testFlag(Qt::ShiftModifier) ? 10 : 1;
