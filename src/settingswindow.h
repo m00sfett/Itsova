@@ -139,6 +139,7 @@ private:
     QPushButton *showFirstHintAgain_ = nullptr;
     QCheckBox *captureOnRelease_ = nullptr;
     QCheckBox *showSelectionLoupe_ = nullptr;
+    QCheckBox *verboseLogging_ = nullptr;
     KKeySequenceWidget *colorPickerShortcut_ = nullptr;
 
     // Automation page (#24 hooks, #25 MCP)

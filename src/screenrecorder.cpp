@@ -1,5 +1,6 @@
 #include "screenrecorder.h"
 
+#include "logging.h"
 #include "qwayland-zkde-screencast-unstable-v1.h"
 #include "recordingfinalizer.h"
 
@@ -7,7 +8,6 @@
 
 #include <QFile>
 #include <QFileInfo>
-#include <QLoggingCategory>
 #include <QTimer>
 #include <QWaylandClientExtensionTemplate>
 
@@ -16,8 +16,6 @@ namespace glimply
 
 namespace
 {
-Q_LOGGING_CATEGORY(lcRecord, "glimply.record")
-
 // stream_region needs version 3; version 6 adds the object serial.
 constexpr int wantedVersion = 6;
 constexpr int minimumVersion = 3;
@@ -212,7 +210,7 @@ void ScreenRecorder::onEncoderStateChanged()
         return;
     }
     const auto encoderState = encoder_->state();
-    qCDebug(lcRecord) << "encoder state" << encoderState;
+    qCInfo(lcRecord) << "encoder state" << encoderState << "while" << state_;
     switch (encoderState) {
     case PipeWireBaseEncodedStream::Recording:
         if (state_ == State::Starting) {
@@ -290,8 +288,9 @@ void ScreenRecorder::finalizeFile()
     finalizer_->finalize(options_.path, finalDurationMs_, pauses);
 }
 
-void ScreenRecorder::stop()
+void ScreenRecorder::stop(const QString &origin)
 {
+    qCInfo(lcRecord) << "stop requested by" << origin << "while" << state_;
     switch (state_) {
     case State::Idle:
     case State::Finishing:
@@ -368,7 +367,7 @@ void ScreenRecorder::onStreamClosed()
 {
     // The window closed or the monitor went away: keep what was recorded.
     qCInfo(lcRecord) << "stream closed by KWin";
-    stop();
+    stop(QStringLiteral("KWin (stream closed)"));
 }
 
 void ScreenRecorder::fail(const QString &error)
@@ -376,6 +375,7 @@ void ScreenRecorder::fail(const QString &error)
     if (state_ == State::Idle) {
         return;
     }
+    qCWarning(lcRecord) << "recording failed while" << state_ << ":" << error;
     const QString path = options_.path;
     cleanUp();
     setState(State::Idle);
@@ -391,6 +391,7 @@ void ScreenRecorder::setState(State state)
     if (state_ == state) {
         return;
     }
+    qCInfo(lcRecord) << "state" << state_ << "->" << state;
     state_ = state;
     Q_EMIT stateChanged(state);
 }

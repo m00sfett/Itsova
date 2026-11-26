@@ -189,6 +189,7 @@ public:
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
     bool showSelectionLoupe = true;
+    bool verboseLogging = false; // debug lines of every glimply category in the journal (#92)
     // Screen recording (#30).
     RecordingFormat recordingFormat = RecordingFormat::Mp4;
     int recordingFrameRate = 30;

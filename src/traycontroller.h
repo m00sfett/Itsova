@@ -78,7 +78,7 @@ Q_SIGNALS:
     void clearHistoryRequested();
     void pinsShownRequested(bool shown);
     void removeAllPinsRequested();
-    void stopRecordingRequested();
+    void stopRecordingRequested(const QString &origin);
     void quitRequested();
     void pauseRecordingRequested(bool paused);
 

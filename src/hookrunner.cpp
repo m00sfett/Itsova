@@ -1,5 +1,6 @@
 #include "hookrunner.h"
 
+#include "logging.h"
 #include "imageoutput.h"
 
 #include <QCoreApplication>
@@ -251,6 +252,9 @@ void HookRunner::startJob(PendingJob job)
         res.targetName = inv.targetName;
         res.isTest = inv.isTest;
 
+        // The command and its output may hold anything the user typed; log the outcome only.
+        qCInfo(lcHooks) << (inv.isTest ? "test hook" : "hook") << "finished: started" << res.started << "timed out"
+                        << res.timedOut << "exit" << res.exitCode << "in" << res.elapsedMs << "ms";
         if (!inv.isTest && (!res.started || res.timedOut || res.exitCode != 0)) {
             Q_EMIT hookFailed(res);
         }

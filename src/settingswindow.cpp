@@ -1928,6 +1928,19 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
+    // Logging (#92): starts, stops and errors always reach the journal; this adds the details.
+    verboseLogging_ = new QCheckBox(tr("Write detailed logs"), page);
+    form->addRow(tr("Logging:"), verboseLogging_);
+    form->addRow(QString(), makeHint(tr("glimply always writes starts, stops and errors to the system journal. Detailed "
+                                        "logs help with bug reports. Show them with glimply logs."),
+                                     page));
+    connect(verboseLogging_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().verboseLogging = on;
+            app_->storeChanged();
+        }
+    });
+
     // Text recognition (#27): optional, detected at runtime.
     ocrStatus_ = new QLabel(page);
     ocrStatus_->setWordWrap(true);
@@ -2286,6 +2299,7 @@ void SettingsWindow::refreshStorage()
     showFirstHintAgain_->setEnabled(store.overlayFirstHintShown);
     captureOnRelease_->setChecked(store.captureOnRelease);
     showSelectionLoupe_->setChecked(store.showSelectionLoupe);
+    verboseLogging_->setChecked(store.verboseLogging);
     colorPickerShortcut_->setKeySequence(app_->shortcuts()->shortcut(colorPickerTargetId()));
     updating_ = false;
 }

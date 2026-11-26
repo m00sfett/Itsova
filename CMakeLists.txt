@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.10.0 LANGUAGES C CXX)
+project(glimply VERSION 0.11.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -31,39 +31,19 @@ add_executable(glimply
     src/captureoverlay.cpp
     src/pinmanager.cpp
     src/printkey.cpp
-    src/screenrecorder.cpp
     src/settingswindow.cpp
     src/shortcutmanager.cpp
     src/traycontroller.cpp
     src/trayicon.cpp
 )
 target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
-# Older KPipeWire (Debian 13: 6.3) has no pause and no object serials; older protocol files no
-# serial event. Recording works there, pausing does not.
-get_target_property(glimply_kpipewire_includes K::KPipeWire INTERFACE_INCLUDE_DIRECTORIES)
-find_file(GLIMPLY_KPIPEWIRE_STREAM_HEADER pipewirebaseencodedstream.h PATHS ${glimply_kpipewire_includes}
-          PATH_SUFFIXES KPipeWire NO_DEFAULT_PATH)
-if(GLIMPLY_KPIPEWIRE_STREAM_HEADER)
-    file(READ "${GLIMPLY_KPIPEWIRE_STREAM_HEADER}" glimply_kpipewire_stream)
-    if(glimply_kpipewire_stream MATCHES "void pause\\(\\)")
-        target_compile_definitions(glimply PRIVATE GLIMPLY_KPIPEWIRE_PAUSE=1)
-    endif()
-    if(glimply_kpipewire_stream MATCHES "setObjectSerial")
-        target_compile_definitions(glimply PRIVATE GLIMPLY_KPIPEWIRE_SERIAL=1)
-    endif()
-endif()
-file(READ "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml" glimply_screencast_xml)
-if(glimply_screencast_xml MATCHES "name=\"serial\"")
-    target_compile_definitions(glimply PRIVATE GLIMPLY_SCREENCAST_SERIAL_EVENT=1)
-endif()
-qt6_generate_wayland_protocol_client_sources(glimply PRIVATE_CODE
-    FILES "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml")
 # Brand marks for the footer of the settings window.
 qt_add_resources(glimply "brand" PREFIX "/brand" BASE data FILES data/brand-roteson.png data/brand-r2w2.png)
 
 target_link_libraries(glimply
     PRIVATE
         glimply_capture
+        glimply_record
         glimply_ui
         Qt6::Concurrent
         Qt6::DBus
@@ -102,6 +82,7 @@ add_library(glimply_capture STATIC
     src/intervalcontroller.cpp
     src/kwinpinscript.cpp
     src/latencytrace.cpp
+    src/logging.cpp
     src/mcppolicy.cpp
     src/mcpserver.cpp
     src/ocrengine.cpp
@@ -120,6 +101,31 @@ add_library(glimply_capture STATIC
 target_include_directories(glimply_capture PUBLIC src)
 target_compile_definitions(glimply_capture PUBLIC GLIMPLY_VERSION="${PROJECT_VERSION}")
 target_link_libraries(glimply_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
+
+# The recorder lives in its own library so tests can drive it without the application (#92, #90).
+add_library(glimply_record STATIC src/screenrecorder.cpp)
+target_include_directories(glimply_record PUBLIC src)
+target_link_libraries(glimply_record PUBLIC glimply_capture Qt6::Gui PRIVATE K::KPipeWireRecord Qt6::WaylandClient)
+# Older KPipeWire (Debian 13: 6.3) has no pause and no object serials; older protocol files no
+# serial event. Recording works there, pausing does not.
+get_target_property(glimply_kpipewire_includes K::KPipeWire INTERFACE_INCLUDE_DIRECTORIES)
+find_file(GLIMPLY_KPIPEWIRE_STREAM_HEADER pipewirebaseencodedstream.h PATHS ${glimply_kpipewire_includes}
+          PATH_SUFFIXES KPipeWire NO_DEFAULT_PATH)
+if(GLIMPLY_KPIPEWIRE_STREAM_HEADER)
+    file(READ "${GLIMPLY_KPIPEWIRE_STREAM_HEADER}" glimply_kpipewire_stream)
+    if(glimply_kpipewire_stream MATCHES "void pause\\(\\)")
+        target_compile_definitions(glimply_record PUBLIC GLIMPLY_KPIPEWIRE_PAUSE=1)
+    endif()
+    if(glimply_kpipewire_stream MATCHES "setObjectSerial")
+        target_compile_definitions(glimply_record PUBLIC GLIMPLY_KPIPEWIRE_SERIAL=1)
+    endif()
+endif()
+file(READ "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml" glimply_screencast_xml)
+if(glimply_screencast_xml MATCHES "name=\"serial\"")
+    target_compile_definitions(glimply_record PUBLIC GLIMPLY_SCREENCAST_SERIAL_EVENT=1)
+endif()
+qt6_generate_wayland_protocol_client_sources(glimply_record PRIVATE_CODE
+    FILES "${PLASMA_WAYLAND_PROTOCOLS_DIR}/zkde-screencast-unstable-v1.xml")
 
 add_library(glimply_ui STATIC
     src/annotations/annotationcanvas.cpp
@@ -145,7 +151,7 @@ target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::Widget
 set(QT_I18N_SOURCE_LANGUAGE en)
 set(QT_I18N_TRANSLATED_LANGUAGES ar de es fr hi id it ja ko nl pl pt ru tr uk vi zh_CN zh_TW)
 qt_add_translations(glimply
-    SOURCE_TARGETS glimply glimply_ui glimply_capture
+    SOURCE_TARGETS glimply glimply_ui glimply_capture glimply_record
     TS_FILE_BASE glimply
     TS_FILE_DIR i18n
     QM_FILES_OUTPUT_VARIABLE glimply_qm_files
@@ -160,7 +166,7 @@ set(GLIMPLY_EXEC "${CMAKE_INSTALL_FULL_BINDIR}/glimply")
 configure_file(data/io.github.m00sfett.glimply.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" @ONLY)
 install(TARGETS glimply RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.glimply.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
-install(FILES data/glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
+install(FILES data/io.github.m00sfett.glimply.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
 install(FILES data/io.github.m00sfett.glimply.svg data/io.github.m00sfett.glimply-tray.svg
               data/io.github.m00sfett.glimply-tray-flash.svg
               data/io.github.m00sfett.glimply-tray-interval.svg
@@ -260,6 +266,10 @@ if(BUILD_TESTING)
     add_executable(ocrtest tests/ocrtest.cpp)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)
+    add_executable(loggingtest tests/loggingtest.cpp)
+    target_link_libraries(loggingtest PRIVATE glimply_record Qt6::Test)
+    target_compile_definitions(loggingtest PRIVATE GLIMPLY_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+    add_test(NAME logging COMMAND loggingtest)
     add_executable(recordingtest tests/recordingtest.cpp)
     target_link_libraries(recordingtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME recording COMMAND recordingtest)
