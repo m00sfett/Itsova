@@ -2073,7 +2073,11 @@ void CaptureOverlay::buildPanel()
     panel_ = new CapsulePanel(this);
     panel_->installEventFilter(this);
     PanelModeCap *cap = panel_->modeCap();
-    cap->setTexts(tr("Frozen"), tr("Live"), QStringLiteral("Space"));
+    //: Fixed product term in every language: the action that freezes the live screen.
+    const QString freeze = tr("Freeze");
+    //: Fixed product term in every language: the action that returns to the live screen.
+    const QString live = tr("Live");
+    cap->setTexts(freeze, live, QStringLiteral("Space"));
     connect(cap, &QAbstractButton::clicked, this, [this] { session_->setFrozen(!session_->frozen()); });
 
     connect(panel_, &CapsulePanel::dragMoved, this, [this](const QPoint &pos, const QPoint &grabOffset) {
@@ -2705,11 +2709,11 @@ QWidget *CaptureOverlay::buildMoreRow()
             pick,
         });
     }
-    // Frozen/Live as an entry too (Q11); the end cap shows the current mode.
+    // Freeze/Live as an entry too (Q11); like the end cap it names the action (#94).
     const bool frozen = session_->frozen();
     auto *mode = static_cast<PanelButton *>(
         button(frozen ? QStringLiteral("media-playback-start") : QStringLiteral("media-playback-pause"),
-               frozen ? tr("Go Live") : tr("Freeze"), QStringLiteral("Space"),
+               frozen ? tr("Live") : tr("Freeze"), QStringLiteral("Space"),
                [this] { session_->setFrozen(!session_->frozen()); }));
     mode->setEnabled(!frozen || session_->canSwitchToLive());
     return buttonRow({

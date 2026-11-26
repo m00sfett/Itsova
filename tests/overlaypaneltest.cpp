@@ -191,6 +191,23 @@ private Q_SLOTS:
         QCOMPARE(panel.size(), closed);
     }
 
+    // #94: the mode cap shows what a click does, never the current state.
+    void modeCapShowsTheNextState()
+    {
+        PanelModeCap cap(nullptr);
+        cap.setTexts(QStringLiteral("Freeze"), QStringLiteral("Live"), QStringLiteral("Space"));
+        cap.setFrozen(false); // live: a click freezes
+        QCOMPARE(cap.actionTitle(), QStringLiteral("Freeze"));
+        QCOMPARE(cap.actionIconName(), QStringLiteral("media-playback-pause"));
+        QCOMPARE(cap.accessibleName(), QStringLiteral("Freeze"));
+        cap.setFrozen(true); // frozen: a click goes live
+        QCOMPARE(cap.actionTitle(), QStringLiteral("Live"));
+        QCOMPARE(cap.actionIconName(), QStringLiteral("media-playback-start"));
+        QCOMPARE(cap.accessibleName(), QStringLiteral("Live"));
+        QVERIFY(cap.toolTipText().contains(QStringLiteral("Live")));
+        QVERIFY(cap.toolTipText().contains(QStringLiteral("Space")));
+    }
+
     void clearingTheMainRowRemovesButtons()
     {
         CapsulePanel panel(nullptr);

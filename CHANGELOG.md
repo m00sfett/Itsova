@@ -15,6 +15,10 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 - Test infrastructure (#93): nested-KWin acceptance tests as CTest targets (label `nested`; a virtual KWin with a throw-away home per test, driven through D-Bus and KWin's fake input), `scripts/coverage.sh` (gcovr) and `scripts/mutate.sh` (Mull, limited to named files). `install.sh` runs only the offscreen tests.
 
+### Changed
+
+- The Freeze/Live end cap of the overlay panel names the action a click performs (#94): while live it shows *Freeze* with a pause icon, while frozen *Live* with a play icon (tooltip and accessible name likewise; the *More* entry follows, *Go Live* became *Live*). At rest it no longer carries a fill and a ring, so it weighs like the other buttons; hover fills it and keyboard focus adds the ring. "Freeze" and "Live" are fixed product terms in every language.
+
 ### Fixed
 
 - A recording that ends without a stop from the user now says so (#90): when the recorded window closes or the monitor goes away, glimply keeps what was recorded and shows *Recording ended early* with the reason (new notification event `recordingInterrupted`). The 0.10.0 report of a covered, static window that stopped after 10 s did not reproduce: a 60 s recording of a fully covered static window runs the full 60 s (nested-KWin test), and in KPipeWire the encoder only reaches its *Rendering* state through a stop call, which glimply makes only on a stop from the tray, the widget, a shortcut, D-Bus or quit. Since 0.11.0 the journal names that origin.
