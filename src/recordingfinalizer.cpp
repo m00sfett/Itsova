@@ -1,5 +1,7 @@
 #include "recordingfinalizer.h"
 
+#include "recordingmetadata.h"
+
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -118,9 +120,14 @@ QStringList tailFixArguments(const QString &input, const QString &output, const 
                          .arg(fix.lastPacket)
                          .arg(number(fix.extraSeconds)));
     }
-    return {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-y"), QStringLiteral("-i"), input,
-            QStringLiteral("-map"), QStringLiteral("0"), QStringLiteral("-c"), QStringLiteral("copy"),
-            QStringLiteral("-bsf:v"), QStringLiteral("setts=") + parts.join(QLatin1Char(':')), output};
+    QStringList args{QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-y"), QStringLiteral("-i"), input,
+                     QStringLiteral("-map"), QStringLiteral("0"), QStringLiteral("-c"), QStringLiteral("copy")};
+    if (!parts.isEmpty()) {
+        args << QStringLiteral("-bsf:v") << QStringLiteral("setts=") + parts.join(QLatin1Char(':'));
+    }
+    args += recordingMetadataArguments(output, fix.metadata);
+    args << output;
+    return args;
 }
 
 RecordingFinalizer::RecordingFinalizer(QObject *parent)
@@ -140,10 +147,12 @@ RecordingFinalizer::~RecordingFinalizer()
     }
 }
 
-void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs, const QList<RecordingPause> &pauses)
+void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs, const QList<RecordingPause> &pauses,
+                                  const QString &metadata)
 {
     path_ = path;
     pauses_ = pauses;
+    metadata_ = metadata;
     targetSeconds_ = double(targetDurationMs) / 1000.0;
     finished_ = false;
     const QString ffprobe = QStandardPaths::findExecutable(QStringLiteral("ffprobe"));
@@ -160,11 +169,16 @@ void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs, 
             finish(false, QStringLiteral("ffprobe failed"));
             return;
         }
-        const std::optional<TailFix> fix = planTailFix(output, targetSeconds_, pauses_);
-        if (!fix) {
+        std::optional<TailFix> fix = planTailFix(output, targetSeconds_, pauses_);
+        const bool tagged = !recordingMetadataArguments(path_, metadata_).isEmpty();
+        if (!fix && !tagged) {
             finish(false, QStringLiteral("nothing to extend"));
             return;
         }
+        if (!fix) {
+            fix = TailFix{}; // only the metadata (#103)
+        }
+        fix->metadata = metadata_;
         runFix(*fix);
     });
     connect(process_, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error) {
@@ -182,6 +196,7 @@ void RecordingFinalizer::finalize(const QString &path, qint64 targetDurationMs, 
 
 void RecordingFinalizer::runFix(const TailFix &fix)
 {
+    currentFix_ = fix;
     const QFileInfo info(path_);
     temporary_ = info.dir().filePath(QStringLiteral(".%1.part.%2").arg(info.completeBaseName(), info.suffix()));
     process_ = new QProcess(this);
@@ -203,7 +218,8 @@ void RecordingFinalizer::runFix(const TailFix &fix)
             return;
         }
         temporary_.clear();
-        finish(true, {});
+        const bool extended = currentFix_.extraSeconds > 0 || !currentFix_.pauses.isEmpty();
+        finish(extended, extended ? QString() : QStringLiteral("metadata written, nothing to extend"));
     });
     connect(process_, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error) {
         if (error == QProcess::FailedToStart) {

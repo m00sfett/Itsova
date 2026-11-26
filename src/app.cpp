@@ -6,6 +6,7 @@
 #include "areaselector.h"
 #include "captureoverlay.h"
 #include "logging.h"
+#include "recordingmetadata.h"
 #include "captureservice.h"
 #include "cli.h"
 #include "colorpicker.h"
@@ -2817,6 +2818,7 @@ std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, 
         }
         target.kind = RecordingTarget::Kind::Window;
         target.windowHandle = handle;
+        target.region = it->geometry; // where the window is, for the recording's metadata (#103)
         target.displayName = it->caption.isEmpty() ? it->appName : it->caption;
         target.token = windowToken(*it);
         return target;
@@ -2978,6 +2980,15 @@ void App::startRecorder(const QString &targetId)
     options.format = store_.recordingFormat;
     options.frameRate = store_.recordingFrameRate;
     options.includeCursor = store_.recordingCursor;
+    {
+        // Where the recording comes from (#103), for a later replay on the same monitors.
+        const QList<ScreenInfo> screens = currentScreens();
+        QList<qreal> scales;
+        for (const ScreenInfo &screen : screens) {
+            scales.append(nativeScale(screen));
+        }
+        options.metadata = recordingMetadataJson(buildRecordingMetadata(*target, screens, scales));
+    }
     options.path = uniqueRecordingPath(
         directory, recordingFileName(store_.effectiveFilenameTemplate(), target->token, QDateTime::currentDateTime(),
                                      options.format));

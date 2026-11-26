@@ -87,6 +87,7 @@ add_library(glimply_capture STATIC
     src/ocrengine.cpp
     src/pinstore.cpp
     src/recordingfinalizer.cpp
+    src/recordingmetadata.cpp
     src/recordingplan.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
@@ -319,6 +320,7 @@ if(BUILD_TESTING)
         glimply_nested_test(keyboard OPTIONS --monitors 2 --size 1600x900 --apps kcalc)
         glimply_nested_test(pick OPTIONS --apps kcalc)
         glimply_nested_test(stop-hints)
+        glimply_nested_test(record-metadata OPTIONS --apps kcalc)
         glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
         glimply_nested_test(record-window-closed OPTIONS --apps kcalc)
     endif()
