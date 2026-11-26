@@ -628,6 +628,31 @@ QSize CaptureSession::nativeSize(const QRect &globalRect) const
     return QSize(int(std::lround(globalRect.width() * scale)), int(std::lround(globalRect.height() * scale)));
 }
 
+QRect CaptureSession::nativeSelectionOn(const Selection &selection, const QString &connector) const
+{
+    return nudgedNativeArea(nativeSelectionOn(selection.rect, connector), selection.nativeNudge);
+}
+
+QSize CaptureSession::nativeSize(const Selection &selection) const
+{
+    const QList<ScreenInfo> hit = intersectingScreens(selection.rect);
+    if (hit.size() == 1 && hit.first().geometry.contains(selection.rect)) {
+        return nativeSelectionOn(selection, hit.first().connector).size();
+    }
+    return nativeSize(selection.rect); // across monitors the nudge does not apply
+}
+
+QRectF CaptureSession::displayRect(const Selection &selection) const
+{
+    if (selection.nativeNudge.isNull()) {
+        return QRectF(selection.rect);
+    }
+    const QList<ScreenInfo> hit = intersectingScreens(selection.rect);
+    const qreal scale = hit.isEmpty() ? 1.0 : monitorScale(hit.first().connector);
+    const QMargins &n = selection.nativeNudge;
+    return QRectF(selection.rect).adjusted(n.left() / scale, n.top() / scale, n.right() / scale, n.bottom() / scale);
+}
+
 qreal CaptureSession::frameScale(const QString &connector) const
 {
     const qreal scale = frames_.value(connector).scale;
@@ -899,11 +924,16 @@ QPoint CaptureSession::dragCursorGlobal() const
     return dragCursorGlobal_;
 }
 
-void CaptureSession::setDragLoupe(bool active, const QPoint &globalPos)
+void CaptureSession::setDragLoupe(bool active, const QPoint &globalPos, Qt::Edges edges, bool keyNudge)
 {
     dragLoupeActive_ = active;
     if (active) {
         dragCursorGlobal_ = globalPos;
+        dragEdges_ = edges;
+        dragKeyNudge_ = keyNudge;
+    } else {
+        dragEdges_ = {};
+        dragKeyNudge_ = false;
     }
 }
 
@@ -1330,7 +1360,8 @@ QImage CaptureSession::cropSelectionImage(const Selection &selection, bool inclu
             }
             return {};
         }
-        cropped = cropLogicalArea(frame.image, selection.rect.translated(-screen.geometry.topLeft()), frame.scale, error);
+        cropped = cropLogicalArea(frame.image, selection.rect.translated(-screen.geometry.topLeft()), frame.scale, error,
+                                  selection.nativeNudge);
         scale = frame.scale > 0.0 ? frame.scale : 1.0;
     } else {
         cropped = composeMonitorsCrop(hit, frames_, selection.rect, &scale, error);
@@ -3315,6 +3346,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         {tr("Shift while dragging"), tr("Keep a square")},
         {tr("Alt while dragging"), tr("Grow from the centre")},
         {tr("Space while dragging"), tr("Reposition live")},
+        {tr("Arrows while dragging"), tr("Move the corner by 1 / 10 screen pixels")},
         {tr("Arrows, nothing selected"), tr("Move through the panel and its menus")},
         {tr("Arrows / Shift+Arrows"), tr("Move by 1 px / 10 px")},
         {tr("Alt+Arrows / Ctrl+Arrows"), tr("Resize from the centre / as a square")},
@@ -3420,7 +3452,9 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
     if (!suppressBackdropDim) {
         QPainterPath holes;
         for (const Selection &selection : model.stack()) {
-            const QRect hole = toLocalRect(selection.rect).intersected(area);
+            const QRectF hole = session_->displayRect(selection)
+                                    .translated(-QPointF(screen_.geometry.topLeft()))
+                                    .intersected(QRectF(area));
             if (!hole.isEmpty()) {
                 holes.addRect(hole);
             }
@@ -3457,7 +3491,7 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             continue;
         }
         const bool active = selection.id == model.activeId();
-        const QRectF frame(local);
+        const QRectF frame = session_->displayRect(selection).translated(-QPointF(screen_.geometry.topLeft()));
         painter.setBrush(Qt::NoBrush);
         if (active) {
             painter.setPen(QPen(accent, 2));
@@ -3543,7 +3577,7 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
 
         // Size of the active rectangle, above its leading corner (inside when there is no room).
         // Native pixels: what the saved file will measure (#101).
-        const QSize nativeSize = session_->nativeSize(selection.rect);
+        const QSize nativeSize = session_->nativeSize(selection);
         const QString sizeText = tr("%1 × %2").arg(nativeSize.width()).arg(nativeSize.height());
         QFont sizeFont = font();
         sizeFont.setPointSizeF(std::max(7.0, sizeFont.pointSizeF() * 0.9));
@@ -3577,14 +3611,27 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
             // Frozen or live (#101): live, the pixels are the Print snapshot.
             bool snapshot = false;
             const QImage loupeImage = session_->loupeFrame(screen_.connector, &snapshot);
-            const QSize nativeSize = session_->nativeSize(sel->rect);
+            const QSize nativeSize = session_->nativeSize(*sel);
             if (session_->store().showSelectionLoupe && !loupeImage.isNull()) {
                 const qreal scale = session_->monitorScale(screen_.connector);
-                const QPoint nativePx =
+                QPoint nativePx =
                     logicalToNativePixel(QPointF(localCursor), QPointF(0.0, 0.0), scale, loupeImage.size());
+                const QRect nativeSel = session_->nativeSelectionOn(*sel, screen_.connector);
+                // Centred on the dragged corner or edge, which a nudge moves away from the pointer
+                // (#102): the inside pixel next to it.
+                const Qt::Edges edges = session_->dragEdges();
+                if (edges.testFlag(Qt::LeftEdge)) {
+                    nativePx.setX(nativeSel.left());
+                } else if (edges.testFlag(Qt::RightEdge)) {
+                    nativePx.setX(nativeSel.right());
+                }
+                if (edges.testFlag(Qt::TopEdge)) {
+                    nativePx.setY(nativeSel.top());
+                } else if (edges.testFlag(Qt::BottomEdge)) {
+                    nativePx.setY(nativeSel.bottom());
+                }
                 PixelLoupe::paintSelectionLoupe(painter, localCursor, area, pal, loupeImage, nativePx, nativePx,
-                                                nativeSize, session_->nativeSelectionOn(sel->rect, screen_.connector),
-                                                snapshot);
+                                                nativeSize, nativeSel, snapshot, session_->dragKeyNudge());
             } else {
                 PixelLoupe::paintDimensionPill(painter, localCursor, area, pal, session_->dragCursorGlobal(),
                                                nativeSize);
@@ -3731,7 +3778,11 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
     SelectionModel &model = session_->selections();
     anchor_ = globalPos;
     lastPosition_ = globalPos;
+    lastDragPos_ = globalPos;
     spaceHeld_ = false;
+    nudgeZone_.reset();
+    nudgeTotal_ = {};
+    dragStartNudge_ = {};
 
     const bool selectTool = session_->purpose() != CaptureSession::Purpose::Print
                          || session_->annotationController().effectiveTool(event->modifiers()) == ToolKind::Select;
@@ -3757,6 +3808,7 @@ void CaptureOverlay::mousePressEvent(QMouseEvent *event)
     if (active && !session_->forceNew()) {
         dragStartRect_ = active->rect;
         dragId_ = active->id;
+        dragStartNudge_ = active->nativeNudge; // restored by Escape, kept by a move (#102)
         if (const Qt::Edges edges = edgesAt(active->rect, globalPos)) {
             drag_ = Drag::Resize;
             dragEdges_ = edges;
@@ -3819,6 +3871,15 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
     } else if (drag_ == Drag::Move || drag_ == Drag::Resize) {
         session_->setDragging(true);
     }
+    QPoint dragPos = globalPos;
+    if (drag_ == Drag::Create || drag_ == Drag::Resize) {
+        // After an arrow key the mouse waits until it moves clearly, then continues from the corner (#102).
+        const std::optional<QPoint> filtered = nudgeZone_.filter(globalPos);
+        if (!filtered) {
+            return;
+        }
+        dragPos = *filtered;
+    }
     if (spaceHeld_ && (drag_ == Drag::Create || drag_ == Drag::Resize)) {
         const QRect bounds = session_->desktopBounds();
         anchor_.setX(std::clamp(anchor_.x() + step.x(), bounds.left(), bounds.left() + bounds.width()));
@@ -3827,7 +3888,20 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
             dragStartRect_ = clampToBounds(dragStartRect_.translated(step), bounds);
         }
     }
-    applyDrag(globalPos, event->modifiers());
+    applyDrag(dragPos, dragModifiers(event->modifiers()));
+}
+
+Qt::Edges CaptureOverlay::currentDragEdges(const QPoint &dragPos) const
+{
+    if (drag_ == Drag::Create) {
+        return draggedEdges(anchor_, dragPos);
+    }
+    return drag_ == Drag::Resize ? dragEdges_ : Qt::Edges();
+}
+
+Qt::KeyboardModifiers CaptureOverlay::dragModifiers(Qt::KeyboardModifiers modifiers) const
+{
+    return nudgeTotal_.isNull() ? modifiers : modifiers & ~Qt::ShiftModifier;
 }
 
 void CaptureOverlay::applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers)
@@ -3864,7 +3938,13 @@ void CaptureOverlay::applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers mo
     } else {
         return;
     }
-    session_->setDragLoupe(drag_ == Drag::Create || drag_ == Drag::Resize, globalPos);
+    lastDragPos_ = globalPos;
+    const Qt::Edges edges = currentDragEdges(globalPos);
+    if (drag_ == Drag::Create || drag_ == Drag::Resize) {
+        // A new selection may flip sides; the nudge follows the corner the pointer drags (#102).
+        model.setNativeNudge(dragId_, nudgedMargins(dragStartNudge_, edges, nudgeTotal_));
+    }
+    session_->setDragLoupe(drag_ == Drag::Create || drag_ == Drag::Resize, globalPos, edges, nudgeZone_.active());
     session_->changed();
 }
 
@@ -3989,7 +4069,7 @@ bool CaptureOverlay::reapplyModifiers(QKeyEvent *event)
         return false;
     }
     if (drag_ == Drag::Create || drag_ == Drag::Resize || drag_ == Drag::Move) {
-        applyDrag(lastPosition_, event->modifiers());
+        applyDrag(drag_ == Drag::Move ? lastPosition_ : lastDragPos_, dragModifiers(event->modifiers()));
     }
     updateCursor(lastPosition_);
     return false;
@@ -4259,6 +4339,27 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
             }
             return;
         }
+        // Arrow keys move the dragged corner or edge by one native pixel, Shift by ten (#102).
+        if ((drag_ == Drag::Create || drag_ == Drag::Resize)
+            && (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right || event->key() == Qt::Key_Up
+                || event->key() == Qt::Key_Down)) {
+            const int step = event->modifiers().testFlag(Qt::ShiftModifier) ? 10 : 1;
+            const QPoint delta = event->key() == Qt::Key_Left    ? QPoint(-step, 0)
+                                 : event->key() == Qt::Key_Right ? QPoint(step, 0)
+                                 : event->key() == Qt::Key_Up    ? QPoint(0, -step)
+                                                                 : QPoint(0, step);
+            const bool first = nudgeTotal_.isNull();
+            nudgeTotal_ += delta;
+            nudgeZone_.keyPressed(lastPosition_);
+            if (first && event->modifiers().testFlag(Qt::ShiftModifier)) {
+                applyDrag(lastDragPos_, dragModifiers(event->modifiers())); // Shift no longer squares
+            }
+            const Qt::Edges edges = currentDragEdges(lastDragPos_);
+            model.setNativeNudge(dragId_, nudgedMargins(dragStartNudge_, edges, nudgeTotal_));
+            session_->setDragLoupe(true, session_->dragCursorGlobal(), edges, true);
+            session_->changed();
+            return;
+        }
         if (event->key() == Qt::Key_Escape) {
             const Drag aborted = std::exchange(drag_, Drag::None);
             spaceHeld_ = false;
@@ -4268,6 +4369,7 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
                 model.remove(dragId_);
             } else if (aborted == Drag::Resize || aborted == Drag::Move) {
                 model.setRect(dragId_, dragStartRect_);
+                model.setNativeNudge(dragId_, dragStartNudge_);
             }
             session_->changed();
             updateCursor(lastPosition_);

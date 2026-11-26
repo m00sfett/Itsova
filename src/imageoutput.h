@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QImage>
 #include <QList>
+#include <QMargins>
 #include <QRect>
 #include <QString>
 
@@ -52,10 +53,12 @@ struct ExportOptions {
 // draws the same boundary. Empty when an edge is out of range.
 [[nodiscard]] QRect nativeAreaFor(const QRect &logicalArea, qreal scale);
 
+// nativeNudge (#102) moves the edges by whole native pixels on top of the logical area.
 [[nodiscard]] QImage cropLogicalArea(const QImage &nativeFrame,
                                        const QRect &logicalArea,
                                        qreal scale,
-                                       QString *error = nullptr);
+                                       QString *error = nullptr,
+                                       const QMargins &nativeNudge = QMargins());
 
 [[nodiscard]] QString sanitizeFilenameToken(const QString &token);
 

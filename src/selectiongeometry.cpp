@@ -411,4 +411,67 @@ QPointF overlaySelectionBadgeCenter(const QRectF &frame, Qt::LayoutDirection dir
     return direction == Qt::RightToLeft ? frame.topRight() + QPointF(-14, 14) : frame.topLeft() + QPointF(14, 14);
 }
 
+Qt::Edges draggedEdges(const QPoint &anchor, const QPoint &pointer)
+{
+    return Qt::Edges(pointer.x() >= anchor.x() ? Qt::RightEdge : Qt::LeftEdge)
+         | (pointer.y() >= anchor.y() ? Qt::BottomEdge : Qt::TopEdge);
+}
+
+QMargins nudgedMargins(const QMargins &base, Qt::Edges edges, const QPoint &delta)
+{
+    QMargins result = base;
+    if (edges.testFlag(Qt::LeftEdge)) {
+        result.setLeft(result.left() + delta.x());
+    }
+    if (edges.testFlag(Qt::RightEdge)) {
+        result.setRight(result.right() + delta.x());
+    }
+    if (edges.testFlag(Qt::TopEdge)) {
+        result.setTop(result.top() + delta.y());
+    }
+    if (edges.testFlag(Qt::BottomEdge)) {
+        result.setBottom(result.bottom() + delta.y());
+    }
+    return result;
+}
+
+QRect nudgedNativeArea(const QRect &nativeArea, const QMargins &nudge)
+{
+    if (nativeArea.isNull()) {
+        return nativeArea;
+    }
+    const int left = nativeArea.left() + nudge.left();
+    const int top = nativeArea.top() + nudge.top();
+    const int right = nativeArea.left() + nativeArea.width() + nudge.right();
+    const int bottom = nativeArea.top() + nativeArea.height() + nudge.bottom();
+    return QRect(left, top, std::max(1, right - left), std::max(1, bottom - top));
+}
+
+void NudgeDeadZone::keyPressed(const QPoint &pointer)
+{
+    active_ = true;
+    keyPointer_ = pointer;
+}
+
+std::optional<QPoint> NudgeDeadZone::filter(const QPoint &pointer)
+{
+    if (active_) {
+        const QPoint moved = pointer - keyPointer_;
+        if (moved.x() * moved.x() + moved.y() * moved.y() <= nudgeDeadZonePx * nudgeDeadZonePx) {
+            return std::nullopt;
+        }
+        // Take over from where the corner is: the movement that left the zone does not count.
+        active_ = false;
+        offset_ -= moved;
+    }
+    return pointer + offset_;
+}
+
+void NudgeDeadZone::reset()
+{
+    active_ = false;
+    offset_ = {};
+    keyPointer_ = {};
+}
+
 } // namespace glimply

@@ -7,6 +7,7 @@
 #include "selectionmodel.h"
 #include "targets.h"
 #include "windowlist.h"
+#include "selectiongeometry.h"
 #include "windowpick.h"
 
 #include <QDateTime>
@@ -78,6 +79,11 @@ public:
     [[nodiscard]] QRect nativeSelectionOn(const QRect &globalRect, const QString &connector) const;
     // The pixel size the saved file of globalRect will have.
     [[nodiscard]] QSize nativeSize(const QRect &globalRect) const;
+    // The same with the selection's native nudge (#102).
+    [[nodiscard]] QRect nativeSelectionOn(const Selection &selection, const QString &connector) const;
+    [[nodiscard]] QSize nativeSize(const Selection &selection) const;
+    // The selection drawn on screen: its logical rectangle moved by its nudge (logical, fractional).
+    [[nodiscard]] QRectF displayRect(const Selection &selection) const;
     [[nodiscard]] SelectionModel &selections();
     [[nodiscard]] TargetStore &store() const;
     [[nodiscard]] AnnotationDocument &annotations();
@@ -94,7 +100,11 @@ public:
     [[nodiscard]] bool isDragging() const;
     [[nodiscard]] bool dragLoupeActive() const;
     [[nodiscard]] QPoint dragCursorGlobal() const;
-    void setDragLoupe(bool active, const QPoint &globalPos = {});
+    // edges: the corner or edge being dragged (the loupe centres on it); keyNudge: the arrow-key dead
+    // zone holds the mouse (#102).
+    void setDragLoupe(bool active, const QPoint &globalPos = {}, Qt::Edges edges = {}, bool keyNudge = false);
+    [[nodiscard]] Qt::Edges dragEdges() const { return dragEdges_; }
+    [[nodiscard]] bool dragKeyNudge() const { return dragKeyNudge_; }
     [[nodiscard]] bool colorPickerActive() const;
     void setColorPickerActive(bool active);
     [[nodiscard]] QPoint pickerCursorGlobal() const;
@@ -252,6 +262,8 @@ private:
     bool dragging_ = false;
     bool dragLoupeActive_ = false;
     QPoint dragCursorGlobal_;
+    Qt::Edges dragEdges_;
+    bool dragKeyNudge_ = false;
     bool colorPickerActive_ = false;
     QPoint pickerCursorGlobal_;
     QString transientHint_;
@@ -358,6 +370,14 @@ private:
     QPoint lastPosition_;
     QRect dragStartRect_;
     Qt::Edges dragEdges_;
+    // Arrow-key nudging while a corner or edge is dragged (#102).
+    NudgeDeadZone nudgeZone_;
+    QMargins dragStartNudge_;
+    QPoint nudgeTotal_;   // native pixels added by arrow keys in this drag
+    QPoint lastDragPos_;  // the position the drag last used (pointer plus the dead zone's offset)
+    [[nodiscard]] Qt::Edges currentDragEdges(const QPoint &dragPos) const;
+    // Once a drag was nudged, Shift means "10 pixels" for the arrows, not "square".
+    [[nodiscard]] Qt::KeyboardModifiers dragModifiers(Qt::KeyboardModifiers modifiers) const;
 
     InlineTextEditor *textEditor_ = nullptr;
     CapsulePanel *panel_ = nullptr;

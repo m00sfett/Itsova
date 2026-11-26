@@ -27,7 +27,8 @@ void paintSelectionLoupe(QPainter &painter,
                          const QPoint &displayCoord,
                          const QSize &selectionSize,
                          const QRect &nativeSelection = QRect(),
-                         bool snapshot = false);
+                         bool snapshot = false,
+                         bool keyNudge = false);
 
 void paintDimensionPill(QPainter &painter,
                         const QPoint &cursorLocal,

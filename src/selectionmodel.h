@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QList>
+#include <QMargins>
 #include <QPoint>
 #include <QRect>
 #include <QString>
@@ -13,6 +14,8 @@ struct Selection {
     int id = 0;
     QString connector;
     QRect rect;
+    // Edges moved by whole native pixels of the selection's monitor (#102), on top of rect.
+    QMargins nativeNudge;
 };
 
 // The rectangles of one overlay session. Rectangles may overlap; the most recently touched one
@@ -24,6 +27,7 @@ public:
     int add(const QString &connector, const QRect &rect);
     int add(const QRect &globalRect);
     void setRect(int id, const QRect &rect);
+    void setNativeNudge(int id, const QMargins &nudge);
     void remove(int id);
     void clear();
 
