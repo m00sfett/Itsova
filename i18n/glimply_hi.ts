@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Print दबाने के समय की</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>क्लिक: कॉपी · Alt+क्लिक: उपयोग · Tab: प्रारूप</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>छिपाएँ ऑपरेशन #%1 के लिए x, y, width &gt; 0, height &gt; 0 आवश्यक हैं।</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>ऑपरेशन #%2 पर असमर्थित एनोटेशन प्रकार &apos;%1&apos; है।</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>ऑपरेशन #%2 पर असमर्थित एनोटेशन प्रकार '%1' है।</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>एनोटेट की गई छवि रेंडर करने में विफल।</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>overwrite=true के बिना इनपुट फ़ाइल &apos;%1&apos; को अधिलेखित करने से इनकार।</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>overwrite=true के बिना इनपुट फ़ाइल '%1' को अधिलेखित करने से इनकार।</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>रोकने के लिए क्लिक करें</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>रोकने के लिए क्लिक करें या %1 दबाएँ</translation>
     </message>
 </context>
 <context>
@@ -962,6 +977,14 @@
         <translation>%1 क्लिपबोर्ड पर कॉपी किया गया</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>रिकॉर्डिंग समय से पहले समाप्त हुई</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>अब तक जो रिकॉर्ड हुआ है, वह सहेज लिया गया है।</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>रिकॉर्डिंग कॉपी की गई</translation>
     </message>
@@ -974,8 +997,8 @@
         <translation>ट्रैश में ले जाया नहीं जा सका: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>अज्ञात क्रिया &quot;%1&quot;।</translation>
+        <source>Unknown action "%1".</source>
+        <translation>अज्ञात क्रिया "%1"।</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1082,8 +1105,8 @@
         <translation>एक कैप्चर उलटी गिनती पहले से चल रही है।</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>&apos;window:&apos; के बाद विंडो निर्दिष्टकर्ता खाली नहीं हो सकता।</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>'window:' के बाद विंडो निर्दिष्टकर्ता खाली नहीं हो सकता।</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1170,20 +1193,20 @@
         <translation>MCP ने %1 कैप्चर किया</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>असमर्थित छवि प्रारूप &apos;%1&apos;।</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>असमर्थित छवि प्रारूप '%1'।</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; 1 और 100 के बीच एक पूर्णांक होना चाहिए।</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' 1 और 100 के बीच एक पूर्णांक होना चाहिए।</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos; आवश्यक है।</translation>
+        <source>'target' is required.</source>
+        <translation>'target' आवश्यक है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation>एक बाहरी MCP क्लाइंट &quot;%1&quot; (%2) को कैप्चर करना चाहता है।</translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>एक बाहरी MCP क्लाइंट "%1" (%2) को कैप्चर करना चाहता है।</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1194,12 +1217,12 @@
         <translation>एक बाहरी MCP क्लाइंट %5 पर (%3, %4) पर %1x%2 क्षेत्र कैप्चर करना चाहता है।</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos; आवश्यक है।</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' आवश्यक है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation>एक बाहरी MCP क्लाइंट विंडो &quot;%1&quot; को कैप्चर करना चाहता है।</translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>एक बाहरी MCP क्लाइंट विंडो "%1" को कैप्चर करना चाहता है।</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1210,28 +1233,28 @@
         <translation>एक बाहरी MCP क्लाइंट अंतिम कैप्चर (%1) को पढ़ना चाहता है।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation>एक बाहरी MCP क्लाइंट &quot;%2&quot; के लिए हर %1 सेकंड में अंतराल कैप्चर शुरू करना चाहता है।</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>एक बाहरी MCP क्लाइंट "%2" के लिए हर %1 सेकंड में अंतराल कैप्चर शुरू करना चाहता है।</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>&apos;target&apos; निर्दिष्ट करें या &apos;all&apos;: true सेट करें।</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>'target' निर्दिष्ट करें या 'all': true सेट करें।</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image के लिए एक गैर-रिक्त input_path और operations सरणी आवश्यक है।</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>MCP अनुमति सूची मोड में, input_path glimply की कैप्चर निर्देशिका के भीतर एक मौजूदा फ़ाइल होनी चाहिए।</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>MCP अनुमति सूची मोड में, output_path glimply की कैप्चर निर्देशिका के भीतर होना चाहिए।</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation>एक बाहरी MCP क्लाइंट &quot;%1&quot; को एनोटेट करना चाहता है (%2 ऑपरेशन)।</translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>एक बाहरी MCP क्लाइंट "%1" को एनोटेट करना चाहता है (%2 ऑपरेशन)।</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1273,6 +1296,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>फ़ोल्डर %1 नहीं बनाया जा सका।</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>%1 की रिकॉर्डिंग</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>रोकने के लिए सिस्टम ट्रे में glimply आइकन पर क्लिक करें।</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>रोकने के लिए सिस्टम ट्रे में glimply आइकन पर क्लिक करें या %1 दबाएँ।</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>रोकें</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1300,12 +1339,9 @@
         <translation>%1 पर glimply कैप्चर</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>फ़्रीज़</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>लाइव</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1316,20 +1352,12 @@
         <translation>सभी मॉनिटर</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>विंडो</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>क्षेत्र</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>विलंब</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>एनोटेट करें</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1524,28 +1552,25 @@
         <translation>रिकॉर्ड</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>क्षेत्र और विंडो</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>रिकॉर्डिंग शुरू करें</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>विंडो</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · रोकें: सिस्टम ट्रे में glimply पर क्लिक करें</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>लाइव करें</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>फ़्रीज़ करें</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>मॉनिटर, विंडो और क्षेत्र</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>मॉनिटर</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (यह मॉनिटर)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1671,6 +1696,22 @@
         <translation>लाइव रहते हुए ले जाएँ</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>खींचते समय तीर</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>कोने को 1 / 10 स्क्रीन पिक्सेल से ले जाएँ</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>तीर, कुछ भी चयनित नहीं</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>पैनल और उसके मेनू में आगे बढ़ें</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>1 px / 10 px में ले जाएँ</translation>
     </message>
@@ -1695,10 +1736,6 @@
         <translation>एक कदम पीछे जाएँ, या बंद करें</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>यह मॉनिटर कैप्चर करें</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>एडिटर विंडो में खोलें</translation>
     </message>
@@ -1712,7 +1749,11 @@
     </message>
     <message>
         <source>Markup</source>
-        <translation>एनोटेशन</translation>
+        <translation>मार्कअप</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>पॉइंटर के नीचे की विंडो या मॉनिटर कैप्चर करें</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2390,12 +2431,24 @@
         <translation>रिकॉर्डिंग एन्कोड नहीं की जा सकी।</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>एन्कोडर अपने आप रुक गया।</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>रिकॉर्डिंग बिना किसी फ़्रेम के समाप्त हो गई।</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin ने स्क्रीन स्ट्रीम देने से इनकार कर दिया।</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>रिकॉर्ड की जा रही विंडो बंद कर दी गई।</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>रिकॉर्ड किया जा रहा मॉनिटर अब उपलब्ध नहीं है।</translation>
     </message>
 </context>
 <context>
@@ -2541,8 +2594,8 @@
         <translation>कैप्चर-पश्चात हुक और बाहरी स्वचालन</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2625,7 +2678,7 @@
         <translation>स्क्रीन पर चुनें…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>मॉनिटर के ऊपरी बाएँ कोने के सापेक्ष तार्किक पिक्सेल। कैप्चर मॉनिटर के मूल रिज़ॉल्यूशन का उपयोग करते हैं।</translation>
     </message>
     <message>
@@ -2701,7 +2754,7 @@
         <translation>मॉनिटरों में वैश्विक तार्किक निर्देशांक। कैप्चर उच्चतम स्केल पर प्रतिच्छेदित मॉनिटरों को संयोजित करते हैं।</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>इस क्षेत्र का कोई भी मॉनिटर कनेक्ट नहीं है। ट्रिगर होने पर कुछ भी सहेजा नहीं जाता।</translation>
     </message>
     <message>
@@ -3010,11 +3063,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>फ़्रीज़</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>लाइव</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3061,8 +3114,8 @@
         <translation>लूप:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>फ़्रीज़ किए गए चयन को खींचते या आकार बदलते समय एक आवर्धित 11 × 11 मूल पिक्सेल पूर्वावलोकन दिखाता है।</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>खींचने या चयन का आकार बदलने के दौरान 11 × 11 नेटिव पिक्सेल का बड़ा पूर्वावलोकन दिखाता है। लाइव होने पर यह वह चित्र दिखाता है जो आपके Print दबाने पर लिया गया था।</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3075,6 +3128,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>कहीं भी पिक्सेल रंग चयनकर्ता खोलने के लिए वैश्विक शॉर्टकट।</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>विस्तृत लॉग लिखें</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>लॉगिंग:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply हमेशा शुरू होने, रुकने और त्रुटियों को सिस्टम जर्नल में लिखता है। विस्तृत लॉग बग रिपोर्ट में मदद करते हैं। उन्हें glimply logs से देखें।</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3666,8 +3731,8 @@
         <translation>--mode के लिए मान अनुपस्थित है।</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode &apos;frozen&apos; या &apos;live&apos; होना चाहिए।</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode 'frozen' या 'live' होना चाहिए।</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3719,6 +3784,10 @@ Scriptable CLI subcommands:
   interval           अंतराल कैप्चर शुरू करें, रोकें, या जांचें
   overlay            इंटरैक्टिव कैप्चर ओवरले खोलें
   mcp                स्थानीय stdio MCP सर्वर चलाएँ (डिफ़ॉल्ट रूप से अक्षम)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>सिस्टम जर्नल में विस्तृत लॉग लिखें।</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

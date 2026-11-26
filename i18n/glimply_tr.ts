@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Print tuşuna basıldığı andaki hali</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Tıkla: Kopyala · Alt+Tıkla: Kullan · Tab: Biçim</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>#%1 numaralı gizleme işlemi x, y, width &gt; 0, height &gt; 0 gerektirir.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>#%2 numaralı işlemde desteklenmeyen ek açıklama türü &apos;%1&apos;.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>#%2 numaralı işlemde desteklenmeyen ek açıklama türü '%1'.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Ek açıklamalı görsel işlenemedi.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>overwrite=true olmadan &apos;%1&apos; girdi dosyasının üzerine yazma reddedildi.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>overwrite=true olmadan '%1' girdi dosyasının üzerine yazma reddedildi.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Durdurmak için tıklayın</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Durdurmak için tıklayın veya %1 tuşuna basın</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>%1 panoya kopyalandı</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Kayıt erken sonlandı</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>O ana kadar kaydedilen içerik kaydedildi.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Kayıt kopyalandı</translation>
     </message>
@@ -971,8 +994,8 @@
         <translation>Çöp kutusuna taşınamadı: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>Bilinmeyen eylem &quot;%1&quot;.</translation>
+        <source>Unknown action "%1".</source>
+        <translation>Bilinmeyen eylem "%1".</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1079,8 +1102,8 @@
         <translation>Bir yakalama geri sayımı zaten çalışıyor.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>&apos;window:&apos; sonrasındaki pencere belirtici boş olamaz.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>'window:' sonrasındaki pencere belirtici boş olamaz.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1148,7 +1171,7 @@
     </message>
     <message>
         <source>Invalid MCP tool arguments JSON: %1</source>
-        <translation>Geçersiz MCP araç argümanları JSON&apos;u: %1</translation>
+        <translation>Geçersiz MCP araç argümanları JSON'u: %1</translation>
     </message>
     <message>
         <source>MCP request was denied by user or timed out.</source>
@@ -1167,20 +1190,20 @@
         <translation>MCP %1 yakaladı</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>Desteklenmeyen görsel biçimi &apos;%1&apos;.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Desteklenmeyen görsel biçimi '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; 1 ile 100 arasında bir tam sayı olmalıdır.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' 1 ile 100 arasında bir tam sayı olmalıdır.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos; gerekli.</translation>
+        <source>'target' is required.</source>
+        <translation>'target' gerekli.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation>Harici bir MCP istemcisi &quot;%1&quot; (%2) hedefini yakalamak istiyor.</translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Harici bir MCP istemcisi "%1" (%2) hedefini yakalamak istiyor.</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1191,12 +1214,12 @@
         <translation>Harici bir MCP istemcisi %5 üzerindeki (%3, %4) konumunda %1x%2 bölgesini yakalamak istiyor.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos; gerekli.</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' gerekli.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation>Harici bir MCP istemcisi &quot;%1&quot; penceresini yakalamak istiyor.</translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Harici bir MCP istemcisi "%1" penceresini yakalamak istiyor.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1207,28 +1230,28 @@
         <translation>Harici bir MCP istemcisi son yakalamayı (%1) okumak istiyor.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation>Harici bir MCP istemcisi &quot;%2&quot; için her %1 sn&apos;de bir aralıklı yakalama başlatmak istiyor.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Harici bir MCP istemcisi "%2" için her %1 sn'de bir aralıklı yakalama başlatmak istiyor.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>&apos;target&apos; belirtin veya &apos;all&apos;: true ayarlayın.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>'target' belirtin veya 'all': true ayarlayın.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image boş olmayan input_path ve operations dizisi gerektirir.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>MCP İzin listesi modunda input_path, glimply yakalama dizini içindeki mevcut bir dosya olmalıdır.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>MCP İzin listesi modunda output_path, glimply yakalama dizini içinde olmalıdır.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation>Harici bir MCP istemcisi &quot;%1&quot; (%2 işlem) üzerine ek açıklama eklemek istiyor.</translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Harici bir MCP istemcisi "%1" (%2 işlem) üzerine ek açıklama eklemek istiyor.</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>%1 klasörü oluşturulamadı.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Kayıt: %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Durdurmak için sistem tepsisindeki glimply simgesine tıklayın.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Durdurmak için sistem tepsisindeki glimply simgesine tıklayın veya %1 tuşuna basın.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Durdur</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>%1 üzerinde glimply yakalaması</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Dondurulmuş</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Canlı</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>Tüm Ekranlar</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Pencere</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Alanlar</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Gecikme</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Ek Açıklama</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1422,7 +1450,7 @@
     </message>
     <message>
         <source>No saved areas yet. Draw a rectangle, then choose Save as Area.</source>
-        <translation>Henüz kayıtlı alan yok. Bir dikdörtgen çizin, ardından Alan Olarak Kaydet&apos;i seçin.</translation>
+        <translation>Henüz kayıtlı alan yok. Bir dikdörtgen çizin, ardından Alan Olarak Kaydet'i seçin.</translation>
     </message>
     <message>
         <source>More</source>
@@ -1521,28 +1549,25 @@
         <translation>Kayıt</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Alanlar ve Pencereler</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Kaydı Başlat</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Pencereler</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · Durdurmak için sistem tepsisinde glimply&apos;e tıkla</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Canlıya Geç</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Dondur</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Ekranlar, Pencereler ve Alanlar</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Ekranlar</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (bu ekran)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>Canlıyken yeniden konumlandır</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Sürüklerken oklar</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Köşeyi 1 / 10 ekran pikseli kadar taşır</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Oklar, hiçbir şey seçili değil</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Panel ve menüleri arasında gezin</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>1 px / 10 px kadar taşı</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>Bir adım geri git veya kapat</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Bu ekranı yakala</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Düzenleyici pencerede aç</translation>
     </message>
@@ -1705,6 +1742,10 @@
     <message>
         <source>Markup</source>
         <translation>Ek Açıklama</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>İmlecin altındaki pencereyi veya ekranı yakala</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -1923,7 +1964,7 @@
     </message>
     <message>
         <source>Invalid capture request JSON.</source>
-        <translation>Geçersiz yakalama isteği JSON&apos;u.</translation>
+        <translation>Geçersiz yakalama isteği JSON'u.</translation>
     </message>
     <message>
         <source>Capture request is missing a valid target or format.</source>
@@ -2047,7 +2088,7 @@
     </message>
     <message>
         <source>Stopped interval capture for “%1”: less than 100 MB of free disk space remaining.</source>
-        <translation>«%1» için aralıklı yakalama durduruldu: 100 MB&apos;tan az boş disk alanı kaldı.</translation>
+        <translation>«%1» için aralıklı yakalama durduruldu: 100 MB'tan az boş disk alanı kaldı.</translation>
     </message>
     <message>
         <source>Stopped interval capture for “%1”: the target is no longer available.</source>
@@ -2365,7 +2406,7 @@
     </message>
     <message>
         <source>KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file grants the screencast interface, then log in again.</source>
-        <translation>KWin, glimply&apos;e ekran kaydı sunmuyor. Masaüstü dosyasının ekran yayını arayüzüne izin vermesi için glimply&apos;i yeniden yükle, ardından yeniden oturum aç.</translation>
+        <translation>KWin, glimply'e ekran kaydı sunmuyor. Masaüstü dosyasının ekran yayını arayüzüne izin vermesi için glimply'i yeniden yükle, ardından yeniden oturum aç.</translation>
     </message>
     <message>
         <source>KWin did not deliver the screen stream.</source>
@@ -2380,12 +2421,24 @@
         <translation>Kayıt kodlanamadı.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Kodlayıcı kendiliğinden durdu.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Kayıt hiç kare içermeden sona erdi.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin ekran akışını reddetti.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Kaydedilen pencere kapatıldı.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Kaydedilen ekran artık kullanılamıyor.</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>Yakalama sonrası kancalar ve harici otomasyon</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>Ekranda Seç…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Ekranın sol üst köşesine göre mantıksal pikseller. Yakalamalar ekranın doğal çözünürlüğünü kullanır.</translation>
     </message>
     <message>
@@ -2668,7 +2721,7 @@
     </message>
     <message>
         <source>Global: works in every application. Also editable in System Settings.</source>
-        <translation>Genel: her uygulamada çalışır. Sistem Ayarları&apos;ndan da düzenlenebilir.</translation>
+        <translation>Genel: her uygulamada çalışır. Sistem Ayarları'ndan da düzenlenebilir.</translation>
     </message>
     <message>
         <source>%1 (not connected)</source>
@@ -2691,7 +2744,7 @@
         <translation>Ekranlar arası genel mantıksal koordinatlar. Yakalamalar kesişen ekranları en yüksek ölçekte birleştirir.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Bu alanın ekranlarından hiçbiri bağlı değil. Tetiklendiğinde hiçbir şey kaydedilmez.</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Dondurulmuş</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Canlı</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>Büyüteç:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Dondurulmuş bir seçimi sürüklerken veya yeniden boyutlandırırken büyütülmüş 11 × 11 doğal piksel önizlemesi gösterir.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Sürüklerken veya seçimin boyutunu değiştirirken 11 × 11 piksellik büyütülmüş bir önizleme gösterir. Canlı modda Print tuşuna bastığınız andaki görüntüyü gösterir.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Her yerden piksel rengi seçiciyi açmak için genel kısayol.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Ayrıntılı günlükler yaz</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Günlükleme:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply her zaman başlatma, durdurma ve hataları sistem günlüğüne yazar. Ayrıntılı günlükler hata raporlarında yardımcı olur. Bunları glimply logs ile görüntüleyin.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,8 +3720,8 @@
         <translation>--mode için değer eksik.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode &apos;frozen&apos; veya &apos;live&apos; olmalıdır.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode 'frozen' veya 'live' olmalıdır.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3708,6 +3773,10 @@ Betiklenebilir CLI alt komutları:
   interval           Aralıklı yakalamaları başlat, durdur veya incele
   overlay            Etkileşimli yakalama katmanını aç
   mcp                Yerel stdio MCP sunucusunu çalıştır (varsayılan olarak devre dışı)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Ayrıntılı günlükleri sistem günlüğüne yaz.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

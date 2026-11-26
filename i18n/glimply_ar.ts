@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>اعتبارًا من Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>نقر: نسخ · Alt+نقر: استخدام · Tab: التنسيق</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>عملية الطمس #%1 تتطلب x و y و width &gt; 0 و height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>نوع التعليق التوضيحي غير المدعوم &apos;%1&apos; في العملية #%2.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>نوع التعليق التوضيحي غير المدعوم '%1' في العملية #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>فشل تصيير الصورة المشروحة.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>تم رفض الكتابة فوق ملف الإدخال &apos;%1&apos; بدون overwrite=true.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>تم رفض الكتابة فوق ملف الإدخال '%1' بدون overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>انقر للإيقاف</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>انقر أو اضغط %1 للإيقاف</translation>
     </message>
 </context>
 <context>
@@ -974,6 +989,14 @@
         <translation>تم نسخ %1 إلى الحافظة</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>انتهى التسجيل مبكرًا</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>يُحفظ ما سُجِّل حتى تلك اللحظة.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>تم نسخ التسجيل</translation>
     </message>
@@ -986,7 +1009,7 @@
         <translation>تعذّر النقل إلى سلة المهملات: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>إجراء غير معروف «%1».</translation>
     </message>
     <message>
@@ -1094,8 +1117,8 @@
         <translation>العد التنازلي للالتقاط قيد التشغيل بالفعل.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>محدد النافذة بعد &apos;window:&apos; لا يمكن أن يكون فارغًا.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>محدد النافذة بعد 'window:' لا يمكن أن يكون فارغًا.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1182,19 +1205,19 @@
         <translation>التقط MCP %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>تنسيق الصورة غير مدعوم &apos;%1&apos;.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>تنسيق الصورة غير مدعوم '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>يجب أن يكون &apos;quality&apos; عددًا صحيحًا بين 1 و 100.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>يجب أن يكون 'quality' عددًا صحيحًا بين 1 و 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos; مطلوب.</translation>
+        <source>'target' is required.</source>
+        <translation>'target' مطلوب.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>يريد عميل MCP خارجي التقاط «%1» (%2).</translation>
     </message>
     <message>
@@ -1206,11 +1229,11 @@
         <translation>يريد عميل MCP خارجي التقاط المنطقة %1x%2 عند (%3, %4) على %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos; مطلوب.</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' مطلوب.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>يريد عميل MCP خارجي التقاط النافذة «%1».</translation>
     </message>
     <message>
@@ -1222,27 +1245,27 @@
         <translation>يريد عميل MCP خارجي قراءة آخر لقطة (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>يريد عميل MCP خارجي بدء التقاط دوري كل %1 ثانية لـ «%2».</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>حدد &apos;target&apos; أو عيّن &apos;all&apos;: true.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>حدد 'target' أو عيّن 'all': true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>يتطلب annotate_image مسار input_path غير فارغ ومصفوفة operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>في وضع قائمة السماح لـ MCP، يجب أن يكون input_path ملفًا موجودًا داخل مجلد لقطات glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>في وضع قائمة السماح لـ MCP، يجب أن يكون output_path داخل مجلد لقطات glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>يريد عميل MCP خارجي إضافة شروح إلى «%1» (%2 عملية/عمليات).</translation>
     </message>
     <message>
@@ -1285,6 +1308,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>تعذّر إنشاء المجلد %1.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>تسجيل %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>انقر على أيقونة glimply في علبة النظام للإيقاف.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>انقر على أيقونة glimply في علبة النظام أو اضغط %1 للإيقاف.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>إيقاف</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1312,12 +1351,9 @@
         <translation>لقطة glimply على %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>مجمّد</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>مباشر</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1328,20 +1364,12 @@
         <translation>كل الشاشات</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>نافذة</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>المناطق</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>تأخير</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>شروح</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1536,28 +1564,25 @@
         <translation>تسجيل</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>المناطق والنوافذ</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>بدء التسجيل</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>النوافذ</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1، %2 fps · للإيقاف: انقر على glimply في علبة النظام</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>عرض مباشر</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>تجميد</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>الشاشات والنوافذ والمناطق</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>الشاشات</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (هذه الشاشة)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1703,6 +1728,22 @@
         <translation>تغيير الموضع في العرض المباشر</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>الأسهم أثناء السحب</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>تحريك الزاوية بمقدار 1 / 10 من بكسل الشاشة</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>الأسهم، ولا شيء محدد</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>التنقل عبر اللوحة وقوائمها</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>تحريك بمقدار 1 px / 10 px</translation>
     </message>
@@ -1727,10 +1768,6 @@
         <translation>الرجوع خطوة للخلف، أو الإغلاق</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>التقاط هذه الشاشة</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>فتح في نافذة المحرّر</translation>
     </message>
@@ -1745,6 +1782,10 @@
     <message>
         <source>Markup</source>
         <translation>شروح</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>التقاط النافذة أو الشاشة تحت المؤشر</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2430,12 +2471,24 @@
         <translation>تعذّر ترميز التسجيل.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>توقف المشفّر من تلقاء نفسه.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>انتهى التسجيل دون أي إطارات.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>رفض KWin بث الشاشة.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>أُغلقت النافذة المسجّلة.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>الشاشة المسجّلة لم تعد متاحة.</translation>
     </message>
 </context>
 <context>
@@ -2581,8 +2634,8 @@
         <translation>الخطّافات بعد الالتقاط والأتمتة الخارجية</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2665,7 +2718,7 @@
         <translation>تحديد على الشاشة…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>بكسلات منطقية نسبةً إلى الزاوية العلوية اليسرى للشاشة. تستخدم اللقطات الدقة الأصلية للشاشة.</translation>
     </message>
     <message>
@@ -2741,7 +2794,7 @@
         <translation>إحداثيات منطقية عامة عبر الشاشات. تدمج اللقطات الشاشات المتقاطعة بأعلى مقياس.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>لا توجد أي من شاشات هذه المنطقة متصلة. لن يُحفظ شيء عند التشغيل.</translation>
     </message>
     <message>
@@ -3050,11 +3103,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>مجمّد</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>مباشر</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3101,8 +3154,8 @@
         <translation>العدسة:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>تُظهر معاينة مكبّرة بمقدار 11 × 11 بكسل أصلي أثناء سحب أو تغيير حجم تحديد مجمّد.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>يعرض معاينة مكبّرة بحجم 11 × 11 بكسل أصلي أثناء سحب التحديد أو تغيير حجمه. وأثناء البث المباشر تعرض الصورة التي التُقطت عند الضغط على Print.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3115,6 +3168,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>اختصار عام لفتح ملتقط لون البكسل في أي مكان.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>كتابة السجلات المفصلة</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>التسجيل:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>يكتب glimply دائمًا عمليات البدء والإيقاف والأخطاء في يومية النظام. تساعد السجلات المفصلة في تقارير الأخطاء. اعرضها باستخدام glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3710,8 +3775,8 @@
         <translation>قيمة مفقودة لـ --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>يجب أن يكون --mode &apos;frozen&apos; أو &apos;live&apos;.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>يجب أن يكون --mode 'frozen' أو 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3763,6 +3828,10 @@ Scriptable CLI subcommands:
   interval           بدء أو إيقاف أو فحص الالتقاط الدوري
   overlay            فتح تراكب الالتقاط التفاعلي
   mcp                تشغيل خادم MCP المحلي عبر stdio (معطل افتراضيًا)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>كتابة السجلات المفصلة في يومية النظام.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
