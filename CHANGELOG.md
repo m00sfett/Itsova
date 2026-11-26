@@ -17,6 +17,7 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 ### Fixed
 
+- A recording that ends without a stop from the user now says so (#90): when the recorded window closes or the monitor goes away, glimply keeps what was recorded and shows *Recording ended early* with the reason (new notification event `recordingInterrupted`). The 0.10.0 report of a covered, static window that stopped after 10 s did not reproduce: a 60 s recording of a fully covered static window runs the full 60 s (nested-KWin test), and in KPipeWire the encoder only reaches its *Rendering* state through a stop call, which glimply makes only on a stop from the tray, the widget, a shortcut, D-Bus or quit. Since 0.11.0 the journal names that origin.
 - Notification settings had no effect (#91): the notification events were installed as `glimply.notifyrc`, but KNotification looks for `io.github.m00sfett.glimply.notifyrc`, so every notification fell back to the defaults and logged "No event config could be found". The file now carries the component's name; the installer removes the old file.
 
 ## [0.10.0] - Unreleased

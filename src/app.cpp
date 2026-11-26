@@ -247,6 +247,11 @@ App::App(QObject *parent)
                 runPostCaptureHook(target.targetId, target.displayName, {path}, now,
                                    recordingFormatKey(store_.recordingFormat), QStringLiteral("record"));
             });
+    connect(recorder_, &ScreenRecorder::interrupted, this, [this](const QString &reason) {
+        qCWarning(lcRecord) << "recording ended early:" << reason;
+        notify(QStringLiteral("recordingInterrupted"), tr("Recording ended early"),
+               {reason, tr("What was recorded until then is saved.")});
+    });
     connect(recorder_, &ScreenRecorder::failed, this,
             [this](const QString &error) { notifyError(tr("Recording failed"), {error}); });
     connect(tray_, &TrayController::stopRecordingRequested, this, &App::stopRecording);
@@ -926,7 +931,7 @@ void App::notify(const QString &eventId, const QString &title, const QStringList
         KNotification::event(eventId, title, text, notifyComponentName());
     } else {
         KNotification::StandardEvent fallback = KNotification::Error;
-        if (eventId == QLatin1String("monitorChanged")) {
+        if (eventId == QLatin1String("monitorChanged") || eventId == QLatin1String("recordingInterrupted")) {
             fallback = KNotification::Warning;
         } else if (eventId == QLatin1String("partialCapture") || eventId == QLatin1String("captureSaved")
                    || eventId == QLatin1String("colorPicked") || eventId == QLatin1String("intervalStopped")

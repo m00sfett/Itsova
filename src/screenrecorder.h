@@ -68,6 +68,9 @@ Q_SIGNALS:
     // The file is complete and playable.
     void finished(const QString &path, const glimply::RecordingTarget &target, qint64 durationMs);
     void failed(const QString &error);
+    // The recording ended without a stop from the user (KWin closed the stream, the encoder
+    // stopped by itself). Emitted right before finished() (#90).
+    void interrupted(const QString &reason);
 
 private:
     void onStreamReady(quint64 objectSerial, quint32 nodeId);
@@ -90,6 +93,7 @@ private:
     RecordingClock clock_;
     qint64 finalDurationMs_ = 0;
     bool stopRequested_ = false;
+    QString endReason_; // set when the recording ends without a user stop
     bool finalizing_ = false;
 };
 

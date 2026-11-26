@@ -523,3 +523,9 @@ Comment[fr]=Le texte reconnu a été copié dans le presse-papiers, ou aucun tex
 Comment[de]=Erkannter Text wurde in die Zwischenablage kopiert oder es wurde kein Text gefunden
 Action=Popup
 Urgency=Low
+
+[Event/recordingInterrupted]
+Name=Recording ended early
+Comment=A screen recording ended without a stop, for example because its window was closed
+Action=Popup
+Urgency=Normal
