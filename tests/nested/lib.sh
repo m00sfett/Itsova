@@ -51,3 +51,25 @@ fail() {
     echo "FAIL: $*"
     exit 1
 }
+
+# window_center <appName>: "X,Y" of the centre of the first listed window of that app.
+window_center() {
+    glimply_call ListWindows | sed 's/^s "//; s/"$//; s/\\"/"/g' | python3 -c '
+import json, sys
+app = sys.argv[1]
+for w in json.load(sys.stdin):
+    if w["appName"] == app:
+        print("%d,%d" % (w["x"] + w["width"] // 2, w["y"] + w["height"] // 2))
+        break' "$1"
+}
+
+# fake_bg <step>...: one fake-input run in the background, so the pointer stays where the steps put
+# it while the test takes screenshots; wait_fake waits for it. (Every fakekey run adds and removes
+# its own device, and clients may drop the pointer when it goes away.)
+fake_bg() {
+    WAYLAND_DISPLAY="$socket" "$fakekey" "$@" >/dev/null 2>&1 &
+    fake_pid=$!
+}
+wait_fake() {
+    wait "$fake_pid" 2>/dev/null
+}

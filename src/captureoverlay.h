@@ -7,6 +7,7 @@
 #include "selectionmodel.h"
 #include "targets.h"
 #include "windowlist.h"
+#include "windowpick.h"
 
 #include <QDateTime>
 #include <QFuture>
@@ -119,6 +120,17 @@ public:
     void notePointerOn(const QString &connector);
     // Runs entry index (0-based) of the list drawer open on the panel (keys 1–9, Q24).
     void pickPanelEntry(int index);
+    // Hover-and-click picking (#97): what a click without a drag would take at globalPos, or None
+    // while picking does not apply (a selection, annotations, markup, the colour picker).
+    [[nodiscard]] PickTarget pickAt(const QPoint &globalPos) const;
+    [[nodiscard]] bool pickingActive() const;
+    // The target framed under the pointer; repaints every overlay when it changes.
+    void setPointerPick(const PickTarget &pick);
+    // The pointer position the overlays last saw (QCursor::pos() is stale on Wayland).
+    void notePointerPosition(const QPoint &globalPos);
+    [[nodiscard]] const PickTarget &pointerPick() const;
+    // Takes a picked target: captures it, or records it in record mode.
+    void takePick(const PickTarget &pick);
     // The overlay that shows the panel (keys typed on another monitor's overlay go there, #96).
     [[nodiscard]] CaptureOverlay *panelOverlay() const;
     // Where the user put the panel on this monitor (top-left, monitor coordinates), if anywhere.
@@ -246,6 +258,9 @@ private:
     AnnotationController annotationController_;
     QTimer *transientHintTimer_ = nullptr;
     QList<Highlight> highlights_;
+    QList<WindowInfo> pickWindows_; // loaded in the background after the overlay shows (#97)
+    PickTarget pointerPick_;
+    QPoint pointerGlobal_;
     QList<QPointer<CaptureOverlay>> overlays_;
     PanelDrawer panelDrawer_ = PanelDrawer::None;
     QString pointerConnector_;
@@ -283,6 +298,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    void enterEvent(QEnterEvent *event) override;
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:

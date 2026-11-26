@@ -287,6 +287,7 @@ void CaptureSession::start()
     }
     desktopBounds_ = desktopBounds;
     pointerConnector_ = screens_.first().connector;
+    pointerGlobal_ = QCursor::pos();
     for (const ScreenInfo &screen : std::as_const(screens_)) {
         if (screen.geometry.contains(QCursor::pos())) {
             pointerConnector_ = screen.connector;
@@ -360,6 +361,80 @@ void CaptureSession::start()
         }
     }
     showOverlays();
+
+    // The windows under the pointer (#97), fetched off the GUI thread once the overlay is up, so the
+    // Print path never waits for KWin's window list.
+    if (purpose_ == Purpose::Print) {
+        auto *watcher = new QFutureWatcher<QList<WindowInfo>>(this);
+        connect(watcher, &QFutureWatcher<QList<WindowInfo>>::finished, this, [this, watcher] {
+            pickWindows_ = pickableWindows(watcher->result());
+            watcher->deleteLater();
+            qCDebug(lcOverlay) << "pickable windows" << pickWindows_.size();
+            setPointerPick(pickAt(pointerGlobal_));
+        });
+        const qint64 pid = QCoreApplication::applicationPid();
+        watcher->setFuture(QtConcurrent::run([pid] { return listWindows(pid); }));
+    }
+}
+
+bool CaptureSession::pickingActive() const
+{
+    if (purpose_ != Purpose::Print || finished_ || !selections_.isEmpty() || !annotations_.isEmpty()
+        || colorPickerActive_ || markupVisible()) {
+        return false;
+    }
+    return panelDrawer_ != PanelDrawer::SaveArea && panelDrawer_ != PanelDrawer::Help;
+}
+
+PickTarget CaptureSession::pickAt(const QPoint &globalPos) const
+{
+    if (!pickingActive()) {
+        return {};
+    }
+    return pickTargetAt(globalPos, pickWindows_, screens_);
+}
+
+void CaptureSession::setPointerPick(const PickTarget &pick)
+{
+    if (pick.kind == pointerPick_.kind && pick.rect == pointerPick_.rect && pick.connector == pointerPick_.connector
+        && pick.window.handle == pointerPick_.window.handle) {
+        return;
+    }
+    pointerPick_ = pick;
+    for (const QPointer<CaptureOverlay> &overlay : std::as_const(overlays_)) {
+        if (overlay) {
+            overlay->update();
+        }
+    }
+}
+
+void CaptureSession::notePointerPosition(const QPoint &globalPos)
+{
+    pointerGlobal_ = globalPos;
+}
+
+const PickTarget &CaptureSession::pointerPick() const
+{
+    return pointerPick_;
+}
+
+void CaptureSession::takePick(const PickTarget &pick)
+{
+    qCInfo(lcOverlay) << "click takes" << (pick.kind == PickTarget::Kind::Window ? "window" : "monitor")
+                      << (pick.kind == PickTarget::Kind::Window ? pick.window.caption : pick.connector);
+    if (pick.kind == PickTarget::Kind::Window) {
+        if (recordMode_) {
+            record(windowRecordingTargetId(pick.window.handle));
+        } else {
+            captureWindow(pick.window);
+        }
+    } else if (pick.kind == PickTarget::Kind::Monitor) {
+        if (recordMode_) {
+            record(screenTargetId(pick.connector));
+        } else {
+            captureMonitor(pick.connector);
+        }
+    }
 }
 
 void CaptureSession::savePrintImage()
@@ -3110,6 +3185,9 @@ bool CaptureOverlay::eventFilter(QObject *watched, QEvent *event)
     }
     // The panel's layout may settle after refreshPanel() (a drawer row changing its controls):
     // place it again so it stays centred instead of growing from its old left edge.
+    if (watched == panel_ && event->type() == QEvent::Enter) {
+        session_->setPointerPick({}); // the pointer is on the panel, not on a target
+    }
     if (watched == panel_ && event->type() == QEvent::Resize) {
         placePanel();
         placeHint();
@@ -3195,7 +3273,7 @@ QWidget *CaptureOverlay::buildHelpPanel(QWidget *parent) const
         {tr("Escape"), print ? tr("Step back, or close") : tr("Cancel")},
     };
     if (print) {
-        select.insert(1, {tr("Click, nothing drawn"), tr("Capture this monitor")});
+        select.insert(1, {tr("Click, nothing drawn"), tr("Capture the window or monitor under the pointer")});
         select.append({tr("Ctrl+E"), tr("Open in the editor window")});
         select.append({tr("Ctrl+R"), tr("Record the rectangle as a video, or choose what to record")});
     }
@@ -3302,8 +3380,13 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
         painter.fillPath(shade.subtracted(holes), QColor(0, 0, 0, frozen ? frozenDim : liveDim));
     }
 
-    // Outlines of areas or windows hovered in a list.
-    for (const CaptureSession::Highlight &highlight : session_->highlights()) {
+    // Outlines of areas or windows hovered in a list; without one, the target under the pointer (#97).
+    QList<CaptureSession::Highlight> outlines = session_->highlights();
+    if (outlines.isEmpty() && session_->pointerPick().kind != PickTarget::Kind::None && drag_ == Drag::None
+        && session_->pickingActive()) {
+        outlines.append({session_->pointerPick().rect, QString()});
+    }
+    for (const CaptureSession::Highlight &highlight : std::as_const(outlines)) {
         const QRect local = highlight.rect.translated(-screen_.geometry.topLeft()).intersected(area);
         if (local.isEmpty()) {
             continue;
@@ -3636,6 +3719,7 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
     const QPoint globalPos = toGlobalPoint(event->position().toPoint());
     const QPoint step = globalPos - lastPosition_;
     lastPosition_ = globalPos;
+    session_->notePointerPosition(globalPos);
     session_->notePointerOn(screen_.connector); // the panel follows the pointer while nothing is selected
 
     if (session_->colorPickerActive()) {
@@ -3660,6 +3744,7 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
             }
         }
         session_->setHoveredSelectionId(session_->selections().topmostAt(globalPos));
+        session_->setPointerPick(session_->pickAt(globalPos));
         updateCursor(globalPos);
         return;
     }
@@ -3669,6 +3754,7 @@ void CaptureOverlay::mouseMoveEvent(QMouseEvent *event)
             return;
         }
         drag_ = Drag::Create;
+        session_->setPointerPick({});
         dragId_ = session_->selections().add(QRect(anchor_, QSize(1, 1)));
         session_->setForceNew(false);
         session_->setDragging(true);
@@ -3748,10 +3834,9 @@ void CaptureOverlay::mouseReleaseEvent(QMouseEvent *event)
     if (drag == Drag::Pending) {
         if (pendingId_) {
             model.activate(pendingId_);
-        } else if (model.isEmpty() && session_->purpose() == CaptureSession::Purpose::Print
-                   && session_->annotations().isEmpty() && !session_->markupVisible()) {
-            // Nothing drawn yet: a click captures this monitor.
-            session_->captureMonitor(screen_.connector);
+        } else if (const PickTarget pick = session_->pickAt(globalPos); pick.kind != PickTarget::Kind::None) {
+            // Nothing drawn yet: a click takes the window or monitor under the pointer (#97).
+            session_->takePick(pick);
             return;
         } else {
             model.deactivate();
@@ -3814,10 +3899,24 @@ void CaptureOverlay::focusOutEvent(QFocusEvent *event)
     QWidget::focusOutEvent(event);
 }
 
+void CaptureOverlay::enterEvent(QEnterEvent *event)
+{
+    // The pointer may arrive without moving (from another monitor, after a key): frame what is
+    // under it right away (#97).
+    const QPoint globalPos = toGlobalPoint(event->position().toPoint());
+    lastPosition_ = globalPos;
+    session_->notePointerPosition(globalPos);
+    if (drag_ == Drag::None) {
+        session_->setPointerPick(session_->pickAt(globalPos));
+    }
+    QWidget::enterEvent(event);
+}
+
 void CaptureOverlay::leaveEvent(QEvent *event)
 {
     if (drag_ == Drag::None) {
         session_->setHoveredSelectionId(0);
+        session_->setPointerPick({});
     }
     if (session_->purpose() == CaptureSession::Purpose::Print) {
         session_->annotationController().clearHover();

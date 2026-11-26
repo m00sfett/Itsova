@@ -97,6 +97,7 @@ add_library(glimply_capture STATIC
     src/triggerengine.cpp
     src/triggerplan.cpp
     src/windowlist.cpp
+    src/windowpick.cpp
 )
 target_include_directories(glimply_capture PUBLIC src)
 target_compile_definitions(glimply_capture PUBLIC GLIMPLY_VERSION="${PROJECT_VERSION}")
@@ -266,6 +267,9 @@ if(BUILD_TESTING)
     add_executable(ocrtest tests/ocrtest.cpp)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)
+    add_executable(windowpicktest tests/windowpicktest.cpp)
+    target_link_libraries(windowpicktest PRIVATE glimply_capture Qt6::Test)
+    add_test(NAME windowpick COMMAND windowpicktest)
     add_executable(loggingtest tests/loggingtest.cpp)
     target_link_libraries(loggingtest PRIVATE glimply_record Qt6::Test)
     target_compile_definitions(loggingtest PRIVATE GLIMPLY_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -310,6 +314,7 @@ if(BUILD_TESTING)
         glimply_nested_test(overlay)
         glimply_nested_test(pill OPTIONS --monitors 2 --size 1600x900)
         glimply_nested_test(keyboard OPTIONS --monitors 2 --size 1600x900 --apps kcalc)
+        glimply_nested_test(pick OPTIONS --apps kcalc)
         glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
         glimply_nested_test(record-window-closed OPTIONS --apps kcalc)
     endif()

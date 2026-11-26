@@ -59,11 +59,41 @@ QVariantMap windowInfo(const QString &handle)
     return reply.isValid() ? reply.value() : QVariantMap();
 }
 
+QString currentDesktop()
+{
+    QDBusMessage call = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                       QStringLiteral("/VirtualDesktopManager"),
+                                                       QStringLiteral("org.freedesktop.DBus.Properties"),
+                                                       QStringLiteral("Get"));
+    call.setArguments({QStringLiteral("org.kde.KWin.VirtualDesktopManager"), QStringLiteral("current")});
+    const QDBusReply<QVariant> reply = QDBusConnection::sessionBus().call(call, QDBus::Block, callTimeoutMs);
+    return reply.isValid() ? reply.value().toString() : QString();
+}
+
+QString currentActivity()
+{
+    QDBusMessage call = QDBusMessage::createMethodCall(QStringLiteral("org.kde.ActivityManager"),
+                                                       QStringLiteral("/ActivityManager/Activities"),
+                                                       QStringLiteral("org.kde.ActivityManager.Activities"),
+                                                       QStringLiteral("CurrentActivity"));
+    const QDBusReply<QString> reply = QDBusConnection::sessionBus().call(call, QDBus::Block, callTimeoutMs);
+    return reply.isValid() ? reply.value() : QString();
+}
+
+// An empty list means "everywhere"; an unknown current value counts as a match.
+bool onCurrent(const QVariant &list, const QString &current)
+{
+    const QStringList values = list.toStringList();
+    return current.isEmpty() || values.isEmpty() || values.contains(current);
+}
+
 } // namespace
 
 QList<WindowInfo> listWindows(qint64 excludedPid)
 {
     QList<WindowInfo> windows;
+    const QString desktop = currentDesktop();
+    const QString activity = currentActivity();
     for (const QString &handle : windowHandles()) {
         const QVariantMap info = windowInfo(handle);
         if (info.isEmpty() || info.value(QStringLiteral("skipTaskbar")).toBool()
@@ -82,6 +112,10 @@ QList<WindowInfo> listWindows(qint64 excludedPid)
                                  info.value(QStringLiteral("height")).toDouble())
                               .toAlignedRect();
         window.minimized = info.value(QStringLiteral("minimized")).toBool();
+        window.fullscreen = info.value(QStringLiteral("fullscreen")).toBool();
+        window.layer = info.value(QStringLiteral("layer"), 2).toInt();
+        window.onCurrentDesktop = onCurrent(info.value(QStringLiteral("desktops")), desktop)
+                               && onCurrent(info.value(QStringLiteral("activities")), activity);
         if (window.geometry.isEmpty()) {
             continue;
         }
