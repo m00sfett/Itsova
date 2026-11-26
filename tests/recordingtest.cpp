@@ -28,15 +28,59 @@ private:
     }
 
 private Q_SLOTS:
-    // #98: the first three recordings say how to stop; the tooltip always does.
+    // #98: the tooltip always says how to stop.
     void stopHints()
     {
-        QVERIFY(shouldShowRecordingStopHint(0));
-        QVERIFY(shouldShowRecordingStopHint(2));
-        QVERIFY(!shouldShowRecordingStopHint(3));
-        QVERIFY(!shouldShowRecordingStopHint(10));
         QCOMPARE(recordingStopHint(QString()), QStringLiteral("Click to stop"));
         QCOMPARE(recordingStopHint(QStringLiteral("Meta+R")), QStringLiteral("Click or press Meta+R to stop"));
+    }
+
+    // #125: the hint never lands in the recorded picture; only a recording that covers everything
+    // waits for it.
+    void hintPlacement()
+    {
+        const QSize hint(360, 56);
+        const QRect left(0, 0, 1920, 1080);
+        const QRect right(1920, 0, 2560, 1440);
+        const QList<QRect> two{left, right};
+
+        // A monitor that is not recorded takes it.
+        RecordingHintPlacement p = planRecordingHint(false, right, two, hint);
+        QCOMPARE(p.screen, 0);
+        QVERIFY(left.contains(p.rect));
+        QVERIFY(!p.rect.intersects(right));
+        QVERIFY(!p.waitBeforeRecording);
+
+        // All monitors: nowhere free, so it waits in the middle of the largest covered monitor.
+        p = planRecordingHint(false, left.united(right), two, hint);
+        QCOMPARE(p.screen, 1);
+        QVERIFY(p.waitBeforeRecording);
+        QVERIFY((p.rect.center() - right.center()).manhattanLength() <= 2);
+
+        // The only monitor, recorded whole: waits.
+        p = planRecordingHint(false, left, {left}, hint);
+        QVERIFY(p.waitBeforeRecording);
+
+        // A region on the only monitor: beside it, in the largest free strip.
+        const QRect region(100, 100, 800, 600);
+        p = planRecordingHint(false, region, {left}, hint);
+        QCOMPARE(p.screen, 0);
+        QVERIFY(!p.waitBeforeRecording);
+        QVERIFY(left.contains(p.rect));
+        QVERIFY(!p.rect.intersects(region));
+        QVERIFY(p.rect.left() > region.right()); // the strip right of the region is the largest
+
+        // Too little room beside the region: waits.
+        p = planRecordingHint(false, left.adjusted(20, 20, -20, -20), {left}, hint);
+        QVERIFY(p.waitBeforeRecording);
+
+        // A window: on its monitor, never waits.
+        p = planRecordingHint(true, QRect(2000, 100, 800, 600), two, hint);
+        QCOMPARE(p.screen, 1);
+        QVERIFY(right.contains(p.rect));
+        QVERIFY(!p.waitBeforeRecording);
+
+        QCOMPARE(planRecordingHint(false, region, {}, hint).screen, -1);
     }
 
     // #103: monitor, position and scale travel with the recording.

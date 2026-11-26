@@ -57,11 +57,24 @@ struct RecordingTarget
 // the editor, never pinned.
 [[nodiscard]] bool isRecordingFile(const QString &path);
 
-// How to stop a recording (#98): the first recordings say it in a notification, the tray and
-// widget tooltips always. shortcut is the global record shortcut, if one is set.
-constexpr int recordingStopHintCount = 3;
-[[nodiscard]] bool shouldShowRecordingStopHint(int shownSoFar);
+// How to stop a recording (#98): the tray and widget tooltips and the start hint (#125) say it.
+// shortcut is the global record shortcut, if one is set.
 [[nodiscard]] QString recordingStopHint(const QString &shortcut);
+
+// Where a recording hint goes (#125) so that it is not recorded. A window stream holds only the
+// window: the hint goes on the window's monitor. A region: on a monitor the region does not touch,
+// else in the largest free strip of a touched monitor beside the region. If the region leaves no
+// room (a whole monitor, all monitors), the hint goes in the middle of the most covered monitor
+// and the recording starts only once the hint has gone (waitBeforeRecording).
+struct RecordingHintPlacement
+{
+    int screen = -1; // index into the monitor list, -1 without monitors
+    QRect rect; // global logical rectangle of the hint
+    bool waitBeforeRecording = false;
+};
+[[nodiscard]] RecordingHintPlacement planRecordingHint(bool windowTarget, const QRect &recorded,
+                                                       const QList<QRect> &screens, const QSize &hint,
+                                                       int margin = 24);
 
 // "0:07", "12:34", "1:02:03".
 [[nodiscard]] QString formatElapsed(qint64 milliseconds);

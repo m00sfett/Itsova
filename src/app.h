@@ -37,6 +37,7 @@ class ControlService;
 class CountdownBanner;
 class CountdownController;
 class HookRunner;
+class RecordingHint;
 struct HookResult;
 class IntervalController;
 class PinManager;
@@ -251,8 +252,19 @@ private:
     QHash<QString, QPair<QRect, qreal>> nativeScales_;
     bool recordingPending_ = false;
     QTimer *recordingTicker_ = nullptr;
-    void showRecordingStopHint();
-    bool stopHintPending_ = false;
+    // Recording hints (#125).
+    void showRecordingHint(const QString &iconName, const QString &title, const QString &detail, int durationMs,
+                           const std::function<void()> &onClick = {});
+    [[nodiscard]] QString recordingStopInstruction() const;
+    void cancelPendingRecordingStart();
+    [[nodiscard]] bool recordingStartPending() const;
+    int previousRecorderState_ = 0; // ScreenRecorder::State
+    RecordingHint *recordingHint_ = nullptr;
+    RecordingHintPlacement recordingHintPlacement_;
+    QString recordingHintConnector_;
+    QTimer *recordingStartAfterHint_ = nullptr; // a recording that waits for its start hint to go
+    QTimer *recordingResumeAfterHint_ = nullptr;
+    bool resumeHintShown_ = false;
     bool verboseFromCommandLine_ = false;
 };
 

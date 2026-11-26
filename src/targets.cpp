@@ -463,7 +463,7 @@ void TargetStore::load(const KConfig &config)
         const KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recordingFormat = recordingFormatFromKey(recording.readEntry("Format", QStringLiteral("mp4")));
         recordingFrameRate = effectiveFrameRate(RecordingFormat::Mp4, recording.readEntry("FrameRate", 30));
-        recordingStopHintsShown = recording.readEntry("StopHintsShown", 0);
+        recordingHints = recording.readEntry("Hints", true);
         recordingCursor = recording.readEntry("IncludeCursor", true);
         // #124: the last recorded target becomes the default once, so the shortcut keeps doing
         // what it did; LastTarget is no longer written.
@@ -661,7 +661,8 @@ void TargetStore::save(KConfig &config) const
         KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recording.writeEntry("Format", recordingFormatKey(recordingFormat));
         recording.writeEntry("FrameRate", recordingFrameRate);
-        recording.writeEntry("StopHintsShown", recordingStopHintsShown);
+        recording.writeEntry("Hints", recordingHints);
+        recording.deleteEntry("StopHintsShown"); // the #98 notifications gave way to the hints
         recording.writeEntry("IncludeCursor", recordingCursor);
         recording.writeEntry("DefaultTarget", defaultRecordingTarget);
         recording.deleteEntry("LastTarget");

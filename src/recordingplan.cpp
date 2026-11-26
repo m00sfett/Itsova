@@ -193,15 +193,81 @@ qint64 RecordingClock::elapsed(qint64 nowMs) const
     return std::max<qint64>(0, end - startedAt_ - pausedTotal_);
 }
 
-bool shouldShowRecordingStopHint(int shownSoFar)
-{
-    return shownSoFar < recordingStopHintCount;
-}
-
 QString recordingStopHint(const QString &shortcut)
 {
     return shortcut.isEmpty() ? QCoreApplication::translate("RecordingPlan", "Click to stop")
                               : QCoreApplication::translate("RecordingPlan", "Click or press %1 to stop").arg(shortcut);
+}
+
+RecordingHintPlacement planRecordingHint(bool windowTarget, const QRect &recorded, const QList<QRect> &screens,
+                                         const QSize &hint, int margin)
+{
+    RecordingHintPlacement placement;
+    if (screens.isEmpty()) {
+        return placement;
+    }
+    const auto topCentre = [&](const QRect &area) {
+        return QRect(QPoint(area.x() + (area.width() - hint.width()) / 2, area.y() + margin), hint);
+    };
+    const auto overlap = [&](const QRect &screen) {
+        const QRect common = screen.intersected(recorded);
+        return common.isEmpty() ? 0LL : qint64(common.width()) * common.height();
+    };
+    int most = 0;
+    for (int i = 1; i < screens.size(); ++i) {
+        if (overlap(screens.at(i)) > overlap(screens.at(most))) {
+            most = i;
+        }
+    }
+    if (windowTarget) {
+        // Other windows never show in a window stream; stay near the window.
+        placement.screen = most;
+        placement.rect = topCentre(screens.at(most));
+        return placement;
+    }
+    for (int i = 0; i < screens.size(); ++i) {
+        if (overlap(screens.at(i)) == 0) {
+            placement.screen = i;
+            placement.rect = topCentre(screens.at(i));
+            return placement;
+        }
+    }
+    // Beside the region: the largest strip of a touched monitor that the hint fits into.
+    const QSize needed(hint.width() + 2 * margin, hint.height() + 2 * margin);
+    qint64 bestArea = 0;
+    for (int i = 0; i < screens.size(); ++i) {
+        const QRect screen = screens.at(i);
+        const QRect inside = screen.intersected(recorded);
+        if (inside.isEmpty()) {
+            continue;
+        }
+        const QList<QRect> strips{
+            QRect(screen.left(), screen.top(), screen.width(), inside.top() - screen.top()),
+            QRect(screen.left(), inside.bottom() + 1, screen.width(), screen.bottom() - inside.bottom()),
+            QRect(screen.left(), screen.top(), inside.left() - screen.left(), screen.height()),
+            QRect(inside.right() + 1, screen.top(), screen.right() - inside.right(), screen.height()),
+        };
+        for (const QRect &strip : strips) {
+            if (strip.width() < needed.width() || strip.height() < needed.height()) {
+                continue;
+            }
+            const qint64 area = qint64(strip.width()) * strip.height();
+            if (area > bestArea) {
+                bestArea = area;
+                placement.screen = i;
+                placement.rect = QRect(QPoint(strip.x() + (strip.width() - hint.width()) / 2,
+                                              strip.y() + (strip.height() - hint.height()) / 2),
+                                       hint);
+            }
+        }
+    }
+    if (bestArea > 0) {
+        return placement;
+    }
+    placement.screen = most;
+    placement.rect = QRect(screens.at(most).center() - QPoint(hint.width() / 2, hint.height() / 2), hint);
+    placement.waitBeforeRecording = true;
+    return placement;
 }
 
 } // namespace glimply

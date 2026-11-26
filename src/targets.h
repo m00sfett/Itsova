@@ -206,7 +206,7 @@ public:
     // Screen recording (#30).
     RecordingFormat recordingFormat = RecordingFormat::Mp4;
     int recordingFrameRate = 30;
-    int recordingStopHintsShown = 0; // #98: notifications that said how to stop
+    bool recordingHints = true; // #125: short hints for every recording state change, outside the video
     bool recordingCursor = true;
     // What the start/stop shortcut records (#124), pinned in the overlay; empty: ask in the overlay.
     // Taken once from the old [Recording] LastTarget.
