@@ -57,6 +57,12 @@ struct RecordingTarget
 // the editor, never pinned.
 [[nodiscard]] bool isRecordingFile(const QString &path);
 
+// How to stop a recording (#98): the first recordings say it in a notification, the tray and
+// widget tooltips always. shortcut is the global record shortcut, if one is set.
+constexpr int recordingStopHintCount = 3;
+[[nodiscard]] bool shouldShowRecordingStopHint(int shownSoFar);
+[[nodiscard]] QString recordingStopHint(const QString &shortcut);
+
 // "0:07", "12:34", "1:02:03".
 [[nodiscard]] QString formatElapsed(qint64 milliseconds);
 

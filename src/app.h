@@ -167,6 +167,8 @@ public:
     void stopRecording(const QString &origin);
     // `glimply --verbose` adds debug logging on top of the setting (#92).
     void setVerboseFromCommandLine(bool on);
+    // "Click to stop" names this shortcut (#98).
+    [[nodiscard]] QString recordingStopShortcutText() const;
     void setRecordingPaused(bool paused);
     // The start/stop shortcut: stops a running recording, records the last target again, or opens
     // the overlay to choose one.
@@ -244,6 +246,8 @@ private:
     QHash<QString, QPair<QRect, qreal>> nativeScales_;
     bool recordingPending_ = false;
     QTimer *recordingTicker_ = nullptr;
+    void showRecordingStopHint();
+    bool stopHintPending_ = false;
     bool verboseFromCommandLine_ = false;
 };
 

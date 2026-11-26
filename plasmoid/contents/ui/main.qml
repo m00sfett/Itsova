@@ -32,6 +32,7 @@ PlasmoidItem {
     property real recordingElapsedMs: 0
     property string recordingTarget: ""
     property bool recordingCanPause: true
+    property string recordingStopHint: ""
     readonly property bool recording: recordingState !== "idle"
 
     // The popup must be gone before a capture or the frozen selection picture is taken.
@@ -46,6 +47,8 @@ PlasmoidItem {
     toolTipMainText: "glimply"
     toolTipSubText: !running ? i18n("glimply is not running")
                   : recording ? recordingStatusText()
+                                + ((recordingState === "recording" || recordingState === "paused") && recordingStopHint
+                                   ? "\n" + recordingStopHint : "")
                   : activeIntervalCount > 0
                     ? i18np("1 interval capture active", "%1 interval captures active", activeIntervalCount)
                     : i18n("Capture fixed areas and monitors")
@@ -151,6 +154,7 @@ PlasmoidItem {
             root.recordingElapsedMs = state.elapsedMs || 0;
             root.recordingTarget = state.targetName || "";
             root.recordingCanPause = state.canPause !== false;
+            root.recordingStopHint = state.stopHint || "";
         });
     }
 

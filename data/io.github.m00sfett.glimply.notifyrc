@@ -529,3 +529,9 @@ Name=Recording ended early
 Comment=A screen recording ended without a stop, for example because its window was closed
 Action=Popup
 Urgency=Normal
+
+[Event/recordingStarted]
+Name=Recording started
+Comment=Shown for the first recordings: how to stop a screen recording
+Action=Popup
+Urgency=Low

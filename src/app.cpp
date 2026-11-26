@@ -231,11 +231,16 @@ App::App(QObject *parent)
     recordingTicker_ = new QTimer(this);
     recordingTicker_->setInterval(1000);
     connect(recordingTicker_, &QTimer::timeout, this, &App::syncRecordingUi);
-    connect(recorder_, &ScreenRecorder::stateChanged, this, [this] {
+    connect(recorder_, &ScreenRecorder::stateChanged, this, [this](ScreenRecorder::State state) {
         if (recorder_->isBusy()) {
             recordingTicker_->start();
         } else {
             recordingTicker_->stop();
+        }
+        if (state == ScreenRecorder::State::Starting) {
+            stopHintPending_ = true;
+        } else if (state == ScreenRecorder::State::Recording && std::exchange(stopHintPending_, false)) {
+            showRecordingStopHint();
         }
         syncRecordingUi();
     });
@@ -3048,6 +3053,7 @@ QJsonObject App::recordingState() const
     state.insert(QStringLiteral("elapsedMs"), double(recorder_->elapsedMs()));
     state.insert(QStringLiteral("format"), recordingFormatKey(store_.recordingFormat));
     state.insert(QStringLiteral("canPause"), ScreenRecorder::canPause());
+    state.insert(QStringLiteral("stopHint"), recordingStopHint(recordingStopShortcutText()));
     if (recorder_->isBusy()) {
         state.insert(QStringLiteral("target"), recorder_->target().targetId);
         state.insert(QStringLiteral("targetName"), recorder_->target().displayName);
@@ -3056,8 +3062,40 @@ QJsonObject App::recordingState() const
     return state;
 }
 
+QString App::recordingStopShortcutText() const
+{
+    return shortcuts()->shortcut(recordToggleActionId()).toString(QKeySequence::NativeText);
+}
+
+void App::showRecordingStopHint()
+{
+    // The first recordings say how to stop them (#98); later ones only in the tooltip.
+    if (!shouldShowRecordingStopHint(store_.recordingStopHintsShown)) {
+        return;
+    }
+    ++store_.recordingStopHintsShown;
+    saveSettings();
+    qCInfo(lcRecord) << "stop hint shown" << store_.recordingStopHintsShown << "of" << recordingStopHintCount;
+    const QString shortcut = recordingStopShortcutText();
+    auto *notification = new KNotification(haveNotifyEvents() ? QStringLiteral("recordingStarted")
+                                                              : QStringLiteral("notification"));
+    if (haveNotifyEvents()) {
+        notification->setComponentName(notifyComponentName());
+    }
+    notification->setTitle(tr("Recording %1").arg(recorder_->target().displayName));
+    notification->setText(shortcut.isEmpty()
+                              ? tr("Click the glimply icon in the system tray to stop.")
+                              : tr("Click the glimply icon in the system tray or press %1 to stop.").arg(shortcut));
+    notification->setIconName(QStringLiteral("media-record"));
+    KNotificationAction *stop = notification->addAction(tr("Stop"));
+    connect(stop, &KNotificationAction::activated, this,
+            [this] { stopRecording(QStringLiteral("notification Stop action")); });
+    notification->sendEvent();
+}
+
 void App::syncRecordingUi()
 {
+    tray_->setRecordingStopShortcut(recordingStopShortcutText());
     tray_->setRecordingState(int(recorder_->state()), recorder_->elapsedMs(), recorder_->target().displayName);
     Q_EMIT recordingChanged();
 }
