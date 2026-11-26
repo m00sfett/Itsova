@@ -446,6 +446,7 @@ void CaptureSession::savePrintImage()
     }
     captureFrames(connectors);
     LatencyTrace::mark(LatencyTrace::Stage::Pixels);
+    printFrames_ = frames_; // implicitly shared; the live loupe reads it (#101)
     for (const ScreenInfo &screen : std::as_const(screens_)) {
         if (frames_.value(screen.connector).image.isNull()) {
             QString error;
@@ -576,6 +577,55 @@ bool CaptureSession::canSwitchToLive() const
 QImage CaptureSession::frame(const QString &connector) const
 {
     return frozen_ ? frames_.value(connector).image : QImage();
+}
+
+QImage CaptureSession::loupeFrame(const QString &connector, bool *snapshot) const
+{
+    if (snapshot) {
+        *snapshot = !frozen_;
+    }
+    return frozen_ ? frames_.value(connector).image : printFrames_.value(connector).image;
+}
+
+qreal CaptureSession::monitorScale(const QString &connector) const
+{
+    for (const QHash<QString, CaptureResult> *source : {&frames_, &printFrames_}) {
+        if (const qreal scale = source->value(connector).scale; scale > 0.0) {
+            return scale;
+        }
+    }
+    const QScreen *screen = findScreen(connector);
+    return screen ? screen->devicePixelRatio() : 1.0;
+}
+
+QRect CaptureSession::nativeSelectionOn(const QRect &globalRect, const QString &connector) const
+{
+    const auto screen = std::find_if(screens_.cbegin(), screens_.cend(),
+                                     [&](const ScreenInfo &s) { return s.connector == connector; });
+    if (screen == screens_.cend() || globalRect.isEmpty()) {
+        return {};
+    }
+    // The same rounding as nativeAreaFor(), the rule the saved crop follows (#101), but without its
+    // range check: an edge may lie on another monitor.
+    const qreal scale = monitorScale(connector);
+    const QRect local = globalRect.translated(-screen->geometry.topLeft());
+    const auto edge = [scale](int logical) { return int(std::lround(logical * scale)); };
+    const int left = edge(local.left());
+    const int top = edge(local.top());
+    return QRect(left, top, edge(local.left() + local.width()) - left, edge(local.top() + local.height()) - top);
+}
+
+QSize CaptureSession::nativeSize(const QRect &globalRect) const
+{
+    const QList<ScreenInfo> hit = intersectingScreens(globalRect);
+    if (hit.size() == 1 && hit.first().geometry.contains(globalRect)) {
+        return nativeSelectionOn(globalRect, hit.first().connector).size();
+    }
+    qreal scale = 1.0;
+    for (const ScreenInfo &screen : hit) {
+        scale = std::max(scale, monitorScale(screen.connector));
+    }
+    return QSize(int(std::lround(globalRect.width() * scale)), int(std::lround(globalRect.height() * scale)));
 }
 
 qreal CaptureSession::frameScale(const QString &connector) const
@@ -3492,7 +3542,9 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
         }
 
         // Size of the active rectangle, above its leading corner (inside when there is no room).
-        const QString sizeText = tr("%1 × %2").arg(selection.rect.width()).arg(selection.rect.height());
+        // Native pixels: what the saved file will measure (#101).
+        const QSize nativeSize = session_->nativeSize(selection.rect);
+        const QString sizeText = tr("%1 × %2").arg(nativeSize.width()).arg(nativeSize.height());
         QFont sizeFont = font();
         sizeFont.setPointSizeF(std::max(7.0, sizeFont.pointSizeF() * 0.9));
         const QFontMetrics sizeMetrics(sizeFont);
@@ -3522,14 +3574,20 @@ void CaptureOverlay::paintEvent(QPaintEvent *)
     } else if (session_->dragLoupeActive() && screen_.geometry.contains(session_->dragCursorGlobal())) {
         if (const Selection *sel = model.active()) {
             const QPoint localCursor = session_->dragCursorGlobal() - screen_.geometry.topLeft();
-            if (frozen && session_->store().showSelectionLoupe) {
-                const QPoint nativePx = logicalToNativePixel(
-                    QPointF(localCursor), QPointF(0.0, 0.0), session_->frameScale(screen_.connector), background.size());
-                PixelLoupe::paintSelectionLoupe(painter, localCursor, area, pal, background, nativePx,
-                                                session_->dragCursorGlobal(), sel->rect.size());
+            // Frozen or live (#101): live, the pixels are the Print snapshot.
+            bool snapshot = false;
+            const QImage loupeImage = session_->loupeFrame(screen_.connector, &snapshot);
+            const QSize nativeSize = session_->nativeSize(sel->rect);
+            if (session_->store().showSelectionLoupe && !loupeImage.isNull()) {
+                const qreal scale = session_->monitorScale(screen_.connector);
+                const QPoint nativePx =
+                    logicalToNativePixel(QPointF(localCursor), QPointF(0.0, 0.0), scale, loupeImage.size());
+                PixelLoupe::paintSelectionLoupe(painter, localCursor, area, pal, loupeImage, nativePx, nativePx,
+                                                nativeSize, session_->nativeSelectionOn(sel->rect, screen_.connector),
+                                                snapshot);
             } else {
                 PixelLoupe::paintDimensionPill(painter, localCursor, area, pal, session_->dragCursorGlobal(),
-                                               sel->rect.size());
+                                               nativeSize);
             }
         }
     }

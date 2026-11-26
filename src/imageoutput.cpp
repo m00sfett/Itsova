@@ -443,22 +443,16 @@ QImage cropLogicalArea(const QImage &nativeFrame,
         return {};
     }
 
-    int left = 0;
-    int top = 0;
-    int right = 0;
-    int bottom = 0;
-    if (!scaledEdge(logicalArea.x(), scale, &left) ||
-        !scaledEdge(logicalArea.y(), scale, &top) ||
-        !scaledEdge(static_cast<int>(logicalRight), scale, &right) ||
-        !scaledEdge(static_cast<int>(logicalBottom), scale, &bottom) || right <= left ||
-        bottom <= top || right > nativeFrame.width() || bottom > nativeFrame.height()) {
+    // One source of truth for the native edges, shared with the loupe (#101).
+    const QRect native = nativeAreaFor(logicalArea, scale);
+    if (native.isEmpty() || native.right() >= nativeFrame.width() || native.bottom() >= nativeFrame.height()) {
         if (error) {
             *error = ImageOutputStrings::tr("The capture area is outside the monitor image.");
         }
         return {};
     }
 
-    QImage cropped = nativeFrame.copy(left, top, right - left, bottom - top);
+    QImage cropped = nativeFrame.copy(native);
     if (cropped.isNull()) {
         if (error) {
             *error = ImageOutputStrings::tr("Could not allocate the cropped image.");
@@ -469,6 +463,28 @@ QImage cropLogicalArea(const QImage &nativeFrame,
         error->clear();
     }
     return cropped;
+}
+
+QRect nativeAreaFor(const QRect &logicalArea, qreal scale)
+{
+    if (!std::isfinite(scale) || scale <= 0.0 || logicalArea.width() <= 0 || logicalArea.height() <= 0) {
+        return {};
+    }
+    const qint64 right = static_cast<qint64>(logicalArea.x()) + logicalArea.width();
+    const qint64 bottom = static_cast<qint64>(logicalArea.y()) + logicalArea.height();
+    if (right > std::numeric_limits<int>::max() || bottom > std::numeric_limits<int>::max()) {
+        return {};
+    }
+    int left = 0;
+    int top = 0;
+    int nativeRight = 0;
+    int nativeBottom = 0;
+    if (!scaledEdge(logicalArea.x(), scale, &left) || !scaledEdge(logicalArea.y(), scale, &top)
+        || !scaledEdge(static_cast<int>(right), scale, &nativeRight)
+        || !scaledEdge(static_cast<int>(bottom), scale, &nativeBottom) || nativeRight <= left || nativeBottom <= top) {
+        return {};
+    }
+    return QRect(left, top, nativeRight - left, nativeBottom - top);
 }
 
 QString sanitizeFilenameToken(const QString &token)

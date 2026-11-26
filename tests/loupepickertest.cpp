@@ -2,6 +2,7 @@
 #include "annotations/annotationcontroller.h"
 #include "annotations/annotationdocument.h"
 #include "colorformat.h"
+#include "imageoutput.h"
 #include "pixelloupe.h"
 #include "quickeditorwindow.h"
 #include "targets.h"
@@ -26,6 +27,8 @@ class LoupePickerTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    void loupeEdgeMatchesTheCrop_data();
+    void loupeEdgeMatchesTheCrop();
     void colorFormatConversionsAndCycle();
     void fractionalDpiNativePixelSampling();
     void loupeSmartQuadrantPlacement();
@@ -289,6 +292,57 @@ void LoupePickerTest::rtlColorPickerLoupeMirrorsSwatchRowOnly()
     // In LTR the color swatch leads on the left of the text; in RTL it leads on the right.
     QVERIFY(ltrSwatchX < gridCenterX);
     QVERIFY(rtlSwatchX > gridCenterX);
+}
+
+// #101: the loupe draws the selection edge on the same native pixel boundary the saved file uses,
+// and dims the pixels outside.
+void LoupePickerTest::loupeEdgeMatchesTheCrop_data()
+{
+    QTest::addColumn<qreal>("scale");
+    QTest::newRow("100 %") << 1.0;
+    QTest::newRow("125 %") << 1.25;
+    QTest::newRow("150 %") << 1.5;
+}
+
+void LoupePickerTest::loupeEdgeMatchesTheCrop()
+{
+    QFETCH(qreal, scale);
+    QImage frame(240, 240, QImage::Format_ARGB32);
+    for (int y = 0; y < frame.height(); ++y) {
+        for (int x = 0; x < frame.width(); ++x) {
+            frame.setPixel(x, y, qRgb(x, y, 200));
+        }
+    }
+    const QRect logical(11, 9, 37, 29);
+    const QImage crop = cropLogicalArea(frame, logical, scale);
+    const QRect native = nativeAreaFor(logical, scale);
+    QCOMPARE(crop.size(), native.size());
+    QCOMPARE(crop.pixel(0, 0), frame.pixel(native.topLeft()));
+    QCOMPARE(crop.pixel(crop.width() - 1, crop.height() - 1), frame.pixel(native.bottomRight()));
+
+    // A loupe centred on the selection's top-left native pixel.
+    constexpr int grid = 11;
+    constexpr int cell = 11;
+    QImage canvas(grid * cell, grid * cell, QImage::Format_ARGB32);
+    canvas.fill(Qt::black);
+    {
+        QPainter painter(&canvas);
+        PixelLoupe::paintLoupeGrid(painter, canvas.rect(), frame, native.topLeft(), grid, cell, QColor(61, 174, 233),
+                                   native);
+    }
+    const int half = grid / 2;
+    const auto cellCentre = [&](int dx, int dy) { return QPoint((half + dx) * cell + cell / 2, (half + dy) * cell + cell / 2); };
+    const QColor inside = canvas.pixelColor(cellCentre(1, 1));      // inside, full brightness
+    const QColor outsideLeft = canvas.pixelColor(cellCentre(-1, 1)); // left of the edge, dimmed
+    const QColor outsideTop = canvas.pixelColor(cellCentre(1, -1));  // above the edge, dimmed
+    const QColor sourceInside = frame.pixelColor(native.topLeft() + QPoint(1, 1));
+    QCOMPARE(inside.rgb(), sourceInside.rgb());
+    QVERIFY(outsideLeft.value() < frame.pixelColor(native.topLeft() + QPoint(-1, 1)).value() - 40);
+    QVERIFY(outsideTop.value() < frame.pixelColor(native.topLeft() + QPoint(1, -1)).value() - 40);
+    // The edge runs on the cell boundary: the first column of the inside cell next to the edge is
+    // the edge colour, the cell interior is untouched.
+    const QColor edge = canvas.pixelColor(half * cell, (half + 2) * cell + cell / 2);
+    QVERIFY(qAbs(edge.blue() - 233) < 30);
 }
 
 QTEST_MAIN(LoupePickerTest)

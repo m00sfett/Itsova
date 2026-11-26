@@ -1906,7 +1906,7 @@ QWidget *SettingsWindow::createGeneralPage()
     showSelectionLoupe_ = new QCheckBox(tr("Show magnifier loupe while selecting"), page);
     form->addRow(tr("Loupe:"), showSelectionLoupe_);
     form->addRow(QString(), makeHint(tr("Shows a magnified 11 × 11 native pixel preview while dragging or resizing "
-                                        "a frozen selection."),
+                                        "a selection. While live, it shows the picture taken when you pressed Print."),
                                      page));
     connect(showSelectionLoupe_, &QCheckBox::toggled, this, [this](bool on) {
         if (!updating_) {

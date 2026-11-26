@@ -70,6 +70,14 @@ public:
     [[nodiscard]] bool canSwitchToLive() const;
     [[nodiscard]] QImage frame(const QString &connector) const;
     [[nodiscard]] qreal frameScale(const QString &connector) const;
+    // The loupe's pixels (#101): the frozen frame, or the Print snapshot while live (snapshot set).
+    [[nodiscard]] QImage loupeFrame(const QString &connector, bool *snapshot = nullptr) const;
+    // Native pixels per logical pixel of a monitor: from its capture, else from Qt.
+    [[nodiscard]] qreal monitorScale(const QString &connector) const;
+    // The native pixels globalRect covers on connector's monitor, rounded like the saved crop.
+    [[nodiscard]] QRect nativeSelectionOn(const QRect &globalRect, const QString &connector) const;
+    // The pixel size the saved file of globalRect will have.
+    [[nodiscard]] QSize nativeSize(const QRect &globalRect) const;
     [[nodiscard]] SelectionModel &selections();
     [[nodiscard]] TargetStore &store() const;
     [[nodiscard]] AnnotationDocument &annotations();
@@ -253,6 +261,7 @@ private:
     QRect desktopBounds_;
     QList<ScreenInfo> screens_;
     QHash<QString, CaptureResult> frames_;
+    QHash<QString, CaptureResult> printFrames_; // the Print snapshot, kept for the live loupe (#101)
     SelectionModel selections_;
     AnnotationDocument annotations_;
     AnnotationController annotationController_;
