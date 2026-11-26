@@ -500,7 +500,7 @@ void CaptureSession::setPanelDrawer(PanelDrawer drawer)
         return;
     }
     if (panelDrawer_ == PanelDrawer::Markup) {
-        // Leaving Annotate: commit a text being typed and return to selecting rectangles.
+        // Leaving Markup: commit a text being typed and return to selecting rectangles.
         if (annotationController_.isEditingText()) {
             annotationController_.requestCommitActiveText(true);
         }
@@ -2159,7 +2159,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     const auto close = [&] {
         add(QStringLiteral("window-close"), tr("Close"), QStringLiteral("Esc"), [this] { session_->close(); });
     };
-    // Every tool letter opens Annotate; listed one by one, never abbreviated.
+    // Every tool letter opens Markup; listed one by one, never abbreviated.
     const QString toolKeys = QStringLiteral("V A R E B M T N X S");
 
     if (state == QLatin1String("area")) {
@@ -2198,7 +2198,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"),
             [this] { session_->recordSelection(); });
         panel_->addGroupGap();
-        drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
+        drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Markup"), toolKeys);
         panel_->addGroupGap();
         drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QStringLiteral("F10"));
         close();
@@ -2226,7 +2226,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     drawer(Drawer::Record, QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"));
     panel_->addGroupGap();
     delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
-    drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Annotate"), toolKeys);
+    drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Markup"), toolKeys);
     panel_->addGroupGap();
     drawer(Drawer::More, QStringLiteral("overflow-menu"), tr("More"), QStringLiteral("F10"));
     close();
@@ -2334,7 +2334,7 @@ QWidget *buttonRow(const QList<QWidget *> &buttons)
 
 } // namespace
 
-// The Annotate drawer (#71, Q22): ten tools flat as panel buttons, then the slim property row of
+// The Markup drawer (#71, Q22; named Markup since #100): ten tools flat as panel buttons, then the slim property row of
 // the active tool with Undo/Redo. The drawer may be wider than the main row.
 QWidget *CaptureOverlay::buildMarkupDrawer()
 {
