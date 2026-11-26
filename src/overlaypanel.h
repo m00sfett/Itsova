@@ -39,7 +39,7 @@ enum class PanelState { Start, Selection, Area };
 enum class PanelKeyAction {
     None,
     ThisMonitor,
-    AllMonitors,
+    Monitors, // 2 (#95): the Monitors drawer; "All Monitors" lives there
     Window,
     Areas,
     Delay,
@@ -96,6 +96,9 @@ public:
     void setKeycapVisible(bool visible);
     [[nodiscard]] bool isKeycapVisible() const;
     [[nodiscard]] QString keycapText() const;
+    // While a drawer is open the main row shows no tooltips, so only the drawer's digits speak (#95).
+    void setToolTipsSuppressed(bool suppressed);
+    [[nodiscard]] bool toolTipsSuppressed() const;
 
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -127,6 +130,7 @@ private:
     bool opensDrawer_ = false;
     bool forcedHover_ = false;
     bool keycapVisible_ = false;
+    bool toolTipsSuppressed_ = false;
     bool hovered_ = false;
     qreal hover_ = 0; // 0 = icon, 1 = title
     QVariantAnimation *animation_ = nullptr;

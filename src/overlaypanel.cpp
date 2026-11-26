@@ -196,7 +196,7 @@ PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::Keyb
             return {PanelKeyAction::ThisMonitor};
         }
         if (state == PanelState::Start && key == Qt::Key_2) {
-            return {PanelKeyAction::AllMonitors};
+            return {PanelKeyAction::Monitors};
         }
         return {};
     }
@@ -394,7 +394,9 @@ void PanelButton::enterEvent(QEnterEvent *event)
     }
     hovered_ = true;
     animateHover(true);
-    toolTipTimer_->start();
+    if (!toolTipsSuppressed_) {
+        toolTipTimer_->start();
+    }
     QAbstractButton::enterEvent(event);
 }
 
@@ -411,7 +413,9 @@ void PanelButton::focusInEvent(QFocusEvent *event)
 {
     // Keyboard focus looks like hover: title on the faded icon, the tooltip right away.
     animateHover(true);
-    QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)), panelToolTip(title_, shortcut_), this);
+    if (!toolTipsSuppressed_) {
+        QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)), panelToolTip(title_, shortcut_), this);
+    }
     QAbstractButton::focusInEvent(event);
 }
 
@@ -451,9 +455,25 @@ void PanelButton::changeEvent(QEvent *event)
     QAbstractButton::changeEvent(event);
 }
 
+void PanelButton::setToolTipsSuppressed(bool suppressed)
+{
+    toolTipsSuppressed_ = suppressed;
+    if (suppressed) {
+        toolTipTimer_->stop();
+        if (QToolTip::isVisible() && (underMouse() || hasFocus())) {
+            QToolTip::hideText();
+        }
+    }
+}
+
+bool PanelButton::toolTipsSuppressed() const
+{
+    return toolTipsSuppressed_;
+}
+
 void PanelButton::showToolTipNow()
 {
-    if (underMouse() && !title_.isEmpty()) {
+    if (underMouse() && !title_.isEmpty() && !toolTipsSuppressed_) {
         QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)), panelToolTip(title_, shortcut_), this);
     }
 }
