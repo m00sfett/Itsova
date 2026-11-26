@@ -15,6 +15,9 @@ struct WindowInfo {
     QString iconName; // desktop file name or resource class, for QIcon::fromTheme
     QRect geometry; // logical, compositor space
     bool minimized = false;
+    bool fullscreen = false;
+    int layer = 2;                 // KWin's stacking layer (2 = normal, 4 = keep above, …)
+    bool onCurrentDesktop = true;  // on the current virtual desktop and activity
 };
 
 // Open application windows in KWin's order (most recently used first). Skips windows that hide
