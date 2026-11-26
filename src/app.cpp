@@ -110,6 +110,7 @@ App::App(QObject *parent)
     setVerboseLogging(store_.verboseLogging);
     qCInfo(lcApp) << "glimply" << GLIMPLY_VERSION << "started";
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
+    tray_->setVisibilityMode(int(store_.trayVisibility));
 
     ocr_ = std::make_shared<TesseractOcrEngine>();
     pins_ = new PinManager(this);
@@ -355,6 +356,7 @@ void App::storeChanged(const QStringList &deletedIds)
 {
     store_.save(*config_);
     setVerboseLogging(store_.verboseLogging || verboseFromCommandLine_);
+    tray_->setVisibilityMode(int(store_.trayVisibility));
     if (history_->setLimit(store_.historyLimit)) {
         historyModified(true);
     }

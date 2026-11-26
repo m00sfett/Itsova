@@ -19,4 +19,10 @@ enum class TrayIconState {
 [[nodiscard]] QIcon trayIcon(TrayIconState state);
 [[nodiscard]] QIcon trayIcon(bool flash = false);
 
+// Whether the tray icon is there and how (#123). The mode follows TargetStore::TrayVisibility
+// (0 always, 1 while something runs, 2 while recording). Hidden removes the status notifier item;
+// standby keeps it in the hidden part of the tray (while the widget is shown, only in mode 0).
+enum class TrayPresence { Hidden, Standby, Shown };
+[[nodiscard]] TrayPresence trayPresence(int mode, bool recording, bool intervalsActive, bool widgetActive);
+
 } // namespace glimply

@@ -1830,6 +1830,26 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
+    // Tray icon (#123): hidden, it still comes back while something runs, so it can be stopped.
+    trayVisibility_ = new QComboBox(page);
+    trayVisibility_->addItem(tr("Always"), int(TargetStore::TrayVisibility::Always));
+    trayVisibility_->addItem(tr("Only while something runs"), int(TargetStore::TrayVisibility::WhileRunning));
+    trayVisibility_->addItem(tr("Only while recording"), int(TargetStore::TrayVisibility::WhileRecording));
+    form->addRow(tr("Tray icon:"), trayVisibility_);
+    trayHint_ = makeHint(tr("Shows while a recording runs (or interval captures, with Only while something runs), "
+                            "so you can stop it. To open these settings again, start glimply from the "
+                            "application launcher or run glimply."),
+                         page);
+    form->addRow(QString(), trayHint_);
+    connect(trayVisibility_, &QComboBox::currentIndexChanged, this, [this] {
+        const auto mode = TargetStore::TrayVisibility(trayVisibility_->currentData().toInt());
+        trayHint_->setVisible(mode != TargetStore::TrayVisibility::Always);
+        if (!updating_) {
+            app_->store().trayVisibility = mode;
+            app_->storeChanged();
+        }
+    });
+
     usePrintKey_ = new QCheckBox(tr("Use the Print key for glimply"), page);
     form->addRow(tr("Print key:"), usePrintKey_);
     form->addRow(QString(), makeHint(tr("Print saves all monitors right away. Turning this off gives the Print key "
@@ -2292,6 +2312,8 @@ void SettingsWindow::refreshStorage()
         language_->setCurrentIndex(index < 0 ? 0 : index);
     }
     autostart_->setChecked(store.autostart);
+    trayVisibility_->setCurrentIndex(trayVisibility_->findData(int(store.trayVisibility)));
+    trayHint_->setVisible(store.trayVisibility != TargetStore::TrayVisibility::Always);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
     overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));

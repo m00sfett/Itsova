@@ -85,4 +85,17 @@ QIcon trayIcon(bool flash)
     return trayIcon(flash ? TrayIconState::Flash : TrayIconState::Normal);
 }
 
+TrayPresence trayPresence(int mode, bool recording, bool intervalsActive, bool widgetActive)
+{
+    switch (mode) {
+    case 1:
+        // Something runs: it must be stoppable from the tray, whatever the widget shows.
+        return recording || intervalsActive ? TrayPresence::Shown : TrayPresence::Hidden;
+    case 2:
+        return recording ? TrayPresence::Shown : TrayPresence::Hidden;
+    default:
+        return widgetActive ? TrayPresence::Standby : TrayPresence::Shown;
+    }
+}
+
 } // namespace glimply

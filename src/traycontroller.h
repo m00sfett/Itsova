@@ -58,6 +58,9 @@ public:
     void setRecordingStopShortcut(const QString &shortcut);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
+    // TargetStore::TrayVisibility as int (#123): 0 always, 1 while something runs, 2 while recording.
+    void setVisibilityMode(int mode);
+    [[nodiscard]] bool isShown() const;
     // One short blink. Call only after every frame of a trigger has been captured (A2).
     void blink();
 
@@ -88,12 +91,17 @@ private:
     void rebuildMenu();
     QMenu *buildHistoryMenu(QMenu *parent);
     void updateIcon();
+    void applyPresence();
+    void createItem();
     void updateToolTip();
 
     TargetProvider provider_;
     HistoryProvider historyProvider_;
-    KStatusNotifierItem *item_;
-    QMenu *menu_;
+    KStatusNotifierItem *item_ = nullptr; // null while hidden (#123)
+    QMenu *menu_ = nullptr; // owned by item_
+    int visibilityMode_ = 0;
+    bool widgetActive_ = false;
+    bool started_ = false;
     QTimer *blinkTimer_;
     QList<ActiveIntervalStatus> activeIntervals_;
     QString statusText_;
