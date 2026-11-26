@@ -1,5 +1,7 @@
 /build/
 /build-release/
+/build-coverage/
+/build-mutate/
 /cmake-build-*/
 /CMakeUserPresets.json
 /compile_commands.json

@@ -39,7 +39,8 @@ fi
 
 cmake -S "${source_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${prefix}"
 cmake --build "${build_dir}" --parallel "$(( $(nproc) > 4 ? 4 : $(nproc) ))"
-ctest --test-dir "${build_dir}" --output-on-failure
+# Nested-KWin tests (label "nested") take minutes and are run by developers, not by the installer.
+ctest --test-dir "${build_dir}" --output-on-failure -LE nested
 widget_metadata="${prefix}/share/plasma/plasmoids/io.github.m00sfett.glimply.widget/metadata.json"
 widget_before="$(sha256sum "${widget_metadata}" 2>/dev/null || true)"
 
