@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - Unreleased
+
+Tray, recording shortcut and recording feedback from the 0.11.0 hand test (milestone 0.12.0).
+
+### Fixed
+
+- Moving a recorded window (#122): checked, the recording does not stop. KWin sends a window frame only when the window's content changes, and a move is no change, so the video holds the last picture until the window draws again; the file is as long as the recording. New nested regression test `record-window-move`; the README says what a window recording contains.
+
 ## [0.11.0] - Unreleased
 
 Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0). The repository stays private until 1.0.0.

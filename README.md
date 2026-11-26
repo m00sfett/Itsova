@@ -1,6 +1,6 @@
 # glimply
 
-> **Note:** `glimply` is currently a working name while in pre-release development (`0.11.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
+> **Note:** `glimply` is currently a working name while in pre-release development (`0.12.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
 
 **glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, screen recording, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
 
@@ -10,7 +10,7 @@
 
 - **Fixed areas, groups, monitors, and windows:** Save named rectangular screen areas (single-monitor or spanning multiple monitors), group multiple targets, or capture an individual monitor, all monitors, or an open window via global KDE shortcuts (`KGlobalAccel`).
 - **Interactive capture overlay (`Print`):** Capture in frozen or live mode, adjust selections with a pixel loupe and color picker, trigger saved areas directly, or annotate before saving/copying.
-- **Screen recording:** Record a monitor, all monitors, a saved area, a drawn rectangle, or a single window to MP4 (H.264), GIF, or WebM (VP9) from the overlay (`Ctrl+R`), the widget, or a global start/stop shortcut, with pause and a recording indicator in the tray. Recordings keep each monitor's native resolution and have no sound.
+- **Screen recording:** Record a monitor, all monitors, a saved area, a drawn rectangle, or a single window to MP4 (H.264), GIF, or WebM (VP9) from the overlay (`Ctrl+R`), the widget, or a global start/stop shortcut, with pause and a recording indicator in the tray. Recordings keep each monitor's native resolution and have no sound. A window recording contains only the window's content: KWin sends a new frame only when the window changes, so while the window is moved or stays still the video holds the last picture.
 - **Non-destructive annotations & Quick Editor:** Draw on captures with *Markup* inside the capture overlay or open images standalone via `glimply -e <file>` (`glimply <files...>`). Available tools: `Select`, `Crop`, `Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Highlighter`, `Text`, numbered `Step` counters, `Redact` (*Solid*, *Pixelate*, *Blur*), and `Spotlight` (*Rectangle*, *Ellipse*).
 - **Pinned floating captures:** Keep screenshots floating always-on-top on your desktop. While a capture runs, pins paint themselves fully transparent, so they do not appear in screenshots; KWin's `excludeFromCapture` property did not achieve this in testing. A small KWin window script keeps pins above other windows and places them, and they can be restored across restarts.
 - **Countdowns, intervals, history, and hooks:** Pre-capture countdown timers, timed interval captures (`--seconds`, `--max-captures`, `--max-minutes`, `--only-changed`), recent capture history (`glimply history`), desktop notifications, tray controls, and optional post-capture hooks.
