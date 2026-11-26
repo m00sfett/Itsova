@@ -278,6 +278,38 @@ if(BUILD_TESTING)
     # (#76): CTest runs every test on the offscreen platform.
     get_property(glimply_tests DIRECTORY PROPERTY TESTS)
     set_tests_properties(${glimply_tests} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    # Nested-KWin acceptance tests (#93): a virtual KWin with a throw-away HOME per test, never the
+    # desktop session. Label "nested"; skipped (exit 77) where a tool is missing. install.sh leaves
+    # them out (ctest -LE nested).
+    find_program(GLIMPLY_KWIN_WAYLAND kwin_wayland)
+    find_program(GLIMPLY_WAYLAND_SCANNER wayland-scanner)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(GLIMPLY_WAYLAND_CLIENT QUIET IMPORTED_TARGET wayland-client)
+    endif()
+    if(GLIMPLY_KWIN_WAYLAND AND GLIMPLY_WAYLAND_SCANNER AND GLIMPLY_WAYLAND_CLIENT_FOUND)
+        set(glimply_fake_xml "${PLASMA_WAYLAND_PROTOCOLS_DIR}/fake-input.xml")
+        set(glimply_fake_dir "${CMAKE_CURRENT_BINARY_DIR}/fakekey")
+        file(MAKE_DIRECTORY "${glimply_fake_dir}")
+        add_custom_command(OUTPUT "${glimply_fake_dir}/fake-input.h" "${glimply_fake_dir}/fake-input.c"
+            COMMAND ${GLIMPLY_WAYLAND_SCANNER} client-header "${glimply_fake_xml}" "${glimply_fake_dir}/fake-input.h"
+            COMMAND ${GLIMPLY_WAYLAND_SCANNER} private-code "${glimply_fake_xml}" "${glimply_fake_dir}/fake-input.c"
+            DEPENDS "${glimply_fake_xml}")
+        add_executable(glimply-fakekey tests/nested/fakekey.c "${glimply_fake_dir}/fake-input.c")
+        target_include_directories(glimply-fakekey PRIVATE "${glimply_fake_dir}")
+        target_link_libraries(glimply-fakekey PRIVATE PkgConfig::GLIMPLY_WAYLAND_CLIENT)
+        set(glimply_nested "${CMAKE_CURRENT_SOURCE_DIR}/tests/nested")
+        function(glimply_nested_test name)
+            cmake_parse_arguments(ARG "" "" "OPTIONS" ${ARGN})
+            add_test(NAME nested-${name}
+                COMMAND "${glimply_nested}/session.sh" ${ARG_OPTIONS} --out "${CMAKE_CURRENT_BINARY_DIR}/nested/${name}"
+                        $<TARGET_FILE:glimply> $<TARGET_FILE:glimply-fakekey> "${glimply_nested}/test-${name}.sh")
+            set_tests_properties(nested-${name} PROPERTIES LABELS nested RUN_SERIAL TRUE TIMEOUT 240
+                                 SKIP_RETURN_CODE 77)
+        endfunction()
+        glimply_nested_test(overlay)
+    endif()
+
     # Opt-in check that translated panel button titles fit (#73); never run by CTest.
     add_executable(glimply-title-fit EXCLUDE_FROM_ALL tests/titlefit.cpp)
     target_link_libraries(glimply-title-fit PRIVATE glimply_ui)

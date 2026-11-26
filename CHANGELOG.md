@@ -13,6 +13,8 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 - Logging (#92): one logging category per area (`glimply.app`, `.capture`, `.overlay`, `.record`, `.tray`, `.dbus`, `.mcp`, `.settings`, `.hooks`). Info lines always reach the user journal: every capture, overlay session, interval, D-Bus action, MCP tool call and hook result, and for recordings every start, state change, encoder state and stop together with who asked for it (tray icon click, tray menu, shortcut, D-Bus, quit, KWin). Every error notification is logged as well. Debug lines are off by default and switch on in *Settings → General → Logging* or with `glimply --verbose` (also for an already running daemon). `glimply logs [journalctl options]` shows glimply's journal lines, by default the last hour.
 
+- Test infrastructure (#93): nested-KWin acceptance tests as CTest targets (label `nested`; a virtual KWin with a throw-away home per test, driven through D-Bus and KWin's fake input), `scripts/coverage.sh` (gcovr) and `scripts/mutate.sh` (Mull, limited to named files). `install.sh` runs only the offscreen tests.
+
 ### Fixed
 
 - Notification settings had no effect (#91): the notification events were installed as `glimply.notifyrc`, but KNotification looks for `io.github.m00sfett.glimply.notifyrc`, so every notification fell back to the defaults and logged "No event config could be found". The file now carries the component's name; the installer removes the old file.
