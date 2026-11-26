@@ -989,6 +989,14 @@
         <translation>تم نسخ %1 إلى الحافظة</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>التسجيل متوقف مؤقتًا</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>استؤنف التسجيل</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>انتهى التسجيل مبكرًا</translation>
     </message>
@@ -1301,6 +1309,10 @@
         <translation>يجري تسجيل بالفعل.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>لا توجد نافذة في التركيز.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>التسجيل</translation>
     </message>
@@ -1313,16 +1325,36 @@
         <translation>تسجيل %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>انقر على أيقونة glimply في علبة النظام للإيقاف.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>يبدأ تسجيل %1…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>انقر على أيقونة glimply في علبة النظام أو اضغط %1 للإيقاف.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>أوقفه بأيقونة glimply في صينية النظام</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>إيقاف</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>أوقفه بأيقونة glimply أو %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>يستمر التسجيل…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>النافذة النشطة</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>مستطيل %1 × %2 عند %3، %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>النافذة %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>نافذة لم تعد مفتوحة</translation>
     </message>
 </context>
 <context>
@@ -1573,12 +1605,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>الافتراضي لاختصار التسجيل</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>الافتراضي لـ %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>الشاشات والنوافذ والمناطق</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>الشاشات</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>النافذة النشطة</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1786,6 +1830,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>التقاط النافذة أو الشاشة تحت المؤشر</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>ثبّت العنصر المحدد أو المستطيل كهدف افتراضي لاختصار التسجيل</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -3010,6 +3062,14 @@
         <translation>معدل الإطارات:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>أظهر تلميحًا قصيرًا عند بدء التسجيل أو إيقافه مؤقتًا أو إنهائه</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>التلميحات:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>اختصار بدء التسجيل أو إيقافه</translation>
     </message>
@@ -3030,8 +3090,20 @@
         <translation>الاختصارات:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>سجّل من التراكب (Ctrl+R) أو باختصار بدء التسجيل أو إيقافه، وهو يعيد تسجيل آخر هدف. تستخدم تسجيلات GIF بحد أقصى %1 fps. التسجيلات لا تحتوي على صوت.</translation>
+        <source>Remove the default recording target</source>
+        <translation>أزل هدف التسجيل الافتراضي</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>الهدف الافتراضي:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>سجّل من الطبقة (Ctrl+R) أو باختصار البدء/الإيقاف الذي يسجّل الهدف الافتراضي: ثبّته بالدبوس بجوار عنصر في قوائم التسجيل في الطبقة (أو P). بدونه يفتح الاختصار الطبقة للاختيار. تظهر التلميحات بجوار ما يُسجَّل؛ وإذا كان كل شيء يُسجَّل يبدأ التسجيل بعد اختفاء تلميح البدء. تستخدم تسجيلات GIF ‏%1 إطارًا/ث على الأكثر. التسجيلات بلا صوت.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>لا شيء: الاختصار يفتح الطبقة</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3072,6 +3144,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>تعمل الاختصارات فقط أثناء تشغيل glimply.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>دائمًا</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>فقط أثناء تشغيل شيء ما</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>فقط أثناء التسجيل</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>أيقونة الصينية:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>تظهر أثناء التسجيل (أو اللقطات الدورية مع «فقط أثناء تشغيل شيء ما») لتتمكن من إيقافه. لفتح هذه الإعدادات مجددًا، شغّل glimply من مشغّل التطبيقات أو نفّذ glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

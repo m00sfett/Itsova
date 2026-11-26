@@ -17,6 +17,8 @@ Tray, recording shortcut and recording feedback from the 0.11.0 hand test (miles
 
 - Recording hints (#125): every recording shows a short hint when it starts (target and how to stop), pauses, resumes, stops (*Recording saved* with the file name; a click opens it) or fails. The hint is a small layer-shell surface placed where the recording does not see it: for a window recording on the window's monitor (window streams hold only the window), for a region on a monitor it does not touch or beside it in the largest free strip. When everything is recorded (the only monitor, all monitors), the start hint shows first and the recording starts once it has gone (about 1.7 s); resuming such a recording works the same way. Pressing the shortcut or stopping during that wait cancels the start. *Settings → Storage → Hints* turns them off (default on). They replace the "how to stop" notification of #98 (its notification event is gone) and, while on, the *Recording saved* notification. Builds now need LayerShellQt (`layer-shell-qt`).
 
+- Translations of the new 0.12.0 strings (tray visibility, default recording target, recording hints) in all 18 languages.
+
 ### Fixed
 
 - Moving a recorded window (#122): checked, the recording does not stop. KWin sends a window frame only when the window's content changes, and a move is no change, so the video holds the last picture until the window draws again; the file is as long as the recording. New nested regression test `record-window-move`; the README says what a window recording contains.

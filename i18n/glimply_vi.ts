@@ -974,6 +974,14 @@
         <translation>Đã sao chép %1 vào bảng nhớ tạm</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Đã tạm dừng ghi</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Đã tiếp tục ghi</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Bản ghi đã dừng sớm</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>Đã có một bản ghi đang chạy.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Không có cửa sổ nào được chọn.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Bản ghi</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>Đang ghi %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Nhấp vào biểu tượng glimply trong khay hệ thống để dừng.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Bắt đầu ghi %1…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Nhấp vào biểu tượng glimply trong khay hệ thống hoặc nhấn %1 để dừng.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Dừng bằng biểu tượng glimply ở khay hệ thống</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Dừng</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Dừng bằng biểu tượng glimply hoặc %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Tiếp tục ghi…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Cửa sổ đang hoạt động</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Hình chữ nhật %1 × %2 tại %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Cửa sổ %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Một cửa sổ không còn mở</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Mặc định cho phím tắt ghi</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Mặc định cho %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Màn hình, cửa sổ và vùng</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Màn hình</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Cửa sổ đang hoạt động</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Chụp cửa sổ hoặc màn hình dưới con trỏ</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Ghim mục đang chọn hoặc hình chữ nhật làm mặc định của phím tắt ghi</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>Tốc độ khung hình:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Hiện gợi ý ngắn khi bắt đầu, tạm dừng hoặc dừng ghi</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Gợi ý:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Phím tắt bắt đầu hoặc dừng ghi</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>Phím tắt:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Ghi từ lớp phủ (Ctrl+R) hoặc bằng phím tắt bắt đầu/dừng; phím này ghi lại đối tượng đã ghi lần trước. Bản ghi GIF dùng tối đa %1 fps. Bản ghi không có âm thanh.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Bỏ mục tiêu ghi mặc định</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Mục tiêu mặc định:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Ghi từ lớp phủ (Ctrl+R) hoặc bằng phím tắt bắt đầu/dừng, phím này ghi mục tiêu mặc định: ghim nó bằng chiếc ghim cạnh một mục trong menu ghi của lớp phủ (hoặc P). Nếu không có, phím tắt mở lớp phủ để chọn. Gợi ý hiện cạnh vùng được ghi; nếu ghi mọi thứ, việc ghi bắt đầu khi gợi ý bắt đầu biến mất. Bản ghi GIF dùng tối đa %1 fps. Bản ghi không có âm thanh.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Không có: phím tắt mở lớp phủ</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Phím tắt chỉ hoạt động khi glimply đang chạy.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Luôn luôn</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Chỉ khi có gì đang chạy</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Chỉ khi đang ghi</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Biểu tượng khay:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Hiện khi đang ghi (hoặc chụp theo khoảng thời gian, với “Chỉ khi có gì đang chạy”) để bạn có thể dừng. Để mở lại cài đặt này, chạy glimply từ trình khởi chạy ứng dụng hoặc chạy lệnh glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

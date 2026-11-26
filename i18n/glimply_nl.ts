@@ -977,6 +977,14 @@
         <translation>%1 gekopieerd naar het klembord</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Opname gepauzeerd</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Opname hervat</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Opname vroegtijdig beëindigd</translation>
     </message>
@@ -1289,6 +1297,10 @@
         <translation>Er is al een video-opname bezig.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Geen venster heeft de focus.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Video-opname</translation>
     </message>
@@ -1301,16 +1313,36 @@
         <translation>Opname %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Klik op het glimply-pictogram in het systeemvak om te stoppen.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>Opname van %1 begint…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Klik op het glimply-pictogram in het systeemvak of druk op %1 om te stoppen.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Stoppen met het glimply-pictogram in het systeemvak</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Stoppen</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Stoppen met het glimply-pictogram of %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Opname gaat verder…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Actief venster</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Rechthoek %1 × %2 op %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Venster %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Een venster dat niet meer open is</translation>
     </message>
 </context>
 <context>
@@ -1561,12 +1593,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Standaard voor de opnamesneltoets</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Standaard voor %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Schermen, vensters en gebieden</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Schermen</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Actief venster</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1754,6 +1798,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Venster of scherm onder de aanwijzer vastleggen</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Het geselecteerde item of de rechthoek vastzetten als standaard van de opnamesneltoets</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2970,6 +3022,14 @@
         <translation>Beeldsnelheid:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Een korte melding tonen als een opname begint, pauzeert of stopt</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Meldingen:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Sneltoets om video-opname te starten of stoppen</translation>
     </message>
@@ -2990,8 +3050,20 @@
         <translation>Sneltoetsen:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Opnemen kan via de overlay (Ctrl+R) of met de sneltoets voor starten en stoppen. Die sneltoets neemt het laatste doel opnieuw op. GIF-opnames gebruiken maximaal %1 fps. Video-opnames bevatten geen geluid.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Standaard opnamedoel verwijderen</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Standaarddoel:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Neem op vanuit de overlay (Ctrl+R) of met de start/stop-sneltoets, die het standaarddoel opneemt: zet het vast met de punaise naast een item in de opnamemenu’s van de overlay (of P). Zonder doel opent de sneltoets de overlay om te kiezen. Meldingen verschijnen naast wat wordt opgenomen; als alles wordt opgenomen, begint de opname zodra de startmelding weg is. GIF-opnamen gebruiken hoogstens %1 fps. Opnamen hebben geen geluid.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Geen: de sneltoets opent de overlay</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3032,6 +3104,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Sneltoetsen werken alleen zolang glimply actief is.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Altijd</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Alleen terwijl er iets loopt</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Alleen tijdens een opname</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Pictogram in systeemvak:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Verschijnt zolang een opname loopt (of intervalopnamen, bij ‘Alleen terwijl er iets loopt’), zodat u die kunt stoppen. Open deze instellingen opnieuw door glimply te starten vanuit de programmastarter of glimply uit te voeren.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

@@ -974,6 +974,14 @@
         <translation>%1이(가) 클립보드에 복사되었습니다</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>녹화 일시 정지됨</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>녹화 재개됨</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>녹화가 중간에 종료됨</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>이미 녹화가 진행 중입니다.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>포커스된 창이 없습니다.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>녹화</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>%1 녹화 중</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>시스템 트레이의 glimply 아이콘을 클릭하여 중지하세요.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>%1 녹화를 시작합니다…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>시스템 트레이의 glimply 아이콘을 클릭하거나 %1 키를 눌러 중지하세요.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>시스템 트레이의 glimply 아이콘으로 중지</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>중지</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>glimply 아이콘 또는 %1(으)로 중지</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>녹화를 계속합니다…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>활성 창</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>%3, %4 위치의 사각형 %1 × %2</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>창 %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>더 이상 열려 있지 않은 창</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>녹화 단축키 기본값</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>%1 기본값</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>모니터, 창 및 영역</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>모니터</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>활성 창</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>포인터 아래의 창 또는 모니터 캡처</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>포커스된 항목이나 사각형을 녹화 단축키의 기본값으로 고정</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>프레임 속도:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>녹화가 시작, 일시 정지, 중지될 때 짧은 힌트 표시</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>힌트:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>녹화 시작 또는 중지 단축키</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>단축키:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>오버레이(Ctrl+R) 또는 시작/중지 단축키로 녹화할 수 있으며, 단축키는 마지막 대상을 다시 녹화합니다. GIF 녹화는 최대 %1 fps를 사용합니다. 녹화에는 소리가 포함되지 않습니다.</translation>
+        <source>Remove the default recording target</source>
+        <translation>기본 녹화 대상 제거</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>기본 대상:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>오버레이(Ctrl+R)나 시작/중지 단축키로 녹화합니다. 단축키는 기본 대상을 녹화하며, 오버레이 녹화 메뉴에서 항목 옆 핀(또는 P)으로 고정합니다. 기본값이 없으면 단축키가 선택용 오버레이를 엽니다. 힌트는 녹화 영역 바깥에 표시되며, 모든 화면을 녹화할 때는 시작 힌트가 사라진 뒤 녹화가 시작됩니다. GIF 녹화는 최대 %1 fps입니다. 녹화에는 소리가 없습니다.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>없음: 단축키가 오버레이를 엽니다</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>단축키는 glimply가 실행 중일 때만 작동합니다.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>항상</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>무언가 실행 중일 때만</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>녹화 중일 때만</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>트레이 아이콘:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>녹화 중에(“무언가 실행 중일 때만”에서는 간격 캡처 중에도) 표시되어 중지할 수 있습니다. 이 설정을 다시 열려면 애플리케이션 실행기에서 glimply를 시작하거나 glimply를 실행하세요.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

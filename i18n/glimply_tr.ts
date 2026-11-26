@@ -974,6 +974,14 @@
         <translation>%1 panoya kopyalandı</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Kayıt duraklatıldı</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Kayıt sürdürüldü</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Kayıt erken sonlandı</translation>
     </message>
@@ -1286,6 +1294,10 @@
         <translation>Zaten çalışan bir kayıt var.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Hiçbir pencere odakta değil.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Kayıt</translation>
     </message>
@@ -1298,16 +1310,36 @@
         <translation>Kayıt: %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Durdurmak için sistem tepsisindeki glimply simgesine tıklayın.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>%1 kaydı başlıyor…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Durdurmak için sistem tepsisindeki glimply simgesine tıklayın veya %1 tuşuna basın.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Sistem tepsisindeki glimply simgesiyle durdurun</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Durdur</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>glimply simgesiyle veya %1 ile durdurun</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>Kayıt devam ediyor…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Etkin pencere</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>%3, %4 konumunda %1 × %2 dikdörtgen</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Pencere %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Artık açık olmayan bir pencere</translation>
     </message>
 </context>
 <context>
@@ -1558,12 +1590,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Kayıt kısayolu için varsayılan</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>%1 için varsayılan</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Ekranlar, Pencereler ve Alanlar</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Ekranlar</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Etkin Pencere</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1746,6 +1790,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>İmlecin altındaki pencereyi veya ekranı yakala</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Odaklanan girdiyi veya dikdörtgeni kayıt kısayolunun varsayılanı olarak sabitle</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2960,6 +3012,14 @@
         <translation>Kare hızı:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Kayıt başladığında, duraklatıldığında veya durduğunda kısa bir ipucu göster</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>İpuçları:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Kaydı başlatma veya durdurma kısayolu</translation>
     </message>
@@ -2980,8 +3040,20 @@
         <translation>Kısayollar:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Katmandan (Ctrl+R) ya da başlat/durdur kısayoluyla kaydet; kısayol son hedefi yeniden kaydeder. GIF kayıtları en fazla %1 fps kullanır. Kayıtlarda ses yoktur.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Varsayılan kayıt hedefini kaldır</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Varsayılan hedef:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Katmandan (Ctrl+R) veya varsayılan hedefi kaydeden başlat/durdur kısayoluyla kaydedin: hedefi katmanın kayıt menülerinde bir girdinin yanındaki raptiyeyle (veya P ile) sabitleyin. Hedef yoksa kısayol seçim için katmanı açar. İpuçları kaydedilen alanın yanında görünür; her şey kaydediliyorsa kayıt, başlangıç ipucu kaybolunca başlar. GIF kayıtları en fazla %1 fps kullanır. Kayıtlarda ses yoktur.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Yok: kısayol katmanı açar</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3022,6 +3094,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Kısayollar yalnızca glimply çalışırken işler.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Her zaman</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Yalnızca bir şey çalışırken</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Yalnızca kayıt sırasında</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Tepsi simgesi:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>Bir kayıt sürerken (veya “Yalnızca bir şey çalışırken” ile aralıklı yakalamalarda) görünür, böylece onu durdurabilirsiniz. Bu ayarları yeniden açmak için glimply’yi uygulama başlatıcısından başlatın veya glimply komutunu çalıştırın.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

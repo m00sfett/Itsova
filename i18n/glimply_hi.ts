@@ -977,6 +977,14 @@
         <translation>%1 क्लिपबोर्ड पर कॉपी किया गया</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>रिकॉर्डिंग रुकी</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>रिकॉर्डिंग फिर शुरू</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>रिकॉर्डिंग समय से पहले समाप्त हुई</translation>
     </message>
@@ -1289,6 +1297,10 @@
         <translation>एक रिकॉर्डिंग पहले से चल रही है।</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>किसी विंडो पर फ़ोकस नहीं है।</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>रिकॉर्डिंग</translation>
     </message>
@@ -1301,16 +1313,36 @@
         <translation>%1 की रिकॉर्डिंग</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>रोकने के लिए सिस्टम ट्रे में glimply आइकन पर क्लिक करें।</translation>
+        <source>Recording %1 starts…</source>
+        <translation>%1 की रिकॉर्डिंग शुरू हो रही है…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>रोकने के लिए सिस्टम ट्रे में glimply आइकन पर क्लिक करें या %1 दबाएँ।</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>सिस्टम ट्रे में glimply आइकन से रोकें</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>रोकें</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>glimply आइकन या %1 से रोकें</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>रिकॉर्डिंग जारी है…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>सक्रिय विंडो</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>%3, %4 पर आयत %1 × %2</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>विंडो %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>एक विंडो जो अब खुली नहीं है</translation>
     </message>
 </context>
 <context>
@@ -1561,12 +1593,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>रिकॉर्डिंग शॉर्टकट का डिफ़ॉल्ट</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>%1 का डिफ़ॉल्ट</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>मॉनिटर, विंडो और क्षेत्र</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>मॉनिटर</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>सक्रिय विंडो</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1754,6 +1798,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>पॉइंटर के नीचे की विंडो या मॉनिटर कैप्चर करें</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>फ़ोकस वाली प्रविष्टि या आयत को रिकॉर्डिंग शॉर्टकट के डिफ़ॉल्ट के रूप में पिन करें</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2970,6 +3022,14 @@
         <translation>फ़्रेम दर:</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>रिकॉर्डिंग शुरू होने, रुकने या बंद होने पर छोटा संकेत दिखाएँ</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>संकेत:</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>रिकॉर्डिंग शुरू या रोकने का शॉर्टकट</translation>
     </message>
@@ -2990,8 +3050,20 @@
         <translation>शॉर्टकट:</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>ओवरले से (Ctrl+R) या शुरू/रोकें शॉर्टकट से रिकॉर्ड करें, जो अंतिम लक्ष्य को फिर से रिकॉर्ड करता है। GIF रिकॉर्डिंग अधिकतम %1 fps पर बनती है। रिकॉर्डिंग में कोई ध्वनि नहीं होती।</translation>
+        <source>Remove the default recording target</source>
+        <translation>डिफ़ॉल्ट रिकॉर्डिंग लक्ष्य हटाएँ</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>डिफ़ॉल्ट लक्ष्य:</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>ओवरले (Ctrl+R) से या शुरू/रोकें शॉर्टकट से रिकॉर्ड करें, जो डिफ़ॉल्ट लक्ष्य रिकॉर्ड करता है: ओवरले के रिकॉर्ड मेनू में किसी प्रविष्टि के बगल वाले पिन से (या P से) उसे पिन करें। उसके बिना शॉर्टकट चुनने के लिए ओवरले खोलता है। संकेत रिकॉर्ड हो रहे हिस्से के बगल में दिखते हैं; सब कुछ रिकॉर्ड होने पर रिकॉर्डिंग शुरुआती संकेत गायब होने के बाद शुरू होती है। GIF रिकॉर्डिंग अधिकतम %1 fps उपयोग करती हैं। रिकॉर्डिंग में ध्वनि नहीं होती।</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>कोई नहीं: शॉर्टकट ओवरले खोलता है</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3032,6 +3104,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>शॉर्टकट केवल तभी काम करते हैं जब glimply चल रहा हो।</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>हमेशा</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>केवल जब कुछ चल रहा हो</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>केवल रिकॉर्डिंग के दौरान</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>ट्रे आइकन:</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>रिकॉर्डिंग चलने तक दिखता है (या “केवल जब कुछ चल रहा हो” के साथ अंतराल कैप्चर में), ताकि आप उसे रोक सकें। ये सेटिंग्स फिर खोलने के लिए glimply को ऐप लॉन्चर से शुरू करें या glimply चलाएँ।</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>

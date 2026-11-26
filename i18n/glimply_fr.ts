@@ -977,6 +977,14 @@
         <translation>%1 copié dans le presse-papiers</translation>
     </message>
     <message>
+        <source>Recording paused</source>
+        <translation>Enregistrement en pause</translation>
+    </message>
+    <message>
+        <source>Recording resumed</source>
+        <translation>Enregistrement repris</translation>
+    </message>
+    <message>
         <source>Recording ended early</source>
         <translation>Enregistrement interrompu</translation>
     </message>
@@ -1289,6 +1297,10 @@
         <translation>Un enregistrement est déjà en cours.</translation>
     </message>
     <message>
+        <source>No window has the focus.</source>
+        <translation>Aucune fenêtre n’a le focus.</translation>
+    </message>
+    <message>
         <source>Recording</source>
         <translation>Enregistrement</translation>
     </message>
@@ -1301,16 +1313,36 @@
         <translation>Enregistrement de %1</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray to stop.</source>
-        <translation>Cliquez sur l'icône de glimply dans la zone de notification pour arrêter.</translation>
+        <source>Recording %1 starts…</source>
+        <translation>L’enregistrement de %1 commence…</translation>
     </message>
     <message>
-        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
-        <translation>Cliquez sur l'icône de glimply dans la zone de notification ou appuyez sur %1 pour arrêter.</translation>
+        <source>Stop with the glimply icon in the system tray</source>
+        <translation>Arrêter avec l’icône glimply dans la zone de notification</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Arrêter</translation>
+        <source>Stop with the glimply tray icon or %1</source>
+        <translation>Arrêter avec l’icône glimply ou %1</translation>
+    </message>
+    <message>
+        <source>Recording resumes…</source>
+        <translation>L’enregistrement reprend…</translation>
+    </message>
+    <message>
+        <source>Active window</source>
+        <translation>Fenêtre active</translation>
+    </message>
+    <message>
+        <source>Rectangle %1 × %2 at %3, %4</source>
+        <translation>Rectangle %1 × %2 à %3, %4</translation>
+    </message>
+    <message>
+        <source>Window %1</source>
+        <translation>Fenêtre %1</translation>
+    </message>
+    <message>
+        <source>A window that is no longer open</source>
+        <translation>Une fenêtre qui n’est plus ouverte</translation>
     </message>
 </context>
 <context>
@@ -1561,12 +1593,24 @@
         <translation>Freeze</translation>
     </message>
     <message>
+        <source>Default for the recording shortcut</source>
+        <translation>Par défaut pour le raccourci d’enregistrement</translation>
+    </message>
+    <message>
+        <source>Default for %1</source>
+        <translation>Par défaut pour %1</translation>
+    </message>
+    <message>
         <source>Monitors, Windows and Areas</source>
         <translation>Écrans, fenêtres et zones</translation>
     </message>
     <message>
         <source>Monitors</source>
         <translation>Écrans</translation>
+    </message>
+    <message>
+        <source>Active Window</source>
+        <translation>Fenêtre active</translation>
     </message>
     <message>
         <source>%1 (this monitor)</source>
@@ -1754,6 +1798,14 @@
     <message>
         <source>Capture the window or monitor under the pointer</source>
         <translation>Capturer la fenêtre ou l'écran sous le pointeur</translation>
+    </message>
+    <message>
+        <source>P</source>
+        <translation>P</translation>
+    </message>
+    <message>
+        <source>Pin the focused entry or the rectangle as the default of the recording shortcut</source>
+        <translation>Épingler l’entrée sélectionnée ou le rectangle comme cible par défaut du raccourci d’enregistrement</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2970,6 +3022,14 @@
         <translation>Fréquence d'images :</translation>
     </message>
     <message>
+        <source>Show a short hint when a recording starts, pauses or stops</source>
+        <translation>Afficher un bref message quand un enregistrement démarre, se met en pause ou s’arrête</translation>
+    </message>
+    <message>
+        <source>Hints:</source>
+        <translation>Messages :</translation>
+    </message>
+    <message>
         <source>Start or stop recording shortcut</source>
         <translation>Raccourci de démarrage ou d'arrêt de l'enregistrement</translation>
     </message>
@@ -2990,8 +3050,20 @@
         <translation>Raccourcis :</translation>
     </message>
     <message>
-        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the last target again. GIF recordings use at most %1 fps. Recordings have no sound.</source>
-        <translation>Enregistrer depuis la superposition (Ctrl+R) ou avec le raccourci de marche/arrêt, qui enregistre à nouveau la dernière cible. Les enregistrements GIF ne dépassent pas %1 i/s. Les enregistrements n'ont pas de son.</translation>
+        <source>Remove the default recording target</source>
+        <translation>Retirer la cible d’enregistrement par défaut</translation>
+    </message>
+    <message>
+        <source>Default target:</source>
+        <translation>Cible par défaut :</translation>
+    </message>
+    <message>
+        <source>Record from the overlay (Ctrl+R) or with the start/stop shortcut, which records the default target: pin it with the pin next to an entry in the overlay's record menus (or P). Without one, the shortcut opens the overlay to choose. Hints show beside what is recorded; when everything is recorded, the recording starts once the start hint has gone. GIF recordings use at most %1 fps. Recordings have no sound.</source>
+        <translation>Enregistrez depuis la superposition (Ctrl+R) ou avec le raccourci démarrer/arrêter, qui enregistre la cible par défaut : épinglez-la avec l’épingle à côté d’une entrée des menus d’enregistrement de la superposition (ou P). Sans cible, le raccourci ouvre la superposition pour choisir. Les messages s’affichent à côté de ce qui est enregistré ; si tout est enregistré, l’enregistrement commence une fois le message de démarrage disparu. Les enregistrements GIF utilisent au plus %1 i/s. Les enregistrements n’ont pas de son.</translation>
+    </message>
+    <message>
+        <source>None: the shortcut opens the overlay</source>
+        <translation>Aucune : le raccourci ouvre la superposition</translation>
     </message>
     <message>
         <source>Capture Folder</source>
@@ -3032,6 +3104,26 @@
     <message>
         <source>Shortcuts only work while glimply is running.</source>
         <translation>Les raccourcis ne fonctionnent que lorsque glimply est en cours d'exécution.</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation>Toujours</translation>
+    </message>
+    <message>
+        <source>Only while something runs</source>
+        <translation>Seulement quand quelque chose tourne</translation>
+    </message>
+    <message>
+        <source>Only while recording</source>
+        <translation>Seulement pendant un enregistrement</translation>
+    </message>
+    <message>
+        <source>Tray icon:</source>
+        <translation>Icône de notification :</translation>
+    </message>
+    <message>
+        <source>Shows while a recording runs (or interval captures, with Only while something runs), so you can stop it. To open these settings again, start glimply from the application launcher or run glimply.</source>
+        <translation>S’affiche pendant un enregistrement (ou des captures à intervalle, avec « Seulement quand quelque chose tourne ») pour que vous puissiez l’arrêter. Pour rouvrir ces paramètres, lancez glimply depuis le lanceur d’applications ou exécutez glimply.</translation>
     </message>
     <message>
         <source>Use the Print key for glimply</source>
