@@ -23,6 +23,7 @@
 #include <functional>
 #include <optional>
 
+class QAbstractButton;
 class QLabel;
 class QTimer;
 
@@ -118,6 +119,8 @@ public:
     void notePointerOn(const QString &connector);
     // Runs entry index (0-based) of the list drawer open on the panel (keys 1–9, Q24).
     void pickPanelEntry(int index);
+    // The overlay that shows the panel (keys typed on another monitor's overlay go there, #96).
+    [[nodiscard]] CaptureOverlay *panelOverlay() const;
     // Where the user put the panel on this monitor (top-left, monitor coordinates), if anywhere.
     [[nodiscard]] std::optional<QPoint> panelPosition(const QString &connector) const;
     void setPanelPosition(const QString &connector, const std::optional<QPoint> &position);
@@ -307,6 +310,9 @@ private:
     void applyDrag(const QPoint &globalPos, Qt::KeyboardModifiers modifiers);
     bool reapplyModifiers(QKeyEvent *event);
     bool handlePanelKey(int key, Qt::KeyboardModifiers modifiers);
+    // Arrow keys, Enter and Escape through the panel and its drawers (#96); true when handled.
+    bool navigatePanel(QKeyEvent *event);
+    [[nodiscard]] QList<QAbstractButton *> drawerEntries() const;
     void updateCursor(const QPoint &globalPos);
     [[nodiscard]] QPoint toGlobalPoint(const QPoint &localPos) const;
     [[nodiscard]] QRect toLocalRect(const QRect &globalRect) const;

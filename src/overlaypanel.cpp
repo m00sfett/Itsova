@@ -235,6 +235,95 @@ PanelKey panelKeyAction(PanelState state, bool listDrawerOpen, int key, Qt::Keyb
     return {};
 }
 
+PanelNav panelNavigate(const PanelNavState &state, int key, bool rightToLeft)
+{
+    const int mainCount = int(state.mainOpensDrawer.size());
+    if (mainCount == 0) {
+        return {};
+    }
+    // Logical directions: "next" runs along the panel in reading order.
+    const bool next = key == (rightToLeft ? Qt::Key_Left : Qt::Key_Right);
+    const bool previous = key == (rightToLeft ? Qt::Key_Right : Qt::Key_Left);
+    const bool enter = key == Qt::Key_Return || key == Qt::Key_Enter;
+    const auto opens = [&](int index) { return index >= 0 && index < mainCount && state.mainOpensDrawer.at(index); };
+    // Moving sideways out of a drawer: the neighbour opens its own menu, or the menu closes.
+    const auto sideways = [&](int from, int step) -> PanelNav {
+        const int target = from + step;
+        if (target < 0 || target >= mainCount) {
+            return {PanelNavAction::Swallow};
+        }
+        return opens(target) ? PanelNav{PanelNavAction::OpenDrawer, target}
+                             : PanelNav{PanelNavAction::CloseDrawerFocusMain, target};
+    };
+
+    switch (state.focus) {
+    case PanelNavFocus::None:
+        if (state.hasSelection) {
+            return {}; // arrows edit the selection; Tab moves into the panel
+        }
+        if (state.drawerOwner >= 0 && state.entryCount > 0 && (key == Qt::Key_Down || key == Qt::Key_Up)) {
+            return {PanelNavAction::FocusEntry, key == Qt::Key_Down ? 0 : state.entryCount - 1};
+        }
+        if (next || key == Qt::Key_Down) {
+            return {PanelNavAction::FocusMain, 0};
+        }
+        if (previous || key == Qt::Key_Up) {
+            return {PanelNavAction::FocusMain, mainCount - 1};
+        }
+        return {};
+    case PanelNavFocus::Main: {
+        const int index = state.mainIndex;
+        if (next) {
+            return index + 1 < mainCount ? PanelNav{PanelNavAction::FocusMain, index + 1} : PanelNav{PanelNavAction::Swallow};
+        }
+        if (previous) {
+            return index > 0 ? PanelNav{PanelNavAction::FocusMain, index - 1} : PanelNav{PanelNavAction::Swallow};
+        }
+        if (key == Qt::Key_Down || enter) {
+            if (!opens(index)) {
+                return enter ? PanelNav{PanelNavAction::ClickMain, index} : PanelNav{PanelNavAction::Swallow};
+            }
+            if (state.drawerOwner == index && state.entryCount > 0) {
+                return {PanelNavAction::FocusEntry, 0};
+            }
+            return {PanelNavAction::OpenDrawer, index};
+        }
+        if (key == Qt::Key_Up) {
+            return {PanelNavAction::Swallow};
+        }
+        if (key == Qt::Key_Escape) {
+            return state.drawerOwner >= 0 ? PanelNav{PanelNavAction::CloseDrawer} : PanelNav{PanelNavAction::CloseOverlay};
+        }
+        return {};
+    }
+    case PanelNavFocus::Entry: {
+        const int owner = state.drawerOwner;
+        if (key == Qt::Key_Down) {
+            return state.entryIndex + 1 < state.entryCount ? PanelNav{PanelNavAction::FocusEntry, state.entryIndex + 1}
+                                                            : PanelNav{PanelNavAction::Swallow};
+        }
+        if (key == Qt::Key_Up) {
+            return state.entryIndex > 0 ? PanelNav{PanelNavAction::FocusEntry, state.entryIndex - 1}
+                                        : PanelNav{PanelNavAction::CloseDrawerFocusMain, owner};
+        }
+        if (next) {
+            return sideways(owner, 1);
+        }
+        if (previous) {
+            return sideways(owner, -1);
+        }
+        if (enter || key == Qt::Key_Space) {
+            return {PanelNavAction::ClickEntry, state.entryIndex};
+        }
+        if (key == Qt::Key_Escape) {
+            return {PanelNavAction::CloseDrawerFocusMain, owner};
+        }
+        return {};
+    }
+    }
+    return {};
+}
+
 // ------------------------------------------------------------------------------------- PanelButton
 
 PanelButton::PanelButton(const QString &iconName, const QString &title, const QString &shortcut, QWidget *parent)
@@ -331,6 +420,11 @@ void PanelButton::setOpensDrawer(bool opens)
 {
     opensDrawer_ = opens;
     update();
+}
+
+bool PanelButton::opensDrawer() const
+{
+    return opensDrawer_;
 }
 
 void PanelButton::setBadge(const QString &badge)
@@ -877,6 +971,11 @@ void CapsulePanel::setDrawer(QWidget *content)
         return;
     }
     if (drawer_) {
+        // Hiding the widget with keyboard focus lets Qt hand the focus on by itself, which made the
+        // overlay vanish (#96). Give it back to the overlay first.
+        if (drawer_->isAncestorOf(QApplication::focusWidget()) && parentWidget()) {
+            parentWidget()->setFocus(Qt::OtherFocusReason);
+        }
         drawerBox_->removeWidget(drawer_);
         drawer_->hide();
         drawer_->deleteLater();
