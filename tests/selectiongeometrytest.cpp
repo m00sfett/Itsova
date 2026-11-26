@@ -1,3 +1,4 @@
+#include "imageoutput.h"
 #include "selectiongeometry.h"
 
 #include <QtTest>
@@ -18,6 +19,67 @@ class SelectionGeometryTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    // #102: arrow keys nudge the dragged corner or edge by native pixels.
+    void draggedEdgesFollowThePointerSide()
+    {
+        QCOMPARE(draggedEdges(QPoint(10, 10), QPoint(50, 40)), Qt::Edges(Qt::RightEdge | Qt::BottomEdge));
+        QCOMPARE(draggedEdges(QPoint(10, 10), QPoint(2, 40)), Qt::Edges(Qt::LeftEdge | Qt::BottomEdge));
+        QCOMPARE(draggedEdges(QPoint(10, 10), QPoint(50, 3)), Qt::Edges(Qt::RightEdge | Qt::TopEdge));
+    }
+
+    void nudgeMovesOnlyTheDraggedEdges()
+    {
+        QCOMPARE(nudgedMargins(QMargins(), Qt::RightEdge | Qt::BottomEdge, QPoint(1, 0)), QMargins(0, 0, 1, 0));
+        QCOMPARE(nudgedMargins(QMargins(0, 0, 1, 0), Qt::RightEdge | Qt::BottomEdge, QPoint(0, -10)),
+                 QMargins(0, 0, 1, -10));
+        QCOMPARE(nudgedMargins(QMargins(), Qt::LeftEdge, QPoint(-1, 5)), QMargins(-1, 0, 0, 0)); // y ignored
+    }
+
+    void nudgeStepsOneNativePixel_data()
+    {
+        QTest::addColumn<qreal>("scale");
+        QTest::newRow("1.0") << 1.0;
+        QTest::newRow("1.25") << 1.25;
+        QTest::newRow("1.5") << 1.5;
+    }
+
+    void nudgeStepsOneNativePixel()
+    {
+        QFETCH(qreal, scale);
+        const QRect logical(11, 9, 37, 29);
+        const QRect base = nativeAreaFor(logical, scale);
+        const QRect once = nudgedNativeArea(base, QMargins(0, 0, 1, 0));
+        QCOMPARE(once.width(), base.width() + 1);
+        QCOMPARE(once.left(), base.left());
+        const QRect up = nudgedNativeArea(base, QMargins(0, -1, 0, 0));
+        QCOMPARE(up.top(), base.top() - 1);
+        QCOMPARE(up.height(), base.height() + 1);
+        // The crop takes exactly the nudged pixels.
+        QImage frame(240, 240, QImage::Format_ARGB32);
+        frame.fill(Qt::white);
+        const QImage crop = cropLogicalArea(frame, logical, scale, nullptr, QMargins(0, -1, 1, 0));
+        QCOMPARE(crop.size(), QSize(base.width() + 1, base.height() + 1));
+    }
+
+    void deadZoneIgnoresSmallMovesAndContinuesWithoutAJump()
+    {
+        NudgeDeadZone zone;
+        QVERIFY(!zone.active());
+        QCOMPARE(zone.filter(QPoint(100, 100)), std::optional<QPoint>(QPoint(100, 100))); // no key yet
+        zone.keyPressed(QPoint(100, 100));
+        QVERIFY(zone.active());
+        QCOMPARE(zone.filter(QPoint(104, 103)), std::optional<QPoint>()); // jitter: ignored
+        QCOMPARE(zone.filter(QPoint(110, 100)), std::optional<QPoint>()); // exactly 10: still ignored
+        // Past 10 logical px the mouse takes over, from where the corner was: no jump.
+        QCOMPARE(zone.filter(QPoint(111, 100)), std::optional<QPoint>(QPoint(100, 100)));
+        QVERIFY(!zone.active());
+        QCOMPARE(zone.filter(QPoint(121, 105)), std::optional<QPoint>(QPoint(110, 105)));
+        // A new key press starts a new zone at the pointer; the offset stays.
+        zone.keyPressed(QPoint(121, 105));
+        QCOMPARE(zone.filter(QPoint(125, 105)), std::optional<QPoint>());
+        QCOMPARE(zone.filter(QPoint(140, 105)), std::optional<QPoint>(QPoint(110, 105)));
+    }
+
     void drawPlain()
     {
         QCOMPARE(drawnSelection({100, 100}, {300, 200}, none, bounds), QRect(100, 100, 200, 100));

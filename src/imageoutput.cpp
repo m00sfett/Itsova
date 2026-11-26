@@ -416,7 +416,8 @@ bool writeImageToFile(const QString &targetPath, const QImage &image, const Expo
 QImage cropLogicalArea(const QImage &nativeFrame,
                          const QRect &logicalArea,
                          qreal scale,
-                         QString *error)
+                         QString *error,
+                         const QMargins &nativeNudge)
 {
     if (nativeFrame.isNull()) {
         if (error) {
@@ -444,8 +445,12 @@ QImage cropLogicalArea(const QImage &nativeFrame,
     }
 
     // One source of truth for the native edges, shared with the loupe (#101).
-    const QRect native = nativeAreaFor(logicalArea, scale);
-    if (native.isEmpty() || native.right() >= nativeFrame.width() || native.bottom() >= nativeFrame.height()) {
+    QRect native = nativeAreaFor(logicalArea, scale);
+    if (!native.isEmpty() && !nativeNudge.isNull()) {
+        native = native.adjusted(nativeNudge.left(), nativeNudge.top(), nativeNudge.right(), nativeNudge.bottom());
+    }
+    if (native.isEmpty() || native.left() < 0 || native.top() < 0 || native.right() >= nativeFrame.width()
+        || native.bottom() >= nativeFrame.height()) {
         if (error) {
             *error = ImageOutputStrings::tr("The capture area is outside the monitor image.");
         }

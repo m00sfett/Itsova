@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QFontMetrics>
 #include <QGuiApplication>
+#include <QIcon>
 
 #include <algorithm>
 
@@ -115,7 +116,7 @@ void paintLoupeGrid(QPainter &painter, const QRect &gridRect, const QImage &nati
 void paintSelectionLoupe(QPainter &painter, const QPoint &cursorLocal, const QRect &containerLocal,
                          const QPalette &palette, const QImage &nativeImage, const QPoint &nativePixel,
                          const QPoint &displayCoord, const QSize &selectionSize, const QRect &nativeSelection,
-                         bool snapshot)
+                         bool snapshot, bool keyNudge)
 {
     constexpr int gridCount = 11;
     constexpr int cellPx = 11;
@@ -154,6 +155,12 @@ void paintSelectionLoupe(QPainter &painter, const QPoint &cursorLocal, const QRe
     painter.setPen(palette.color(QPalette::WindowText));
     const QRect textRect(card.left() + pad, gridRect.bottom() + 1 + spacing, card.width() - 2 * pad, textSize.height());
     painter.drawText(textRect, Qt::AlignCenter, label);
+    if (keyNudge) {
+        // Arrow keys hold the corner; the mouse takes over again after a larger move (#102).
+        const QIcon key = QIcon::fromTheme(QStringLiteral("input-keyboard"));
+        const int s = 16;
+        key.paint(&painter, QRect(gridRect.right() - s - 3, gridRect.top() + 3, s, s));
+    }
     if (!hint.isEmpty()) {
         painter.setFont(hintFont);
         QColor muted = palette.color(QPalette::WindowText);

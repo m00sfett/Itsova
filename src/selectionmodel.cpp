@@ -28,6 +28,16 @@ void SelectionModel::setRect(int id, const QRect &rect)
     }
 }
 
+void SelectionModel::setNativeNudge(int id, const QMargins &nudge)
+{
+    for (Selection &selection : stack_) {
+        if (selection.id == id) {
+            selection.nativeNudge = nudge;
+            return;
+        }
+    }
+}
+
 void SelectionModel::remove(int id)
 {
     stack_.removeIf([id](const Selection &selection) { return selection.id == id; });
