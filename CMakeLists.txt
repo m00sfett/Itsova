@@ -308,6 +308,8 @@ if(BUILD_TESTING)
                                  SKIP_RETURN_CODE 77)
         endfunction()
         glimply_nested_test(overlay)
+        glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
+        glimply_nested_test(record-window-closed OPTIONS --apps kcalc)
     endif()
 
     # Opt-in check that translated panel button titles fit (#73); never run by CTest.

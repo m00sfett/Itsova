@@ -144,6 +144,7 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
     target_ = target;
     options_ = options;
     stopRequested_ = false;
+    endReason_.clear();
     finalDurationMs_ = 0;
     const uint32_t pointer = options.includeCursor ? PointerEmbedded : PointerHidden;
     ::zkde_screencast_stream_unstable_v1 *raw = nullptr;
@@ -230,6 +231,10 @@ void ScreenRecorder::onEncoderStateChanged()
         break;
 #endif
     case PipeWireBaseEncodedStream::Rendering:
+        if (!stopRequested_ && endReason_.isEmpty()) {
+            endReason_ = tr("The encoder stopped by itself.");
+            qCWarning(lcRecord) << "encoder stopped without a stop request";
+        }
         if (state_ != State::Finishing) {
             finalDurationMs_ = clock_.elapsed(monotonic_.elapsed());
             setState(State::Finishing);
@@ -275,10 +280,14 @@ void ScreenRecorder::finalizeFile()
         const QString path = options_.path;
         const RecordingTarget target = target_;
         const qint64 duration = finalDurationMs_;
+        const QString endReason = endReason_;
         // The finalizer emits from its own slot; delete it later.
         finalizer_.release()->deleteLater();
         cleanUp();
         setState(State::Idle);
+        if (!endReason.isEmpty()) {
+            Q_EMIT interrupted(endReason);
+        }
         Q_EMIT finished(path, target, duration);
     });
     QList<RecordingPause> pauses;
@@ -365,8 +374,13 @@ void ScreenRecorder::onStreamFailed(const QString &error)
 
 void ScreenRecorder::onStreamClosed()
 {
-    // The window closed or the monitor went away: keep what was recorded.
+    // The window closed or the monitor went away: keep what was recorded and say why it ended.
     qCInfo(lcRecord) << "stream closed by KWin";
+    if (state_ != State::Finishing && state_ != State::Idle) {
+        endReason_ = target_.kind == RecordingTarget::Kind::Window
+                         ? tr("The recorded window was closed.")
+                         : tr("The recorded monitor is no longer available.");
+    }
     stop(QStringLiteral("KWin (stream closed)"));
 }
 
