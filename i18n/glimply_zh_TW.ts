@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>截至 Print 時</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>點擊：複製 · Alt+點擊：使用 · Tab：格式</translation>
     </message>
@@ -301,7 +305,7 @@
         <translation>遮蔽操作 #%1 需要 x、y、width &gt; 0、height &gt; 0。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>操作 #%2 的標註類型「%1」不受支援。</translation>
     </message>
     <message>
@@ -309,8 +313,19 @@
         <translation>算繪已標註圖片失敗。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>未設定 overwrite=true，拒絕覆寫輸入檔案「%1」。</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>點擊以停止</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>點擊或按 %1 以停止</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>已將 %1 複製到剪貼簿</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>錄影意外結束</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>已儲存結束前錄製的內容。</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>已複製錄影</translation>
     </message>
@@ -971,7 +994,7 @@
         <translation>無法移至垃圾桶：%1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>未知的動作「%1」。</translation>
     </message>
     <message>
@@ -1079,7 +1102,7 @@
         <translation>擷取倒數計時已在執行中。</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>「window:」後的視窗指定子不可為空。</translation>
     </message>
     <message>
@@ -1167,19 +1190,19 @@
         <translation>MCP 已擷取 %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>不支援的圖片格式「%1」。</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>「quality」必須是介於 1 到 100 之間的整數。</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>必須提供「target」。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>外部 MCP 用戶端想要擷取「%1」（%2）。</translation>
     </message>
     <message>
@@ -1191,11 +1214,11 @@
         <translation>外部 MCP 用戶端想要擷取 %5 上位於 (%3, %4) 的區域 %1x%2。</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>必須提供「window_id」。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>外部 MCP 用戶端想要擷取視窗「%1」。</translation>
     </message>
     <message>
@@ -1207,11 +1230,11 @@
         <translation>外部 MCP 用戶端想要讀取上次的擷取（%1）。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>外部 MCP 用戶端想要為「%2」啟動每 %1 秒一次的定時擷取。</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>請指定「target」或設定「all」：true。</translation>
     </message>
     <message>
@@ -1219,15 +1242,15 @@
         <translation>annotate_image 需要非空的 input_path 與 operations 陣列。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>在 MCP 允許清單模式下，input_path 必須是 glimply 擷取資料夾內的現有檔案。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>在 MCP 允許清單模式下，output_path 必須位於 glimply 擷取資料夾內。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>外部 MCP 用戶端想要標註「%1」（%2 個操作）。</translation>
     </message>
     <message>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>無法建立資料夾 %1。</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>正在錄影 %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>點擊系統匣中的 glimply 圖示即可停止。</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>點擊系統匣中的 glimply 圖示或按 %1 即可停止。</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>停止</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>glimply 在 %1 上的擷取</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>凍結</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>即時</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>所有螢幕</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>視窗</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>區域</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>延遲</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>標註</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1521,28 +1549,25 @@
         <translation>錄影</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>區域與視窗</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>開始錄影</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>視窗</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1，%2 fps · 停止：在系統匣中點選 glimply</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>切換即時</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>凍結</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>螢幕、視窗與區域</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>螢幕</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1（此螢幕）</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>即時重新定位</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>拖曳時使用方向鍵</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>以 1 / 10 螢幕像素移動角落</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>方向鍵，未選取任何項目</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>在面板及其選單中移動</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>以 1 px / 10 px 移動</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>返回上一步，或關閉</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>擷取此螢幕</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>在編輯視窗中開啟</translation>
     </message>
@@ -1704,7 +1741,11 @@
     </message>
     <message>
         <source>Markup</source>
-        <translation>標註</translation>
+        <translation>標記</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>擷取游標下的視窗或螢幕</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2380,12 +2421,24 @@
         <translation>無法編碼此錄影。</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>編碼器已自行停止。</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>錄影已結束，但沒有任何影格。</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin 拒絕提供螢幕串流。</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>被錄影的視窗已關閉。</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>被錄影的螢幕已無法使用。</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>擷取後 Hook 與外部自動化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>在螢幕上選取…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>相對於螢幕左上角的邏輯像素。擷取將使用螢幕的原生解析度。</translation>
     </message>
     <message>
@@ -2691,7 +2744,7 @@
         <translation>跨螢幕的全域邏輯座標。擷取將以最高縮放比例合成相交的螢幕。</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>此區域的螢幕皆未連接。觸發時不會儲存任何內容。</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>凍結</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>即時</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>放大鏡：</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>在拖曳或調整凍結選取範圍大小時，顯示 11 × 11 原生像素的放大預覽。</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>拖曳或調整選取範圍大小時，顯示 11 × 11 原生像素的放大預覽。即時模式下，顯示按下 Print 時擷取的畫面。</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>在任意位置開啟像素色彩選取器的全域快捷鍵。</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>寫入詳細記錄</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>記錄：</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply 一律會將啟動、停止和錯誤寫入系統日誌。詳細記錄有助於錯誤回報。可使用 glimply logs 查看。</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,7 +3720,7 @@
         <translation>--mode 缺少數值。</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <source>--mode must be 'frozen' or 'live'.</source>
         <translation>--mode 必須為「frozen」或「live」。</translation>
     </message>
     <message>
@@ -3708,6 +3773,10 @@ Scriptable CLI subcommands:
   interval           啟動、停止或檢查定時擷取
   overlay            開啟互動式擷取覆疊層
   mcp                執行本機 stdio MCP 伺服器（預設停用）</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>將詳細記錄寫入系統日誌。</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

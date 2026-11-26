@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Print 시점 기준</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>클릭: 복사 · Alt+클릭: 사용 · Tab: 형식</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>가리기 작업 #%1에는 x, y, width &gt; 0, height &gt; 0이 필요합니다.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>작업 #%2에서 지원되지 않는 주석 유형 &apos;%1&apos;입니다.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>작업 #%2에서 지원되지 않는 주석 유형 '%1'입니다.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>주석이 달린 이미지를 렌더링하지 못했습니다.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>overwrite=true 없이 입력 파일 &apos;%1&apos;을(를) 덮어쓸 수 없습니다.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>overwrite=true 없이 입력 파일 '%1'을(를) 덮어쓸 수 없습니다.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>클릭하여 중지</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>클릭하거나 %1 키를 눌러 중지</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>%1이(가) 클립보드에 복사되었습니다</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>녹화가 중간에 종료됨</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>그때까지 녹화된 내용이 저장됩니다.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>녹화 복사됨</translation>
     </message>
@@ -971,8 +994,8 @@
         <translation>휴지통으로 이동할 수 없습니다: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>알 수 없는 작업 &quot;%1&quot;입니다.</translation>
+        <source>Unknown action "%1".</source>
+        <translation>알 수 없는 작업 "%1"입니다.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1079,8 +1102,8 @@
         <translation>캡처 카운트다운이 이미 실행 중입니다.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>&apos;window:&apos; 뒤의 창 지정자는 비워 둘 수 없습니다.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>'window:' 뒤의 창 지정자는 비워 둘 수 없습니다.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1167,20 +1190,20 @@
         <translation>MCP가 %1을(를) 캡처했습니다</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>지원되지 않는 이미지 형식 &apos;%1&apos;입니다.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>지원되지 않는 이미지 형식 '%1'입니다.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos;는 1에서 100 사이의 정수여야 합니다.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality'는 1에서 100 사이의 정수여야 합니다.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos;이 필요합니다.</translation>
+        <source>'target' is required.</source>
+        <translation>'target'이 필요합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation>외부 MCP 클라이언트가 &quot;%1&quot;(%2)을(를) 캡처하려고 합니다.</translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>외부 MCP 클라이언트가 "%1"(%2)을(를) 캡처하려고 합니다.</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1191,12 +1214,12 @@
         <translation>외부 MCP 클라이언트가 %5의 (%3, %4) 위치에서 %1x%2 영역을 캡처하려고 합니다.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos;가 필요합니다.</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id'가 필요합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation>외부 MCP 클라이언트가 창 &quot;%1&quot;을(를) 캡처하려고 합니다.</translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>외부 MCP 클라이언트가 창 "%1"을(를) 캡처하려고 합니다.</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1207,28 +1230,28 @@
         <translation>외부 MCP 클라이언트가 마지막 캡처(%1)를 읽으려고 합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation>외부 MCP 클라이언트가 &quot;%2&quot;에 대해 %1초마다 간격 캡처를 시작하려고 합니다.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>외부 MCP 클라이언트가 "%2"에 대해 %1초마다 간격 캡처를 시작하려고 합니다.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>&apos;target&apos;을 지정하거나 &apos;all&apos;: true를 설정하십시오.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>'target'을 지정하거나 'all': true를 설정하십시오.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image에는 비어 있지 않은 input_path와 operations 배열이 필요합니다.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>MCP 허용 목록 모드에서는 input_path가 glimply의 캡처 디렉터리 안에 있는 기존 파일이어야 합니다.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>MCP 허용 목록 모드에서는 output_path가 glimply의 캡처 디렉터리 안에 있어야 합니다.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation>외부 MCP 클라이언트가 &quot;%1&quot;에 주석을 추가하려고 합니다(작업 %2개).</translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>외부 MCP 클라이언트가 "%1"에 주석을 추가하려고 합니다(작업 %2개).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>%1 폴더를 만들 수 없습니다.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>%1 녹화 중</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>시스템 트레이의 glimply 아이콘을 클릭하여 중지하세요.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>시스템 트레이의 glimply 아이콘을 클릭하거나 %1 키를 눌러 중지하세요.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>중지</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>%1에서 glimply 캡처</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>고정</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>실시간</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>모든 모니터</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>창</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>영역</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>지연</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>주석</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1521,28 +1549,25 @@
         <translation>녹화</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>영역 및 창</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>녹화 시작</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>창</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · 중지: 시스템 트레이에서 glimply 클릭</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>실시간</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>고정</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>모니터, 창 및 영역</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>모니터</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (이 모니터)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>실시간으로 위치 변경</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>드래그 중 화살표</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>모서리를 화면 픽셀 1 / 10 단위로 이동</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>화살표, 선택 항목 없음</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>패널과 그 메뉴 사이를 이동</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>1 px / 10 px씩 이동</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>한 단계 뒤로 가거나 닫기</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>이 모니터 캡처</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>편집 창에서 열기</translation>
     </message>
@@ -1705,6 +1742,10 @@
     <message>
         <source>Markup</source>
         <translation>주석</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>포인터 아래의 창 또는 모니터 캡처</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2380,12 +2421,24 @@
         <translation>녹화를 인코딩할 수 없습니다.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>인코더가 자동으로 중지되었습니다.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>녹화가 프레임 없이 끝났습니다.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin이 화면 스트림을 거부했습니다.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>녹화 중이던 창이 닫혔습니다.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>녹화 중이던 모니터를 더 이상 사용할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>캡처 후 훅 및 외부 자동화</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>화면에서 선택…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>모니터 왼쪽 위 모서리 기준의 논리적 픽셀입니다. 캡처는 모니터의 기본 해상도를 사용합니다.</translation>
     </message>
     <message>
@@ -2691,7 +2744,7 @@
         <translation>모니터 전체의 전역 논리 좌표입니다. 캡처 시 교차된 모니터를 가장 높은 배율로 합성합니다.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>이 영역의 모니터 중 연결된 것이 없습니다. 트리거해도 아무것도 저장되지 않습니다.</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>고정</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>실시간</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>확대경:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>고정된 선택 영역을 드래그하거나 크기를 조절할 때 확대된 11 × 11 기본 픽셀 미리 보기를 표시합니다.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>선택 영역을 드래그하거나 크기를 조절하는 동안 11 × 11 네이티브 픽셀을 확대한 미리보기를 표시합니다. 실시간 상태에서는 Print를 누른 시점의 화면을 표시합니다.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>어디서나 픽셀 색상 추출기를 여는 전역 단축키입니다.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>자세한 로그 기록</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>로그:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply는 시작, 중지 및 오류를 항상 시스템 저널에 기록합니다. 자세한 로그는 버그 보고에 도움이 됩니다. glimply logs 명령으로 확인하세요.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,8 +3720,8 @@
         <translation>--mode의 값이 누락되었습니다.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode는 &apos;frozen&apos; 또는 &apos;live&apos;여야 합니다.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode는 'frozen' 또는 'live'여야 합니다.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3708,6 +3773,10 @@ Scriptable CLI subcommands:
   interval           간격 캡처 시작, 중지 또는 검사
   overlay            대화형 캡처 오버레이 열기
   mcp                로컬 stdio MCP 서버 실행(기본적으로 비활성화됨)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>시스템 저널에 자세한 로그를 기록합니다.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

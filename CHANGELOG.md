@@ -15,6 +15,8 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 - Test infrastructure (#93): nested-KWin acceptance tests as CTest targets (label `nested`; a virtual KWin with a throw-away home per test, driven through D-Bus and KWin's fake input), `scripts/coverage.sh` (gcovr) and `scripts/mutate.sh` (Mull, limited to named files). `install.sh` runs only the offscreen tests.
 
+- Translations of the new 0.11.0 strings in all 18 languages, including the two new notification events; *Markup* is *Beschriften* in German. "Freeze" and "Live" stay English product terms in every language (also *Overlay starts* in the settings). No panel title is cut off (665 titles checked, 0 elided).
+
 ### Changed
 
 - The Freeze/Live end cap of the overlay panel names the action a click performs (#94): while live it shows *Freeze* with a pause icon, while frozen *Live* with a play icon (tooltip and accessible name likewise; the *More* entry follows, *Go Live* became *Live*). At rest it no longer carries a fill and a ring, so it weighs like the other buttons; hover fills it and keyboard focus adds the ring. "Freeze" and "Live" are fixed product terms in every language.

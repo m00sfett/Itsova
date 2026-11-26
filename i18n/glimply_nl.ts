@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Vanaf Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Klik: Kopiëren · Alt+Klik: Gebruiken · Tab: Formaat</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>Redactiebewerking #%1 vereist x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>Niet-ondersteund aantekeningstype &apos;%1&apos; bij bewerking #%2.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Niet-ondersteund aantekeningstype '%1' bij bewerking #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Renderen van afbeelding met aantekeningen is mislukt.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>Weigering om invoerbestand &apos;%1&apos; te overschrijven zonder overwrite=true.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Weigering om invoerbestand '%1' te overschrijven zonder overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Klik om te stoppen</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Klik of druk op %1 om te stoppen</translation>
     </message>
 </context>
 <context>
@@ -962,6 +977,14 @@
         <translation>%1 gekopieerd naar het klembord</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Opname vroegtijdig beëindigd</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Wat tot dan toe is opgenomen, wordt opgeslagen.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Video-opname gekopieerd</translation>
     </message>
@@ -974,8 +997,8 @@
         <translation>Kan niet verplaatsen naar de prullenbak: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>Onbekende actie &apos;%1&apos;.</translation>
+        <source>Unknown action "%1".</source>
+        <translation>Onbekende actie '%1'.</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1082,8 +1105,8 @@
         <translation>Er loopt al een opname-aftelling.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>Vensterspecificatie na &apos;window:&apos; mag niet leeg zijn.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Vensterspecificatie na 'window:' mag niet leeg zijn.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1170,19 +1193,19 @@
         <translation>MCP heeft %1 vastgelegd</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>Niet-ondersteund afbeeldingsformaat &apos;%1&apos;.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Niet-ondersteund afbeeldingsformaat '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; moet een geheel getal zijn tussen 1 en 100.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' moet een geheel getal zijn tussen 1 en 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos; is vereist.</translation>
+        <source>'target' is required.</source>
+        <translation>'target' is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>Een externe MCP-client wil ‘%1’ (%2) vastleggen.</translation>
     </message>
     <message>
@@ -1194,11 +1217,11 @@
         <translation>Een externe MCP-client wil regio %1x%2 op (%3, %4) op %5 vastleggen.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos; is vereist.</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' is vereist.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>Een externe MCP-client wil venster ‘%1’ vastleggen.</translation>
     </message>
     <message>
@@ -1210,27 +1233,27 @@
         <translation>Een externe MCP-client wil de laatste opname (%1) lezen.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>Een externe MCP-client wil elke %1 s intervalopnamen starten voor ‘%2’.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>Geef &apos;target&apos; op of stel &apos;all&apos;: true in.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Geef 'target' op of stel 'all': true in.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image vereist een niet-lege input_path en operations-array.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>In MCP-toelatingslijstmodus moet input_path een bestaand bestand zijn in de opnamemap van glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>In MCP-toelatingslijstmodus moet output_path in de opnamemap van glimply staan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>Een externe MCP-client wil ‘%1’ aantekenen (%2 bewerking(en)).</translation>
     </message>
     <message>
@@ -1273,6 +1296,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>De map %1 kon niet worden aangemaakt.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Opname %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Klik op het glimply-pictogram in het systeemvak om te stoppen.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Klik op het glimply-pictogram in het systeemvak of druk op %1 om te stoppen.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Stoppen</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1300,11 +1339,8 @@
         <translation>glimply-opname op %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Bevroren</translation>
-    </message>
-    <message>
         <source>Live</source>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
         <translation>Live</translation>
     </message>
     <message>
@@ -1316,20 +1352,12 @@
         <translation>Alle schermen</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Venster</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Gebieden</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Vertraging</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Aantekenen</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1524,28 +1552,25 @@
         <translation>Opnemen</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Gebieden en vensters</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Video-opname starten</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Vensters</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · Stoppen: klik op glimply in het systeemvak</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Naar live</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Bevriezen</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Schermen, vensters en gebieden</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Schermen</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (dit scherm)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1671,6 +1696,22 @@
         <translation>Live herpositioneren</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Pijltjestoetsen tijdens slepen</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Hoek verplaatsen met 1 / 10 schermpixels</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Pijltjestoetsen, niets geselecteerd</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Navigeren door het paneel en de menu's</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Verplaatsen met 1 px / 10 px</translation>
     </message>
@@ -1695,10 +1736,6 @@
         <translation>Eén stap terug of sluiten</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Dit scherm vastleggen</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Openen in het bewerkingsvenster</translation>
     </message>
@@ -1712,7 +1749,11 @@
     </message>
     <message>
         <source>Markup</source>
-        <translation>Aantekenen</translation>
+        <translation>Annoteren</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Venster of scherm onder de aanwijzer vastleggen</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2390,12 +2431,24 @@
         <translation>De video-opname kon niet worden gecodeerd.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>De encoder is vanzelf gestopt.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>De video-opname is beëindigd zonder één beeld.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin heeft de schermstroom geweigerd.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Het opgenomen venster is gesloten.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Het opgenomen scherm is niet meer beschikbaar.</translation>
     </message>
 </context>
 <context>
@@ -2541,8 +2594,8 @@
         <translation>Hooks na opname en externe automatisering</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2625,7 +2678,7 @@
         <translation>Selecteren op scherm…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Logische pixels ten opzichte van de linkerbovenhoek van het scherm. Opnamen gebruiken de eigen resolutie van het scherm.</translation>
     </message>
     <message>
@@ -2701,7 +2754,7 @@
         <translation>Globale logische coördinaten over schermen heen. Opnamen combineren doorsneden schermen op de hoogste schaal.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Geen van de schermen van dit gebied is aangesloten. Er wordt niets opgeslagen bij activering.</translation>
     </message>
     <message>
@@ -3010,7 +3063,7 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Bevroren</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
@@ -3022,7 +3075,7 @@
     </message>
     <message>
         <source>Frozen shows the moment you pressed Print. Live lets videos keep playing and captures when you save. Space switches in the overlay at any time.</source>
-        <translation>Bevroren toont het moment waarop u op Print drukte. Live laat video&apos;s doorspelen en legt vast wanneer u opslaat. Space schakelt op elk moment in de overlay.</translation>
+        <translation>Bevroren toont het moment waarop u op Print drukte. Live laat video's doorspelen en legt vast wanneer u opslaat. Space schakelt op elk moment in de overlay.</translation>
     </message>
     <message>
         <source>Reset Panel Position</source>
@@ -3061,8 +3114,8 @@
         <translation>Vergrootglas:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Toont een vergrote voorvertoning van 11 × 11 echte pixels tijdens het slepen of formaat wijzigen van een bevroren selectie.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Toont een vergrote voorvertoning van 11 × 11 native pixels tijdens het slepen of wijzigen van de grootte van een selectie. Tijdens live-weergave toont het de afbeelding die is gemaakt toen je Print indrukte.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3075,6 +3128,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Globale sneltoets om de pixelkleurkiezer overal te openen.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Uitgebreide logs schrijven</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Logboek:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply schrijft altijd het starten, stoppen en fouten naar het systeemjournaal. Uitgebreide logs helpen bij foutrapporten. Bekijk ze met glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3666,8 +3731,8 @@
         <translation>Ontbrekende waarde voor --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode moet &apos;frozen&apos; of &apos;live&apos; zijn.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode moet 'frozen' of 'live' zijn.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3712,13 +3777,17 @@ Scriptable CLI subcommands:
   mcp                Run the local stdio MCP server (disabled by default)</source>
         <translation>Lichtgewicht KDE-hulpmiddel voor schermafbeeldingen en aantekeningen
 
-Scriptbare CLI-subcommando&apos;s:
+Scriptbare CLI-subcommando's:
   capture &lt;target&gt;   Een gebied, groep, scherm, alle schermen of venster vastleggen
   list               Ingestelde doelen, schermen of geopende vensters tonen
   area               Opgeslagen gebieden toevoegen, bewerken, hernoemen of verwijderen
   interval           Intervalopnamen starten, stoppen of inspecteren
   overlay            De interactieve opname-overlay openen
   mcp                De lokale stdio MCP-server uitvoeren (standaard uitgeschakeld)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Uitgebreide logs naar het systeemjournaal schrijven.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Станом на натискання Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Клацання: Копіювати · Alt+клацання: Використати · Tab: Формат</translation>
     </message>
@@ -301,7 +305,7 @@
         <translation>Операція приховування #%1 потребує x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>Непідтримуваний тип анотації «%1» в операції #%2.</translation>
     </message>
     <message>
@@ -309,8 +313,19 @@
         <translation>Не вдалося відрендерити зображення з анотаціями.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>Відмова у перезаписі вхідного файлу «%1» без overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Клацніть, щоб зупинити</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Клацніть або натисніть %1, щоб зупинити</translation>
     </message>
 </context>
 <context>
@@ -965,6 +980,14 @@
         <translation>%1 скопійовано до буфера обміну</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Запис завершено достроково</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Записане до цього моменту збережено.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Запис скопійовано</translation>
     </message>
@@ -977,7 +1000,7 @@
         <translation>Не вдалося перемістити до смітника: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>Невідома дія «%1».</translation>
     </message>
     <message>
@@ -1085,7 +1108,7 @@
         <translation>Відлік до знімка вже триває.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>Специфікатор вікна після «window:» не може бути порожнім.</translation>
     </message>
     <message>
@@ -1173,19 +1196,19 @@
         <translation>MCP захопив %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>Непідтримуваний формат зображення «%1».</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>«quality» має бути цілим числом від 1 до 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>Потрібен параметр «target».</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>Зовнішній клієнт MCP хоче захопити «%1» (%2).</translation>
     </message>
     <message>
@@ -1197,11 +1220,11 @@
         <translation>Зовнішній клієнт MCP хоче захопити область %1×%2 у (%3, %4) на %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>Потрібен параметр «window_id».</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>Зовнішній клієнт MCP хоче захопити вікно «%1».</translation>
     </message>
     <message>
@@ -1213,11 +1236,11 @@
         <translation>Зовнішній клієнт MCP хоче прочитати останній знімок (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>Зовнішній клієнт MCP хоче запустити інтервальні знімки кожні %1 с для «%2».</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>Вкажіть «target» або встановіть «all»: true.</translation>
     </message>
     <message>
@@ -1225,15 +1248,15 @@
         <translation>annotate_image потребує непорожнього input_path та масиву operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>У режимі списку дозволених MCP input_path має бути наявним файлом у каталозі знімків glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>У режимі списку дозволених MCP output_path має бути в каталозі знімків glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>Зовнішній клієнт MCP хоче додати анотації до «%1» (операцій: %2).</translation>
     </message>
     <message>
@@ -1276,6 +1299,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>Не вдалося створити теку %1.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Запис %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Клацніть значок glimply у системному лотку, щоб зупинити.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Клацніть значок glimply у системному лотку або натисніть %1, щоб зупинити.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Зупинити</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1303,12 +1342,9 @@
         <translation>Захоплення glimply на %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Заморожене</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Наживо</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1319,20 +1355,12 @@
         <translation>Усі монітори</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Вікно</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Області</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Затримка</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Анотувати</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1527,28 +1555,25 @@
         <translation>Записати</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Області та вікна</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Почати запис</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Вікна</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 к/с · Зупинка: клацніть glimply у системному лотку</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Наживо</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Заморозити</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Монітори, вікна та області</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Монітори</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (цей монітор)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1679,6 +1704,22 @@
         <translation>Переміщення наживо</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Стрілки під час перетягування</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Перемістити кут на 1 / 10 пікселя екрана</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Стрілки, нічого не вибрано</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Переміщення по панелі та її меню</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Переміщувати на 1 px / 10 px</translation>
     </message>
@@ -1703,10 +1744,6 @@
         <translation>Назад або закрити</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Зробити знімок цього монітора</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Відкрити у вікні редактора</translation>
     </message>
@@ -1721,6 +1758,10 @@
     <message>
         <source>Markup</source>
         <translation>Розмітка</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Зняти вікно або монітор під вказівником</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2400,12 +2441,24 @@
         <translation>Не вдалося закодувати запис.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Кодувальник зупинився сам.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Запис завершився без жодного кадру.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin відхилив потік екрана.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Записуване вікно було закрито.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Записуваний монітор більше недоступний.</translation>
     </message>
 </context>
 <context>
@@ -2551,8 +2604,8 @@
         <translation>Хуки після знімка та зовнішня автоматизація</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2635,7 +2688,7 @@
         <translation>Вибрати на екрані…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Логічні пікселі відносно верхнього лівого кута монітора. Знімки використовують власну роздільність монітора.</translation>
     </message>
     <message>
@@ -2711,7 +2764,7 @@
         <translation>Глобальні логічні координати між моніторами. Знімки об’єднують перетнуті монітори з найбільшим масштабом.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Жоден із моніторів цієї області не підключено. Під час запуску нічого не збережеться.</translation>
     </message>
     <message>
@@ -3020,11 +3073,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Заморожене</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Наживо</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3071,8 +3124,8 @@
         <translation>Лупа:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Показує збільшений попередній перегляд 11 × 11 власних пікселів під час перетягування або зміни розміру замороженого виділення.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Показує збільшений 11 × 11 пікселів попередній перегляд під час перетягування або зміни розміру виділення. У режимі «Наживо» показує знімок, зроблений після натискання Print.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3085,6 +3138,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Глобальна комбінація клавіш для відкриття піпетки кольору будь-де.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Записувати детальні журнали</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Журнали:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply завжди записує запуски, зупинки та помилки в системний журнал. Детальні журнали допомагають у звітах про помилки. Переглянути їх можна командою glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3677,7 +3742,7 @@
         <translation>Відсутнє значення для --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <source>--mode must be 'frozen' or 'live'.</source>
         <translation>--mode має бути «frozen» або «live».</translation>
     </message>
     <message>
@@ -3730,6 +3795,10 @@ Scriptable CLI subcommands:
   interval           Запустити, зупинити або перевірити інтервальні знімки
   overlay            Відкрити інтерактивне накладення захоплення
   mcp                Запустити локальний сервер MCP stdio (типово вимкнено)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Записувати детальні журнали в системний журнал.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glimply 0.10.0\n"
+"Project-Id-Version: glimply 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
@@ -22,8 +22,7 @@ msgctxt "@label capture time"
 msgid "Yesterday %1"
 msgstr "昨天 %1"
 
-#: plasmoid/contents/ui/RecentSection.qml:73
-#: plasmoid/contents/ui/RecentSection.qml:85
+#: plasmoid/contents/ui/RecentSection.qml:73 plasmoid/contents/ui/RecentSection.qml:85
 #, kde-format
 msgctxt "@title section"
 msgid "Recent"
@@ -91,8 +90,7 @@ msgstr "在窗口中编辑"
 msgid "Copy"
 msgstr "复制"
 
-#: plasmoid/contents/ui/RecentSection.qml:232
-#: plasmoid/contents/ui/RecentSection.qml:261
+#: plasmoid/contents/ui/RecentSection.qml:232 plasmoid/contents/ui/RecentSection.qml:261
 #, kde-format
 msgid "Show in Folder"
 msgstr "在文件夹中显示"
@@ -204,8 +202,7 @@ msgstr "编辑组…"
 msgid "Rename"
 msgstr "重命名"
 
-#: plasmoid/contents/ui/TargetRow.qml:166
-#: plasmoid/contents/ui/TargetRow.qml:196
+#: plasmoid/contents/ui/TargetRow.qml:166 plasmoid/contents/ui/TargetRow.qml:196
 #, kde-format
 msgid "Delete"
 msgstr "删除"
@@ -215,169 +212,168 @@ msgstr "删除"
 msgid "Apply"
 msgstr "应用"
 
-#: plasmoid/contents/ui/TargetRow.qml:182
-#: plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:300
+#: plasmoid/contents/ui/TargetRow.qml:182 plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:306
 #, kde-format
 msgid "Cancel"
 msgstr "取消"
 
-#: plasmoid/contents/ui/main.qml:46 plasmoid/contents/ui/main.qml:426
+#: plasmoid/contents/ui/main.qml:48 plasmoid/contents/ui/main.qml:432
 #, kde-format
 msgid "glimply is not running"
 msgstr "glimply 未运行"
 
-#: plasmoid/contents/ui/main.qml:49 plasmoid/contents/ui/main.qml:490
+#: plasmoid/contents/ui/main.qml:53 plasmoid/contents/ui/main.qml:496
 #, kde-format
 msgid "1 interval capture active"
 msgid_plural "%1 interval captures active"
 msgstr[0] "%1 个间隔截图运行中"
 
-#: plasmoid/contents/ui/main.qml:50
+#: plasmoid/contents/ui/main.qml:54
 #, kde-format
 msgid "Capture fixed areas and monitors"
 msgstr "截取固定区域和显示器"
 
-#: plasmoid/contents/ui/main.qml:88
+#: plasmoid/contents/ui/main.qml:92
 #, kde-format
 msgid "Groups"
 msgstr "组"
 
-#: plasmoid/contents/ui/main.qml:89
+#: plasmoid/contents/ui/main.qml:93
 #, kde-format
 msgid "Areas"
 msgstr "区域"
 
-#: plasmoid/contents/ui/main.qml:90
+#: plasmoid/contents/ui/main.qml:94
 #, kde-format
 msgid "Monitors"
 msgstr "显示器"
 
-#: plasmoid/contents/ui/main.qml:131
+#: plasmoid/contents/ui/main.qml:135
 #, kde-format
 msgid "Starting the recording of %1…"
 msgstr "正在开始录制 %1…"
 
-#: plasmoid/contents/ui/main.qml:133
+#: plasmoid/contents/ui/main.qml:137
 #, kde-format
 msgid "Recording of %1 paused at %2"
 msgstr "%1 的录制已暂停于 %2"
 
-#: plasmoid/contents/ui/main.qml:135
+#: plasmoid/contents/ui/main.qml:139
 #, kde-format
 msgid "Saving the recording of %1…"
 msgstr "正在保存 %1 的录制…"
 
-#: plasmoid/contents/ui/main.qml:137
+#: plasmoid/contents/ui/main.qml:141
 #, kde-format
 msgid "Recording %1: %2"
 msgstr "正在录制 %1：%2"
 
-#: plasmoid/contents/ui/main.qml:258
+#: plasmoid/contents/ui/main.qml:264
 #, kde-format
 msgid "Stop recording"
 msgstr "停止录制"
 
-#: plasmoid/contents/ui/main.qml:301
+#: plasmoid/contents/ui/main.qml:307
 #, kde-format
 msgid "%1 s"
 msgstr "%1 秒"
 
-#: plasmoid/contents/ui/main.qml:302
+#: plasmoid/contents/ui/main.qml:308
 #, kde-format
 msgid "Delay"
 msgstr "延迟"
 
-#: plasmoid/contents/ui/main.qml:318
+#: plasmoid/contents/ui/main.qml:324
 #, kde-format
 msgid "No delay"
 msgstr "无延迟"
 
-#: plasmoid/contents/ui/main.qml:325
+#: plasmoid/contents/ui/main.qml:331
 #, kde-format
 msgid "3 seconds"
 msgstr "3 秒"
 
-#: plasmoid/contents/ui/main.qml:331
+#: plasmoid/contents/ui/main.qml:337
 #, kde-format
 msgid "5 seconds"
 msgstr "5 秒"
 
-#: plasmoid/contents/ui/main.qml:337
+#: plasmoid/contents/ui/main.qml:343
 #, kde-format
 msgid "10 seconds"
 msgstr "10 秒"
 
-#: plasmoid/contents/ui/main.qml:344
+#: plasmoid/contents/ui/main.qml:350
 #, kde-format
 msgid "Keep delay active"
 msgstr "保持延迟处于激活状态"
 
-#: plasmoid/contents/ui/main.qml:353
+#: plasmoid/contents/ui/main.qml:359
 #, kde-format
 msgid "Record"
 msgstr "录制"
 
-#: plasmoid/contents/ui/main.qml:360
+#: plasmoid/contents/ui/main.qml:366
 #, kde-format
 msgid "Pick Color"
 msgstr "拾取颜色"
 
-#: plasmoid/contents/ui/main.qml:367
+#: plasmoid/contents/ui/main.qml:373
 #, kde-format
 msgid "Add Area"
 msgstr "添加区域"
 
-#: plasmoid/contents/ui/main.qml:373
+#: plasmoid/contents/ui/main.qml:379
 #, kde-format
 msgid "Configure glimply…"
 msgstr "配置 glimply…"
 
-#: plasmoid/contents/ui/main.qml:391
+#: plasmoid/contents/ui/main.qml:397
 #, kde-format
 msgid "Open Last Capture"
 msgstr "打开上次截图"
 
-#: plasmoid/contents/ui/main.qml:400
+#: plasmoid/contents/ui/main.qml:406
 #, kde-format
 msgid "Edit Last Capture"
 msgstr "编辑上次截图"
 
-#: plasmoid/contents/ui/main.qml:409
+#: plasmoid/contents/ui/main.qml:415
 #, kde-format
 msgid "Open Capture Folder"
 msgstr "打开截图文件夹"
 
-#: plasmoid/contents/ui/main.qml:427
+#: plasmoid/contents/ui/main.qml:433
 #, kde-format
 msgid "Shortcuts and captures need the glimply service."
 msgstr "快捷键和截图需要 glimply 服务。"
 
-#: plasmoid/contents/ui/main.qml:430
+#: plasmoid/contents/ui/main.qml:436
 #, kde-format
 msgid "Start glimply"
 msgstr "启动 glimply"
 
-#: plasmoid/contents/ui/main.qml:461
+#: plasmoid/contents/ui/main.qml:467
 #, kde-format
 msgid "Pause"
 msgstr "暂停"
 
-#: plasmoid/contents/ui/main.qml:461
+#: plasmoid/contents/ui/main.qml:467
 #, kde-format
 msgid "Resume"
 msgstr "继续"
 
-#: plasmoid/contents/ui/main.qml:466
+#: plasmoid/contents/ui/main.qml:472
 #, kde-format
 msgid "Stop"
 msgstr "停止"
 
-#: plasmoid/contents/ui/main.qml:495
+#: plasmoid/contents/ui/main.qml:501
 #, kde-format
 msgid "Stop All"
 msgstr "全部停止"
 
-#: plasmoid/contents/ui/main.qml:561
+#: plasmoid/contents/ui/main.qml:567
 #, kde-format
 msgid "Loading…"
 msgstr "正在加载…"

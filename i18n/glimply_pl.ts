@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Stan z chwili Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Kliknięcie: Kopiuj · Alt+Kliknięcie: Użyj · Tab: Format</translation>
     </message>
@@ -301,7 +305,7 @@
         <translation>Operacja zamazania #%1 wymaga x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>Nieobsługiwany typ adnotacji „%1” w operacji #%2.</translation>
     </message>
     <message>
@@ -309,8 +313,19 @@
         <translation>Nie udało się wyrenderować obrazu z adnotacjami.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>Odmowa nadpisania pliku wejściowego „%1” bez overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Kliknij, aby zatrzymać</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Kliknij lub naciśnij %1, aby zatrzymać</translation>
     </message>
 </context>
 <context>
@@ -965,6 +980,14 @@
         <translation>Skopiowano %1 do schowka</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Nagrywanie zakończyło się przedwcześnie</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Dotychczas nagrane materiały zostały zapisane.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Skopiowano nagranie</translation>
     </message>
@@ -977,7 +1000,7 @@
         <translation>Nie można przenieść do kosza: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>Nieznana akcja „%1”.</translation>
     </message>
     <message>
@@ -1085,7 +1108,7 @@
         <translation>Odliczanie do zrzutu już trwa.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>Określenie okna po „window:” nie może być puste.</translation>
     </message>
     <message>
@@ -1173,19 +1196,19 @@
         <translation>MCP przechwycił %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>Nieobsługiwany format obrazu „%1”.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>„quality” musi być liczbą całkowitą od 1 do 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>Pole „target” jest wymagane.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>Zewnętrzny klient MCP chce przechwycić „%1” (%2).</translation>
     </message>
     <message>
@@ -1197,11 +1220,11 @@
         <translation>Zewnętrzny klient MCP chce przechwycić region %1×%2 w (%3, %4) na %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>Pole „window_id” jest wymagane.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>Zewnętrzny klient MCP chce przechwycić okno „%1”.</translation>
     </message>
     <message>
@@ -1213,11 +1236,11 @@
         <translation>Zewnętrzny klient MCP chce odczytać ostatni zrzut (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>Zewnętrzny klient MCP chce uruchomić zrzuty interwałowe co %1 s dla „%2”.</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>Podaj „target” lub ustaw „all”: true.</translation>
     </message>
     <message>
@@ -1225,15 +1248,15 @@
         <translation>annotate_image wymaga niepustego input_path oraz tablicy operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>W trybie listy dozwolonych MCP input_path musi być istniejącym plikiem w katalogu zrzutów glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>W trybie listy dozwolonych MCP output_path musi znajdować się w katalogu zrzutów glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>Zewnętrzny klient MCP chce dodać adnotacje do „%1” (%2 operacji).</translation>
     </message>
     <message>
@@ -1276,6 +1299,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>Nie udało się utworzyć folderu %1.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Nagrywanie %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Kliknij ikonę glimply w zasobniku systemowym, aby zatrzymać.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Kliknij ikonę glimply w zasobniku systemowym lub naciśnij %1, aby zatrzymać.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Zatrzymaj</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1303,12 +1342,9 @@
         <translation>zrzut glimply na %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Zamrożony</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Na żywo</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1319,20 +1355,12 @@
         <translation>Wszystkie ekrany</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Okno</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Obszary</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Opóźnienie</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Adnotacje</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1527,28 +1555,25 @@
         <translation>Nagraj</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Obszary i okna</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Rozpocznij nagrywanie</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Okna</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 kl./s · Zatrzymanie: kliknij glimply w zasobniku systemowym</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Na żywo</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Zamroź</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Ekrany, okna i obszary</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Ekrany</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (ten ekran)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1679,6 +1704,22 @@
         <translation>Zmień położenie na żywo</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Strzałki podczas przeciągania</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Przesuń róg o 1 / 10 pikseli ekranu</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Strzałki, nic nie zaznaczono</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Poruszanie się po panelu i jego menu</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Przesuń o 1 px / 10 px</translation>
     </message>
@@ -1703,10 +1744,6 @@
         <translation>Wróć o krok lub zamknij</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Zrób zrzut tego ekranu</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Otwórz w oknie edytora</translation>
     </message>
@@ -1721,6 +1758,10 @@
     <message>
         <source>Markup</source>
         <translation>Adnotacje</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Przechwyć okno lub ekran pod wskaźnikiem</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2400,12 +2441,24 @@
         <translation>Nie udało się zakodować nagrania.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Koder zatrzymał się samoczynnie.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Nagranie zakończyło się bez żadnej klatki.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin odmówił udostępnienia strumienia ekranu.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Nagrywane okno zostało zamknięte.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Nagrywany ekran nie jest już dostępny.</translation>
     </message>
 </context>
 <context>
@@ -2551,8 +2604,8 @@
         <translation>Hooki po przechwyceniu i automatyzacja zewnętrzna</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2635,7 +2688,7 @@
         <translation>Zaznacz na ekranie…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Piksele logiczne względem lewego górnego rogu ekranu. Zrzuty używają natywnej rozdzielczości ekranu.</translation>
     </message>
     <message>
@@ -2711,7 +2764,7 @@
         <translation>Globalne współrzędne logiczne na wszystkich ekranach. Zrzuty łączą przecięte ekrany w najwyższej skali.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Żaden z ekranów tego obszaru nie jest podłączony. Po wyzwoleniu nic nie zostanie zapisane.</translation>
     </message>
     <message>
@@ -3020,11 +3073,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Zamrożony</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Na żywo</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3071,8 +3124,8 @@
         <translation>Lupa:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Pokazuje powiększony podgląd 11 × 11 natywnych pikseli podczas przeciągania lub zmiany rozmiaru zamrożonego zaznaczenia.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Pokazuje powiększony podgląd 11 × 11 pikseli natywnych podczas przeciągania lub zmiany rozmiaru zaznaczenia. Na żywo pokazuje obraz zrobiony w chwili naciśnięcia Print.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3085,6 +3138,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Globalny skrót otwierający próbnik kolorów pikseli w dowolnym miejscu.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Zapisuj szczegółowe logi</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Logi:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply zawsze zapisuje do dziennika systemowego informacje o uruchomieniu, zatrzymaniu i błędach. Szczegółowe logi pomagają przy zgłoszeniach błędów. Wyświetl je poleceniem glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3677,7 +3742,7 @@
         <translation>Brak wartości dla --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
+        <source>--mode must be 'frozen' or 'live'.</source>
         <translation>--mode musi mieć wartość „frozen” lub „live”.</translation>
     </message>
     <message>
@@ -3730,6 +3795,10 @@ Skryptowalne podpolecenia CLI:
   interval           Uruchom, zatrzymaj lub sprawdź zrzuty interwałowe
   overlay            Otwórz interaktywną nakładkę przechwytywania
   mcp                Uruchom lokalny serwer MCP stdio (domyślnie wyłączony)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Zapisuj szczegółowe logi do dziennika systemowego.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

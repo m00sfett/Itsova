@@ -242,6 +242,10 @@
         <translation>%1、%2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Print を押した時点</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>クリック: コピー · Alt+クリック: 使用 · Tab: 形式</translation>
     </message>
@@ -301,7 +305,7 @@
         <translation>墨消しの操作 #%1 には x、y、width &gt; 0、height &gt; 0 が必要です。</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>操作 #%2 の注釈の種類「%1」はサポートされていません。</translation>
     </message>
     <message>
@@ -309,8 +313,19 @@
         <translation>注釈付き画像の描画に失敗しました。</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>overwrite=true を指定せずに入力ファイル「%1」を上書きすることはできません。</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>クリックで停止</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>クリックするか %1 キーを押して停止</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>%1 をクリップボードにコピーしました</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>録画が途中で終了しました</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>それまでに録画された内容は保存されます。</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>録画をコピーしました</translation>
     </message>
@@ -971,7 +994,7 @@
         <translation>ゴミ箱に移動できませんでした: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>不明な操作「%1」です。</translation>
     </message>
     <message>
@@ -1079,7 +1102,7 @@
         <translation>キャプチャのカウントダウンは既に実行中です。</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
+        <source>Window specifier after 'window:' cannot be empty.</source>
         <translation>「window:」の後のウィンドウ指定は空にできません。</translation>
     </message>
     <message>
@@ -1167,19 +1190,19 @@
         <translation>MCP が %1 をキャプチャしました</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
+        <source>Unsupported image format '%1'.</source>
         <translation>サポートされていない画像形式「%1」です。</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
+        <source>'quality' must be an integer between 1 and 100.</source>
         <translation>「quality」は 1 から 100 までの整数である必要があります。</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
+        <source>'target' is required.</source>
         <translation>「target」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>外部の MCP クライアントが「%1」（%2）をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1191,11 +1214,11 @@
         <translation>外部の MCP クライアントが、%5 上の (%3, %4) にある %1x%2 の範囲をキャプチャしようとしています。</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
+        <source>'window_id' is required.</source>
         <translation>「window_id」は必須です。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>外部の MCP クライアントがウィンドウ「%1」をキャプチャしようとしています。</translation>
     </message>
     <message>
@@ -1207,11 +1230,11 @@
         <translation>外部の MCP クライアントが最後のキャプチャ（%1）を読み取ろうとしています。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>外部の MCP クライアントが「%2」について %1 秒ごとのインターバルキャプチャを開始しようとしています。</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
+        <source>Specify 'target' or set 'all': true.</source>
         <translation>「target」を指定するか、「all」: true を設定してください。</translation>
     </message>
     <message>
@@ -1219,15 +1242,15 @@
         <translation>annotate_image には空でない input_path と operations 配列が必要です。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>MCP の許可リストモードでは、input_path は glimply のキャプチャ用フォルダー内にある既存のファイルである必要があります。</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>MCP の許可リストモードでは、output_path は glimply のキャプチャ用フォルダー内である必要があります。</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>外部の MCP クライアントが「%1」（%2 件の操作）に注釈を付けようとしています。</translation>
     </message>
     <message>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>フォルダー %1 を作成できませんでした。</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>%1 を録画中</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>システムトレイの glimply アイコンをクリックして停止します。</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>システムトレイの glimply アイコンをクリックするか、%1 キーを押して停止します。</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>停止</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>%1 上の glimply キャプチャ</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>静止画</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>ライブ</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>すべてのディスプレイ</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>ウィンドウ</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>範囲</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>遅延</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>注釈</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1521,28 +1549,25 @@
         <translation>録画</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>範囲とウィンドウ</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>録画を開始</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>ウィンドウ</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1、%2 fps · 停止: システムトレイのglimplyをクリック</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>ライブに戻す</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>静止画にする</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>ディスプレイ、ウィンドウ、範囲</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>ディスプレイ</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1（このディスプレイ）</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>ライブ中に位置を変更</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>ドラッグ中の矢印キー</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>角を画面の 1 / 10 ピクセル単位で移動</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>矢印キー、選択なし</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>パネルとそのメニューを移動</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>1 px / 10 px ずつ移動</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>一段階戻る、または閉じる</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>このディスプレイを撮影</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>エディターウィンドウで開く</translation>
     </message>
@@ -1705,6 +1742,10 @@
     <message>
         <source>Markup</source>
         <translation>注釈</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>ポインターの下のウィンドウまたはディスプレイをキャプチャ</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2380,12 +2421,24 @@
         <translation>録画をエンコードできませんでした。</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>エンコーダーが自動的に停止しました。</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>録画はフレームを1つも取得せずに終了しました。</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin が画面ストリームを拒否しました。</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>録画中のウィンドウが閉じられました。</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>録画中のディスプレイが利用できなくなりました。</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>キャプチャ後のフックと外部の自動化</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>画面上で選択…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>ディスプレイの左上隅を基準とした論理ピクセルです。キャプチャはディスプレイのネイティブ解像度で行われます。</translation>
     </message>
     <message>
@@ -2691,7 +2744,7 @@
         <translation>ディスプレイ全体での論理座標です。キャプチャは、交差するディスプレイを最も高いスケールで合成します。</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>この範囲のディスプレイはいずれも接続されていません。実行しても何も保存されません。</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>静止画</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>ライブ</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>ルーペ:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>静止画の選択範囲をドラッグまたはサイズ変更している間、ネイティブピクセル 11 × 11 を拡大したプレビューを表示します。</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>範囲のドラッグまたはサイズ変更中に、11 × 11 ネイティブピクセルの拡大プレビューを表示します。ライブ中は Print を押した時点の画像を表示します。</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>どこからでもピクセルの色の取得を開始するグローバルショートカットです。</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>詳細なログを記録</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>ログ:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply は開始、停止、エラーを常にシステムジャーナルに記録します。詳細なログはバグ報告に役立ちます。glimply logs で表示できます。</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,8 +3720,8 @@
         <translation>--mode の値がありません。</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode には &apos;frozen&apos; または &apos;live&apos; を指定してください。</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode には 'frozen' または 'live' を指定してください。</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3708,6 +3773,10 @@ Scriptable CLI subcommands:
   interval           インターバルキャプチャを開始、停止、または確認
   overlay            インタラクティブなキャプチャオーバーレイを開く
   mcp                ローカルの stdio MCP サーバーを実行（既定では無効）</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>詳細なログをシステムジャーナルに記録します。</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

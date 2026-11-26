@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>На момент Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Клик: копировать · Alt+клик: использовать · Tab: формат</translation>
     </message>
@@ -301,7 +305,7 @@
         <translation>Для операции скрытия #%1 требуются x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
         <translation>Неподдерживаемый тип аннотации «%1» в операции #%2.</translation>
     </message>
     <message>
@@ -309,8 +313,19 @@
         <translation>Не удалось отрисовать изображение с аннотациями.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
         <translation>Отказ в перезаписи входного файла «%1» без overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Нажмите, чтобы остановить</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Нажмите или %1, чтобы остановить</translation>
     </message>
 </context>
 <context>
@@ -965,6 +980,14 @@
         <translation>%1 скопирован в буфер обмена</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Запись завершилась досрочно</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Записанное до этого момента сохранено.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Запись скопирована</translation>
     </message>
@@ -977,7 +1000,7 @@
         <translation>Не удалось переместить в корзину: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
+        <source>Unknown action "%1".</source>
         <translation>Неизвестное действие «%1».</translation>
     </message>
     <message>
@@ -1085,8 +1108,8 @@
         <translation>Обратный отсчёт захвата уже запущен.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>Указатель окна после &apos;window:&apos; не может быть пустым.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Указатель окна после 'window:' не может быть пустым.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1173,19 +1196,19 @@
         <translation>MCP захватил %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>Неподдерживаемый формат изображения &apos;%1&apos;.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Неподдерживаемый формат изображения '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; должно быть целым числом от 1 до 100.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' должно быть целым числом от 1 до 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>Требуется &apos;target&apos;.</translation>
+        <source>'target' is required.</source>
+        <translation>Требуется 'target'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
         <translation>Внешний клиент MCP хочет захватить «%1» (%2).</translation>
     </message>
     <message>
@@ -1197,11 +1220,11 @@
         <translation>Внешний клиент MCP хочет захватить регион %1x%2 в (%3, %4) на %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>Требуется &apos;window_id&apos;.</translation>
+        <source>'window_id' is required.</source>
+        <translation>Требуется 'window_id'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
+        <source>An external MCP client wants to capture window "%1".</source>
         <translation>Внешний клиент MCP хочет захватить окно «%1».</translation>
     </message>
     <message>
@@ -1213,27 +1236,27 @@
         <translation>Внешний клиент MCP хочет прочитать последний снимок (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
         <translation>Внешний клиент MCP хочет запустить интервальный захват каждые %1 с для «%2».</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>Укажите &apos;target&apos; или задайте &apos;all&apos;: true.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Укажите 'target' или задайте 'all': true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image требует непустой input_path и массив operations.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>В режиме белого списка MCP input_path должен быть существующим файлом в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>В режиме белого списка MCP output_path должен находиться в каталоге снимков glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
         <translation>Внешний клиент MCP хочет добавить аннотации к «%1» (операций: %2).</translation>
     </message>
     <message>
@@ -1276,6 +1299,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>Не удалось создать папку %1.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Запись %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Нажмите значок glimply в системном трее, чтобы остановить.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Нажмите значок glimply в системном трее или %1, чтобы остановить.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Остановить</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1303,12 +1342,9 @@
         <translation>Захват glimply на %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Замороженный</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Живой</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1319,20 +1355,12 @@
         <translation>Все экраны</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Окно</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Области</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Задержка</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Разметить</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1527,28 +1555,25 @@
         <translation>Записать</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Области и окна</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Начать запись</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 кадр/с · Остановка: нажмите glimply в системном лотке</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Живой режим</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Заморозить</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Экраны, окна и области</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Экраны</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (этот экран)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1679,6 +1704,22 @@
         <translation>Перемещать на лету</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Стрелки при перетаскивании</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Сдвиг угла на 1 / 10 пикселя экрана</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Стрелки, ничего не выбрано</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Перемещение по панели и её меню</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Сдвигать на 1 px / 10 px</translation>
     </message>
@@ -1703,10 +1744,6 @@
         <translation>Вернуться или закрыть</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Снять этот экран</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Открыть в окне редактора</translation>
     </message>
@@ -1721,6 +1758,10 @@
     <message>
         <source>Markup</source>
         <translation>Разметка</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Снимок окна или экрана под указателем</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2400,12 +2441,24 @@
         <translation>Не удалось закодировать запись.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Кодировщик остановился сам.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Запись завершилась без единого кадра.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin отказал в передаче потока экрана.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Записываемое окно было закрыто.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Записываемый экран больше недоступен.</translation>
     </message>
 </context>
 <context>
@@ -2551,8 +2604,8 @@
         <translation>Хуки после захвата и внешняя автоматизация</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2635,7 +2688,7 @@
         <translation>Выбрать на экране…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Логические пиксели относительно верхнего левого угла экрана. Снимки используют родное разрешение экрана.</translation>
     </message>
     <message>
@@ -2711,7 +2764,7 @@
         <translation>Глобальные логические координаты по всем экранам. Снимки объединяют пересечённые экраны с наибольшим масштабом.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Ни один из экранов этой области не подключён. При запуске ничего не сохраняется.</translation>
     </message>
     <message>
@@ -3020,11 +3073,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Замороженный</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Живой</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3071,8 +3124,8 @@
         <translation>Лупа:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Показывает увеличенный фрагмент 11 × 11 пикселей при перетаскивании или изменении размера замороженного выделения.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Показывает увеличенный предпросмотр 11 × 11 пикселей при перетаскивании или изменении размера выделения. В режиме «Живой» показывает снимок, сделанный при нажатии Print.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3085,6 +3138,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Глобальная клавиша для открытия пипетки цвета пикселя в любом месте.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Вести подробные журналы</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Журнал:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply всегда записывает запуски, остановки и ошибки в системный журнал. Подробные журналы помогают при сообщениях об ошибках. Показать их можно командой glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3677,8 +3742,8 @@
         <translation>Отсутствует значение для --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode должен быть &apos;frozen&apos; или &apos;live&apos;.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode должен быть 'frozen' или 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3730,6 +3795,10 @@ Scriptable CLI subcommands:
   interval           Запустить, остановить или проверить интервальный захват
   overlay            Открыть интерактивный оверлей захвата
   mcp                Запустить локальный сервер MCP stdio (отключён по умолчанию)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Записывать подробные журналы в системный журнал.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

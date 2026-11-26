@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Tại thời điểm Print</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Nhấp: Sao chép · Alt+Nhấp: Dùng · Tab: Định dạng</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>Thao tác che mờ #%1 yêu cầu x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>Loại chú thích không được hỗ trợ &apos;%1&apos; tại thao tác #%2.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Loại chú thích không được hỗ trợ '%1' tại thao tác #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Không thể kết xuất ảnh có chú thích.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>Từ chối ghi đè tệp đầu vào &apos;%1&apos; khi không có overwrite=true.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Từ chối ghi đè tệp đầu vào '%1' khi không có overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Nhấp để dừng</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Nhấp hoặc nhấn %1 để dừng</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>Đã sao chép %1 vào bảng nhớ tạm</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Bản ghi đã dừng sớm</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Nội dung đã ghi đến lúc đó được lưu lại.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Đã sao chép bản ghi</translation>
     </message>
@@ -971,8 +994,8 @@
         <translation>Không thể chuyển vào thùng rác: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>Hành động không xác định &quot;%1&quot;.</translation>
+        <source>Unknown action "%1".</source>
+        <translation>Hành động không xác định "%1".</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1079,8 +1102,8 @@
         <translation>Đếm ngược chụp đang chạy.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>Bộ chỉ định cửa sổ sau &apos;window:&apos; không được trống.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Bộ chỉ định cửa sổ sau 'window:' không được trống.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1167,20 +1190,20 @@
         <translation>MCP đã chụp %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>Định dạng ảnh không được hỗ trợ &apos;%1&apos;.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Định dạng ảnh không được hỗ trợ '%1'.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; phải là số nguyên từ 1 đến 100.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' phải là số nguyên từ 1 đến 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>Cần có &apos;target&apos;.</translation>
+        <source>'target' is required.</source>
+        <translation>Cần có 'target'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp &quot;%1&quot; (%2).</translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp "%1" (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1191,12 +1214,12 @@
         <translation>Một ứng dụng khách MCP bên ngoài muốn chụp vùng %1x%2 tại (%3, %4) trên %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>Cần có &apos;window_id&apos;.</translation>
+        <source>'window_id' is required.</source>
+        <translation>Cần có 'window_id'.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp cửa sổ &quot;%1&quot;.</translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chụp cửa sổ "%1".</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1207,28 +1230,28 @@
         <translation>Một ứng dụng khách MCP bên ngoài muốn đọc ảnh chụp cuối (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn bắt đầu chụp theo khoảng thời gian mỗi %1 giây cho &quot;%2&quot;.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn bắt đầu chụp theo khoảng thời gian mỗi %1 giây cho "%2".</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>Hãy chỉ định &apos;target&apos; hoặc đặt &apos;all&apos;: true.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Hãy chỉ định 'target' hoặc đặt 'all': true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image yêu cầu input_path và mảng operations không trống.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>Ở chế độ Danh sách cho phép MCP, input_path phải là tệp hiện có bên trong thư mục ảnh chụp của glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>Ở chế độ Danh sách cho phép MCP, output_path phải nằm bên trong thư mục ảnh chụp của glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation>Một ứng dụng khách MCP bên ngoài muốn chú thích &quot;%1&quot; (%2 thao tác).</translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Một ứng dụng khách MCP bên ngoài muốn chú thích "%1" (%2 thao tác).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>Không thể tạo thư mục %1.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Đang ghi %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Nhấp vào biểu tượng glimply trong khay hệ thống để dừng.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Nhấp vào biểu tượng glimply trong khay hệ thống hoặc nhấn %1 để dừng.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Dừng</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>Chụp glimply trên %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Đóng băng</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Trực tiếp</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>Tất cả màn hình</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Cửa sổ</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Vùng</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Độ trễ</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Chú thích</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1521,28 +1549,25 @@
         <translation>Ghi</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Vùng và cửa sổ</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Bắt đầu ghi</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Cửa sổ</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · Dừng: nhấp vào glimply trong khay hệ thống</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Trực tiếp</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Đóng băng</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Màn hình, cửa sổ và vùng</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Màn hình</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (màn hình này)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>Di chuyển khi trực tiếp</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Mũi tên khi kéo</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Di chuyển góc 1 / 10 pixel màn hình</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Mũi tên, chưa chọn gì</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Di chuyển qua bảng điều khiển và các menu của nó</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Di chuyển 1 px / 10 px</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>Quay lại, hoặc đóng</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Chụp màn hình này</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Mở trong cửa sổ chỉnh sửa</translation>
     </message>
@@ -1704,7 +1741,11 @@
     </message>
     <message>
         <source>Markup</source>
-        <translation>Chú thích</translation>
+        <translation>Vẽ</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Chụp cửa sổ hoặc màn hình dưới con trỏ</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2380,12 +2421,24 @@
         <translation>Không thể mã hóa bản ghi.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Bộ mã hóa đã tự dừng.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Bản ghi kết thúc mà không có khung hình nào.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin đã từ chối luồng màn hình.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Cửa sổ đang ghi đã bị đóng.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Màn hình đang ghi không còn khả dụng.</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>Hook sau khi chụp và tự động hóa bên ngoài</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>Chọn trên màn hình…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Điểm ảnh logic tương đối so với góc trên bên trái của màn hình. Ảnh chụp dùng độ phân giải gốc của màn hình.</translation>
     </message>
     <message>
@@ -2691,7 +2744,7 @@
         <translation>Tọa độ logic toàn cục qua các màn hình. Ảnh chụp ghép các màn hình giao nhau ở tỷ lệ cao nhất.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Không có màn hình nào của vùng này đang kết nối. Không có gì được lưu khi kích hoạt.</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Đóng băng</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Trực tiếp</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>Kính lúp:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Hiển thị bản xem trước điểm ảnh gốc phóng đại 11 × 11 khi kéo hoặc đổi kích thước vùng chọn đóng băng.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Hiển thị bản xem trước phóng đại 11 × 11 pixel gốc khi kéo hoặc đổi kích thước vùng chọn. Ở chế độ trực tiếp, hiển thị ảnh đã chụp lúc bạn nhấn Print.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Phím tắt toàn cục để mở trình lấy màu điểm ảnh ở bất cứ đâu.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Ghi nhật ký chi tiết</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Nhật ký:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply luôn ghi việc khởi động, dừng và lỗi vào nhật ký hệ thống. Nhật ký chi tiết giúp ích khi báo lỗi. Xem bằng lệnh glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,8 +3720,8 @@
         <translation>Thiếu giá trị cho --mode.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode phải là &apos;frozen&apos; hoặc &apos;live&apos;.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode phải là 'frozen' hoặc 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3708,6 +3773,10 @@ Các lệnh con CLI có thể viết script:
   interval           Bắt đầu, dừng hoặc kiểm tra chụp theo khoảng thời gian
   overlay            Mở lớp phủ chụp tương tác
   mcp                Chạy máy chủ MCP stdio cục bộ (tắt theo mặc định)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Ghi nhật ký chi tiết vào nhật ký hệ thống.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>

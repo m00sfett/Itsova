@@ -242,6 +242,10 @@
         <translation>%1, %2 · %3 × %4</translation>
     </message>
     <message>
+        <source>As of Print</source>
+        <translation>Saat Print ditekan</translation>
+    </message>
+    <message>
         <source>Click: Copy · Alt+Click: Use · Tab: Format</source>
         <translation>Klik: Salin · Alt+Klik: Gunakan · Tab: Format</translation>
     </message>
@@ -301,16 +305,27 @@
         <translation>Operasi redaksi #%1 memerlukan x, y, width &gt; 0, height &gt; 0.</translation>
     </message>
     <message>
-        <source>Unsupported annotation type &apos;%1&apos; at operation #%2.</source>
-        <translation>Jenis anotasi &apos;%1&apos; tidak didukung pada operasi #%2.</translation>
+        <source>Unsupported annotation type '%1' at operation #%2.</source>
+        <translation>Jenis anotasi '%1' tidak didukung pada operasi #%2.</translation>
     </message>
     <message>
         <source>Failed to render annotated image.</source>
         <translation>Gagal merender gambar beranotasi.</translation>
     </message>
     <message>
-        <source>Refusing to overwrite input file &apos;%1&apos; without overwrite=true.</source>
-        <translation>Menolak menimpa berkas masukan &apos;%1&apos; tanpa overwrite=true.</translation>
+        <source>Refusing to overwrite input file '%1' without overwrite=true.</source>
+        <translation>Menolak menimpa berkas masukan '%1' tanpa overwrite=true.</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingPlan</name>
+    <message>
+        <source>Click to stop</source>
+        <translation>Klik untuk berhenti</translation>
+    </message>
+    <message>
+        <source>Click or press %1 to stop</source>
+        <translation>Klik atau tekan %1 untuk berhenti</translation>
     </message>
 </context>
 <context>
@@ -959,6 +974,14 @@
         <translation>%1 disalin ke papan klip</translation>
     </message>
     <message>
+        <source>Recording ended early</source>
+        <translation>Rekaman berakhir lebih awal</translation>
+    </message>
+    <message>
+        <source>What was recorded until then is saved.</source>
+        <translation>Yang sudah direkam sampai saat itu disimpan.</translation>
+    </message>
+    <message>
         <source>Recording copied</source>
         <translation>Rekaman disalin</translation>
     </message>
@@ -971,8 +994,8 @@
         <translation>Tidak dapat memindahkan ke tempat sampah: %1</translation>
     </message>
     <message>
-        <source>Unknown action &quot;%1&quot;.</source>
-        <translation>Tindakan tidak dikenal &quot;%1&quot;.</translation>
+        <source>Unknown action "%1".</source>
+        <translation>Tindakan tidak dikenal "%1".</translation>
     </message>
     <message>
         <source>Nothing to pin</source>
@@ -1079,8 +1102,8 @@
         <translation>Hitung mundur tangkapan sudah berjalan.</translation>
     </message>
     <message>
-        <source>Window specifier after &apos;window:&apos; cannot be empty.</source>
-        <translation>Penentu jendela setelah &apos;window:&apos; tidak boleh kosong.</translation>
+        <source>Window specifier after 'window:' cannot be empty.</source>
+        <translation>Penentu jendela setelah 'window:' tidak boleh kosong.</translation>
     </message>
     <message>
         <source>No open window matches “%1”.</source>
@@ -1167,20 +1190,20 @@
         <translation>MCP menangkap %1</translation>
     </message>
     <message>
-        <source>Unsupported image format &apos;%1&apos;.</source>
-        <translation>Format gambar &apos;%1&apos; tidak didukung.</translation>
+        <source>Unsupported image format '%1'.</source>
+        <translation>Format gambar '%1' tidak didukung.</translation>
     </message>
     <message>
-        <source>&apos;quality&apos; must be an integer between 1 and 100.</source>
-        <translation>&apos;quality&apos; harus berupa bilangan bulat antara 1 dan 100.</translation>
+        <source>'quality' must be an integer between 1 and 100.</source>
+        <translation>'quality' harus berupa bilangan bulat antara 1 dan 100.</translation>
     </message>
     <message>
-        <source>&apos;target&apos; is required.</source>
-        <translation>&apos;target&apos; diperlukan.</translation>
+        <source>'target' is required.</source>
+        <translation>'target' diperlukan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture &quot;%1&quot; (%2).</source>
-        <translation>Klien MCP eksternal ingin menangkap &quot;%1&quot; (%2).</translation>
+        <source>An external MCP client wants to capture "%1" (%2).</source>
+        <translation>Klien MCP eksternal ingin menangkap "%1" (%2).</translation>
     </message>
     <message>
         <source>capture_region requires monitor, x, y, width, and height.</source>
@@ -1191,12 +1214,12 @@
         <translation>Klien MCP eksternal ingin menangkap wilayah %1x%2 pada (%3, %4) di %5.</translation>
     </message>
     <message>
-        <source>&apos;window_id&apos; is required.</source>
-        <translation>&apos;window_id&apos; diperlukan.</translation>
+        <source>'window_id' is required.</source>
+        <translation>'window_id' diperlukan.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to capture window &quot;%1&quot;.</source>
-        <translation>Klien MCP eksternal ingin menangkap jendela &quot;%1&quot;.</translation>
+        <source>An external MCP client wants to capture window "%1".</source>
+        <translation>Klien MCP eksternal ingin menangkap jendela "%1".</translation>
     </message>
     <message>
         <source>No capture has been recorded yet in this glimply session.</source>
@@ -1207,28 +1230,28 @@
         <translation>Klien MCP eksternal ingin membaca tangkapan terakhir (%1).</translation>
     </message>
     <message>
-        <source>An external MCP client wants to start interval captures every %1 s for &quot;%2&quot;.</source>
-        <translation>Klien MCP eksternal ingin memulai tangkapan interval setiap %1 d untuk &quot;%2&quot;.</translation>
+        <source>An external MCP client wants to start interval captures every %1 s for "%2".</source>
+        <translation>Klien MCP eksternal ingin memulai tangkapan interval setiap %1 d untuk "%2".</translation>
     </message>
     <message>
-        <source>Specify &apos;target&apos; or set &apos;all&apos;: true.</source>
-        <translation>Tentukan &apos;target&apos; atau atur &apos;all&apos;: true.</translation>
+        <source>Specify 'target' or set 'all': true.</source>
+        <translation>Tentukan 'target' atau atur 'all': true.</translation>
     </message>
     <message>
         <source>annotate_image requires a non-empty input_path and operations array.</source>
         <translation>annotate_image memerlukan input_path dan larik operations yang tidak kosong.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, input_path must be an existing file inside glimply's capture directory.</source>
         <translation>Dalam mode Daftar izin MCP, input_path harus berupa berkas yang ada di dalam direktori tangkapan glimply.</translation>
     </message>
     <message>
-        <source>In MCP Allowlist mode, output_path must be inside glimply&apos;s capture directory.</source>
+        <source>In MCP Allowlist mode, output_path must be inside glimply's capture directory.</source>
         <translation>Dalam mode Daftar izin MCP, output_path harus berada di dalam direktori tangkapan glimply.</translation>
     </message>
     <message>
-        <source>An external MCP client wants to annotate &quot;%1&quot; (%2 operation(s)).</source>
-        <translation>Klien MCP eksternal ingin menganotasi &quot;%1&quot; (%2 operasi).</translation>
+        <source>An external MCP client wants to annotate "%1" (%2 operation(s)).</source>
+        <translation>Klien MCP eksternal ingin menganotasi "%1" (%2 operasi).</translation>
     </message>
     <message>
         <source>Unknown MCP tool: %1</source>
@@ -1270,6 +1293,22 @@
         <source>The folder %1 could not be created.</source>
         <translation>Folder %1 tidak dapat dibuat.</translation>
     </message>
+    <message>
+        <source>Recording %1</source>
+        <translation>Merekam %1</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray to stop.</source>
+        <translation>Klik ikon glimply di baki sistem untuk berhenti.</translation>
+    </message>
+    <message>
+        <source>Click the glimply icon in the system tray or press %1 to stop.</source>
+        <translation>Klik ikon glimply di baki sistem atau tekan %1 untuk berhenti.</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Berhenti</translation>
+    </message>
 </context>
 <context>
     <name>glimply::AreaOverlay</name>
@@ -1297,12 +1336,9 @@
         <translation>tangkapan glimply di %1</translation>
     </message>
     <message>
-        <source>Frozen</source>
-        <translation>Beku</translation>
-    </message>
-    <message>
         <source>Live</source>
-        <translation>Langsung</translation>
+        <extracomment>Fixed product term in every language: the action that returns to the live screen.</extracomment>
+        <translation>Live</translation>
     </message>
     <message>
         <source>This Monitor</source>
@@ -1313,20 +1349,12 @@
         <translation>Semua Monitor</translation>
     </message>
     <message>
-        <source>Window</source>
-        <translation>Jendela</translation>
-    </message>
-    <message>
         <source>Areas</source>
         <translation>Area</translation>
     </message>
     <message>
         <source>Delay</source>
         <translation>Tunda</translation>
-    </message>
-    <message>
-        <source>Annotate</source>
-        <translation>Anotasi</translation>
     </message>
     <message>
         <source>Pick Color</source>
@@ -1521,28 +1549,25 @@
         <translation>Rekam</translation>
     </message>
     <message>
-        <source>Areas and Windows</source>
-        <translation>Area dan Jendela</translation>
-    </message>
-    <message>
-        <source>Start recording</source>
-        <translation>Mulai merekam</translation>
-    </message>
-    <message>
         <source>Windows</source>
         <translation>Jendela</translation>
     </message>
     <message>
-        <source>%1, %2 fps · Stop: click glimply in the system tray</source>
-        <translation>%1, %2 fps · Hentikan: klik glimply di baki sistem</translation>
-    </message>
-    <message>
-        <source>Go Live</source>
-        <translation>Ke Langsung</translation>
-    </message>
-    <message>
         <source>Freeze</source>
-        <translation>Bekukan</translation>
+        <extracomment>Fixed product term in every language: the action that freezes the live screen.</extracomment>
+        <translation>Freeze</translation>
+    </message>
+    <message>
+        <source>Monitors, Windows and Areas</source>
+        <translation>Monitor, Jendela, dan Area</translation>
+    </message>
+    <message>
+        <source>Monitors</source>
+        <translation>Monitor</translation>
+    </message>
+    <message>
+        <source>%1 (this monitor)</source>
+        <translation>%1 (monitor ini)</translation>
     </message>
     <message>
         <source>Shortcut Overview</source>
@@ -1663,6 +1688,22 @@
         <translation>Ubah posisi langsung</translation>
     </message>
     <message>
+        <source>Arrows while dragging</source>
+        <translation>Panah saat menyeret</translation>
+    </message>
+    <message>
+        <source>Move the corner by 1 / 10 screen pixels</source>
+        <translation>Geser sudut sebesar 1 / 10 piksel layar</translation>
+    </message>
+    <message>
+        <source>Arrows, nothing selected</source>
+        <translation>Panah, tidak ada yang dipilih</translation>
+    </message>
+    <message>
+        <source>Move through the panel and its menus</source>
+        <translation>Bergerak melalui panel dan menunya</translation>
+    </message>
+    <message>
         <source>Move by 1 px / 10 px</source>
         <translation>Pindahkan 1 px / 10 px</translation>
     </message>
@@ -1687,10 +1728,6 @@
         <translation>Mundur selangkah, atau tutup</translation>
     </message>
     <message>
-        <source>Capture this monitor</source>
-        <translation>Tangkap monitor ini</translation>
-    </message>
-    <message>
         <source>Open in the editor window</source>
         <translation>Buka di jendela penyunting</translation>
     </message>
@@ -1704,7 +1741,11 @@
     </message>
     <message>
         <source>Markup</source>
-        <translation>Anotasi</translation>
+        <translation>Tandai</translation>
+    </message>
+    <message>
+        <source>Capture the window or monitor under the pointer</source>
+        <translation>Tangkap jendela atau monitor di bawah penunjuk</translation>
     </message>
     <message>
         <source>Pick a tool</source>
@@ -2380,12 +2421,24 @@
         <translation>Rekaman tidak dapat dienkode.</translation>
     </message>
     <message>
+        <source>The encoder stopped by itself.</source>
+        <translation>Encoder berhenti dengan sendirinya.</translation>
+    </message>
+    <message>
         <source>The recording ended without any frames.</source>
         <translation>Rekaman berakhir tanpa bingkai apa pun.</translation>
     </message>
     <message>
         <source>KWin refused the screen stream.</source>
         <translation>KWin menolak aliran layar.</translation>
+    </message>
+    <message>
+        <source>The recorded window was closed.</source>
+        <translation>Jendela yang direkam telah ditutup.</translation>
+    </message>
+    <message>
+        <source>The recorded monitor is no longer available.</source>
+        <translation>Monitor yang direkam tidak lagi tersedia.</translation>
     </message>
 </context>
 <context>
@@ -2531,8 +2584,8 @@
         <translation>Hook pasca-tangkapan dan otomasi eksternal</translation>
     </message>
     <message>
-        <source>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</source>
-        <translation>glimply v%1 · AGPL-3.0 · &lt;a href=&quot;%2&quot;&gt;roteson.de&lt;/a&gt; · &lt;a href=&quot;%3&quot;&gt;GitHub&lt;/a&gt;</translation>
+        <source>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</source>
+        <translation>glimply v%1 · AGPL-3.0 · &lt;a href="%2"&gt;roteson.de&lt;/a&gt; · &lt;a href="%3"&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message>
         <source>roteson.de</source>
@@ -2615,7 +2668,7 @@
         <translation>Pilih di Layar…</translation>
     </message>
     <message>
-        <source>Logical pixels relative to the monitor&apos;s top left corner. Captures use the monitor&apos;s native resolution.</source>
+        <source>Logical pixels relative to the monitor's top left corner. Captures use the monitor's native resolution.</source>
         <translation>Piksel logis relatif terhadap sudut kiri atas monitor. Tangkapan menggunakan resolusi asli monitor.</translation>
     </message>
     <message>
@@ -2691,7 +2744,7 @@
         <translation>Koordinat logis global di seluruh monitor. Tangkapan menggabungkan monitor yang berpotongan pada skala tertinggi.</translation>
     </message>
     <message>
-        <source>None of this area&apos;s monitors are connected. Nothing is saved when triggered.</source>
+        <source>None of this area's monitors are connected. Nothing is saved when triggered.</source>
         <translation>Tidak ada monitor dari area ini yang terhubung. Tidak ada yang disimpan saat dipicu.</translation>
     </message>
     <message>
@@ -3000,11 +3053,11 @@
     </message>
     <message>
         <source>Frozen</source>
-        <translation>Beku</translation>
+        <translation>Freeze</translation>
     </message>
     <message>
         <source>Live</source>
-        <translation>Langsung</translation>
+        <translation>Live</translation>
     </message>
     <message>
         <source>Overlay starts:</source>
@@ -3051,8 +3104,8 @@
         <translation>Kaca pembesar:</translation>
     </message>
     <message>
-        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a frozen selection.</source>
-        <translation>Menampilkan pratinjau piksel asli 11 × 11 yang diperbesar saat menyeret atau mengubah ukuran pilihan beku.</translation>
+        <source>Shows a magnified 11 × 11 native pixel preview while dragging or resizing a selection. While live, it shows the picture taken when you pressed Print.</source>
+        <translation>Menampilkan pratinjau diperbesar 11 × 11 piksel asli saat menyeret atau mengubah ukuran pilihan. Saat langsung, menampilkan gambar yang diambil saat Print ditekan.</translation>
     </message>
     <message>
         <source>Pick color shortcut</source>
@@ -3065,6 +3118,18 @@
     <message>
         <source>Global shortcut to open the pixel color picker anywhere.</source>
         <translation>Pintasan global untuk membuka pemilih warna piksel di mana saja.</translation>
+    </message>
+    <message>
+        <source>Write detailed logs</source>
+        <translation>Tulis log rinci</translation>
+    </message>
+    <message>
+        <source>Logging:</source>
+        <translation>Pencatatan:</translation>
+    </message>
+    <message>
+        <source>glimply always writes starts, stops and errors to the system journal. Detailed logs help with bug reports. Show them with glimply logs.</source>
+        <translation>glimply selalu menulis mulai, berhenti, dan galat ke jurnal sistem. Log rinci membantu laporan bug. Tampilkan dengan glimply logs.</translation>
     </message>
     <message>
         <source>Text recognition:</source>
@@ -3655,8 +3720,8 @@
         <translation>Nilai untuk --mode tidak ada.</translation>
     </message>
     <message>
-        <source>--mode must be &apos;frozen&apos; or &apos;live&apos;.</source>
-        <translation>--mode harus &apos;frozen&apos; atau &apos;live&apos;.</translation>
+        <source>--mode must be 'frozen' or 'live'.</source>
+        <translation>--mode harus 'frozen' atau 'live'.</translation>
     </message>
     <message>
         <source>--delay must be between 0 and 60.</source>
@@ -3708,6 +3773,10 @@ Subperintah CLI yang dapat diskripkan:
   interval           Mulai, hentikan, atau periksa tangkapan interval
   overlay            Buka overlay tangkapan interaktif
   mcp                Jalankan server MCP stdio lokal (nonaktif secara bawaan)</translation>
+    </message>
+    <message>
+        <source>Write detailed logs to the system journal.</source>
+        <translation>Tulis log rinci ke jurnal sistem.</translation>
     </message>
     <message>
         <source>Image file(s) to open in the Quick Editor window.</source>
