@@ -137,7 +137,9 @@ private:
     bool iconCachePrimary_ = false;
 };
 
-// The round Frozen/Live end cap of the capsule (#68 direction C). Toggles on click.
+// The round Freeze/Live end cap of the capsule (#68 direction C). Toggles on click and shows the
+// action a click performs (#94): "Freeze" with a pause icon while live, "Live" with a play icon
+// while frozen.
 class PanelModeCap : public QAbstractButton
 {
     Q_OBJECT
@@ -145,7 +147,10 @@ class PanelModeCap : public QAbstractButton
 public:
     explicit PanelModeCap(QWidget *parent);
     void setFrozen(bool frozen);
-    void setTexts(const QString &frozenTitle, const QString &liveTitle, const QString &shortcut);
+    void setTexts(const QString &freezeTitle, const QString &liveTitle, const QString &shortcut);
+    [[nodiscard]] QString actionTitle() const;
+    [[nodiscard]] QString actionIconName() const;
+    [[nodiscard]] QString toolTipText() const;
     [[nodiscard]] QSize sizeHint() const override;
 
 protected:
@@ -161,7 +166,7 @@ protected:
 private:
     bool frozen_ = true;
     bool hovered_ = false;
-    QString frozenTitle_;
+    QString freezeTitle_;
     QString liveTitle_;
     QString shortcut_;
     QTimer *toolTipTimer_ = nullptr;

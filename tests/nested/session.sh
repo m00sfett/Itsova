@@ -9,6 +9,7 @@
 #   --scale F           output scale of the nested KWin
 #   --apps "a b"        Wayland apps started before glimply (windows for window tests)
 #   --rc "[G]\nK=V"     lines appended to glimplyrc before glimply starts
+#   --scheme NAME       colour scheme, e.g. BreezeLight or BreezeDark
 #   --out DIR           keep screenshots and files there (default: a temporary directory)
 #
 # The test script runs with bash, sources tests/nested/lib.sh and gets $socket, $fakekey,
@@ -20,6 +21,7 @@ size=1920x1080
 scale=""
 apps=""
 rc=""
+scheme=""
 out=""
 positional=()
 while (($#)); do
@@ -29,8 +31,9 @@ while (($#)); do
     --scale) scale="$2"; shift 2 ;;
     --apps) apps="$2"; shift 2 ;;
     --rc) rc="$2"; shift 2 ;;
+    --scheme) scheme="$2"; shift 2 ;;
     --out) out="$(realpath -m "$2")"; shift 2 ;;
-    -h | --help) sed -n '2,15p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    -h | --help) sed -n '2,16p' "${BASH_SOURCE[0]}"; exit 0 ;;
     *) positional+=("$1"); shift ;;
     esac
 done
@@ -68,7 +71,7 @@ if [[ -z "${GLIMPLY_NESTED_INNER:-}" ]]; then
         HOME="$home" XDG_CONFIG_HOME="$home/.config" XDG_DATA_HOME="$home/.local/share" \
         XDG_CACHE_HOME="$home/.cache" XDG_STATE_HOME="$home/.local/state" QT_QPA_PLATFORM= \
         dbus-run-session --config-file="$home/session.conf" -- "${BASH_SOURCE[0]}" --monitors "$monitors" \
-        --size "$size" ${scale:+--scale "$scale"} --apps "$apps" --rc "$rc" --out "$out" \
+        --size "$size" ${scale:+--scale "$scale"} --apps "$apps" --rc "$rc" ${scheme:+--scheme "$scheme"} --out "$out" \
         "$binary" "$fakekey" "$test_script" &
     inner_pid=$!
     status=0
@@ -110,6 +113,10 @@ printf '[Desktop Entry]\nType=Application\nName=fakekey\nNoDisplay=true\nExec=%s
 printf '[Desktop Entry]\nType=Application\nName=glimply-under-test\nNoDisplay=true\nExec=%s\nX-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\nX-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1\n' \
     "$binary" >"$home/.local/share/applications/glimply-under-test.desktop"
 [[ -n "$rc" ]] && printf '%b\n' "$rc" >>"$home/.config/glimplyrc"
+if [[ -n "$scheme" ]]; then
+    cp "/usr/share/color-schemes/${scheme}.colors" "$home/.config/kdeglobals"
+    printf '\n[General]\nColorScheme=%s\n' "$scheme" >>"$home/.config/kdeglobals"
+fi
 # Tests never open the first-start hint.
 printf '[General]\nOverlayFirstHintShown=true\n' >>"$home/.config/glimplyrc"
 

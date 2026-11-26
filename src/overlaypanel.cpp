@@ -636,7 +636,7 @@ PanelModeCap::PanelModeCap(QWidget *parent)
     connect(toolTipTimer_, &QTimer::timeout, this, [this] {
         if (underMouse()) {
             QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)),
-                               panelToolTip(frozen_ ? frozenTitle_ : liveTitle_, shortcut_), this);
+                               toolTipText(), this);
         }
     });
 }
@@ -645,17 +645,32 @@ void PanelModeCap::setFrozen(bool frozen)
 {
     if (frozen_ != frozen) {
         frozen_ = frozen;
-        setAccessibleName(frozen_ ? frozenTitle_ : liveTitle_);
+        setAccessibleName(actionTitle());
         update();
     }
 }
 
-void PanelModeCap::setTexts(const QString &frozenTitle, const QString &liveTitle, const QString &shortcut)
+void PanelModeCap::setTexts(const QString &freezeTitle, const QString &liveTitle, const QString &shortcut)
 {
-    frozenTitle_ = frozenTitle;
+    freezeTitle_ = freezeTitle;
     liveTitle_ = liveTitle;
     shortcut_ = shortcut;
-    setAccessibleName(frozen_ ? frozenTitle_ : liveTitle_);
+    setAccessibleName(actionTitle());
+}
+
+QString PanelModeCap::actionTitle() const
+{
+    return frozen_ ? liveTitle_ : freezeTitle_;
+}
+
+QString PanelModeCap::actionIconName() const
+{
+    return frozen_ ? QStringLiteral("media-playback-start") : QStringLiteral("media-playback-pause");
+}
+
+QString PanelModeCap::toolTipText() const
+{
+    return panelToolTip(actionTitle(), shortcut_);
 }
 
 QSize PanelModeCap::sizeHint() const
@@ -682,7 +697,7 @@ void PanelModeCap::enterEvent(QEnterEvent *event)
 void PanelModeCap::focusInEvent(QFocusEvent *event)
 {
     QToolTip::showText(mapToGlobal(QPoint(width() / 2, height() + 6)),
-                       panelToolTip(frozen_ ? frozenTitle_ : liveTitle_, shortcut_), this);
+                       toolTipText(), this);
     update();
     QAbstractButton::focusInEvent(event);
 }
@@ -727,12 +742,15 @@ void PanelModeCap::paintEvent(QPaintEvent *)
     const QPalette pal = palette();
     const QColor highlight = pal.color(QPalette::Highlight);
     const QRectF circle = QRectF(rect()).adjusted(1.5, 1.5, -1.5, -1.5);
-    painter.setBrush(withAlpha(highlight, isDown() ? 110 : hovered_ || hasFocus() ? 80 : 46));
-    // Keyboard focus: a full-strength ring, clearer than the hover fill alone (#74).
-    painter.setPen(hasFocus() ? QPen(highlight, 2) : QPen(withAlpha(highlight, 140), 1));
-    painter.drawEllipse(circle);
-    const QIcon icon = QIcon::fromTheme(frozen_ ? QStringLiteral("media-playback-pause")
-                                                : QStringLiteral("media-playback-start"));
+    // At rest it weighs like its neighbours (#94): no fill, no ring. Hover and press fill it,
+    // keyboard focus adds a full ring (#74).
+    if (isDown() || hovered_ || hasFocus()) {
+        painter.setBrush(withAlpha(highlight, isDown() ? 110 : 80));
+        painter.setPen(hasFocus() ? QPen(highlight, 2) : Qt::NoPen);
+        painter.drawEllipse(circle);
+    }
+    // The icon shows what a click does: pause freezes the live screen, play goes live again.
+    const QIcon icon = QIcon::fromTheme(actionIconName());
     const int s = 22;
     icon.paint(&painter, QRect((width() - s) / 2, (height() - s) / 2, s, s));
 }
