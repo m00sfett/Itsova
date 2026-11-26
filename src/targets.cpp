@@ -1,4 +1,5 @@
 #include "targets.h"
+#include "windowlist.h"
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -282,6 +283,37 @@ QString windowHandleFromRecordingTargetId(const QString &id)
     return isWindowRecordingTargetId(id) ? id.mid(7) : QString();
 }
 
+QString activeWindowRecordingTargetId()
+{
+    return QStringLiteral("active-window");
+}
+
+QString resolveDefaultRecordingTarget(const QString &defaultId, const QList<WindowInfo> &windows, bool *windowGone)
+{
+    if (windowGone) {
+        *windowGone = false;
+    }
+    if (defaultId == activeWindowRecordingTargetId()) {
+        // The most recently used window on the current desktop that shows something.
+        for (const WindowInfo &window : windows) {
+            if (window.onCurrentDesktop && !window.minimized) {
+                return windowRecordingTargetId(window.handle);
+            }
+        }
+        return {};
+    }
+    if (isWindowRecordingTargetId(defaultId)) {
+        const QString handle = windowHandleFromRecordingTargetId(defaultId);
+        const bool open = std::any_of(windows.cbegin(), windows.cend(),
+                                      [&](const WindowInfo &window) { return window.handle == handle; });
+        if (!open && windowGone) {
+            *windowGone = true;
+        }
+        return open ? defaultId : QString();
+    }
+    return defaultId;
+}
+
 std::optional<QRect> regionFromRecordingTargetId(const QString &id)
 {
     if (!id.startsWith(QLatin1String("region:"))) {
@@ -433,7 +465,11 @@ void TargetStore::load(const KConfig &config)
         recordingFrameRate = effectiveFrameRate(RecordingFormat::Mp4, recording.readEntry("FrameRate", 30));
         recordingStopHintsShown = recording.readEntry("StopHintsShown", 0);
         recordingCursor = recording.readEntry("IncludeCursor", true);
-        lastRecordingTarget = recording.readEntry("LastTarget", QString());
+        // #124: the last recorded target becomes the default once, so the shortcut keeps doing
+        // what it did; LastTarget is no longer written.
+        defaultRecordingTarget = recording.hasKey("DefaultTarget")
+                                     ? recording.readEntry("DefaultTarget", QString())
+                                     : recording.readEntry("LastTarget", QString());
     }
     colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
 
@@ -627,7 +663,8 @@ void TargetStore::save(KConfig &config) const
         recording.writeEntry("FrameRate", recordingFrameRate);
         recording.writeEntry("StopHintsShown", recordingStopHintsShown);
         recording.writeEntry("IncludeCursor", recordingCursor);
-        recording.writeEntry("LastTarget", lastRecordingTarget);
+        recording.writeEntry("DefaultTarget", defaultRecordingTarget);
+        recording.deleteEntry("LastTarget");
     }
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);

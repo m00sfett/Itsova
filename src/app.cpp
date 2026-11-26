@@ -2880,12 +2880,19 @@ QString App::startRecording(const QString &targetId, int delaySeconds)
     if (recorder_->isBusy()) {
         return tr("A recording is already running.");
     }
+    if (targetId == activeWindowRecordingTargetId()) {
+        // #124: the window that has focus now (the overlay is already gone).
+        const QString window =
+            resolveDefaultRecordingTarget(targetId, listWindows(QCoreApplication::applicationPid()));
+        if (window.isEmpty()) {
+            return tr("No window has the focus.");
+        }
+        return startRecording(window, delaySeconds);
+    }
     QString error;
     if (!recordingTargetFor(targetId, &error)) {
         return error;
     }
-    store_.lastRecordingTarget = targetId;
-    saveSettings();
     const int delay = std::clamp(delaySeconds, 0, 60);
     if (delay > 0) {
         if (countdown_->isActive()) {
@@ -3013,14 +3020,49 @@ void App::toggleRecording(const QString &origin)
         recorder_->stop(origin);
         return;
     }
-    if (!store_.lastRecordingTarget.isEmpty() && recordingTargetFor(store_.lastRecordingTarget, nullptr)) {
-        const QString error = startRecording(store_.lastRecordingTarget);
-        if (!error.isEmpty()) {
-            notifyError(tr("Recording failed"), {error});
+    // #124: only the pinned default; without one (or when it cannot be recorded now) ask in the
+    // overlay instead of doing nothing.
+    if (!store_.defaultRecordingTarget.isEmpty()) {
+        bool windowGone = false;
+        const QString targetId = resolveDefaultRecordingTarget(
+            store_.defaultRecordingTarget, listWindows(QCoreApplication::applicationPid()), &windowGone);
+        if (windowGone) {
+            qCInfo(lcRecord) << "default recording window is gone, default cleared";
+            setDefaultRecordingTarget(QString());
+        } else if (!targetId.isEmpty() && recordingTargetFor(targetId, nullptr)) {
+            const QString error = startRecording(targetId);
+            if (!error.isEmpty()) {
+                notifyError(tr("Recording failed"), {error});
+            }
+            return;
         }
-        return;
     }
     openOverlayForRecording();
+}
+
+QString App::recordingTargetName(const QString &targetId) const
+{
+    if (targetId == activeWindowRecordingTargetId()) {
+        return tr("Active window");
+    }
+    if (const std::optional<QRect> rect = regionFromRecordingTargetId(targetId)) {
+        return tr("Rectangle %1 × %2 at %3, %4").arg(rect->width()).arg(rect->height()).arg(rect->x()).arg(rect->y());
+    }
+    if (const std::optional<RecordingTarget> target = recordingTargetFor(targetId, nullptr)) {
+        return isWindowRecordingTargetId(targetId) ? tr("Window %1").arg(target->displayName) : target->displayName;
+    }
+    return isWindowRecordingTargetId(targetId) ? tr("A window that is no longer open") : targetId;
+}
+
+void App::setDefaultRecordingTarget(const QString &targetId)
+{
+    if (store_.defaultRecordingTarget == targetId) {
+        return;
+    }
+    qCInfo(lcRecord) << "default recording target" << (targetId.isEmpty() ? QStringLiteral("cleared") : targetId);
+    store_.defaultRecordingTarget = targetId;
+    saveSettings();
+    Q_EMIT defaultRecordingTargetChanged();
 }
 
 void App::openOverlayForRecording()

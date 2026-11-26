@@ -173,6 +173,10 @@ public:
     // The start/stop shortcut: stops a running recording, records the last target again, or opens
     // the overlay to choose one.
     void toggleRecording(const QString &origin);
+    // The target the recording shortcut records (#124); an empty id clears it.
+    void setDefaultRecordingTarget(const QString &targetId);
+    // A recording target as the settings name it (#124).
+    [[nodiscard]] QString recordingTargetName(const QString &targetId) const;
     [[nodiscard]] bool isRecording() const;
     // {state: idle|starting|recording|paused|finishing, elapsedMs, target, targetName, format}
     [[nodiscard]] QJsonObject recordingState() const;
@@ -184,6 +188,7 @@ public:
     void noteNativeScale(const ScreenInfo &screen, qreal scale);
 
 Q_SIGNALS:
+    void defaultRecordingTargetChanged();
     void targetsChanged();
     void intervalsChanged();
     void captured(bool success);

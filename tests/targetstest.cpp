@@ -1,4 +1,5 @@
 #include "targets.h"
+#include "windowlist.h"
 #include "triggerengine.h"
 #include "triggerplan.h"
 
@@ -53,6 +54,9 @@ private Q_SLOTS:
     void configRoundTrip();
     void legacyRegionConfigIsMigrated();
     void overlayStartMode();
+    void lastRecordingTargetBecomesDefaultOnce();
+    void defaultRecordingTargetResolution();
+    void trayVisibilityRoundTrip();
     void monitorNames();
     void overlayPanelPositionsRoundTrip();
     void removingAreaDropsItFromGroups();
@@ -170,6 +174,87 @@ void TargetsTest::legacyRegionConfigIsMigrated()
     reloaded.load(config);
     QVERIFY(reloaded.migratedIds.isEmpty());
     QCOMPARE(reloaded.areas.size(), 2);
+}
+
+// #124: the shortcut kept recording LastTarget; after the update that target is the default once,
+// and a cleared default stays cleared.
+void TargetsTest::lastRecordingTargetBecomesDefaultOnce()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    {
+        QFile file(path);
+        QVERIFY(file.open(QIODevice::WriteOnly));
+        file.write("[Recording]\nLastTarget=screen:DP-1\n");
+    }
+    TargetStore store;
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.load(config);
+    }
+    QCOMPARE(store.defaultRecordingTarget, QStringLiteral("screen:DP-1"));
+    store.defaultRecordingTarget.clear();
+    {
+        KConfig config(path, KConfig::SimpleConfig);
+        store.save(config);
+    }
+    KConfig config(path, KConfig::SimpleConfig);
+    QVERIFY(!config.group(QStringLiteral("Recording")).hasKey("LastTarget"));
+    TargetStore reloaded;
+    reloaded.load(config);
+    QVERIFY(reloaded.defaultRecordingTarget.isEmpty());
+}
+
+void TargetsTest::defaultRecordingTargetResolution()
+{
+    WindowInfo minimized;
+    minimized.handle = QStringLiteral("{min}");
+    minimized.minimized = true;
+    WindowInfo elsewhere;
+    elsewhere.handle = QStringLiteral("{other-desktop}");
+    elsewhere.onCurrentDesktop = false;
+    WindowInfo konsole;
+    konsole.handle = QStringLiteral("{konsole}");
+    const QList<WindowInfo> windows{minimized, elsewhere, konsole};
+
+    bool gone = true;
+    QCOMPARE(resolveDefaultRecordingTarget(QString(), windows, &gone), QString());
+    QVERIFY(!gone);
+    QCOMPARE(resolveDefaultRecordingTarget(QStringLiteral("screen:DP-1"), windows, &gone), QStringLiteral("screen:DP-1"));
+    // Active window: the most recently used one on this desktop that is not minimized.
+    QCOMPARE(resolveDefaultRecordingTarget(activeWindowRecordingTargetId(), windows, &gone),
+             windowRecordingTargetId(QStringLiteral("{konsole}")));
+    QCOMPARE(resolveDefaultRecordingTarget(activeWindowRecordingTargetId(), {minimized}, &gone), QString());
+    QVERIFY(!gone);
+    // A specific window: recorded while open, dropped once gone.
+    const QString konsoleId = windowRecordingTargetId(QStringLiteral("{konsole}"));
+    QCOMPARE(resolveDefaultRecordingTarget(konsoleId, windows, &gone), konsoleId);
+    QVERIFY(!gone);
+    QCOMPARE(resolveDefaultRecordingTarget(konsoleId, {minimized}, &gone), QString());
+    QVERIFY(gone);
+}
+
+// #123
+void TargetsTest::trayVisibilityRoundTrip()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    TargetStore store;
+    QCOMPARE(store.trayVisibility, TargetStore::TrayVisibility::Always);
+    for (const auto mode : {TargetStore::TrayVisibility::WhileRecording, TargetStore::TrayVisibility::WhileRunning,
+                            TargetStore::TrayVisibility::Always}) {
+        store.trayVisibility = mode;
+        {
+            KConfig config(path, KConfig::SimpleConfig);
+            store.save(config);
+        }
+        KConfig config(path, KConfig::SimpleConfig);
+        TargetStore reloaded;
+        reloaded.load(config);
+        QCOMPARE(reloaded.trayVisibility, mode);
+    }
 }
 
 void TargetsTest::overlayStartMode()
