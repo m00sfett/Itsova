@@ -294,7 +294,7 @@ void ScreenRecorder::finalizeFile()
     for (const auto &[start, end] : clock_.pauses()) {
         pauses.append({double(start) / 1000.0, double(end) / 1000.0});
     }
-    finalizer_->finalize(options_.path, finalDurationMs_, pauses);
+    finalizer_->finalize(options_.path, finalDurationMs_, pauses, options_.metadata);
 }
 
 void ScreenRecorder::stop(const QString &origin)

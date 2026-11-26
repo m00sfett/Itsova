@@ -1,5 +1,6 @@
 #include "recordingfinalizer.h"
 #include "recordingplan.h"
+#include "recordingmetadata.h"
 #include "targets.h"
 
 #include <QFile>
@@ -36,6 +37,117 @@ private Q_SLOTS:
         QVERIFY(!shouldShowRecordingStopHint(10));
         QCOMPARE(recordingStopHint(QString()), QStringLiteral("Click to stop"));
         QCOMPARE(recordingStopHint(QStringLiteral("Meta+R")), QStringLiteral("Click or press Meta+R to stop"));
+    }
+
+    // #103: monitor, position and scale travel with the recording.
+    void metadataRoundTrip()
+    {
+        RecordingMetadata meta;
+        meta.kind = QStringLiteral("area");
+        meta.targetId = QStringLiteral("selection");
+        meta.streamScale = 1.25;
+        meta.region = QRect(1800, 0, 400, 300);
+        RecordingMonitorInfo monitor;
+        monitor.connector = QStringLiteral("DP-1");
+        monitor.manufacturer = QStringLiteral("Dell");
+        monitor.model = QStringLiteral("U2720Q");
+        monitor.serial = QStringLiteral("ABC123");
+        monitor.logical = QRect(0, 0, 1920, 1080);
+        monitor.video = QRect(0, 0, 150, 375);
+        monitor.scale = 1.25;
+        monitor.resolution = QSize(2400, 1350);
+        meta.monitors = {monitor};
+        const std::optional<RecordingMetadata> back = parseRecordingMetadata(recordingMetadataJson(meta));
+        QVERIFY(back);
+        QCOMPARE(back->kind, meta.kind);
+        QCOMPARE(back->targetId, meta.targetId);
+        QCOMPARE(back->streamScale, 1.25);
+        QCOMPARE(back->region, meta.region);
+        QCOMPARE(back->monitors.size(), 1);
+        QCOMPARE(back->monitors.first().serial, QStringLiteral("ABC123"));
+        QCOMPARE(back->monitors.first().video, QRect(0, 0, 150, 375));
+        QCOMPARE(back->monitors.first().resolution, QSize(2400, 1350));
+        QVERIFY(!parseRecordingMetadata(QStringLiteral("{\"version\":99}")));
+        QVERIFY(!parseRecordingMetadata(QStringLiteral("not json")));
+    }
+
+    void metadataPlacesEveryMonitorInTheVideo()
+    {
+        ScreenInfo left;
+        left.connector = QStringLiteral("DP-1");
+        left.geometry = QRect(0, 0, 1920, 1080);
+        ScreenInfo right;
+        right.connector = QStringLiteral("DP-2");
+        right.geometry = QRect(1920, 0, 2048, 1152);
+        right.serialNumber = QStringLiteral("S2");
+        RecordingTarget target;
+        target.targetId = QStringLiteral("selection");
+        target.region = QRect(1800, 0, 400, 300);
+        target.scale = 1.25;
+        const RecordingMetadata meta = buildRecordingMetadata(target, {left, right}, {1.0, 1.25});
+        QCOMPARE(meta.kind, QStringLiteral("area"));
+        QCOMPARE(meta.monitors.size(), 2);
+        QCOMPARE(meta.monitors.at(0).video, QRect(0, 0, 150, 375));
+        QCOMPARE(meta.monitors.at(1).video, QRect(150, 0, 350, 375));
+        QCOMPARE(meta.monitors.at(1).resolution, QSize(2560, 1440));
+        QCOMPARE(meta.monitors.at(1).serial, QStringLiteral("S2"));
+
+        RecordingTarget window;
+        window.kind = RecordingTarget::Kind::Window;
+        window.targetId = QStringLiteral("window:{x}");
+        window.region = QRect(2000, 100, 800, 600);
+        const RecordingMetadata windowMeta = buildRecordingMetadata(window, {left, right}, {1.0, 1.25});
+        QCOMPARE(windowMeta.kind, QStringLiteral("window"));
+        QCOMPARE(windowMeta.monitors.size(), 1);
+        QCOMPARE(windowMeta.monitors.first().connector, QStringLiteral("DP-2"));
+        QCOMPARE(windowMeta.windowRect, QRect(80, 100, 800, 600)); // on its monitor
+        QCOMPARE(windowMeta.streamScale, 1.25);
+    }
+
+    void finalizerKeepsMetadata_data()
+    {
+        QTest::addColumn<QString>("extension");
+        QTest::addColumn<QStringList>("codec");
+        QTest::addColumn<qint64>("targetMs");
+        QTest::newRow("mp4 extended") << QStringLiteral("mp4") << QStringList{QStringLiteral("-c:v"), QStringLiteral("libx264"), QStringLiteral("-bf"), QStringLiteral("0"), QStringLiteral("-pix_fmt"), QStringLiteral("yuv420p")} << qint64(3000);
+        QTest::newRow("mp4 nothing to extend") << QStringLiteral("mp4") << QStringList{QStringLiteral("-c:v"), QStringLiteral("libx264"), QStringLiteral("-bf"), QStringLiteral("0"), QStringLiteral("-pix_fmt"), QStringLiteral("yuv420p")} << qint64(1000);
+        QTest::newRow("webm") << QStringLiteral("webm") << QStringList{QStringLiteral("-c:v"), QStringLiteral("libvpx-vp9"), QStringLiteral("-deadline"), QStringLiteral("realtime")} << qint64(3000);
+    }
+
+    void finalizerKeepsMetadata()
+    {
+        QFETCH(QString, extension);
+        QFETCH(QStringList, codec);
+        QFETCH(qint64, targetMs);
+        if (QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+            || QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty()) {
+            QSKIP("ffmpeg/ffprobe not installed");
+        }
+        QTemporaryDir dir;
+        const QString path = dir.filePath(QStringLiteral("meta.") + extension);
+        QProcess make;
+        make.start(QStringLiteral("ffmpeg"), QStringList{QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"),
+                                                         QStringLiteral("lavfi"), QStringLiteral("-i"),
+                                                         QStringLiteral("testsrc=size=64x48:rate=10:duration=1")}
+                                                 + codec + QStringList{path});
+        QVERIFY(make.waitForFinished(60000));
+        if (make.exitCode() != 0) {
+            QSKIP("this ffmpeg cannot write the test clip");
+        }
+        RecordingMetadata meta;
+        meta.kind = QStringLiteral("monitor");
+        meta.targetId = QStringLiteral("screen:DP-1");
+        meta.streamScale = 1.25;
+        meta.region = QRect(0, 0, 1920, 1080);
+        RecordingFinalizer finalizer;
+        QSignalSpy done(&finalizer, &RecordingFinalizer::done);
+        finalizer.finalize(path, targetMs, {}, recordingMetadataJson(meta));
+        QVERIFY(done.wait(60000));
+        const std::optional<RecordingMetadata> read = readRecordingMetadata(path);
+        QVERIFY2(read, qPrintable(done.first().at(1).toString()));
+        QCOMPARE(read->targetId, meta.targetId);
+        QCOMPARE(read->streamScale, 1.25);
+        QCOMPARE(read->region, meta.region);
     }
 
     void formatsRoundTrip()

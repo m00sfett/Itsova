@@ -42,6 +42,7 @@ public:
         int frameRate = 30;
         bool includeCursor = true;
         QString path; // the file to write
+        QString metadata; // #103: written into the file when it is finalized
     };
 
     explicit ScreenRecorder(QObject *parent = nullptr);

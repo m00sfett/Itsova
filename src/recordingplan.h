@@ -34,7 +34,7 @@ struct RecordingTarget
     QString targetId; // "screen:DP-1", "all", "area:<uuid>", "selection", "window:<uuid>"
     QString displayName; // shown in the tray and the notification
     QString token; // file name token, e.g. "DP-1", "window-konsole"
-    QRect region; // Region: global logical rectangle
+    QRect region; // Region: global logical rectangle; Window: the window's geometry at the start
     qreal scale = 1.0; // Region: device pixels per logical pixel of the stream
     QString windowHandle; // Window: KWin window UUID
 
