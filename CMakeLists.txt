@@ -34,7 +34,6 @@ add_executable(glimply
     src/settingswindow.cpp
     src/shortcutmanager.cpp
     src/traycontroller.cpp
-    src/trayicon.cpp
 )
 target_compile_definitions(glimply PRIVATE GLIMPLY_VERSION="${PROJECT_VERSION}")
 # Brand marks for the footer of the settings window.
@@ -141,6 +140,7 @@ add_library(glimply_ui STATIC
     src/pinwindow.cpp
     src/pixelloupe.cpp
     src/quickeditorwindow.cpp
+    src/trayicon.cpp
 )
 target_include_directories(glimply_ui PUBLIC src)
 target_link_libraries(glimply_ui PUBLIC glimply_capture Qt6::Widgets KF6::WidgetsAddons KF6::I18n PRIVATE Qt6::Concurrent)
@@ -267,6 +267,9 @@ if(BUILD_TESTING)
     add_executable(ocrtest tests/ocrtest.cpp)
     target_link_libraries(ocrtest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME ocr COMMAND ocrtest)
+    add_executable(trayicontest tests/trayicontest.cpp)
+    target_link_libraries(trayicontest PRIVATE glimply_ui Qt6::Test)
+    add_test(NAME trayicon COMMAND trayicontest)
     add_executable(windowpicktest tests/windowpicktest.cpp)
     target_link_libraries(windowpicktest PRIVATE glimply_capture Qt6::Test)
     add_test(NAME windowpick COMMAND windowpicktest)
