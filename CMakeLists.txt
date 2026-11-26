@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(glimply VERSION 0.11.0 LANGUAGES C CXX)
+project(glimply VERSION 0.12.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -325,6 +325,7 @@ if(BUILD_TESTING)
         glimply_nested_test(record-metadata OPTIONS --apps kcalc)
         glimply_nested_test(record-covered-window OPTIONS --apps kcalc)
         glimply_nested_test(record-window-closed OPTIONS --apps kcalc)
+        glimply_nested_test(record-window-move OPTIONS --apps kcalc)
     endif()
 
     # Opt-in check that translated panel button titles fit (#73); never run by CTest.
