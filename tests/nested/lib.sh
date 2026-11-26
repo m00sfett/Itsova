@@ -73,3 +73,14 @@ fake_bg() {
 wait_fake() {
     wait "$fake_pid" 2>/dev/null
 }
+
+# start_fake_notifications [prefix]: a notification server that logs to $out/notifications.log and
+# presses the first action of notifications whose summary starts with prefix.
+start_fake_notifications() {
+    python3 "$(dirname "$kwinshot")/fakenotify.py" "$out/notifications.log" "${1:-}" >/dev/null 2>&1 &
+    for _ in $(seq 50); do
+        busctl --user status org.freedesktop.Notifications >/dev/null 2>&1 && return 0
+        sleep 0.1
+    done
+    fail "fake notification server did not start"
+}

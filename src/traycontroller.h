@@ -54,6 +54,8 @@ public:
     void setRecordingState(int state, qint64 elapsedMs, const QString &targetName);
     // Older KPipeWire cannot pause: the menu offers no Pause then.
     void setRecordingPauseAvailable(bool available);
+    // The global record shortcut, named in the "Click to stop" tooltip (#98).
+    void setRecordingStopShortcut(const QString &shortcut);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
     // One short blink. Call only after every frame of a trigger has been captured (A2).
@@ -107,6 +109,7 @@ private:
     bool keepDelayActive_ = false;
     bool countdownActive_ = false;
     int countdownRemaining_ = 0;
+    QString recordingStopShortcut_;
 };
 
 } // namespace glimply

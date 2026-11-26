@@ -27,6 +27,17 @@ private:
     }
 
 private Q_SLOTS:
+    // #98: the first three recordings say how to stop; the tooltip always does.
+    void stopHints()
+    {
+        QVERIFY(shouldShowRecordingStopHint(0));
+        QVERIFY(shouldShowRecordingStopHint(2));
+        QVERIFY(!shouldShowRecordingStopHint(3));
+        QVERIFY(!shouldShowRecordingStopHint(10));
+        QCOMPARE(recordingStopHint(QString()), QStringLiteral("Click to stop"));
+        QCOMPARE(recordingStopHint(QStringLiteral("Meta+R")), QStringLiteral("Click or press Meta+R to stop"));
+    }
+
     void formatsRoundTrip()
     {
         for (const RecordingFormat format : allRecordingFormats()) {

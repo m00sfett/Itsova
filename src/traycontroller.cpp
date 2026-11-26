@@ -203,6 +203,11 @@ void TrayController::setRecordingState(int state, qint64 elapsedMs, const QStrin
     updateToolTip();
 }
 
+void TrayController::setRecordingStopShortcut(const QString &shortcut)
+{
+    recordingStopShortcut_ = shortcut;
+}
+
 void TrayController::setRecordingPauseAvailable(bool available)
 {
     recordingPauseAvailable_ = available;
@@ -267,13 +272,15 @@ void TrayController::updateToolTip()
             item_->setToolTipSubTitle(tr("Starting the recording of %1…").arg(recordingTarget_));
             break;
         case 3:
-            item_->setToolTipSubTitle(tr("Recording of %1 paused at %2").arg(recordingTarget_, time));
+            item_->setToolTipSubTitle(tr("Recording of %1 paused at %2").arg(recordingTarget_, time)
+                                      + QLatin1Char('\n') + recordingStopHint(recordingStopShortcut_));
             break;
         case 4:
             item_->setToolTipSubTitle(tr("Saving the recording of %1…").arg(recordingTarget_));
             break;
         default:
-            item_->setToolTipSubTitle(tr("Recording %1: %2").arg(recordingTarget_, time));
+            item_->setToolTipSubTitle(tr("Recording %1: %2").arg(recordingTarget_, time) + QLatin1Char('\n')
+                                      + recordingStopHint(recordingStopShortcut_));
             break;
         }
         return;

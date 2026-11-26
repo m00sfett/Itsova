@@ -425,6 +425,7 @@ void TargetStore::load(const KConfig &config)
         const KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recordingFormat = recordingFormatFromKey(recording.readEntry("Format", QStringLiteral("mp4")));
         recordingFrameRate = effectiveFrameRate(RecordingFormat::Mp4, recording.readEntry("FrameRate", 30));
+        recordingStopHintsShown = recording.readEntry("StopHintsShown", 0);
         recordingCursor = recording.readEntry("IncludeCursor", true);
         lastRecordingTarget = recording.readEntry("LastTarget", QString());
     }
@@ -607,6 +608,7 @@ void TargetStore::save(KConfig &config) const
         KConfigGroup recording = config.group(QStringLiteral("Recording"));
         recording.writeEntry("Format", recordingFormatKey(recordingFormat));
         recording.writeEntry("FrameRate", recordingFrameRate);
+        recording.writeEntry("StopHintsShown", recordingStopHintsShown);
         recording.writeEntry("IncludeCursor", recordingCursor);
         recording.writeEntry("LastTarget", lastRecordingTarget);
     }

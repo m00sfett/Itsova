@@ -1,5 +1,7 @@
 #include "recordingplan.h"
 
+#include <QCoreApplication>
+
 #include "imageoutput.h"
 
 #include <QDir>
@@ -189,6 +191,17 @@ qint64 RecordingClock::elapsed(qint64 nowMs) const
     }
     const qint64 end = paused_ ? pausedAt_ : nowMs;
     return std::max<qint64>(0, end - startedAt_ - pausedTotal_);
+}
+
+bool shouldShowRecordingStopHint(int shownSoFar)
+{
+    return shownSoFar < recordingStopHintCount;
+}
+
+QString recordingStopHint(const QString &shortcut)
+{
+    return shortcut.isEmpty() ? QCoreApplication::translate("RecordingPlan", "Click to stop")
+                              : QCoreApplication::translate("RecordingPlan", "Click or press %1 to stop").arg(shortcut);
 }
 
 } // namespace glimply

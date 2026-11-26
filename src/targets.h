@@ -193,6 +193,7 @@ public:
     // Screen recording (#30).
     RecordingFormat recordingFormat = RecordingFormat::Mp4;
     int recordingFrameRate = 30;
+    int recordingStopHintsShown = 0; // #98: notifications that said how to stop
     bool recordingCursor = true;
     QString lastRecordingTarget; // what the start/stop shortcut records; empty: ask in the overlay
     ColorFormat colorPickerFormat = ColorFormat::Hex;

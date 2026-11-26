@@ -112,6 +112,9 @@ printf '[Desktop Entry]\nType=Application\nName=fakekey\nNoDisplay=true\nExec=%s
     "$fakekey" >"$home/.local/share/applications/fakekey.desktop"
 printf '[Desktop Entry]\nType=Application\nName=glimply-under-test\nNoDisplay=true\nExec=%s\nX-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\nX-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1\n' \
     "$binary" >"$home/.local/share/applications/glimply-under-test.desktop"
+# Notification events as an installed glimply has them.
+mkdir -p "$home/.local/share/knotifications6"
+cp "$here/../../data/io.github.m00sfett.glimply.notifyrc" "$home/.local/share/knotifications6/"
 [[ -n "$rc" ]] && printf '%b\n' "$rc" >>"$home/.config/glimplyrc"
 if [[ -n "$scheme" ]]; then
     cp "/usr/share/color-schemes/${scheme}.colors" "$home/.config/kdeglobals"
