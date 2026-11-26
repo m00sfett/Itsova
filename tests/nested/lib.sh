@@ -77,6 +77,7 @@ wait_fake() {
 # start_fake_notifications [prefix]: a notification server that logs to $out/notifications.log and
 # presses the first action of notifications whose summary starts with prefix.
 start_fake_notifications() {
+    : >"$out/notifications.log" # --out may be reused between runs
     python3 "$(dirname "$kwinshot")/fakenotify.py" "$out/notifications.log" "${1:-}" >/dev/null 2>&1 &
     for _ in $(seq 50); do
         busctl --user status org.freedesktop.Notifications >/dev/null 2>&1 && return 0
