@@ -970,18 +970,25 @@ void CapsulePanel::setDrawer(QWidget *content)
     if (drawer_ == content) {
         return;
     }
-    if (drawer_) {
-        // Hiding the widget with keyboard focus lets Qt hand the focus on by itself, which made the
-        // overlay vanish (#96). Give it back to the overlay first.
-        if (drawer_->isAncestorOf(QApplication::focusWidget()) && parentWidget()) {
+    // Hiding the old drawer sends focus and leave events that can lead straight back here
+    // (refreshPanel through a hover outline); switch the state first, so such a nested call sees
+    // the new state and finishes on its own, instead of deleting the old drawer twice (crash
+    // found in #96).
+    QPointer<QWidget> old = drawer_;
+    drawer_ = content;
+    if (old) {
+        // Hiding the widget with keyboard focus lets Qt hand the focus on by itself; give it back to
+        // the overlay first (#96).
+        if (old->isAncestorOf(QApplication::focusWidget()) && parentWidget()) {
             parentWidget()->setFocus(Qt::OtherFocusReason);
         }
-        drawerBox_->removeWidget(drawer_);
-        drawer_->hide();
-        drawer_->deleteLater();
+        drawerBox_->removeWidget(old);
+        old->hide();
+        if (old) {
+            old->deleteLater();
+        }
     }
-    drawer_ = content;
-    if (content) {
+    if (content && drawer_ == content) {
         content->setParent(this);
         drawerBox_->addWidget(content, 0, Qt::AlignLeft); // leading edge, mirrored in RTL
         content->show();

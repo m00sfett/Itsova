@@ -8,6 +8,29 @@
 
 using namespace glimply;
 
+namespace
+{
+// Hiding it calls back into the panel, like a hover outline that refreshes the panel does.
+class ReentrantDrawer : public QWidget
+{
+public:
+    explicit ReentrantDrawer(CapsulePanel *panel)
+        : panel_(panel)
+    {
+    }
+
+protected:
+    void hideEvent(QHideEvent *event) override
+    {
+        panel_->setDrawer(nullptr);
+        QWidget::hideEvent(event);
+    }
+
+private:
+    CapsulePanel *panel_;
+};
+} // namespace
+
 class OverlayPanelTest : public QObject
 {
     Q_OBJECT
@@ -297,6 +320,21 @@ private Q_SLOTS:
         QCOMPARE(cap.accessibleName(), QStringLiteral("Live"));
         QVERIFY(cap.toolTipText().contains(QStringLiteral("Live")));
         QVERIFY(cap.toolTipText().contains(QStringLiteral("Space")));
+    }
+
+    // A nested setDrawer() while the old drawer hides crashed (#96 follow-up).
+    void drawerSwitchSurvivesReentrancy()
+    {
+        CapsulePanel panel(nullptr);
+        panel.show();
+        panel.setDrawer(new ReentrantDrawer(&panel));
+        // The nested request (close) comes last and wins; nothing is deleted twice.
+        panel.setDrawer(new QLabel(QStringLiteral("next")));
+        QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+        QVERIFY(!panel.drawerOpen());
+        auto *again = new QLabel(QStringLiteral("again"));
+        panel.setDrawer(again);
+        QVERIFY(panel.drawer() == again);
     }
 
     void clearingTheMainRowRemovesButtons()
