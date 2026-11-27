@@ -2,6 +2,7 @@
 
 #include <QList>
 #include <QObject>
+#include <QSize>
 #include <QString>
 #include <QStringList>
 
@@ -23,6 +24,13 @@ struct RecordingPause
     double end = 0;
 };
 
+// A window size observed at a recording-clock timestamp (seconds, pauses excluded) (#127).
+struct WindowResizeSample
+{
+    double timeSeconds = 0;
+    QSize size;
+};
+
 struct TailFix
 {
     int lastPacket = -1; // index of the last video packet
@@ -38,6 +46,11 @@ struct TailFix
                                                  const QList<RecordingPause> &pauses = {});
 [[nodiscard]] QStringList ffprobePacketArguments(const QString &path);
 [[nodiscard]] QStringList tailFixArguments(const QString &input, const QString &output, const TailFix &fix);
+// Builds an ffmpeg filter_complex graph that letterboxes segments where a recorded window's aspect
+// ratio diverged from canvasSize (#127). Returns empty when no letterboxing is needed.
+[[nodiscard]] QString letterboxFilterGraph(const QSize &canvasSize, const QList<WindowResizeSample> &samples);
+[[nodiscard]] QStringList letterboxArguments(const QString &input, const QString &output, const QString &filterGraph,
+                                             const QString &metadata);
 
 class RecordingFinalizer : public QObject
 {
@@ -50,7 +63,7 @@ public:
     // Runs asynchronously; emits done exactly once. Without ffmpeg/ffprobe the file stays as it is.
     // metadata (#103) is written into the file in the same pass; it alone is reason for a pass.
     void finalize(const QString &path, qint64 targetDurationMs, const QList<RecordingPause> &pauses = {},
-                  const QString &metadata = QString());
+                  const QString &metadata = QString(), const QList<WindowResizeSample> &resizeSamples = {});
 
 Q_SIGNALS:
     // extended: the last frame now lasts until the end. note: why nothing changed, for the log.
@@ -58,6 +71,8 @@ Q_SIGNALS:
 
 private:
     void runFix(const TailFix &fix);
+    void probeSizeAndLetterbox(bool alreadyExtended, const QString &priorNote);
+    void runLetterbox(const QString &filterGraph, bool alreadyExtended, const QString &priorNote);
     void finish(bool extended, const QString &note);
 
     QProcess *process_ = nullptr;
@@ -65,6 +80,7 @@ private:
     QString temporary_;
     double targetSeconds_ = 0;
     QList<RecordingPause> pauses_;
+    QList<WindowResizeSample> resizeSamples_;
     QString metadata_;
     TailFix currentFix_;
     bool finished_ = true;

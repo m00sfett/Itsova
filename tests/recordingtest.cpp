@@ -220,6 +220,24 @@ private Q_SLOTS:
         QCOMPARE(read->region, meta.region);
     }
 
+    void windowResizeLetterboxGraph()
+    {
+        // Constant or matching-aspect window size requires no letterboxing pass.
+        QVERIFY(letterboxFilterGraph(QSize(640, 508), {{0.0, QSize(640, 508)}}).isEmpty());
+        QVERIFY(letterboxFilterGraph(QSize(640, 480), {{0.0, QSize(640, 480)}, {1.0, QSize(1280, 960)}}).isEmpty());
+
+        // 640x508 -> maximized 1920x1080 -> restored 640x508 produces 640x360 letterboxed with 74px bars.
+        const QString graph = letterboxFilterGraph(
+            QSize(640, 508), {{0.0, QSize(640, 508)}, {2.0, QSize(1920, 1080)}, {4.5, QSize(640, 508)}});
+        QVERIFY(!graph.isEmpty());
+        QVERIFY2(graph.contains(QStringLiteral("scale=640:360,pad=640:508:0:74:black")), qPrintable(graph));
+        QVERIFY2(graph.contains(QStringLiteral("concat=n=3:v=1:a=0[outv]")), qPrintable(graph));
+
+        // Wide canvas -> narrow window produces pillarboxed output.
+        const QString pillar = letterboxFilterGraph(QSize(1280, 720), {{0.0, QSize(1280, 720)}, {1.0, QSize(400, 800)}});
+        QVERIFY2(pillar.contains(QStringLiteral("scale=360:720,pad=1280:720:460:0:black")), qPrintable(pillar));
+    }
+
     void formatsRoundTrip()
     {
         for (const RecordingFormat format : allRecordingFormats()) {
