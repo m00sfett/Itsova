@@ -505,8 +505,8 @@
         <translation>Gizle</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Geri alınamaz gizleme (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Hassas alanları gizle (X) — hassas metinler için Düz dolgu kullanın</translation>
     </message>
     <message>
         <source>Spotlight</source>

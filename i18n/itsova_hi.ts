@@ -505,8 +505,8 @@
         <translation>छिपाएँ</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>अपरिवर्तनीय गोपनीय छिपाव (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>संवेदनशील क्षेत्रों को छिपाएँ (X) — संवेदनशील पाठ के लिए ठोस भराव उपयोग करें</translation>
     </message>
     <message>
         <source>Spotlight</source>

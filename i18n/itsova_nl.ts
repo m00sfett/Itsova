@@ -505,8 +505,8 @@
         <translation>Onleesbaar maken</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Onomkeerbaar onleesbaar maken (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Gevoelige gebieden verbergen (X) — gebruik Volle kleur voor gevoelige tekst</translation>
     </message>
     <message>
         <source>Spotlight</source>

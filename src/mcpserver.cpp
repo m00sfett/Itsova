@@ -231,7 +231,7 @@ QJsonArray McpServer::toolDefinitions()
     tools.append(makeTool(
         QStringLiteral("annotate_image"),
         QStringLiteral("Apply vector callouts (arrow, rect, ellipse, pen, highlighter, text, step, spotlight) and "
-                       "irreversible pixel redactions (redact: solid/pixelate/blur) onto an image file."),
+                       "pixel redactions (redact: solid opaque fill, or visual pixelate/blur obfuscation; use solid for sensitive text) onto an image file."),
         {
             {QStringLiteral("input_path"), propString(QStringLiteral("Path to an existing source image."))},
             {QStringLiteral("operations"),

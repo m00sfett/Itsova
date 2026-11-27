@@ -505,8 +505,8 @@
         <translation>Unkenntlich machen</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Nicht rückgängig zu machende Unkenntlichmachung (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Sensible Bereiche schwärzen (X) — für sensible Texte Vollfläche nutzen</translation>
     </message>
     <message>
         <source>Spotlight</source>

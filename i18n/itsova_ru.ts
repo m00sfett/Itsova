@@ -505,8 +505,8 @@
         <translation>Скрыть</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Необратимое скрытие (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Скрыть конфиденциальные области (X) — используйте сплошную заливку для чувствительного текста</translation>
     </message>
     <message>
         <source>Spotlight</source>

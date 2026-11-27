@@ -30,7 +30,7 @@ struct AnnotateResult
     QString error;
 };
 
-// Applies programmatic vector annotations and irreversible pixel redactions onto an existing
+// Applies programmatic vector annotations and pixel redactions (solid opaque fill, pixelate, or blur) onto an existing
 // image file using AnnotationDocument + renderAnnotatedCrop.
 [[nodiscard]] AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request);
 

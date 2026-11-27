@@ -505,8 +505,8 @@
         <translation>가리기</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>되돌릴 수 없는 가리기 (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>민감한 영역 가리기 (X) — 민감한 텍스트에는 단색 채우기를 사용하세요</translation>
     </message>
     <message>
         <source>Spotlight</source>

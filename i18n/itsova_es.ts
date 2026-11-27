@@ -505,8 +505,8 @@
         <translation>Censurar</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Censura irreversible (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Ocultar áreas sensibles (X) — usa Relleno sólido para texto sensible</translation>
     </message>
     <message>
         <source>Spotlight</source>

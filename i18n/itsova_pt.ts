@@ -505,8 +505,8 @@
         <translation>Ocultar</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Ocultação irreversível (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Ocultar áreas sensíveis (X) — use Preenchimento sólido para texto sensível</translation>
     </message>
     <message>
         <source>Spotlight</source>

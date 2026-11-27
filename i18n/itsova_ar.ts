@@ -505,8 +505,8 @@
         <translation>طمس</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>طمس غير قابل للتراجع (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>تعتيم المناطق الحساسة (X) — استخدم التعبئة المصمتة للنصوص الحساسة</translation>
     </message>
     <message>
         <source>Spotlight</source>

@@ -505,8 +505,8 @@
         <translation>Oscura</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Oscuramento irreversibile (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Oscura aree sensibili (X) — usa Riempimento pieno per testo sensibile</translation>
     </message>
     <message>
         <source>Spotlight</source>
