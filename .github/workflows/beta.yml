@@ -1,5 +1,6 @@
 name: Beta prerelease
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*-beta.*'
@@ -7,6 +8,7 @@ permissions:
   contents: write
 jobs:
   release:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,3 +45,27 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: gh release create "$TAG" dist/* --prerelease --latest=false --title "Itsova $TAG Beta" --notes-file "release/$TAG.md" --verify-tag
+  rehearsal:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate beta recipe and source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=v0.12.0-beta.1
+          [[ "$tag" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)-beta\.([1-9][0-9]*)$ ]]
+          grep -Fqx "project(itsova VERSION ${BASH_REMATCH[1]} LANGUAGES C CXX)" CMakeLists.txt
+          test -f "release/$tag.md"
+          bash -n packaging/arch/itsova/PKGBUILD
+          git archive --format=tar.gz --prefix="Itsova-${tag#v}/" HEAD > candidate.tar.gz
+          mkdir extracted
+          tar -xzf candidate.tar.gz -C extracted
+          test -f "extracted/Itsova-${tag#v}/CMakeLists.txt"
+          checksum=$(sha256sum candidate.tar.gz | cut -d' ' -f1)
+          sed "s/REPLACE_WITH_VERIFIED_SHA256/$checksum/" packaging/arch/itsova/PKGBUILD > PKGBUILD.checked
+          ! grep -q REPLACE_WITH_VERIFIED_SHA256 PKGBUILD.checked
+          bash -n PKGBUILD.checked
