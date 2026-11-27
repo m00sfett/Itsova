@@ -27,6 +27,15 @@ QColor withAlpha(QColor color, int alpha)
     color.setAlpha(alpha);
     return color;
 }
+
+template<typename LayerWindow>
+void setLayerScreenIfSupported(LayerWindow *layer, QScreen *screen)
+{
+    // LayerShellQt 6.3 uses QWindow::screen(); newer versions expose setScreen().
+    if constexpr (requires { layer->setScreen(screen); }) {
+        layer->setScreen(screen);
+    }
+}
 } // namespace
 
 RecordingHint::RecordingHint(QWidget *parent)
@@ -72,7 +81,7 @@ void RecordingHint::showAt(QScreen *screen, const QRect &rect, int durationMs)
         layer->setExclusiveZone(-1); // ignore panels: the position is exact
         layer->setScope(QStringLiteral("itsova-recording-hint"));
         if (screen) {
-            layer->setScreen(screen);
+            setLayerScreenIfSupported(layer, screen);
         }
         const QPoint origin = screen ? screen->geometry().topLeft() : QPoint();
         layer->setMargins(QMargins(rect.x() - origin.x(), rect.y() - origin.y(), 0, 0));

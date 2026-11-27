@@ -76,13 +76,14 @@ Itsova runs strictly locally on your machine:
 - Resizing a window during recording can distort the picture ([#127](https://github.com/m00sfett/Itsova/issues/127)).
 - Screen capture and recording require KDE Plasma on Wayland and KWin; other desktops are not supported.
 - Some desktop configurations, including multiple monitors and fractional scaling, need further hands-on testing.
+- Recording pause is unavailable with KPipeWire 6.3, including Debian 13.
 - Translations are machine-generated and may contain errors.
 
 ## Requirements
 
-Minimum supported toolchain (verified in Debian 13 `trixie` via [`scripts/check-debian13.sh`](scripts/check-debian13.sh)):
+Minimum required toolchain:
 
-- **CMake** >= `3.25` (verified on Debian 13 `trixie` with CMake `3.31`, Qt `6.8`, KF6 `6.13`), **Ninja**, C++ compiler
+- **CMake** >= `3.25`, **Ninja**, C++ compiler
 - **Qt 6** >= `6.8` (`qt6-base`, `qt6-tools` / `linguist` tools)
 - **KDE Frameworks 6** >= `6.13` (`KConfig`, `KDBusAddons`, `KGlobalAccel`, `KI18n`, `KNotifications`, `KStatusNotifierItem`, `KWidgetsAddons`, `KXmlGui`)
 - **Screen recording:** Qt Wayland (`qt6-wayland`, Debian `qt6-wayland-dev`), `plasma-wayland-protocols` (build), KPipeWire >= `6.3` (`kpipewire`, Debian `libkpipewire-dev`), FFmpeg (`ffmpeg`), and LayerShellQt for the recording hints (`layer-shell-qt`, Debian `liblayershellqtinterface-dev`)
@@ -97,6 +98,11 @@ Minimum supported toolchain (verified in Debian 13 `trixie` via [`scripts/check-
 
 ## Installation
 
+Itsova requires a **KDE Plasma Wayland session with KWin**. Select “Plasma (Wayland)”
+at login if your display manager offers more than one session. The first beta ships
+an Arch Linux package recipe and source code; it does not yet ship `.deb` or `.rpm`
+downloads. Install only packages built for your distribution and version.
+
 ### Arch Linux (`PKGBUILD`)
 
 Packaging files are provided in [`packaging/arch/`](packaging/arch/):
@@ -108,7 +114,59 @@ Packaging files are provided in [`packaging/arch/`](packaging/arch/):
   ```
 - **Beta release package:** Download the checksum-verified [`PKGBUILD` from the v0.12.0-beta.1 release](https://github.com/m00sfett/Itsova/releases/tag/v0.12.0-beta.1), then run `makepkg -si` in its directory. The template in this repository requires a checksum update for each release.
 
-### Build from Source
+For example, after downloading the release's `PKGBUILD` into an empty directory:
+
+```bash
+cd /path/to/download-directory
+makepkg -si
+```
+
+After installation, start **Itsova** from the application menu. To remove the
+package, first run `itsova --release-print-key`, then `sudo pacman -R itsova`
+(or `sudo pacman -R itsova-git` for the development package).
+
+### Debian and Ubuntu
+
+Debian 13 provides the required toolchain. Ubuntu 24.04's standard Qt 6.4 is too
+old; Ubuntu 26.04 has newer Qt and KDE Frameworks packages but has not been
+tested with Itsova. A native packaging recipe is provided in
+[`packaging/debian/`](packaging/debian/); build it on the target distribution
+and version rather than assuming a package built elsewhere is compatible.
+
+On Debian 13, install the build tools and dependencies and build from a checkout:
+
+```bash
+sudo apt update
+sudo apt install git build-essential debhelper cmake ninja-build python3 gettext ffmpeg \
+  qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+  qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols \
+  libkf6config-dev libkf6globalaccel-dev libkf6statusnotifieritem-dev \
+  libkf6notifications-dev libkf6dbusaddons-dev libkf6widgetsaddons-dev \
+  libkf6xmlgui-dev libkf6i18n-dev libkpipewire-dev liblayershellqtinterface-dev \
+  qt6-image-formats-plugins
+git clone https://github.com/m00sfett/Itsova.git
+cd Itsova
+cp -a packaging/debian ./debian
+dpkg-buildpackage -us -uc -b
+sudo apt install ../itsova_*.deb
+```
+
+Then launch Itsova from the application menu. To uninstall, run
+`itsova --release-print-key` and `sudo apt remove itsova`. Settings and captures
+are kept. Package building on Ubuntu and installation in a Plasma session still
+need testing.
+
+### openSUSE
+
+No RPM package is available yet. A build from source needs the versions listed
+under Requirements; availability differs between openSUSE releases. RPM packaging
+and installation have not yet been tested.
+
+### Build from source
+
+Install the dependencies listed under Requirements, obtain the source from the
+[beta release](https://github.com/m00sfett/Itsova/releases/tag/v0.12.0-beta.1)
+or clone the repository, and run the following in its root directory:
 
 ```bash
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
@@ -117,7 +175,9 @@ ctest --test-dir build --output-on-failure -LE nested
 sudo cmake --install build
 ```
 
-For a rootless user installation under `~/.local` (also refreshes KDE desktop/icon caches and reloads the Plasma shell if needed), run:
+Alternatively, for a user installation under `~/.local`, run the script below
+instead of the system-wide commands above. It builds and tests the app, refreshes
+desktop caches, and may restart the Plasma shell to reload the widget:
 
 ```bash
 ./scripts/install.sh
