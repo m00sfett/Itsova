@@ -110,9 +110,15 @@ private Q_SLOTS:
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_targets")).decision, McpDecision::Allow);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_monitors")).decision, McpDecision::Allow);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("annotate_image")).decision, McpDecision::Allow);
-        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_windows")).decision, McpDecision::Deny);
-        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("capture_region")).decision, McpDecision::Deny);
-        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("capture_window")).decision, McpDecision::Deny);
+        const McpPolicyResult denyWin = evaluateMcpAccess(cfg, QStringLiteral("list_windows"));
+        QCOMPARE(denyWin.decision, McpDecision::Deny);
+        QVERIFY(denyWin.reason.contains(QStringLiteral("Window listing")));
+        const McpPolicyResult denyReg = evaluateMcpAccess(cfg, QStringLiteral("capture_region"));
+        QCOMPARE(denyReg.decision, McpDecision::Deny);
+        QVERIFY(denyReg.reason.contains(QStringLiteral("Arbitrary regions")));
+        const McpPolicyResult denyCapWin = evaluateMcpAccess(cfg, QStringLiteral("capture_window"));
+        QCOMPARE(denyCapWin.decision, McpDecision::Deny);
+        QVERIFY(denyCapWin.reason.contains(QStringLiteral("Arbitrary regions")));
 
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("capture_target"), QStringLiteral("area:a")).decision,
                  McpDecision::Allow);
@@ -122,6 +128,8 @@ private Q_SLOTS:
                  McpDecision::Deny);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("start_interval"), QStringLiteral("group:g")).decision,
                  McpDecision::Allow);
+        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("stop_interval"), QStringLiteral("group:g")).decision,
+                 McpDecision::Allow);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("stop_interval"), QStringLiteral("all")).decision,
                  McpDecision::Deny);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("get_last_capture"), QStringLiteral("area:a")).decision,
@@ -129,10 +137,21 @@ private Q_SLOTS:
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("get_last_capture"), QString()).decision, McpDecision::Deny);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("get_last_capture"), QStringLiteral("all")).decision,
                  McpDecision::Deny);
+        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("unknown_tool")).decision, McpDecision::Deny);
+
+        // Empty target id is rejected even if allowedTargetIds somehow contains an empty entry.
+        McpConfig emptyEntryCfg = cfg;
+        emptyEntryCfg.allowedTargetIds.append(QString());
+        QCOMPARE(evaluateMcpAccess(emptyEntryCfg, QStringLiteral("capture_target"), QString()).decision,
+                 McpDecision::Deny);
+        QCOMPARE(evaluateMcpAccess(emptyEntryCfg, QStringLiteral("get_last_capture"), QString()).decision,
+                 McpDecision::Deny);
 
         // ConfirmPerCapture allows discovery & stopping intervals, asks on captures/last/start/annotate.
         cfg.accessMode = McpAccessMode::ConfirmPerCapture;
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_targets")).decision, McpDecision::Allow);
+        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_monitors")).decision, McpDecision::Allow);
+        QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("unknown_tool")).decision, McpDecision::Deny);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("list_windows")).decision, McpDecision::Allow);
         QCOMPARE(evaluateMcpAccess(cfg, QStringLiteral("stop_interval"), QStringLiteral("all")).decision,
                  McpDecision::Allow);
