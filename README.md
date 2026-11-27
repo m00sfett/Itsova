@@ -106,7 +106,7 @@ Packaging files are provided in [`packaging/arch/`](packaging/arch/):
   cd packaging/arch/itsova-git
   makepkg -si
   ```
-- **Beta release template:** [`packaging/arch/itsova/PKGBUILD`](packaging/arch/itsova/PKGBUILD) is prepared for `v0.12.0-beta.1`. It requires the published tag and a verified source checksum before it can be built. Until then, use the development package or build from source.
+- **Beta release package:** Download the checksum-verified [`PKGBUILD` from the v0.12.0-beta.1 release](https://github.com/m00sfett/Itsova/releases/tag/v0.12.0-beta.1), then run `makepkg -si` in its directory. The template in this repository requires a checksum update for each release.
 
 ### Build from Source
 
