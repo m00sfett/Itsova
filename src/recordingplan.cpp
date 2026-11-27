@@ -13,6 +13,19 @@
 namespace itsova
 {
 
+QString recordingAudioSourceLabel(RecordingAudioSource source)
+{
+    switch (source) {
+    case RecordingAudioSource::None:
+        return QCoreApplication::translate("RecordingPlan", "No audio");
+    case RecordingAudioSource::System:
+        return QCoreApplication::translate("RecordingPlan", "System audio");
+    case RecordingAudioSource::Microphone:
+        return QCoreApplication::translate("RecordingPlan", "Default microphone");
+    }
+    return {};
+}
+
 QString recordingFormatKey(RecordingFormat format)
 {
     switch (format) {

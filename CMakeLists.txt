@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(itsova VERSION 0.12.1 LANGUAGES C CXX)
+project(itsova VERSION 0.12.2 LANGUAGES C CXX)
 
 set(ITSOVA_PRERELEASE "" CACHE STRING "Optional prerelease label without leading hyphen (e.g. beta.1)")
 if(NOT ITSOVA_PRERELEASE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
@@ -136,9 +136,20 @@ target_compile_definitions(itsova_capture PUBLIC ITSOVA_VERSION="${ITSOVA_VERSIO
 target_link_libraries(itsova_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
 
 # The recorder lives in its own library so tests can drive it without the application (#92, #90).
-add_library(itsova_record STATIC src/screenrecorder.cpp)
+add_library(itsova_record STATIC src/recordingaudiocapture.cpp src/screenrecorder.cpp)
 target_include_directories(itsova_record PUBLIC src)
 target_link_libraries(itsova_record PUBLIC itsova_capture Qt6::Gui PRIVATE K::KPipeWireRecord Qt6::WaylandClient)
+option(ITSOVA_ENABLE_AUDIO "Build experimental recording audio support when libpulse is available" ON)
+if(ITSOVA_ENABLE_AUDIO)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(ITSOVA_PULSE QUIET IMPORTED_TARGET libpulse)
+    endif()
+    if(TARGET PkgConfig::ITSOVA_PULSE)
+        target_link_libraries(itsova_record PRIVATE PkgConfig::ITSOVA_PULSE)
+        target_compile_definitions(itsova_record PRIVATE ITSOVA_HAVE_RECORDING_AUDIO=1)
+    endif()
+endif()
 # Older KPipeWire (Debian 13: 6.3) has no pause and no object serials; older protocol files no
 # serial event. Recording works there, pausing does not.
 get_target_property(itsova_kpipewire_includes K::KPipeWire INTERFACE_INCLUDE_DIRECTORIES)

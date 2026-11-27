@@ -145,6 +145,7 @@ private:
     QLabel *trayHint_ = nullptr;
     QLabel *recordingDefault_ = nullptr;
     QCheckBox *recordingHints_ = nullptr;
+    QCheckBox *recordingAudio_ = nullptr;
     QPushButton *recordingDefaultRemove_ = nullptr;
     QPushButton *resetPanelPosition_ = nullptr;
     QPushButton *showFirstHintAgain_ = nullptr;

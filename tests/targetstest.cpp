@@ -55,6 +55,7 @@ private Q_SLOTS:
     void legacyRegionConfigIsMigrated();
     void overlayStartMode();
     void lastRecordingTargetBecomesDefaultOnce();
+    void recordingAudioRequiresOptIn();
     void defaultRecordingTargetResolution();
     void trayVisibilityRoundTrip();
     void monitorNames();
@@ -205,6 +206,25 @@ void TargetsTest::lastRecordingTargetBecomesDefaultOnce()
     TargetStore reloaded;
     reloaded.load(config);
     QVERIFY(reloaded.defaultRecordingTarget.isEmpty());
+}
+
+void TargetsTest::recordingAudioRequiresOptIn()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    KConfig config(dir.filePath(QStringLiteral("itsovarc")), KConfig::SimpleConfig);
+    TargetStore store;
+    store.load(config);
+    QVERIFY(!store.experimentalRecordingAudio);
+    store.experimentalRecordingAudio = true;
+    store.save(config);
+    TargetStore restored;
+    restored.load(config);
+    QVERIFY(restored.experimentalRecordingAudio);
+    restored.experimentalRecordingAudio = false;
+    restored.save(config);
+    store.load(config);
+    QVERIFY(!store.experimentalRecordingAudio);
 }
 
 void TargetsTest::defaultRecordingTargetResolution()

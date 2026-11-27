@@ -2,6 +2,7 @@
 
 #include "logging.h"
 #include "qwayland-zkde-screencast-unstable-v1.h"
+#include "recordingaudiocapture.h"
 #include "recordingfinalizer.h"
 #include "windowlist.h"
 
@@ -10,6 +11,7 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QFileInfo>
+#include <QStandardPaths>
 #include <QTimer>
 #include <QWaylandClientExtensionTemplate>
 
@@ -148,6 +150,11 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
 
     target_ = target;
     options_ = options;
+    if (options_.audioSource != RecordingAudioSource::None
+        && (options_.format == RecordingFormat::Gif || !canRecordAudio())) {
+        qCInfo(lcRecord) << "audio is unavailable for this recording";
+        options_.audioSource = RecordingAudioSource::None;
+    }
     stopRequested_ = false;
     endReason_.clear();
     finalDurationMs_ = 0;
@@ -222,14 +229,27 @@ void ScreenRecorder::onEncoderStateChanged()
     switch (encoderState) {
     case PipeWireBaseEncodedStream::Recording:
         if (state_ == State::Starting) {
-            clock_.start(monotonic_.elapsed());
+            const qint64 now = monotonic_.elapsed();
+            clock_.start(now);
+            if (options_.audioSource != RecordingAudioSource::None) {
+                const QString title = options_.audioSource == RecordingAudioSource::System ? tr("System audio")
+                                                                                            : tr("Microphone");
+                audioCapture_ = RecordingAudioCapture::start(options_.audioSource, title, options_.path, monotonic_, now);
+                if (!audioCapture_) {
+                    options_.audioSource = RecordingAudioSource::None;
+                }
+            }
             setState(State::Recording);
             if (target_.kind == RecordingTarget::Kind::Window) {
                 pollWindowSize();
                 resizePollTimer_->start();
             }
         } else if (state_ == State::Paused) {
-            clock_.resume(monotonic_.elapsed());
+            const qint64 now = monotonic_.elapsed();
+            clock_.resume(now);
+            if (audioCapture_) {
+                audioCapture_->setPaused(false, now);
+            }
             setState(State::Recording);
             if (target_.kind == RecordingTarget::Kind::Window) {
                 pollWindowSize();
@@ -241,7 +261,11 @@ void ScreenRecorder::onEncoderStateChanged()
     case PipeWireBaseEncodedStream::Paused:
         if (state_ == State::Recording) {
             resizePollTimer_->stop();
-            clock_.pause(monotonic_.elapsed());
+            const qint64 now = monotonic_.elapsed();
+            clock_.pause(now);
+            if (audioCapture_) {
+                audioCapture_->setPaused(true, now);
+            }
             setState(State::Paused);
         }
         break;
@@ -293,7 +317,11 @@ void ScreenRecorder::finalizeFile()
     }
     finalizer_ = std::make_unique<RecordingFinalizer>();
     connect(finalizer_.get(), &RecordingFinalizer::done, this, [this](bool extended, const QString &note) {
-        qCInfo(lcRecord) << "finalized" << options_.path << (extended ? "last frame held" : note);
+        if (extended) {
+            qCInfo(lcRecord) << "finalized" << options_.path << "last frame held" << note;
+        } else {
+            qCInfo(lcRecord) << "finalized" << options_.path << note;
+        }
         const QString path = options_.path;
         const RecordingTarget target = target_;
         const qint64 duration = finalDurationMs_;
@@ -311,7 +339,15 @@ void ScreenRecorder::finalizeFile()
     for (const auto &[start, end] : clock_.pauses()) {
         pauses.append({double(start) / 1000.0, double(end) / 1000.0});
     }
-    finalizer_->finalize(options_.path, finalDurationMs_, pauses, options_.metadata, windowResizes_);
+    QList<RecordingAudioTrack> audioTracks;
+    if (audioCapture_) {
+        if (const auto track = audioCapture_->track()) {
+            audioTracks.append(*track);
+        } else {
+            qCInfo(lcRecord) << "no usable audio samples for recording";
+        }
+    }
+    finalizer_->finalize(options_.path, finalDurationMs_, pauses, options_.metadata, windowResizes_, audioTracks);
 }
 
 void ScreenRecorder::pollWindowSize()
@@ -370,6 +406,12 @@ bool ScreenRecorder::canPause()
 #else
     return false;
 #endif
+}
+
+bool ScreenRecorder::canRecordAudio()
+{
+    return RecordingAudioCapture::isSupported() && !QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+        && !QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty();
 }
 
 void ScreenRecorder::setPaused(bool paused)
@@ -440,6 +482,9 @@ void ScreenRecorder::setState(State state)
     if (state_ == state) {
         return;
     }
+    if (state == State::Finishing && audioCapture_) {
+        audioCapture_->stop();
+    }
     qCInfo(lcRecord) << "state" << state_ << "->" << state;
     state_ = state;
     Q_EMIT stateChanged(state);
@@ -456,6 +501,9 @@ void ScreenRecorder::cleanUp()
         stream_->disconnect(this);
         stream_.release()->deleteLater();
     }
+    finalizer_.reset();
+    audioCapture_.reset();
+    options_.audioSource = RecordingAudioSource::None;
     finalizing_ = false;
 }
 

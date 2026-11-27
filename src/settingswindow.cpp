@@ -1663,6 +1663,18 @@ QWidget *SettingsWindow::createStoragePage()
     recordingRow->addWidget(recordingCursor_);
     recordingRow->addStretch(1);
     form->addRow(tr("Frame rate:"), recordingRow);
+    recordingAudio_ = new QCheckBox(tr("Enable experimental recording audio"), page);
+    recordingAudio_->setEnabled(ScreenRecorder::canRecordAudio());
+    recordingAudio_->setToolTip(recordingAudio_->isEnabled()
+                                    ? tr("Choose a source in the overlay for each MP4 or WebM recording.")
+                                    : tr("Audio recording is unavailable on this system."));
+    form->addRow(tr("Audio:"), recordingAudio_);
+    connect(recordingAudio_, &QCheckBox::toggled, this, [this](bool enabled) {
+        if (!updating_) {
+            app_->store().experimentalRecordingAudio = enabled;
+            app_->storeChanged();
+        }
+    });
     // #125: short hints for start, stop, pause and errors, placed where the recording does not see them.
     recordingHints_ = new QCheckBox(tr("Show a short hint when a recording starts, pauses or stops"), page);
     form->addRow(tr("Hints:"), recordingHints_);
@@ -2388,6 +2400,7 @@ void SettingsWindow::refreshStorage()
         std::max(0, recordingFrameRate_->findData(effectiveFrameRate(RecordingFormat::Mp4, store.recordingFrameRate))));
     recordingCursor_->setChecked(store.recordingCursor);
     recordingHints_->setChecked(store.recordingHints);
+    recordingAudio_->setChecked(store.experimentalRecordingAudio);
     refreshRecordingDefault();
     recordToggleShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordToggleActionId()));
     recordPauseShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordPauseActionId()));

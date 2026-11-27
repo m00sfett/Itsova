@@ -200,7 +200,13 @@ std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, 
     return target;
 }
 
-QString App::startRecording(const QString &targetId, int delaySeconds)
+bool App::recordingAudioAvailable() const
+{
+    return store_.experimentalRecordingAudio && store_.recordingFormat != RecordingFormat::Gif
+        && ScreenRecorder::canRecordAudio();
+}
+
+QString App::startRecording(const QString &targetId, int delaySeconds, RecordingAudioSource audio)
 {
     qCInfo(lcRecord) << "start requested for" << targetId << "delay" << delaySeconds;
     if (recorder_->isBusy() || recordingStartPending()) {
@@ -213,7 +219,7 @@ QString App::startRecording(const QString &targetId, int delaySeconds)
         if (window.isEmpty()) {
             return tr("No window has the focus.");
         }
-        return startRecording(window, delaySeconds);
+        return startRecording(window, delaySeconds, audio);
     }
     QString error;
     if (!recordingTargetFor(targetId, &error)) {
@@ -224,10 +230,10 @@ QString App::startRecording(const QString &targetId, int delaySeconds)
         if (countdown_->isActive()) {
             return tr("A capture countdown is already running.");
         }
-        runWithDelay(delay, tr("Recording"), [this, targetId] { beginRecording(targetId); });
+        runWithDelay(delay, tr("Recording"), [this, targetId, audio] { beginRecording(targetId, audio); });
         return {};
     }
-    beginRecording(targetId);
+    beginRecording(targetId, audio);
     return {};
 }
 
@@ -246,7 +252,7 @@ qreal App::nativeScale(const ScreenInfo &screen) const
     return qscreen ? qscreen->devicePixelRatio() : 1.0;
 }
 
-void App::beginRecording(const QString &targetId)
+void App::beginRecording(const QString &targetId, RecordingAudioSource audio)
 {
     // Region streams need each monitor's real scale, which only a capture reveals. One frame per
     // monitor whose scale is not known yet (about 20 ms); later recordings reuse it.
@@ -260,7 +266,7 @@ void App::beginRecording(const QString &targetId)
         }
     }
     if (unknown.isEmpty()) {
-        startRecorder(targetId);
+        startRecorder(targetId, audio);
         return;
     }
     if (recordingPending_) {
@@ -268,7 +274,7 @@ void App::beginRecording(const QString &targetId)
     }
     recordingPending_ = true;
     auto *watcher = new QFutureWatcher<QHash<QString, qreal>>(this);
-    connect(watcher, &QFutureWatcher<QHash<QString, qreal>>::finished, this, [this, watcher, targetId] {
+    connect(watcher, &QFutureWatcher<QHash<QString, qreal>>::finished, this, [this, watcher, targetId, audio] {
         const QHash<QString, qreal> scales = watcher->result();
         watcher->deleteLater();
         recordingPending_ = false;
@@ -277,7 +283,7 @@ void App::beginRecording(const QString &targetId)
                 nativeScales_.insert(screen.connector, {screen.geometry, scale});
             }
         }
-        startRecorder(targetId);
+        startRecorder(targetId, audio);
     });
     QHash<QString, int> logicalWidths;
     for (const ScreenInfo &screen : currentScreens()) {
@@ -298,7 +304,7 @@ void App::beginRecording(const QString &targetId)
     }));
 }
 
-void App::startRecorder(const QString &targetId)
+void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
 {
     QString error;
     const std::optional<RecordingTarget> target = recordingTargetFor(targetId, &error);
@@ -315,6 +321,8 @@ void App::startRecorder(const QString &targetId)
     options.format = store_.recordingFormat;
     options.frameRate = store_.recordingFrameRate;
     options.includeCursor = store_.recordingCursor;
+    options.audioSource = audio != RecordingAudioSource::None && recordingAudioAvailable()
+        ? audio : RecordingAudioSource::None;
     {
         // Where the recording comes from (#103), for a later replay on the same monitors.
         const QList<ScreenInfo> screens = currentScreens();
@@ -341,29 +349,36 @@ void App::startRecorder(const QString &targetId)
     if (!recordingHint_) {
         recordingHint_ = new RecordingHint;
     }
+    QString hintDetail = recordingStopInstruction();
+    if (options.audioSource != RecordingAudioSource::None) {
+        hintDetail = tr("Audio: %1").arg(recordingAudioSourceLabel(options.audioSource)) + QLatin1Char('\n') + hintDetail;
+    }
     recordingHint_->setContent(QStringLiteral("media-record"), tr("Recording %1").arg(target->displayName),
-                               recordingStopInstruction(), false);
+                               hintDetail, false);
     recordingHintPlacement_ = planRecordingHint(target->kind == RecordingTarget::Kind::Window, target->region, rects,
                                                 recordingHint_->size());
     recordingHintConnector_ =
         recordingHintPlacement_.screen >= 0 ? screens.at(recordingHintPlacement_.screen).connector : QString();
     if (!recordingHintPlacement_.waitBeforeRecording) {
         showRecordingHint(QStringLiteral("media-record"), tr("Recording %1").arg(target->displayName),
-                          recordingStopInstruction(), recordingHintMs);
+                          hintDetail, recordingHintMs);
         recorder_->start(*target, options);
         return;
     }
     showRecordingHint(QStringLiteral("media-record"), tr("Recording %1 starts…").arg(target->displayName),
-                      recordingStopInstruction(), recordingHintMs);
+                      hintDetail, recordingHintMs);
     qCInfo(lcRecord) << "recording waits for its start hint";
     if (!recordingStartAfterHint_) {
         recordingStartAfterHint_ = new QTimer(this);
         recordingStartAfterHint_->setSingleShot(true);
     }
     recordingStartAfterHint_->disconnect();
-    connect(recordingStartAfterHint_, &QTimer::timeout, this, [this, target = *target, options] {
+    connect(recordingStartAfterHint_, &QTimer::timeout, this, [this, target = *target, options]() mutable {
         qCInfo(lcRecord) << "start hint gone, starting the recording";
         syncRecordingUi();
+        if (!store_.experimentalRecordingAudio) {
+            options.audioSource = RecordingAudioSource::None;
+        }
         recorder_->start(target, options);
     });
     // The hint goes after recordingHintMs; the compositor needs a moment to take it off the screen.
