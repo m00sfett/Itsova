@@ -2,6 +2,7 @@
 
 #include "notifyconfig.h"
 #include "annotations/annotationdocument.h"
+#include "annotations/overlayexport.h"
 #include "annotations/programmaticannotator.h"
 #include "areaselector.h"
 #include "captureoverlay.h"
@@ -1279,7 +1280,8 @@ void App::openEditorForFile(const QString &path)
 }
 
 void App::openEditorFromCapture(const QImage &image, qreal scale, std::unique_ptr<AnnotationDocument> annotations,
-                                const QString &baseToken)
+                                const QString &baseToken, const QString &deferredPrintPath,
+                                bool deferredClearClipboard)
 {
     auto *window = new QuickEditorWindow(store_, image, scale, std::move(annotations), baseToken);
     if (!window->isValid()) {
@@ -1287,14 +1289,21 @@ void App::openEditorFromCapture(const QImage &image, qreal scale, std::unique_pt
         delete window;
         return;
     }
-    attachEditorWindow(window);
+    attachEditorWindow(window, deferredPrintPath, deferredClearClipboard);
 }
 
-void App::attachEditorWindow(QuickEditorWindow *window)
+void App::attachEditorWindow(QuickEditorWindow *window, const QString &deferredPrintPath, bool deferredClearClipboard)
 {
     window->setAttribute(Qt::WA_DeleteOnClose);
+    auto pendingPrint = std::make_shared<QString>(deferredPrintPath);
     connect(window, &QuickEditorWindow::savedToFile, this,
-            [this](const QString &savedPath, const QString &displayName) {
+            [this, pendingPrint, deferredClearClipboard](const QString &savedPath, const QString &displayName) {
+                if (shouldPurgeDeferredPrintOnEditorSave(*pendingPrint, savedPath)) {
+                    const QString oldPrint = *pendingPrint;
+                    pendingPrint->clear();
+                    purgeUnredactedPrintFile(oldPrint, deferredClearClipboard);
+                    forgetCapturePath(oldPrint);
+                }
                 recordCapture({savedPath}, displayName, QString(), QStringLiteral("editor"));
                 const std::optional<ImageFormat> fmt = imageFormatFromPath(savedPath);
                 runPostCaptureHook({}, displayName, {savedPath}, QDateTime::currentDateTime(),

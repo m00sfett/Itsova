@@ -167,6 +167,21 @@ void OverlayMarkupTest::redactionPrintLeakGuards()
     QVERIFY(purgeUnredactedPrintFile(printFile, true));
     QVERIFY(!QFile::exists(printFile));
     QVERIFY(QGuiApplication::clipboard()->image().isNull());
+
+    // RAM-first default (#134): Print with overlay does not save immediately unless opted in.
+    QVERIFY(!shouldSavePrintImmediately(/*printOpensOverlay=*/true, /*forceShowOverlay=*/false,
+                                        /*saveImmediatelyOnPrint=*/false));
+    QVERIFY(!shouldSavePrintImmediately(/*printOpensOverlay=*/false, /*forceShowOverlay=*/true,
+                                        /*saveImmediatelyOnPrint=*/false));
+    QVERIFY(shouldSavePrintImmediately(/*printOpensOverlay=*/true, /*forceShowOverlay=*/false,
+                                       /*saveImmediatelyOnPrint=*/true));
+    QVERIFY(shouldSavePrintImmediately(/*printOpensOverlay=*/false, /*forceShowOverlay=*/false,
+                                       /*saveImmediatelyOnPrint=*/false));
+
+    // Deferred Ctrl+E cleanup (#134): only purge once saved to a different file.
+    QVERIFY(!shouldPurgeDeferredPrintOnEditorSave(QString(), QStringLiteral("/tmp/new.png")));
+    QVERIFY(!shouldPurgeDeferredPrintOnEditorSave(QStringLiteral("/tmp/a.png"), QStringLiteral("/tmp/a.png")));
+    QVERIFY(shouldPurgeDeferredPrintOnEditorSave(QStringLiteral("/tmp/a.png"), QStringLiteral("/tmp/b.png")));
 }
 
 void OverlayMarkupTest::rtlCaptureGeometryAndQuickEditorLayout()

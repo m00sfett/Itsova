@@ -188,6 +188,7 @@ public:
     // Print key and capture overlay.
     bool usePrintKey = true; // itsova owns the Print key (handed back to its previous owner when off)
     bool printOpensOverlay = true; // false: Print only saves the full screenshot
+    bool saveImmediatelyOnPrint = false; // true: write full screenshot + clipboard immediately on Print (#134)
     enum class OverlayStart { LastUsed, Frozen, Live };
     OverlayStart overlayStart = OverlayStart::LastUsed;
     bool lastOverlayFrozen = true; // the mode the overlay was in when it was last used

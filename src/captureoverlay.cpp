@@ -565,6 +565,13 @@ void CaptureSession::savePrintImage()
         }
     }
 
+    // RAM-first default (#134): keep Print captures in memory until the user saves, copies, pins,
+    // or exports, unless immediate-save is explicitly enabled or Print runs without the overlay.
+    if (!shouldSavePrintImmediately(store().printOpensOverlay, forceShowOverlay_, store().saveImmediatelyOnPrint)) {
+        finishLatencyBenchIfDone();
+        return;
+    }
+
     // Composing, encoding and writing take far longer than the capture itself, so they run in the
     // background while the overlay opens; everything that needs the file waits in printPath() (#67).
     const ExportOptions options = store().effectiveExportOptions(allMonitorsTargetId());
@@ -1954,10 +1961,11 @@ void CaptureSession::editInWindow(const QString &preferredConnector)
         }
 
         auto handoffDoc = annotations_.cloneTranslated(-QPointF(globalOrigin), clipBounds);
-        if (!printPath().isEmpty()) {
-            const QString oldPrint = printPath();
-            purgeUnredactedPrintFile(oldPrint, annotations_.hasRedactions());
-            app_->forgetCapturePath(oldPrint);
+        // Do not delete an immediate-save Print file on handoff (#134): if the user closes the
+        // editor without saving, the capture must remain intact; clean it up only once saved.
+        const QString deferredPrint = printPath();
+        const bool deferredClearClipboard = annotations_.hasRedactions();
+        if (!deferredPrint.isEmpty()) {
             printPath().clear();
         }
 
@@ -1969,7 +1977,8 @@ void CaptureSession::editInWindow(const QString &preferredConnector)
         }
         overlays_.clear();
 
-        app_->openEditorFromCapture(rawImage, scale, std::move(handoffDoc), baseToken);
+        app_->openEditorFromCapture(rawImage, scale, std::move(handoffDoc), baseToken, deferredPrint,
+                                    deferredClearClipboard);
         Q_EMIT finished();
     });
 }
