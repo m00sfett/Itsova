@@ -77,7 +77,6 @@ Itsova runs strictly locally on your machine:
 
 ## Beta limitations
 
-- Resizing a window during recording can distort the picture ([#127](https://github.com/m00sfett/Itsova/issues/127)).
 - Screen capture and recording require KDE Plasma on Wayland and KWin; other desktops are not supported.
 - Some desktop configurations, including multiple monitors and fractional scaling, need further hands-on testing.
 - Recording pause is unavailable with KPipeWire 6.3, including Debian 13.

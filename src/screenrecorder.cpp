@@ -3,9 +3,11 @@
 #include "logging.h"
 #include "qwayland-zkde-screencast-unstable-v1.h"
 #include "recordingfinalizer.h"
+#include "windowlist.h"
 
 #include <PipeWireRecord>
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QFileInfo>
 #include <QTimer>
@@ -114,6 +116,9 @@ ScreenRecorder::ScreenRecorder(QObject *parent)
     : QObject(parent)
 {
     monotonic_.start();
+    resizePollTimer_ = new QTimer(this);
+    resizePollTimer_->setInterval(200);
+    connect(resizePollTimer_, &QTimer::timeout, this, &ScreenRecorder::pollWindowSize);
 }
 
 ScreenRecorder::~ScreenRecorder()
@@ -146,6 +151,8 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
     stopRequested_ = false;
     endReason_.clear();
     finalDurationMs_ = 0;
+    windowResizes_.clear();
+    lastWindowSize_ = QSize();
     const uint32_t pointer = options.includeCursor ? PointerEmbedded : PointerHidden;
     ::zkde_screencast_stream_unstable_v1 *raw = nullptr;
     if (target.kind == RecordingTarget::Kind::Window) {
@@ -217,20 +224,30 @@ void ScreenRecorder::onEncoderStateChanged()
         if (state_ == State::Starting) {
             clock_.start(monotonic_.elapsed());
             setState(State::Recording);
+            if (target_.kind == RecordingTarget::Kind::Window) {
+                pollWindowSize();
+                resizePollTimer_->start();
+            }
         } else if (state_ == State::Paused) {
             clock_.resume(monotonic_.elapsed());
             setState(State::Recording);
+            if (target_.kind == RecordingTarget::Kind::Window) {
+                pollWindowSize();
+                resizePollTimer_->start();
+            }
         }
         break;
 #ifdef ITSOVA_KPIPEWIRE_PAUSE
     case PipeWireBaseEncodedStream::Paused:
         if (state_ == State::Recording) {
+            resizePollTimer_->stop();
             clock_.pause(monotonic_.elapsed());
             setState(State::Paused);
         }
         break;
 #endif
     case PipeWireBaseEncodedStream::Rendering:
+        resizePollTimer_->stop();
         if (!stopRequested_ && endReason_.isEmpty()) {
             endReason_ = tr("The encoder stopped by itself.");
             qCWarning(lcRecord) << "encoder stopped without a stop request";
@@ -294,7 +311,25 @@ void ScreenRecorder::finalizeFile()
     for (const auto &[start, end] : clock_.pauses()) {
         pauses.append({double(start) / 1000.0, double(end) / 1000.0});
     }
-    finalizer_->finalize(options_.path, finalDurationMs_, pauses, options_.metadata);
+    finalizer_->finalize(options_.path, finalDurationMs_, pauses, options_.metadata, windowResizes_);
+}
+
+void ScreenRecorder::pollWindowSize()
+{
+    if (state_ != State::Recording || target_.kind != RecordingTarget::Kind::Window || target_.windowHandle.isEmpty()) {
+        return;
+    }
+    const QList<WindowInfo> windows = listWindows(QCoreApplication::applicationPid());
+    for (const WindowInfo &win : windows) {
+        if (win.handle == target_.windowHandle) {
+            const QSize sz = win.geometry.size();
+            if (sz.isValid() && sz != lastWindowSize_) {
+                lastWindowSize_ = sz;
+                windowResizes_.append({double(clock_.elapsed(monotonic_.elapsed())) / 1000.0, sz});
+            }
+            return;
+        }
+    }
 }
 
 void ScreenRecorder::stop(const QString &origin)

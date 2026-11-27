@@ -1,15 +1,19 @@
 #pragma once
 
+#include "recordingfinalizer.h"
 #include "recordingplan.h"
 
 #include <QElapsedTimer>
+#include <QList>
 #include <QObject>
 #include <QPointer>
+#include <QSize>
 #include <QString>
 
 #include <memory>
 
 class PipeWireRecord;
+class QTimer;
 
 namespace itsova
 {
@@ -82,6 +86,7 @@ private:
     void setState(State state);
     void cleanUp();
     void finalizeFile();
+    void pollWindowSize();
 
     State state_ = State::Idle;
     RecordingTarget target_;
@@ -90,6 +95,9 @@ private:
     std::unique_ptr<ScreencastStream> stream_;
     std::unique_ptr<PipeWireRecord> encoder_;
     std::unique_ptr<RecordingFinalizer> finalizer_;
+    QTimer *resizePollTimer_ = nullptr;
+    QList<WindowResizeSample> windowResizes_;
+    QSize lastWindowSize_;
     QElapsedTimer monotonic_;
     RecordingClock clock_;
     qint64 finalDurationMs_ = 0;
