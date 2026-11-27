@@ -199,7 +199,7 @@ To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain i
 - **Offscreen tests** (`ctest -LE nested`): QTest on Qt's `offscreen` platform; CTest sets it for every test, so no window ever appears on the desktop. These run on every build and in `install.sh`.
 - **Nested-KWin tests** (`ctest -L nested`): each test starts a virtual `kwin_wayland` on a private D-Bus session with a throw-away home, runs the freshly built `itsova` there and drives it through D-Bus and KWin's fake input (`itsova-fakekey`); screenshots and files land in `<build>/nested/<test>/`. The desktop session is never touched. They need `kwin_wayland`, `wayland-scanner`, `python-dbus`, ImageMagick and FFmpeg, and are skipped otherwise. Run one by hand with `tests/nested/session.sh --help`.
 - **Coverage**: `scripts/coverage.sh [build-dir]` builds with `--coverage`, runs the offscreen tests and writes a `gcovr` report (reported, no gate).
-- **Mutation testing**: `scripts/mutate.sh <src/file.cpp>...` runs [Mull](https://github.com/mull-project/mull) on the named files only and reports surviving mutants. It needs Mull built for the installed clang's LLVM version (`MULL_DIR`).
+- **Mutation testing**: `scripts/mutate.sh [--docker] [--tests "<target>"] <src/file.cpp>...` runs [Mull](https://github.com/mull-project/mull) on the named files only and reports surviving mutants. Use `MULL_DIR` for a local Mull matching the installed clang's LLVM version, or `--docker` to run inside a Debian 13 (`trixie`) container with `clang-19` and Mull 19.
 - Every change starts with a failing test (red), then the fix (green).
 
 ---
