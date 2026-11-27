@@ -2,11 +2,13 @@
 
 include /usr/share/dpkg/architecture.mk
 
+ITSOVA_PRERELEASE := $(shell dpkg-parsechangelog -SVersion | sed -n 's/^[^~]*~\([^+]*\).*/\1/p')
+
 %:
 	dh $@ --buildsystem=cmake+ninja
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DBUILD_TESTING=ON
+	dh_auto_configure -- -DBUILD_TESTING=ON -DITSOVA_PRERELEASE=$(ITSOVA_PRERELEASE)
 
 override_dh_auto_test:
 	test -f debian/copyright
