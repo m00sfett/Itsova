@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 QList<WindowInfo> pickableWindows(const QList<WindowInfo> &windows)
@@ -45,4 +45,4 @@ PickTarget pickTargetAt(const QPoint &globalPos, const QList<WindowInfo> &window
     return monitor;
 }
 
-} // namespace glimply
+} // namespace itsova

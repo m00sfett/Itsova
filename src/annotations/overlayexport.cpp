@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 QList<QString> annotatedConnectors(const QList<ScreenInfo> &screens, const AnnotationDocument &doc)
@@ -83,4 +83,4 @@ bool purgeUnredactedPrintFile(const QString &printPath, bool clearClipboard)
     return !QFile::exists(printPath);
 }
 
-} // namespace glimply
+} // namespace itsova

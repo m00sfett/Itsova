@@ -13,7 +13,7 @@ class QTimer;
 class QVariantAnimation;
 class QVBoxLayout;
 
-namespace glimply
+namespace itsova
 {
 
 // The title of an unlabelled panel button, laid out for its hover state (#69): at most maxLines
@@ -258,4 +258,4 @@ private:
     QPoint grabOffset_;
 };
 
-} // namespace glimply
+} // namespace itsova

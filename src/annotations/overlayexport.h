@@ -9,7 +9,7 @@
 #include <QList>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // Returns connected monitor connectors whose logical geometry intersects at least one item in doc.
@@ -31,4 +31,4 @@ namespace glimply
 [[nodiscard]] bool shouldDeletePrintFileOnCopy(const AnnotationDocument &doc, const QString &printPath);
 bool purgeUnredactedPrintFile(const QString &printPath, bool clearClipboard);
 
-} // namespace glimply
+} // namespace itsova

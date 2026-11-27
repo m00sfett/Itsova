@@ -16,7 +16,7 @@
 
 #include <cmath>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {

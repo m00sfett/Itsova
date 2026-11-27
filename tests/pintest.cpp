@@ -11,7 +11,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class PinTest : public QObject
 {
@@ -156,19 +156,19 @@ void PinTest::scriptEscapesCaption()
 {
     KWinPinScriptRequest request;
     request.pinId = QStringLiteral("abc");
-    request.caption = QStringLiteral("glimply-pin-\"; evil(); \"");
+    request.caption = QStringLiteral("itsova-pin-\"; evil(); \"");
     request.geometry = QRect(2100, 100, 200, 100);
-    request.service = QStringLiteral("io.github.m00sfett.glimply");
+    request.service = QStringLiteral("io.github.m00sfett.itsova");
     request.path = QStringLiteral("/Control");
-    request.interface = QStringLiteral("io.github.m00sfett.glimply.Control");
+    request.interface = QStringLiteral("io.github.m00sfett.itsova.Control");
     const QString js = kwinPinScriptSource(request);
-    QVERIFY(js.contains(QStringLiteral("const caption = \"glimply-pin-\\\"; evil(); \\\"\";")));
+    QVERIFY(js.contains(QStringLiteral("const caption = \"itsova-pin-\\\"; evil(); \\\"\";")));
     QVERIFY(js.contains(QStringLiteral("const target = {x: 2100, y: 100};")));
     QVERIFY(js.contains(QStringLiteral("w.keepAbove = true;")));
     QVERIFY(js.contains(QStringLiteral("\"PinMoved\"")));
     request.geometry = QRect();
     QVERIFY(kwinPinScriptSource(request).contains(QStringLiteral("const target = null;")));
-    QCOMPARE(kwinPinPluginName(QStringLiteral("abc")), QStringLiteral("glimply-pin-abc"));
+    QCOMPARE(kwinPinPluginName(QStringLiteral("abc")), QStringLiteral("itsova-pin-abc"));
 }
 
 void PinTest::windowSizeFollowsZoomAndScale()
@@ -176,7 +176,7 @@ void PinTest::windowSizeFollowsZoomAndScale()
     QImage image(400, 200, QImage::Format_ARGB32);
     image.fill(Qt::green);
     PinWindow window(QStringLiteral("id"), image, 1.0, 1.0);
-    QCOMPARE(window.kwinCaption(), QStringLiteral("glimply-pin-id"));
+    QCOMPARE(window.kwinCaption(), QStringLiteral("itsova-pin-id"));
     QCOMPARE(window.logicalSizeFor(1.0), QSize(400, 200));
     QCOMPARE(window.logicalSizeFor(1.25), QSize(320, 160));
     QSignalSpy zoomSpy(&window, &PinWindow::zoomChanged);

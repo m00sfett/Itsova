@@ -18,7 +18,7 @@
 #include <algorithm>
 #include <cmath>
 
-using namespace glimply;
+using namespace itsova;
 
 class RedactionTest : public QObject
 {

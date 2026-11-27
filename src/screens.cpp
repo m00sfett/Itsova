@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 
 ScreenInfo screenInfo(const QScreen *screen)
@@ -45,4 +45,4 @@ QString monitorName(const TargetStore &store, const QString &connector)
     return screen ? store.monitorName(screenInfo(screen)) : connector;
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -11,7 +11,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -63,7 +63,7 @@ HistoryStore::HistoryStore(QString filePath, int limit)
 QString HistoryStore::defaultFilePath()
 {
     return QStandardPaths::writableLocation(QStandardPaths::GenericStateLocation)
-           + QStringLiteral("/glimply/history.json");
+           + QStringLiteral("/itsova/history.json");
 }
 
 QString HistoryStore::filePath() const
@@ -277,4 +277,4 @@ void HistoryStore::trim()
     }
 }
 
-} // namespace glimply
+} // namespace itsova

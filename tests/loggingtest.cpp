@@ -9,7 +9,7 @@
 #include <QSet>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class LoggingTest : public QObject
 {
@@ -37,11 +37,11 @@ private Q_SLOTS:
         QVERIFY(!lcTray().isDebugEnabled());
     }
 
-    void journalctlArgumentsSelectGlimply()
+    void journalctlArgumentsSelectItsova()
     {
         const QStringList plain = journalctlArguments({});
         QVERIFY(plain.contains(QStringLiteral("--user")));
-        QVERIFY(plain.contains(QStringLiteral("SYSLOG_IDENTIFIER=glimply")));
+        QVERIFY(plain.contains(QStringLiteral("SYSLOG_IDENTIFIER=itsova")));
         QVERIFY(plain.contains(QStringLiteral("--since=-1h")));
         const QStringList follow = journalctlArguments({QStringLiteral("-f")});
         QCOMPARE(follow.last(), QStringLiteral("-f"));
@@ -61,7 +61,7 @@ private Q_SLOTS:
     void notifyRcMatchesComponentAndEvents()
     {
         const QString dataFile =
-            QStringLiteral(GLIMPLY_SOURCE_DIR "/data/") + notifyComponentName() + QStringLiteral(".notifyrc");
+            QStringLiteral(ITSOVA_SOURCE_DIR "/data/") + notifyComponentName() + QStringLiteral(".notifyrc");
         QFile file(dataFile);
         QVERIFY2(file.open(QIODevice::ReadOnly), qPrintable(dataFile));
         const QString rc = QString::fromUtf8(file.readAll());
@@ -75,7 +75,7 @@ private Q_SLOTS:
         QSet<QString> used;
         const QRegularExpression call(QStringLiteral(
             R"re((?:notify|makeNotification|KNotification)\((?:haveEvents \? )?QStringLiteral\("(\w+)"\))re"));
-        QDirIterator it(QStringLiteral(GLIMPLY_SOURCE_DIR "/src"), {QStringLiteral("*.cpp")}, QDir::Files,
+        QDirIterator it(QStringLiteral(ITSOVA_SOURCE_DIR "/src"), {QStringLiteral("*.cpp")}, QDir::Files,
                         QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QFile source(it.next());
@@ -90,7 +90,7 @@ private Q_SLOTS:
         for (const QString &event : std::as_const(used)) {
             QVERIFY2(defined.contains(event), qPrintable(event));
         }
-        QVERIFY(QFile::exists(QStringLiteral(GLIMPLY_SOURCE_DIR "/data/glimply.notifyrc")) == false);
+        QVERIFY(QFile::exists(QStringLiteral(ITSOVA_SOURCE_DIR "/data/itsova.notifyrc")) == false);
     }
 };
 

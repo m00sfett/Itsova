@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 AnnotationDocument::AnnotationDocument(QObject *parent)
@@ -240,4 +240,4 @@ void AnnotationDocument::setSelectedIdInternal(int id)
     }
 }
 
-} // namespace glimply
+} // namespace itsova

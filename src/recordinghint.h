@@ -7,7 +7,7 @@
 class QScreen;
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 // A short hint for a recording state change (#125): started, stopped, paused, resumed, failed. A
@@ -44,4 +44,4 @@ private:
     QTimer *timer_;
 };
 
-} // namespace glimply
+} // namespace itsova

@@ -11,7 +11,7 @@
 #include <QTimer>
 #include <QWindow>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -70,7 +70,7 @@ void RecordingHint::showAt(QScreen *screen, const QRect &rect, int durationMs)
         layer->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
         layer->setAnchors(LayerShellQt::Window::Anchors(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft));
         layer->setExclusiveZone(-1); // ignore panels: the position is exact
-        layer->setScope(QStringLiteral("glimply-recording-hint"));
+        layer->setScope(QStringLiteral("itsova-recording-hint"));
         if (screen) {
             layer->setScreen(screen);
         }
@@ -147,4 +147,4 @@ void RecordingHint::leaveEvent(QEvent *event)
     QWidget::leaveEvent(event);
 }
 
-} // namespace glimply
+} // namespace itsova

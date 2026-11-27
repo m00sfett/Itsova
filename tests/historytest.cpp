@@ -10,7 +10,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -141,7 +141,7 @@ void HistoryTest::persistsRoundTripWithOwnerOnlyMode()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("state/glimply/history.json"));
+    const QString path = dir.filePath(QStringLiteral("state/itsova/history.json"));
     HistoryStore store(path, 20);
     store.record(makeEntry({QStringLiteral("/a.png")}));
     store.record(makeEntry({QStringLiteral("/b.png"), QStringLiteral("/c.png")}, QStringLiteral("cli")));

@@ -16,7 +16,7 @@
 
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -62,7 +62,7 @@ QString PinWindow::pinId() const
 
 QString PinWindow::kwinCaption() const
 {
-    return QStringLiteral("glimply-pin-") + pinId_;
+    return QStringLiteral("itsova-pin-") + pinId_;
 }
 
 const QImage &PinWindow::image() const
@@ -308,4 +308,4 @@ void PinWindow::leaveEvent(QEvent *event)
     QWidget::leaveEvent(event);
 }
 
-} // namespace glimply
+} // namespace itsova

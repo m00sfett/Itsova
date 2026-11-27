@@ -6,7 +6,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -474,4 +474,4 @@ void NudgeDeadZone::reset()
     keyPointer_ = {};
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -13,7 +13,7 @@
 
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 class PinWindow;
@@ -72,4 +72,4 @@ private:
     int captureDepth_ = 0;
 };
 
-} // namespace glimply
+} // namespace itsova

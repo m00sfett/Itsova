@@ -6,7 +6,7 @@
 
 class QScreen;
 
-namespace glimply
+namespace itsova
 {
 
 [[nodiscard]] ScreenInfo screenInfo(const QScreen *screen);
@@ -16,4 +16,4 @@ namespace glimply
 // The user's name for the monitor on connector, or the connector if it has none or is gone.
 [[nodiscard]] QString monitorName(const TargetStore &store, const QString &connector);
 
-} // namespace glimply
+} // namespace itsova

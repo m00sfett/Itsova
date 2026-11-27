@@ -4,10 +4,10 @@
 #include <QString>
 #include <QStringList>
 
-namespace glimply
+namespace itsova
 {
 
-// Small PNG thumbnails of history files in ~/.cache/glimply/thumbs/. The name depends on path,
+// Small PNG thumbnails of history files in ~/.cache/itsova/thumbs/. The name depends on path,
 // size and modification time, so an overwritten file gets a fresh thumbnail.
 class ThumbnailCache
 {
@@ -33,4 +33,4 @@ private:
     QString directory_;
 };
 
-} // namespace glimply
+} // namespace itsova

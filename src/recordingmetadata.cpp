@@ -9,13 +9,13 @@
 
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
 {
 
-const QString tagName = QStringLiteral("glimply");
+const QString tagName = QStringLiteral("itsova");
 
 QJsonArray rectJson(const QRect &rect)
 {
@@ -177,13 +177,25 @@ std::optional<RecordingMetadata> readRecordingMetadata(const QString &path)
     }
     QProcess probe;
     probe.start(ffprobe, {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-show_entries"),
-                          QStringLiteral("format_tags=") + tagName, QStringLiteral("-of"),
-                          QStringLiteral("default=nw=1:nk=1"), path});
+                          QStringLiteral("format_tags=itsova,glimply"), QStringLiteral("-of"),
+                          QStringLiteral("json"), path});
     if (!probe.waitForFinished(30000) || probe.exitCode() != 0) {
         return std::nullopt;
     }
-    const QString json = QString::fromUtf8(probe.readAllStandardOutput()).trimmed();
-    return json.isEmpty() ? std::nullopt : parseRecordingMetadata(json);
+    const auto tags = QJsonDocument::fromJson(probe.readAllStandardOutput()).object()
+                          .value(QStringLiteral("format")).toObject()
+                          .value(QStringLiteral("tags")).toObject();
+    // Matroska/WebM normalizes tag names to uppercase.
+    const auto readTag = [&tags](const QString &name) -> std::optional<RecordingMetadata> {
+        for (auto it = tags.constBegin(); it != tags.constEnd(); ++it) {
+            if (it.key().compare(name, Qt::CaseInsensitive) == 0) {
+                return parseRecordingMetadata(it.value().toString());
+            }
+        }
+        return std::nullopt;
+    };
+    const auto current = readTag(tagName);
+    return current ? current : readTag(QStringLiteral("glimply"));
 }
 
 QStringList recordingMetadataArguments(const QString &outputPath, const QString &json)
@@ -203,4 +215,4 @@ QStringList recordingMetadataArguments(const QString &outputPath, const QString 
     return {}; // GIF has no container tags
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -1,7 +1,7 @@
 /*
-    The glimply tray widget: lists areas, groups and monitors with their shortcuts and lets the
-    user capture, edit, rename and delete them. All work happens in the glimply service; this
-    widget talks to it over the session bus (io.github.m00sfett.glimply, /Control).
+    The itsova tray widget: lists areas, groups and monitors with their shortcuts and lets the
+    user capture, edit, rename and delete them. All work happens in the itsova service; this
+    widget talks to it over the session bus (io.github.m00sfett.itsova, /Control).
 */
 import QtQuick
 import QtQuick.Layouts
@@ -16,8 +16,8 @@ import org.kde.plasma.workspace.dbus as DBus
 PlasmoidItem {
     id: root
 
-    readonly property string service: "io.github.m00sfett.glimply"
-    readonly property string iface: "io.github.m00sfett.glimply.Control"
+    readonly property string service: "io.github.m00sfett.itsova"
+    readonly property string iface: "io.github.m00sfett.itsova.Control"
     readonly property bool running: serviceWatcher.registered
     property bool hasLastCapture: false
     property bool flashing: false
@@ -38,14 +38,14 @@ PlasmoidItem {
     // The popup must be gone before a capture or the frozen selection picture is taken.
     readonly property int closeDelay: 300
 
-    Plasmoid.icon: recordingState === "paused" ? "io.github.m00sfett.glimply-tray-recording-paused"
-                 : recording ? "io.github.m00sfett.glimply-tray-recording"
-                 : flashing ? "io.github.m00sfett.glimply-tray-flash"
-                 : activeIntervalCount > 0 ? "io.github.m00sfett.glimply-tray-interval"
-                                           : "io.github.m00sfett.glimply-tray"
+    Plasmoid.icon: recordingState === "paused" ? "io.github.m00sfett.itsova-tray-recording-paused"
+                 : recording ? "io.github.m00sfett.itsova-tray-recording"
+                 : flashing ? "io.github.m00sfett.itsova-tray-flash"
+                 : activeIntervalCount > 0 ? "io.github.m00sfett.itsova-tray-interval"
+                                           : "io.github.m00sfett.itsova-tray"
     Plasmoid.status: running ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
-    toolTipMainText: "glimply"
-    toolTipSubText: !running ? i18n("glimply is not running")
+    toolTipMainText: "Itsova"
+    toolTipSubText: !running ? i18n("Itsova is not running")
                   : recording ? recordingStatusText()
                                 + ((recordingState === "recording" || recordingState === "paused") && recordingStopHint
                                    ? "\n" + recordingStopHint : "")
@@ -75,7 +75,7 @@ PlasmoidItem {
                 onReply(value);
             }
         }, function (error) {
-            console.warn("glimply:", member, error && error.message ? error.message : error);
+            console.warn("itsova:", member, error && error.message ? error.message : error);
         });
     }
 
@@ -85,7 +85,7 @@ PlasmoidItem {
             try {
                 list = JSON.parse(json);
             } catch (e) {
-                console.warn("glimply: invalid target list", e);
+                console.warn("itsova: invalid target list", e);
             }
             targetModel.clear();
             for (const target of list) {
@@ -164,7 +164,7 @@ PlasmoidItem {
             try {
                 list = JSON.parse(json);
             } catch (e) {
-                console.warn("glimply: invalid history", e);
+                console.warn("itsova: invalid history", e);
             }
             root.historyEntries = Array.isArray(list) ? list : [];
         });
@@ -176,7 +176,7 @@ PlasmoidItem {
         }
         call("HistoryAction", [action, entryId, path], function (error) {
             if (error) {
-                console.warn("glimply:", error);
+                console.warn("itsova:", error);
             }
         });
     }
@@ -261,7 +261,7 @@ PlasmoidItem {
         property bool wasExpanded: false
         acceptedButtons: Qt.LeftButton
         hoverEnabled: true
-        Accessible.name: root.recording ? i18n("Stop recording") : "glimply"
+        Accessible.name: root.recording ? i18n("Stop recording") : "Itsova"
         Accessible.role: Accessible.Button
         onPressed: wasExpanded = root.expanded
         onClicked: {
@@ -298,7 +298,7 @@ PlasmoidItem {
                     Layout.fillWidth: true
                     Layout.leftMargin: Kirigami.Units.smallSpacing
                     level: 1
-                    text: "glimply"
+                    text: "Itsova"
                 }
                 PlasmaComponents3.ToolButton {
                     id: delayButton
@@ -376,7 +376,7 @@ PlasmoidItem {
                 PlasmaComponents3.ToolButton {
                     icon.name: "configure"
                     display: PlasmaComponents3.AbstractButton.IconOnly
-                    text: i18n("Configure glimply…")
+                    text: i18n("Configure Itsova…")
                     PlasmaComponents3.ToolTip.text: text
                     PlasmaComponents3.ToolTip.visible: hovered
                     onClicked: {
@@ -428,12 +428,12 @@ PlasmoidItem {
             anchors.centerIn: parent
             width: parent.width - Kirigami.Units.gridUnit * 4
             visible: !root.running
-            iconName: "io.github.m00sfett.glimply"
-            text: i18n("glimply is not running")
-            explanation: i18n("Shortcuts and captures need the glimply service.")
+            iconName: "io.github.m00sfett.itsova"
+            text: i18n("Itsova is not running")
+            explanation: i18n("Shortcuts and captures need the Itsova service.")
             helpfulAction: Kirigami.Action {
                 icon.name: "media-playback-start"
-                text: i18n("Start glimply")
+                text: i18n("Start Itsova")
                 // Any call starts the service through D-Bus activation.
                 onTriggered: root.call("HasLastCapture")
             }

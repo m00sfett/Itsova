@@ -76,7 +76,7 @@
 #include <QUrl>
 #include <QtConcurrent>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -91,7 +91,7 @@ constexpr int recordingHintGoneMs = 200;
 
 App::App(QObject *parent)
     : QObject(parent)
-    , config_(KSharedConfig::openConfig(QStringLiteral("glimplyrc"), KConfig::SimpleConfig))
+    , config_(KSharedConfig::openConfig(QStringLiteral("itsovarc"), KConfig::SimpleConfig))
     , shortcuts_(new ShortcutManager(this))
     , engine_(new TriggerEngine(this))
     , tray_(new TrayController([this] { return menuTargets(); }, this))
@@ -119,7 +119,7 @@ App::App(QObject *parent)
 {
     store_.load(*config_);
     setVerboseLogging(store_.verboseLogging);
-    qCInfo(lcApp) << "glimply" << GLIMPLY_VERSION << "started";
+    qCInfo(lcApp) << "itsova" << ITSOVA_VERSION << "started";
     tray_->setDelayState(store_.captureDelaySeconds, store_.keepDelayActive);
     tray_->setVisibilityMode(int(store_.trayVisibility));
 
@@ -137,7 +137,7 @@ App::App(QObject *parent)
     thumbnails_ = std::make_unique<ThumbnailCache>();
     QString historyError;
     if (!history_->load(&historyError)) {
-        qWarning("glimply: ignoring unreadable capture history %s: %s", qPrintable(history_->filePath()),
+        qWarning("itsova: ignoring unreadable capture history %s: %s", qPrintable(history_->filePath()),
                  qPrintable(historyError));
     }
     if (history_->prune()) {
@@ -957,7 +957,7 @@ void App::notifyPartialCapture(const QString &title, const QStringList &messages
 void App::notify(const QString &eventId, const QString &title, const QStringList &messages)
 {
     const QString text = messages.join(QLatin1Char('\n'));
-    // Installed builds ship io.github.m00sfett.glimply.notifyrc, so notifications carry glimply's name and can be
+    // Installed builds ship io.github.m00sfett.itsova.notifyrc, so notifications carry itsova's name and can be
     // configured in System Settings. Uninstalled development builds fall back to the system events.
     const bool haveEvents = haveNotifyEvents();
     if (haveEvents) {
@@ -1176,7 +1176,7 @@ bool App::restart()
     // PID and path are passed as arguments, never pasted into the script.
     const QString script = QStringLiteral("while kill -0 \"$1\" 2>/dev/null; do sleep 0.1; done; exec \"$2\"");
     const bool started = QProcess::startDetached(
-        QStringLiteral("/bin/sh"), {QStringLiteral("-c"), script, QStringLiteral("glimply-restart"),
+        QStringLiteral("/bin/sh"), {QStringLiteral("-c"), script, QStringLiteral("itsova-restart"),
                                     QString::number(QCoreApplication::applicationPid()),
                                     QCoreApplication::applicationFilePath()});
     if (started) {
@@ -1198,7 +1198,7 @@ void App::historyModified(bool sweepThumbnails)
 {
     QString error;
     if (!history_->save(&error)) {
-        qWarning("glimply: could not save the capture history: %s", qPrintable(error));
+        qWarning("itsova: could not save the capture history: %s", qPrintable(error));
     }
     if (sweepThumbnails) {
         QStringList files;
@@ -1900,7 +1900,7 @@ void App::captureAsync(const CliCaptureRequest &request, std::function<void(cons
                             const QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
                             const QString tmpBase = runtimeDir.isEmpty() ? QDir::tempPath() : runtimeDir;
                             QTemporaryFile tmp(
-                                QDir(tmpBase).filePath(QStringLiteral("glimply-stdout-XXXXXX.%1")
+                                QDir(tmpBase).filePath(QStringLiteral("itsova-stdout-XXXXXX.%1")
                                                            .arg(canonicalExtension(rendered.exportOptions.format))));
                             tmp.setAutoRemove(false);
                             if (!tmp.open()) {
@@ -2099,8 +2099,8 @@ void App::applyAutostart()
     if (!installed.isEmpty() && source.open(QIODevice::ReadOnly)) {
         content = source.readAll();
     } else {
-        content = QByteArrayLiteral("[Desktop Entry]\nType=Application\nName=glimply\nExec=@EXEC@\n"
-                                    "Icon=io.github.m00sfett.glimply\nStartupNotify=false\n"
+        content = QByteArrayLiteral("[Desktop Entry]\nType=Application\nName=Itsova\nExec=@EXEC@\n"
+                                    "Icon=io.github.m00sfett.itsova\nStartupNotify=false\n"
                                     "X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\n");
     }
     QStringList lines = QString::fromUtf8(content).split(QLatin1Char('\n'));
@@ -2220,7 +2220,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
                         return;
                     }
                     if (!safeApp) {
-                        fail(App::tr("glimply is shutting down."));
+                        fail(App::tr("Itsova is shutting down."));
                         return;
                     }
                     if (delayAfterHide) {
@@ -2436,7 +2436,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         QPointer<App> safeApp(this);
         runWithOptionalConfirm(policy, summary, true, [safeApp, req, finishCaptureResult, includeImage, maxDim, fail] {
             if (!safeApp) {
-                fail(App::tr("glimply is shutting down."));
+                fail(App::tr("Itsova is shutting down."));
                 return;
             }
             safeApp->captureAsync(req, [finishCaptureResult, includeImage, maxDim](const CliCaptureResult &res) {
@@ -2498,7 +2498,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         runWithOptionalConfirm(basePolicy, summary, true,
                                [safeApp, req, finishCaptureResult, includeImage, maxDim, fail] {
                                    if (!safeApp) {
-                                       fail(App::tr("glimply is shutting down."));
+                                       fail(App::tr("Itsova is shutting down."));
                                        return;
                                    }
                                    safeApp->captureAsync(
@@ -2543,7 +2543,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         runWithOptionalConfirm(basePolicy, summary, true,
                                [safeApp, req, finishCaptureResult, includeImage, maxDim, fail] {
                                    if (!safeApp) {
-                                       fail(App::tr("glimply is shutting down."));
+                                       fail(App::tr("Itsova is shutting down."));
                                        return;
                                    }
                                    safeApp->captureAsync(
@@ -2561,7 +2561,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
             return;
         }
         if (!hasLastCapture()) {
-            fail(tr("No capture has been recorded yet in this glimply session."));
+            fail(tr("No capture has been recorded yet in this Itsova session."));
             return;
         }
         const bool includeImage = args.value(QStringLiteral("include_image")).toBool(false);
@@ -2571,7 +2571,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         QPointer<App> safeApp(this);
         runWithOptionalConfirm(policy, summary, false, [safeApp, includeImage, maxDim, callback, fail] {
             if (!safeApp) {
-                fail(App::tr("glimply is shutting down."));
+                fail(App::tr("Itsova is shutting down."));
                 return;
             }
             const QJsonObject meta = safeApp->lastCaptureInfo();
@@ -2626,7 +2626,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         QPointer<App> safeApp(this);
         runWithOptionalConfirm(policy, summary, true, [safeApp, resolved, cfg, callback, fail] {
             if (!safeApp) {
-                fail(App::tr("glimply is shutting down."));
+                fail(App::tr("Itsova is shutting down."));
                 return;
             }
             const QString err = safeApp->startInterval(resolved.targetId, cfg);
@@ -2731,12 +2731,12 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
                 return canon.startsWith(prefix);
             };
             if (!isInsideCaptureDir(inputPath, true)) {
-                fail(tr("In MCP Allowlist mode, input_path must be an existing file inside glimply's capture "
+                fail(tr("In MCP Allowlist mode, input_path must be an existing file inside Itsova's capture "
                         "directory."));
                 return;
             }
             if (!outputPath.isEmpty() && !isInsideCaptureDir(outputPath, false)) {
-                fail(tr("In MCP Allowlist mode, output_path must be inside glimply's capture directory."));
+                fail(tr("In MCP Allowlist mode, output_path must be inside Itsova's capture directory."));
                 return;
             }
         }
@@ -2762,7 +2762,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         QPointer<App> safeApp(this);
         runWithOptionalConfirm(basePolicy, summary, false, [safeApp, req, callback, fail] {
             if (!safeApp) {
-                fail(App::tr("glimply is shutting down."));
+                fail(App::tr("Itsova is shutting down."));
                 return;
             }
             auto *watcher = new QFutureWatcher<AnnotateResult>(safeApp.data());
@@ -3090,8 +3090,8 @@ bool App::recordingStartPending() const
 QString App::recordingStopInstruction() const
 {
     const QString shortcut = recordingStopShortcutText();
-    return shortcut.isEmpty() ? tr("Stop with the glimply icon in the system tray")
-                              : tr("Stop with the glimply tray icon or %1").arg(shortcut);
+    return shortcut.isEmpty() ? tr("Stop with the Itsova icon in the system tray")
+                              : tr("Stop with the Itsova tray icon or %1").arg(shortcut);
 }
 
 void App::showRecordingHint(const QString &iconName, const QString &title, const QString &detail, int durationMs,
@@ -3295,4 +3295,4 @@ void App::syncRecordingUi()
     Q_EMIT recordingChanged();
 }
 
-} // namespace glimply
+} // namespace itsova

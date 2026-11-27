@@ -14,7 +14,7 @@
 
 #include <algorithm>
 
-namespace glimply::PrintKey
+namespace itsova::PrintKey
 {
 namespace
 {
@@ -132,4 +132,4 @@ void release(KConfig &config, bool clearOwnAction)
     config.sync();
 }
 
-} // namespace glimply::PrintKey
+} // namespace itsova::PrintKey

@@ -12,7 +12,7 @@
 
 class QKeyEvent;
 
-namespace glimply
+namespace itsova
 {
 
 // Widget-agnostic interaction state machine for selecting, drawing, moving, resizing,
@@ -113,12 +113,12 @@ public:
     void clearHover();
 
 Q_SIGNALS:
-    void toolChanged(glimply::ToolKind tool);
+    void toolChanged(itsova::ToolKind tool);
     void styleChanged();
     void previewChanged();
     void cursorChanged();
-    void textEditStarted(const glimply::AnnotationItem &item, bool isExisting);
-    void textEditStyleUpdated(const glimply::AnnotationItem &item);
+    void textEditStarted(const itsova::AnnotationItem &item, bool isExisting);
+    void textEditStyleUpdated(const itsova::AnnotationItem &item);
     void textEditCommitRequested(bool switchToSelect);
     void textEditCancelRequested();
     void textEditFinished();
@@ -167,4 +167,4 @@ private:
     int hoveredId_ = 0;
 };
 
-} // namespace glimply
+} // namespace itsova

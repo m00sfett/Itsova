@@ -16,7 +16,7 @@ class QSlider;
 class QSpinBox;
 class QToolButton;
 
-namespace glimply
+namespace itsova
 {
 
 // Native KDE/Breeze two-row markup toolbar shared by CaptureOverlay (#16) and QuickEditorWindow
@@ -144,4 +144,4 @@ private:
     QLabel *redactStrengthValueLabel_ = nullptr;
 };
 
-} // namespace glimply
+} // namespace itsova

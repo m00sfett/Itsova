@@ -11,7 +11,7 @@
 
 class QProcess;
 
-namespace glimply
+namespace itsova
 {
 
 struct ParsedHookCommand
@@ -71,7 +71,7 @@ public:
     [[nodiscard]] int queuedCount() const;
 
 Q_SIGNALS:
-    void hookFailed(const glimply::HookResult &result);
+    void hookFailed(const itsova::HookResult &result);
 
 private:
     struct PendingJob
@@ -87,4 +87,4 @@ private:
     QSet<QProcess *> active_;
 };
 
-} // namespace glimply
+} // namespace itsova

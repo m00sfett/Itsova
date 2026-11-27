@@ -1,5 +1,5 @@
 /*
-    One target in the glimply widget. Clicking the row captures it; the buttons on the right edit,
+    One target in the itsova widget. Clicking the row captures it; the buttons on the right edit,
     rename and delete areas and groups, and rename monitors. Renaming and deleting happen inline,
     without dialogs.
 */

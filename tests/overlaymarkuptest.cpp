@@ -16,7 +16,7 @@
 #include <QToolButton>
 #include <QtTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class OverlayMarkupTest : public QObject
 {

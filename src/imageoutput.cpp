@@ -23,7 +23,7 @@
 #include <utility>
 #include <unistd.h>
 
-namespace glimply {
+namespace itsova {
 namespace {
 
 class ImageOutputStrings
@@ -542,7 +542,7 @@ bool writeUniqueImageFile(const QString &directory,
     const QString extension = filename.mid(extensionPosition);
 
     const QDir outputDirectory(directory);
-    QTemporaryFile temporary(outputDirectory.filePath(QStringLiteral(".glimply-XXXXXX")));
+    QTemporaryFile temporary(outputDirectory.filePath(QStringLiteral(".itsova-XXXXXX")));
     if (!temporary.open()) {
         if (error) {
             *error = ImageOutputStrings::tr("Cannot create a temporary capture file: %1")
@@ -676,4 +676,4 @@ bool OutputWriter::writeImage(const QImage &image,
                                 image, options, writtenPath, error);
 }
 
-} // namespace glimply
+} // namespace itsova

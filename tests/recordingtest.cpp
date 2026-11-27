@@ -10,7 +10,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class RecordingTest : public QObject
 {
@@ -113,6 +113,32 @@ private Q_SLOTS:
         QCOMPARE(back->monitors.first().resolution, QSize(2400, 1350));
         QVERIFY(!parseRecordingMetadata(QStringLiteral("{\"version\":99}")));
         QVERIFY(!parseRecordingMetadata(QStringLiteral("not json")));
+    }
+
+    void readsLegacyRecordingTag()
+    {
+        if (QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+            || QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty()) {
+            QSKIP("ffmpeg/ffprobe not installed");
+        }
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const QString path = dir.filePath(QStringLiteral("legacy.mp4"));
+        RecordingMetadata meta;
+        meta.kind = QStringLiteral("monitor");
+        meta.targetId = QStringLiteral("screen:DP-1");
+        QProcess ffmpeg;
+        ffmpeg.start(QStringLiteral("ffmpeg"),
+                     {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"),
+                      QStringLiteral("lavfi"), QStringLiteral("-i"), QStringLiteral("color=size=16x16:d=0.1"),
+                      QStringLiteral("-c:v"), QStringLiteral("mpeg4"), QStringLiteral("-movflags"),
+                      QStringLiteral("+use_metadata_tags"), QStringLiteral("-metadata"),
+                      QStringLiteral("glimply=") + recordingMetadataJson(meta), path});
+        QVERIFY(ffmpeg.waitForFinished(10000));
+        QCOMPARE(ffmpeg.exitCode(), 0);
+        const auto restored = readRecordingMetadata(path);
+        QVERIFY(restored);
+        QCOMPARE(restored->targetId, meta.targetId);
     }
 
     void metadataPlacesEveryMonitorInTheVideo()

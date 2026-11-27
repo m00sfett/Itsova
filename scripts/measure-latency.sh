@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Measures Print latency (#67) without touching the running desktop session: starts a nested,
-# virtual KWin on a private D-Bus session with a throw-away HOME, runs the given glimply binary
-# there, triggers its Print shortcut N times through kglobalaccel and prints `glimply latency`.
+# virtual KWin on a private D-Bus session with a throw-away HOME, runs the given itsova binary
+# there, triggers its Print shortcut N times through kglobalaccel and prints `itsova latency`.
 #
-# Usage: scripts/measure-latency.sh [--runs N] [--monitors N] [--pins] [--json] <path/to/glimply>
+# Usage: scripts/measure-latency.sh [--runs N] [--monitors N] [--pins] [--json] <path/to/itsova>
 #
 # --pins pins the warm-up capture to the screen first, so every run waits for a visible pin.
 #
-# Times start when glimply receives the trigger: KDE sends no key timestamp on Wayland, so the time
+# Times start when itsova receives the trigger: KDE sends no key timestamp on Wayland, so the time
 # from the key press to the trigger is not measurable, here or on the desktop.
 set -euo pipefail
 
@@ -26,13 +26,13 @@ while (($#)); do
     *) binary="$(realpath "$1")"; shift ;;
     esac
 done
-[[ -x "$binary" ]] || { echo "glimply binary not found: ${binary:-<none>}" >&2; exit 2; }
+[[ -x "$binary" ]] || { echo "itsova binary not found: ${binary:-<none>}" >&2; exit 2; }
 
-if [[ -z "${GLIMPLY_MEASURE_INNER:-}" ]]; then
+if [[ -z "${ITSOVA_MEASURE_INNER:-}" ]]; then
     # Everything the private session starts must see only the throw-away HOME and no real display,
     # and the private bus must not activate any installed service (it would start the installed
-    # glimply with the real HOME instead of the binary under test).
-    home="$(mktemp -d "${TMPDIR:-/tmp}/glimply-latency.XXXXXX")"
+    # itsova with the real HOME instead of the binary under test).
+    home="$(mktemp -d "${TMPDIR:-/tmp}/itsova-latency.XXXXXX")"
     inner_pid=""
     outer_cleanup() {
         if [[ -n "$inner_pid" ]]; then
@@ -47,7 +47,7 @@ if [[ -z "${GLIMPLY_MEASURE_INNER:-}" ]]; then
     trap 'exit 130' INT TERM
     sed '/<standard_session_servicedirs/d' /usr/share/dbus-1/session.conf >"$home/session.conf"
     mkdir -p "$home/.config" "$home/.local/share" "$home/.cache" "$home/.local/state" "$home/Pictures"
-    setsid env -u WAYLAND_DISPLAY -u DISPLAY -u DBUS_SESSION_BUS_ADDRESS GLIMPLY_MEASURE_INNER=1 \
+    setsid env -u WAYLAND_DISPLAY -u DISPLAY -u DBUS_SESSION_BUS_ADDRESS ITSOVA_MEASURE_INNER=1 \
         HOME="$home" XDG_CONFIG_HOME="$home/.config" XDG_DATA_HOME="$home/.local/share" \
         XDG_CACHE_HOME="$home/.cache" XDG_STATE_HOME="$home/.local/state" \
         dbus-run-session --config-file="$home/session.conf" -- "${BASH_SOURCE[0]}" --runs "$runs" \
@@ -60,9 +60,9 @@ if [[ -z "${GLIMPLY_MEASURE_INNER:-}" ]]; then
 fi
 
 home="$HOME"
-socket="glimply-latency-$$"
+socket="itsova-latency-$$"
 kwin_pid=""
-glimply_pid=""
+itsova_pid=""
 stop() {
     local pid="$1"
     [[ -n "$pid" ]] || return 0
@@ -75,7 +75,7 @@ stop() {
     wait "$pid" 2>/dev/null || true
 }
 cleanup() {
-    stop "$glimply_pid"
+    stop "$itsova_pid"
     stop "$kwin_pid"
 }
 trap cleanup EXIT
@@ -89,18 +89,18 @@ for _ in $(seq 100); do
     sleep 0.1
 done
 
-WAYLAND_DISPLAY="$socket" QT_QPA_PLATFORM=wayland GLIMPLY_LATENCY_BENCH=1 "$binary" >"$home/glimply.log" 2>&1 &
-glimply_pid=$!
-glimply_ready=""
+WAYLAND_DISPLAY="$socket" QT_QPA_PLATFORM=wayland ITSOVA_LATENCY_BENCH=1 "$binary" >"$home/itsova.log" 2>&1 &
+itsova_pid=$!
+itsova_ready=""
 for _ in $(seq 100); do
-    busctl --user --auto-start=no call io.github.m00sfett.glimply /Control \
-        io.github.m00sfett.glimply.Control LatencyReport >/dev/null 2>&1 && glimply_ready=1 && break
-    kill -0 "$glimply_pid" 2>/dev/null || break
+    busctl --user --auto-start=no call io.github.m00sfett.itsova /Control \
+        io.github.m00sfett.itsova.Control LatencyReport >/dev/null 2>&1 && itsova_ready=1 && break
+    kill -0 "$itsova_pid" 2>/dev/null || break
     sleep 0.1
 done
-if [[ -z "$glimply_ready" ]]; then
-    echo "glimply did not start in the nested session:" >&2
-    tail -20 "$home/glimply.log" >&2
+if [[ -z "$itsova_ready" ]]; then
+    echo "itsova did not start in the nested session:" >&2
+    tail -20 "$home/itsova.log" >&2
     exit 1
 fi
 
@@ -115,7 +115,7 @@ print(len(done))'
 trigger() {
     local before
     before="$(samples)"
-    busctl --user --auto-start=no call org.kde.kglobalaccel /component/glimply \
+    busctl --user --auto-start=no call org.kde.kglobalaccel /component/itsova \
         org.kde.kglobalaccel.Component invokeShortcut s print
     for _ in $(seq 200); do
         [[ "$(samples)" -gt "$before" ]] && break
@@ -127,8 +127,8 @@ trigger() {
 # One warm-up press first: the first capture after start pays for lazy initialisation.
 trigger
 if ((${#pins[@]})); then
-    busctl --user --auto-start=no call io.github.m00sfett.glimply /Control \
-        io.github.m00sfett.glimply.Control PinLastCapture
+    busctl --user --auto-start=no call io.github.m00sfett.itsova /Control \
+        io.github.m00sfett.itsova.Control PinLastCapture
     sleep 1
 fi
 for _ in $(seq 1 "$runs"); do

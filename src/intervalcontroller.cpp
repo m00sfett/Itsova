@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 
 IntervalController::IntervalController(PlanBuilder planBuilder,
@@ -294,4 +294,4 @@ void IntervalController::finishRun(const QString &targetId, bool emitFinishedSig
     }
 }
 
-} // namespace glimply
+} // namespace itsova

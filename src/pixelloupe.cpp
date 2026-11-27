@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-namespace glimply::PixelLoupe
+namespace itsova::PixelLoupe
 {
 namespace
 {
@@ -266,4 +266,4 @@ void paintColorPickerLoupe(QPainter &painter, const QPoint &cursorLocal, const Q
     painter.restore();
 }
 
-} // namespace glimply::PixelLoupe
+} // namespace itsova::PixelLoupe

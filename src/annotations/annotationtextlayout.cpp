@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -265,4 +265,4 @@ void drawAnnotationText(QPainter &painter, const AnnotationItem &item)
     painter.restore();
 }
 
-} // namespace glimply
+} // namespace itsova

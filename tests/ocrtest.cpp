@@ -5,7 +5,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -129,7 +129,7 @@ void OcrTest::reportsBackendFailure()
 
 void OcrTest::missingBackendIsUnavailable()
 {
-    TesseractOcrEngine engine(QStringLiteral("/nonexistent/glimply-no-tesseract"));
+    TesseractOcrEngine engine(QStringLiteral("/nonexistent/itsova-no-tesseract"));
     // An explicit path is trusted as configured; recognition then fails cleanly.
     const OcrResult result = engine.recognize(sampleImage(), {});
     QVERIFY(!result.ok);

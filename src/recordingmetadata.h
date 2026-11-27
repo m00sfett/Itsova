@@ -10,11 +10,11 @@
 
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 // Where a recording came from (#103), stored in the file so a later replay can put it back on the
-// same monitors: MP4 and WebM carry it as the container tag "glimply" (JSON); GIF has no place for
+// same monitors: MP4 and WebM carry it as the container tag "itsova" (JSON); GIF has no place for
 // it.
 struct RecordingMonitorInfo
 {
@@ -51,4 +51,4 @@ struct RecordingMetadata
 // The ffmpeg output options that write the tag for this file name (none for GIF).
 [[nodiscard]] QStringList recordingMetadataArguments(const QString &outputPath, const QString &json);
 
-} // namespace glimply
+} // namespace itsova

@@ -6,7 +6,7 @@
 #include <QRect>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // One rectangle drawn in the capture overlay, in logical coordinates local to its monitor.
@@ -59,4 +59,4 @@ private:
     int nextId_ = 1;
 };
 
-} // namespace glimply
+} // namespace itsova

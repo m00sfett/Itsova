@@ -9,7 +9,7 @@
 #include <QString>
 #include <QtGlobal>
 
-namespace glimply
+namespace itsova
 {
 
 enum class ToolKind {
@@ -128,4 +128,4 @@ struct AnnotationItem {
 
 [[nodiscard]] QColor contrastingTextColor(const QColor &background);
 
-} // namespace glimply
+} // namespace itsova

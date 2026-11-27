@@ -6,17 +6,17 @@
 
 class QDBusServiceWatcher;
 
-namespace glimply
+namespace itsova
 {
 
 class App;
 
 // Session bus interface for the Plasma widget (and scripts): lists targets and runs the actions
-// the tray offers. Registered at /Control on glimply's unique service name.
+// the tray offers. Registered at /Control on itsova's unique service name.
 class ControlService : public QObject, protected QDBusContext
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "io.github.m00sfett.glimply.Control")
+    Q_CLASSINFO("D-Bus Interface", "io.github.m00sfett.itsova.Control")
 
 public:
     explicit ControlService(App *app);
@@ -92,4 +92,4 @@ private:
     QDBusServiceWatcher *widgetWatcher_;
 };
 
-} // namespace glimply
+} // namespace itsova

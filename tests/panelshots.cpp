@@ -1,5 +1,5 @@
 // Opt-in visual check of the overlay panel (#69): renders the panel in its main states to PNG files.
-// Never run by CTest. Usage: glimply-panel-shots <output-dir> [light|dark] [rtl]
+// Never run by CTest. Usage: itsova-panel-shots <output-dir> [light|dark] [rtl]
 // Run it with the desktop's platform theme (QT_QPA_PLATFORMTHEME=kde) to get Breeze and its icons.
 
 #include "overlaypanel.h"
@@ -13,7 +13,7 @@
 #include <QStyleFactory>
 #include <QTextStream>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     const QStringList args = app.arguments();
     if (args.size() < 2) {
-        QTextStream(stderr) << "Usage: glimply-panel-shots <output-dir> [light|dark] [rtl] [de]\n";
+        QTextStream(stderr) << "Usage: itsova-panel-shots <output-dir> [light|dark] [rtl] [de]\n";
         return 2;
     }
     const QString dir = args.at(1);

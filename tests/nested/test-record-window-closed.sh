@@ -2,14 +2,14 @@
 # says why instead of ending silently.
 win=$(first_window_id)
 [[ -n "$win" ]] || fail "no window listed"
-result=$(glimply_call StartRecording si "window:$win" 0)
+result=$(itsova_call StartRecording si "window:$win" 0)
 [[ "$result" == 's ""' ]] || fail "StartRecording: $result"
 sleep 3
-[[ "$(recording_state)" == recording ]] || fail "not recording: $(glimply_call RecordingState)"
+[[ "$(recording_state)" == recording ]] || fail "not recording: $(itsova_call RecordingState)"
 pkill -x kcalc || fail "kcalc not running"
 wait_recording_idle 30 || fail "did not finish after the window closed"
-grep -q "stream closed by KWin" "$home/glimply.log" || fail "stream close not logged"
-grep -q "recording ended early: \"The recorded window was closed.\"" "$home/glimply.log" || fail "no reason given"
+grep -q "stream closed by KWin" "$home/itsova.log" || fail "stream close not logged"
+grep -q "recording ended early: \"The recorded window was closed.\"" "$home/itsova.log" || fail "no reason given"
 file=$(newest_file '*.mp4')
 [[ -n "$file" ]] || fail "nothing kept"
 duration=$(media_duration "$file")

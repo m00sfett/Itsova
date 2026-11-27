@@ -21,7 +21,7 @@
 #include <QPalette>
 #include <QTimer>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -104,12 +104,12 @@ void TrayController::applyPresence()
 
 void TrayController::createItem()
 {
-    item_ = new KStatusNotifierItem(QStringLiteral("glimply"), this);
+    item_ = new KStatusNotifierItem(QStringLiteral("itsova"), this);
     menu_ = new QMenu;
     item_->setCategory(KStatusNotifierItem::ApplicationStatus);
     item_->setStatus(KStatusNotifierItem::Active);
-    item_->setTitle(tr("glimply"));
-    item_->setToolTipTitle(tr("glimply"));
+    item_->setTitle(tr("Itsova"));
+    item_->setToolTipTitle(tr("Itsova"));
     item_->setToolTipSubTitle(statusText_);
     item_->setStandardActionsEnabled(false); // the menu adds its own Quit
     item_->setContextMenu(menu_); // the item takes ownership
@@ -573,10 +573,10 @@ void TrayController::rebuildMenu()
     auto *openFolder = add(new QAction(QIcon::fromTheme(QStringLiteral("folder-pictures")), tr("Open Capture Folder"), menu_));
     connect(openFolder, &QAction::triggered, this, &TrayController::openFolderRequested);
     addSeparator();
-    auto *configure = add(new QAction(QIcon::fromTheme(QStringLiteral("configure")), tr("Configure glimply…"), menu_));
+    auto *configure = add(new QAction(QIcon::fromTheme(QStringLiteral("configure")), tr("Configure Itsova…"), menu_));
     connect(configure, &QAction::triggered, this, &TrayController::configureRequested);
     auto *quit = add(new QAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("Quit"), menu_));
     connect(quit, &QAction::triggered, this, &TrayController::quitRequested);
 }
 
-} // namespace glimply
+} // namespace itsova

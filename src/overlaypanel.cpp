@@ -20,7 +20,7 @@
 #include <functional>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -1074,4 +1074,4 @@ void CapsulePanel::mouseDoubleClickEvent(QMouseEvent *event)
     QWidget::mouseDoubleClickEvent(event);
 }
 
-} // namespace glimply
+} // namespace itsova

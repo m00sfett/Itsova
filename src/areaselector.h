@@ -9,7 +9,7 @@
 #include <QRect>
 #include <QWidget>
 
-namespace glimply
+namespace itsova
 {
 
 class AreaOverlay;
@@ -115,4 +115,4 @@ private:
     Qt::Edges dragEdges_;
 };
 
-} // namespace glimply
+} // namespace itsova

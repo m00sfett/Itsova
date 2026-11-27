@@ -23,7 +23,7 @@ class QImage;
 class QJsonObject;
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 struct ActiveIntervalStatus;
@@ -156,7 +156,7 @@ public:
     [[nodiscard]] QStringList ocrLanguages() const;
     void clearHistory();
     // Quits and starts a fresh instance once this one has exited (language change, #53).
-    // Returns false when the new instance could not be scheduled; glimply keeps running then.
+    // Returns false when the new instance could not be scheduled; itsova keeps running then.
     bool restart();
 
     [[nodiscard]] static QString targetLabel(const TargetStore &store, const QString &id);
@@ -166,7 +166,7 @@ public:
     // the target for the start/stop shortcut. Returns an error message, or an empty string.
     QString startRecording(const QString &targetId, int delaySeconds = 0);
     void stopRecording(const QString &origin);
-    // `glimply --verbose` adds debug logging on top of the setting (#92).
+    // `itsova --verbose` adds debug logging on top of the setting (#92).
     void setVerboseFromCommandLine(bool on);
     // "Click to stop" names this shortcut (#98).
     [[nodiscard]] QString recordingStopShortcutText() const;
@@ -268,4 +268,4 @@ private:
     bool verboseFromCommandLine_ = false;
 };
 
-} // namespace glimply
+} // namespace itsova

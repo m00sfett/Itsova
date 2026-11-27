@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 
 InlineTextEditor::InlineTextEditor(QWidget *parent)
@@ -295,4 +295,4 @@ void InlineTextEditor::keyPressEvent(QKeyEvent *event)
     event->accept();
 }
 
-} // namespace glimply
+} // namespace itsova

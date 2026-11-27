@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -1380,4 +1380,4 @@ void AnnotationToolbar::applyTextChange(const std::function<void(AnnotationItem 
     syncFromState();
 }
 
-} // namespace glimply
+} // namespace itsova

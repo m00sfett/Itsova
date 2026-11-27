@@ -10,7 +10,7 @@
 #include <cmath>
 #include <limits>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -368,4 +368,4 @@ QColor contrastingTextColor(const QColor &background)
     return contrastBlack >= contrastWhite ? QColor(0x00, 0x00, 0x00) : QColor(0xFF, 0xFF, 0xFF);
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -16,7 +16,7 @@
 #include <memory>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -123,7 +123,7 @@ void HookRunner::runTest(const QString &command, int timeoutSeconds, std::functi
         return;
     }
 
-    const QString testFile = QDir(tempDir->path()).filePath(QStringLiteral("glimply-hook-test.png"));
+    const QString testFile = QDir(tempDir->path()).filePath(QStringLiteral("itsova-hook-test.png"));
     QImage sample(1, 1, QImage::Format_RGBA8888);
     sample.fill(Qt::black);
     QString writeErr;
@@ -178,15 +178,15 @@ void HookRunner::startJob(PendingJob job)
     active_.insert(process);
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert(QStringLiteral("GLIMPLY_FILES"), inv.files.join(QLatin1Char('\n')));
-    env.insert(QStringLiteral("GLIMPLY_FILE"), inv.files.isEmpty() ? QString() : inv.files.first());
-    env.insert(QStringLiteral("GLIMPLY_FILE_COUNT"), QString::number(inv.files.size()));
-    env.insert(QStringLiteral("GLIMPLY_TARGET_ID"), inv.targetId);
-    env.insert(QStringLiteral("GLIMPLY_TARGET_NAME"), inv.targetName);
-    env.insert(QStringLiteral("GLIMPLY_TRIGGER_KIND"), inv.triggerKind);
-    env.insert(QStringLiteral("GLIMPLY_TIMESTAMP"),
+    env.insert(QStringLiteral("ITSOVA_FILES"), inv.files.join(QLatin1Char('\n')));
+    env.insert(QStringLiteral("ITSOVA_FILE"), inv.files.isEmpty() ? QString() : inv.files.first());
+    env.insert(QStringLiteral("ITSOVA_FILE_COUNT"), QString::number(inv.files.size()));
+    env.insert(QStringLiteral("ITSOVA_TARGET_ID"), inv.targetId);
+    env.insert(QStringLiteral("ITSOVA_TARGET_NAME"), inv.targetName);
+    env.insert(QStringLiteral("ITSOVA_TRIGGER_KIND"), inv.triggerKind);
+    env.insert(QStringLiteral("ITSOVA_TIMESTAMP"),
                (inv.timestamp.isValid() ? inv.timestamp : QDateTime::currentDateTime()).toString(Qt::ISODate));
-    env.insert(QStringLiteral("GLIMPLY_FORMAT"), inv.format);
+    env.insert(QStringLiteral("ITSOVA_FORMAT"), inv.format);
     process->setProcessEnvironment(env);
 
     struct SharedState
@@ -295,4 +295,4 @@ void HookRunner::drainQueue()
     }
 }
 
-} // namespace glimply
+} // namespace itsova

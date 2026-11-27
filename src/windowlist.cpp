@@ -7,7 +7,7 @@
 #include <QSet>
 #include <QVariantMap>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -134,4 +134,4 @@ QString windowToken(const WindowInfo &window)
     return name.isEmpty() ? QStringLiteral("window") : QStringLiteral("window-") + name.toLower();
 }
 
-} // namespace glimply
+} // namespace itsova

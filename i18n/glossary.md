@@ -1,6 +1,6 @@
-# glimply translation glossary
+# itsova translation glossary
 
-Binding rules for every translation of glimply (application catalogs `i18n/glimply_<lang>.ts`
+Binding rules for every translation of itsova (application catalogs `i18n/itsova_<lang>.ts`
 and Plasma widget catalogs `plasmoid/po/<lang>/*.po`). English is the source language.
 `scripts/check-translations.py` enforces the mechanical rules; the rest is up to the translator.
 
@@ -29,11 +29,11 @@ and Plasma widget catalogs `plasmoid/po/<lang>/*.po`). English is the source lan
 
 These stay exactly as written (they are names, keys, commands or file names):
 
-- `glimply` (always lower case, also at the start of a sentence)
+- `itsova` (always lower case, also at the start of a sentence)
 - `KDE`, `Plasma`, `KWin`, `Wayland`, `D-Bus`, `MCP`, `JSON`, `CLI`, `OCR`, `PNG`, `JPEG`, `WebP`,
   `AVIF`, `tesseract`, `Spectacle`
 - key names: `Print`, `Esc`, `Enter`, `Space`, `Tab`, `Shift`, `Ctrl`, `Alt`, `Meta`, `F1`
-- command lines, option names and file names: `glimply capture`, `--json`, `glimplyrc`,
+- command lines, option names and file names: `itsova capture`, `--json`, `itsovarc`,
   `~/.config/…`, `%HOME%`-style variables and anything in backticks
 - format tokens in file name patterns: `{date}`, `{time}`, `{target}`, `{n}` and similar
 
@@ -41,7 +41,7 @@ These stay exactly as written (they are names, keys, commands or file names):
 
 Translate these consistently; once a term is chosen for a language, use it everywhere.
 
-| English | Meaning in glimply | Note |
+| English | Meaning in itsova | Note |
 |---|---|---|
 | Area | A saved rectangle on one or more monitors that can be captured again | Not "region" in the sense of a country |
 | Group | Several areas captured together | |
@@ -67,7 +67,7 @@ Translate these consistently; once a term is chosen for a language, use it every
 ## Language notes
 
 - `ar`: right-to-left. Do not add direction marks; Qt handles the layout. Keep Latin names
-  (`glimply`, `KWin`) as they are.
+  (`itsova`, `KWin`) as they are.
 - `de`: KDE style, infinitives for actions ("Bereich speichern"), "Bildschirmfoto" for screenshot,
   "Bildschirm" for monitor.
 - `ja`, `ko`, `zh_CN`, `zh_TW`: no spaces between words; accelerators in brackets `(&S)`.
@@ -81,8 +81,8 @@ Entries whose translation may be identical to the English source without a warni
 text per line. The check script reads this block.
 
 ```allow-identical
-glimply
-glimply %1
+itsova
+itsova %1
 KWin
 MCP
 OCR

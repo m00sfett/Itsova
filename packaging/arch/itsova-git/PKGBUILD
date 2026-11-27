@@ -1,0 +1,45 @@
+# Maintainer: m00sfett <https://github.com/m00sfett>
+pkgname=itsova-git
+pkgver=0.10.0.r0.g0000000
+pkgrel=1
+pkgdesc='Screenshot tool for KDE Plasma: fixed areas, monitors and windows on global shortcuts (development version)'
+arch=('x86_64')
+url='https://github.com/m00sfett/Itsova'
+license=('AGPL-3.0-or-later')
+depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
+         'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'layer-shell-qt' 'kwidgetsaddons' 'kwin' 'kxmlgui'
+         'qt6-base' 'qt6-wayland' 'wayland')
+makedepends=('cmake' 'git' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
+checkdepends=('python' 'qt6-imageformats')
+optdepends=('tesseract: text recognition (Copy Text, itsova capture --ocr)'
+            'tesseract-data-eng: English text recognition'
+            'qt6-imageformats: WebP and additional export image formats'
+            'plasma-workspace: the Itsova Plasma widget')
+provides=('itsova')
+conflicts=('itsova' 'glimply' 'glimply-git')
+source=('itsova::git+https://github.com/m00sfett/Itsova.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd itsova
+  # Version from CMakeLists.txt, commit count and hash, independent of release tags.
+  local version
+  version=$(sed -n 's/^project(itsova VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
+  printf '%s.r%s.g%s' "$version" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+  cmake -B build -S itsova -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=ON
+  cmake --build build
+}
+
+check() {
+  QT_QPA_PLATFORM=offscreen ctest --test-dir build --output-on-failure -LE nested
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

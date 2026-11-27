@@ -21,7 +21,7 @@
 #include <QJsonObject>
 #include <QScreen>
 
-namespace glimply
+namespace itsova
 {
 
 ControlService::ControlService(App *app)
@@ -466,4 +466,4 @@ void ControlService::RegisterWidget()
     }
 }
 
-} // namespace glimply
+} // namespace itsova

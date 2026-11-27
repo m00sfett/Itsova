@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 int SelectionModel::add(const QString &connector, const QRect &rect)
@@ -130,4 +130,4 @@ int SelectionModel::topmostAt(const QPoint &globalPos) const
     return topmostAt(QString(), globalPos);
 }
 
-} // namespace glimply
+} // namespace itsova

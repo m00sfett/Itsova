@@ -9,7 +9,7 @@
 
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 // One pinned reference screenshot (#28). The image lives next to pins.json as <id>.png.
@@ -32,7 +32,7 @@ struct PinOutput
     QRect geometry; // logical, global
 };
 
-// Persistent list of pins in ~/.local/share/glimply/pins/. Pins stay until the user removes them.
+// Persistent list of pins in ~/.local/share/itsova/pins/. Pins stay until the user removes them.
 class PinStore
 {
 public:
@@ -83,4 +83,4 @@ private:
 [[nodiscard]] std::optional<std::pair<QString, QPoint>> pinOutputAt(const QPoint &globalTopLeft,
                                                                      const QList<PinOutput> &outputs);
 
-} // namespace glimply
+} // namespace itsova

@@ -16,7 +16,7 @@ class QSpinBox;
 class QTimer;
 class QWidget;
 
-namespace glimply
+namespace itsova
 {
 
 // Compact KDE/Breeze Save As / Export dialog providing format selection, contextual quality or
@@ -67,4 +67,4 @@ private:
     QTimer *estimateTimer_ = nullptr;
 };
 
-} // namespace glimply
+} // namespace itsova

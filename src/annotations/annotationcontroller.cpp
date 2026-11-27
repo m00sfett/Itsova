@@ -11,7 +11,7 @@
 #include <cmath>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -1199,4 +1199,4 @@ void AnnotationController::clearHover()
     }
 }
 
-} // namespace glimply
+} // namespace itsova

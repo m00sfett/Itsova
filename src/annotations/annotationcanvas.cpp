@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 
 class CropImageCommand : public QUndoCommand
@@ -1134,4 +1134,4 @@ void AnnotationCanvas::leaveEvent(QEvent *event)
     QWidget::leaveEvent(event);
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -7,7 +7,7 @@
 
 class QAction;
 
-namespace glimply
+namespace itsova
 {
 
 // Owns one global shortcut action per trigger (target or group) and registers it with KGlobalAccel.
@@ -42,4 +42,4 @@ private:
     QHash<QString, QAction *> actions_;
 };
 
-} // namespace glimply
+} // namespace itsova

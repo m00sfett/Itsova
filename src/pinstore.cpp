@@ -14,7 +14,7 @@
 #include <cmath>
 #include <limits>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -41,7 +41,7 @@ PinStore::PinStore(QString directory)
 
 QString PinStore::defaultDirectory()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/glimply/pins");
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/itsova/pins");
 }
 
 QString PinStore::directory() const
@@ -312,4 +312,4 @@ std::optional<std::pair<QString, QPoint>> pinOutputAt(const QPoint &globalTopLef
     return std::make_pair(best->connector, globalTopLeft - best->geometry.topLeft());
 }
 
-} // namespace glimply
+} // namespace itsova

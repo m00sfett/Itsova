@@ -23,7 +23,7 @@
 #include <mutex>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -668,4 +668,4 @@ void AreaOverlay::keyPressEvent(QKeyEvent *event)
     setSelection(steppedSelection(sel, delta, constraints, minimumAreaSize, desktopBounds_));
 }
 
-} // namespace glimply
+} // namespace itsova

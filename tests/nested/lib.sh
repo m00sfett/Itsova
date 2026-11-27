@@ -1,9 +1,9 @@
 # Helpers for nested-KWin tests (#93), sourced by session.sh before each test script.
 # shellcheck shell=bash
 
-# glimply_call <Method> [signature args...]: one D-Bus call to the glimply under test.
-glimply_call() {
-    busctl --user --auto-start=no call io.github.m00sfett.glimply /Control io.github.m00sfett.glimply.Control "$@"
+# itsova_call <Method> [signature args...]: one D-Bus call to the itsova under test.
+itsova_call() {
+    busctl --user --auto-start=no call io.github.m00sfett.itsova /Control io.github.m00sfett.itsova.Control "$@"
 }
 
 # fake <step>...: keys and pointer through KWin's fake input (see fakekey.c for the step syntax).
@@ -18,7 +18,7 @@ shot() {
 
 # recording_state: the "state" field of RecordingState (idle, starting, recording, paused, finishing).
 recording_state() {
-    glimply_call RecordingState | grep -oE '\\"state\\":\\"[a-z]+' | grep -oE '[a-z]+$'
+    itsova_call RecordingState | grep -oE '\\"state\\":\\"[a-z]+' | grep -oE '[a-z]+$'
 }
 
 # wait_recording_idle [seconds]: waits until the recorder is idle again; fails on timeout.
@@ -28,13 +28,13 @@ wait_recording_idle() {
         [[ "$(recording_state)" == idle ]] && return 0
         sleep 0.5
     done
-    echo "recorder did not become idle: $(glimply_call RecordingState)"
+    echo "recorder did not become idle: $(itsova_call RecordingState)"
     return 1
 }
 
-# first_window_id: the id of the first window glimply lists.
+# first_window_id: the id of the first window itsova lists.
 first_window_id() {
-    glimply_call ListWindows | grep -oE '\{[0-9a-f-]+\}' | head -1
+    itsova_call ListWindows | grep -oE '\{[0-9a-f-]+\}' | head -1
 }
 
 # media_duration <file>: duration in seconds (ffprobe).
@@ -44,7 +44,7 @@ media_duration() {
 
 # newest_file <glob>: the newest file in the capture folder matching the glob.
 newest_file() {
-    ls -t "$home"/Pictures/glimply/$1 2>/dev/null | head -1
+    ls -t "$home"/Pictures/itsova/$1 2>/dev/null | head -1
 }
 
 fail() {
@@ -54,7 +54,7 @@ fail() {
 
 # window_center <appName>: "X,Y" of the centre of the first listed window of that app.
 window_center() {
-    glimply_call ListWindows | sed 's/^s "//; s/"$//; s/\\"/"/g' | python3 -c '
+    itsova_call ListWindows | sed 's/^s "//; s/"$//; s/\\"/"/g' | python3 -c '
 import json, sys
 app = sys.argv[1]
 for w in json.load(sys.stdin):

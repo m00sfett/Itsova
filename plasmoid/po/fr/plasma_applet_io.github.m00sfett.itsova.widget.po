@@ -1,0 +1,382 @@
+# French translations for itsova package.
+# Copyright (C) 2026 THE itsova'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the itsova package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Itsova 0.12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: plasmoid/contents/ui/RecentSection.qml:49
+#, kde-format
+msgctxt "@label capture time"
+msgid "Yesterday %1"
+msgstr "Hier %1"
+
+#: plasmoid/contents/ui/RecentSection.qml:73 plasmoid/contents/ui/RecentSection.qml:85
+#, kde-format
+msgctxt "@title section"
+msgid "Recent"
+msgstr "Récentes"
+
+#: plasmoid/contents/ui/RecentSection.qml:74
+#, kde-format
+msgid "Collapse recent captures"
+msgstr "Replier les captures récentes"
+
+#: plasmoid/contents/ui/RecentSection.qml:74
+#, kde-format
+msgid "Expand recent captures"
+msgstr "Déplier les captures récentes"
+
+#: plasmoid/contents/ui/RecentSection.qml:84
+#, kde-format
+msgctxt "@title section"
+msgid "Recent (%1)"
+msgstr "Récentes (%1)"
+
+#: plasmoid/contents/ui/RecentSection.qml:96
+#, kde-format
+msgid "Clear History"
+msgstr "Vider l'historique"
+
+#: plasmoid/contents/ui/RecentSection.qml:98
+#, kde-format
+msgid "Clear the list (image files are kept)"
+msgstr "Vider la liste (les fichiers image sont conservés)"
+
+#: plasmoid/contents/ui/RecentSection.qml:109
+#, kde-format
+msgid "No captures yet. Press Print or a target shortcut."
+msgstr "Aucune capture pour l'instant. Appuyez sur Print ou sur le raccourci d'une cible."
+
+#: plasmoid/contents/ui/RecentSection.qml:159
+#, kde-format
+msgid "Show all (%1)"
+msgstr "Tout afficher (%1)"
+
+#: plasmoid/contents/ui/RecentSection.qml:159
+#, kde-format
+msgid "Show fewer"
+msgstr "Afficher moins"
+
+#: plasmoid/contents/ui/RecentSection.qml:174
+#, kde-format
+msgid "%2: 1 file"
+msgid_plural "%2: %1 files"
+msgstr[0] "%2 : 1 fichier"
+msgstr[1] "%2 : %1 fichiers"
+
+#: plasmoid/contents/ui/RecentSection.qml:217
+#, kde-format
+msgid "Open"
+msgstr "Ouvrir"
+
+#: plasmoid/contents/ui/RecentSection.qml:222
+#, kde-format
+msgid "Edit in Window"
+msgstr "Modifier dans une fenêtre"
+
+#: plasmoid/contents/ui/RecentSection.qml:227
+#, kde-format
+msgid "Copy"
+msgstr "Copier"
+
+#: plasmoid/contents/ui/RecentSection.qml:232 plasmoid/contents/ui/RecentSection.qml:261
+#, kde-format
+msgid "Show in Folder"
+msgstr "Afficher dans le dossier"
+
+#: plasmoid/contents/ui/RecentSection.qml:237
+#, kde-format
+msgid "Pin to Screen"
+msgstr "Épingler à l'écran"
+
+#: plasmoid/contents/ui/RecentSection.qml:243
+#, kde-format
+msgid "Move to Trash"
+msgstr "Déplacer dans la corbeille"
+
+#: plasmoid/contents/ui/RecentSection.qml:254
+#, kde-format
+msgid "Hide Files"
+msgstr "Masquer les fichiers"
+
+#: plasmoid/contents/ui/RecentSection.qml:255
+#, kde-format
+msgid "Show Files"
+msgstr "Afficher les fichiers"
+
+#: plasmoid/contents/ui/RecentSection.qml:267
+#, kde-format
+msgid "Move All to Trash"
+msgstr "Tout déplacer dans la corbeille"
+
+#: plasmoid/contents/ui/RecentTile.qml:30
+#, kde-format
+msgid "(1 file)"
+msgid_plural "(%1 files)"
+msgstr[0] "(1 fichier)"
+msgstr[1] "(%1 fichiers)"
+
+#: plasmoid/contents/ui/RecentTile.qml:124
+#, kde-format
+msgid "Actions"
+msgstr "Actions"
+
+#: plasmoid/contents/ui/RecentTile.qml:125
+#, kde-format
+msgid "Actions for %1"
+msgstr "Actions pour %1"
+
+#: plasmoid/contents/ui/TargetRow.qml:41
+#, kde-format
+msgctxt "target name, shortcut"
+msgid "%1, %2"
+msgstr "%1, %2"
+
+#: plasmoid/contents/ui/TargetRow.qml:42
+#, kde-format
+msgid "Press to capture"
+msgstr "Appuyer pour capturer"
+
+#: plasmoid/contents/ui/TargetRow.qml:92
+#, kde-format
+msgid "Delete “%1”?"
+msgstr "Supprimer « %1 » ?"
+
+#: plasmoid/contents/ui/TargetRow.qml:99
+#, kde-format
+msgid "Its shortcut is cleared. Saved captures are kept."
+msgstr "Son raccourci est effacé. Les captures enregistrées sont conservées."
+
+#: plasmoid/contents/ui/TargetRow.qml:100
+#, kde-format
+msgid "Its targets stay. Only the group and its shortcut go."
+msgstr "Ses cibles restent. Seuls le groupe et son raccourci sont supprimés."
+
+#: plasmoid/contents/ui/TargetRow.qml:114
+#, kde-format
+msgid "New name"
+msgstr "Nouveau nom"
+
+#: plasmoid/contents/ui/TargetRow.qml:115
+#, kde-format
+msgid "Empty: back to the connector name"
+msgstr "Vide : revenir au nom du connecteur"
+
+#: plasmoid/contents/ui/TargetRow.qml:138
+#, kde-format
+msgid "Capture now"
+msgstr "Capturer maintenant"
+
+#: plasmoid/contents/ui/TargetRow.qml:144
+#, kde-format
+msgid "Stop interval"
+msgstr "Arrêter l'intervalle"
+
+#: plasmoid/contents/ui/TargetRow.qml:145
+#, kde-format
+msgid "Start interval (%1 s)"
+msgstr "Démarrer l'intervalle (%1 s)"
+
+#: plasmoid/contents/ui/TargetRow.qml:153
+#, kde-format
+msgid "Edit area on screen"
+msgstr "Modifier la zone à l'écran"
+
+#: plasmoid/contents/ui/TargetRow.qml:153
+#, kde-format
+msgid "Edit group…"
+msgstr "Modifier le groupe…"
+
+#: plasmoid/contents/ui/TargetRow.qml:160
+#, kde-format
+msgid "Rename"
+msgstr "Renommer"
+
+#: plasmoid/contents/ui/TargetRow.qml:166 plasmoid/contents/ui/TargetRow.qml:196
+#, kde-format
+msgid "Delete"
+msgstr "Supprimer"
+
+#: plasmoid/contents/ui/TargetRow.qml:177
+#, kde-format
+msgid "Apply"
+msgstr "Appliquer"
+
+#: plasmoid/contents/ui/TargetRow.qml:182 plasmoid/contents/ui/TargetRow.qml:203 plasmoid/contents/ui/main.qml:306
+#, kde-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#: plasmoid/contents/ui/main.qml:48 plasmoid/contents/ui/main.qml:432
+#, kde-format
+msgid "Itsova is not running"
+msgstr "Itsova n'est pas en cours d'exécution"
+
+#: plasmoid/contents/ui/main.qml:53 plasmoid/contents/ui/main.qml:496
+#, kde-format
+msgid "1 interval capture active"
+msgid_plural "%1 interval captures active"
+msgstr[0] "1 capture à intervalles active"
+msgstr[1] "%1 captures à intervalles actives"
+
+#: plasmoid/contents/ui/main.qml:54
+#, kde-format
+msgid "Capture fixed areas and monitors"
+msgstr "Capturer des zones fixes et des écrans"
+
+#: plasmoid/contents/ui/main.qml:92
+#, kde-format
+msgid "Groups"
+msgstr "Groupes"
+
+#: plasmoid/contents/ui/main.qml:93
+#, kde-format
+msgid "Areas"
+msgstr "Zones"
+
+#: plasmoid/contents/ui/main.qml:94
+#, kde-format
+msgid "Monitors"
+msgstr "Écrans"
+
+#: plasmoid/contents/ui/main.qml:135
+#, kde-format
+msgid "Starting the recording of %1…"
+msgstr "Démarrage de l'enregistrement de %1…"
+
+#: plasmoid/contents/ui/main.qml:137
+#, kde-format
+msgid "Recording of %1 paused at %2"
+msgstr "Enregistrement de %1 mis en pause à %2"
+
+#: plasmoid/contents/ui/main.qml:139
+#, kde-format
+msgid "Saving the recording of %1…"
+msgstr "Sauvegarde de l'enregistrement de %1…"
+
+#: plasmoid/contents/ui/main.qml:141
+#, kde-format
+msgid "Recording %1: %2"
+msgstr "Enregistrement de %1 : %2"
+
+#: plasmoid/contents/ui/main.qml:264
+#, kde-format
+msgid "Stop recording"
+msgstr "Arrêter l'enregistrement"
+
+#: plasmoid/contents/ui/main.qml:307
+#, kde-format
+msgid "%1 s"
+msgstr "%1 s"
+
+#: plasmoid/contents/ui/main.qml:308
+#, kde-format
+msgid "Delay"
+msgstr "Délai"
+
+#: plasmoid/contents/ui/main.qml:324
+#, kde-format
+msgid "No delay"
+msgstr "Sans délai"
+
+#: plasmoid/contents/ui/main.qml:331
+#, kde-format
+msgid "3 seconds"
+msgstr "3 secondes"
+
+#: plasmoid/contents/ui/main.qml:337
+#, kde-format
+msgid "5 seconds"
+msgstr "5 secondes"
+
+#: plasmoid/contents/ui/main.qml:343
+#, kde-format
+msgid "10 seconds"
+msgstr "10 secondes"
+
+#: plasmoid/contents/ui/main.qml:350
+#, kde-format
+msgid "Keep delay active"
+msgstr "Garder le délai actif"
+
+#: plasmoid/contents/ui/main.qml:359
+#, kde-format
+msgid "Record"
+msgstr "Filmer"
+
+#: plasmoid/contents/ui/main.qml:366
+#, kde-format
+msgid "Pick Color"
+msgstr "Prélever une couleur"
+
+#: plasmoid/contents/ui/main.qml:373
+#, kde-format
+msgid "Add Area"
+msgstr "Ajouter une zone"
+
+#: plasmoid/contents/ui/main.qml:379
+#, kde-format
+msgid "Configure Itsova…"
+msgstr "Configurer Itsova…"
+
+#: plasmoid/contents/ui/main.qml:397
+#, kde-format
+msgid "Open Last Capture"
+msgstr "Ouvrir la dernière capture"
+
+#: plasmoid/contents/ui/main.qml:406
+#, kde-format
+msgid "Edit Last Capture"
+msgstr "Modifier la dernière capture"
+
+#: plasmoid/contents/ui/main.qml:415
+#, kde-format
+msgid "Open Capture Folder"
+msgstr "Ouvrir le dossier de captures"
+
+#: plasmoid/contents/ui/main.qml:433
+#, kde-format
+msgid "Shortcuts and captures need the Itsova service."
+msgstr "Les raccourcis et les captures nécessitent le service itsova."
+
+#: plasmoid/contents/ui/main.qml:436
+#, kde-format
+msgid "Start Itsova"
+msgstr "Démarrer Itsova"
+
+#: plasmoid/contents/ui/main.qml:467
+#, kde-format
+msgid "Pause"
+msgstr "Pause"
+
+#: plasmoid/contents/ui/main.qml:467
+#, kde-format
+msgid "Resume"
+msgstr "Reprendre"
+
+#: plasmoid/contents/ui/main.qml:472
+#, kde-format
+msgid "Stop"
+msgstr "Arrêter"
+
+#: plasmoid/contents/ui/main.qml:501
+#, kde-format
+msgid "Stop All"
+msgstr "Tout arrêter"
+
+#: plasmoid/contents/ui/main.qml:567
+#, kde-format
+msgid "Loading…"
+msgstr "Chargement…"

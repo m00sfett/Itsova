@@ -119,7 +119,7 @@ public:
 // Applies the UI language (#51). KDE Frameworks load their own Qt catalogs from QLocale's UI
 // languages in startup hooks that run inside the application constructor, and QLocale reads
 // LANGUAGE once. So LANGUAGE is set before the application object exists and restored once it
-// does, so that programs glimply starts (hooks, viewers, tesseract) keep the user's environment.
+// does, so that programs itsova starts (hooks, viewers, tesseract) keep the user's environment.
 class UiLanguageScope
 {
 public:
@@ -142,12 +142,12 @@ public:
     // Call once the application object exists.
     void install(QCoreApplication &app) const
     {
-        const bool english = language_ == QLatin1String(glimply::sourceUiLanguage);
+        const bool english = language_ == QLatin1String(itsova::sourceUiLanguage);
         KLocalizedString::setLanguages({english ? QStringLiteral("en_US") : language_});
         // English loads its catalog too: it carries the plural forms ("%n capture(s)").
         auto *own = new QTranslator(&app);
-        const QString base = QStringLiteral("glimply_") + language_;
-        for (const QString &dir : glimply::translationDirectories()) {
+        const QString base = QStringLiteral("itsova_") + language_;
+        for (const QString &dir : itsova::translationDirectories()) {
             if (own->load(base, dir)) {
                 QCoreApplication::installTranslator(own);
                 break;
@@ -191,27 +191,27 @@ private:
 
 QString effectiveUiLanguage()
 {
-    return glimply::resolveUiLanguage(glimply::configuredUiLanguage(), glimply::systemUiLanguages());
+    return itsova::resolveUiLanguage(itsova::configuredUiLanguage(), itsova::systemUiLanguages());
 }
 
 } // namespace
 
 int main(int argc, char *argv[])
 {
-    // `glimply logs [journalctl options]` (#92): glimply's lines from the user journal.
+    // `itsova logs [journalctl options]` (#92): itsova's lines from the user journal.
     if (argc >= 2 && qstrcmp(argv[1], "logs") == 0) {
         QStringList extra;
         for (int i = 2; i < argc; ++i) {
             extra.append(QString::fromLocal8Bit(argv[i]));
         }
         if (extra.contains(QStringLiteral("-h")) || extra.contains(QStringLiteral("--help"))) {
-            std::fputs("Usage: glimply logs [journalctl options]\n"
-                       "Shows glimply's lines from the user journal (last hour without options).\n"
-                       "Examples: glimply logs -f, glimply logs -n 200, glimply logs --since today\n",
+            std::fputs("Usage: itsova logs [journalctl options]\n"
+                       "Shows itsova's lines from the user journal (last hour without options).\n"
+                       "Examples: itsova logs -f, itsova logs -n 200, itsova logs --since today\n",
                        stdout);
             return 0;
         }
-        const QStringList args = glimply::journalctlArguments(extra);
+        const QStringList args = itsova::journalctlArguments(extra);
         std::vector<QByteArray> storage{QByteArrayLiteral("journalctl")};
         for (const QString &arg : args) {
             storage.push_back(arg.toLocal8Bit());
@@ -222,11 +222,11 @@ int main(int argc, char *argv[])
         }
         argvOut.push_back(nullptr);
         execvp("journalctl", argvOut.data());
-        std::fputs("glimply: journalctl not found.\n", stderr);
+        std::fputs("itsova: journalctl not found.\n", stderr);
         return 1;
     }
 
-    if (argc >= 2 && glimply::isCliSubcommand(QString::fromLocal8Bit(argv[1]))) {
+    if (argc >= 2 && itsova::isCliSubcommand(QString::fromLocal8Bit(argv[1]))) {
         qInstallMessageHandler(routeQtLogsToStderr);
         // JSON output stays English whatever the UI language (#51); human-readable text follows it.
         bool jsonOutput = false;
@@ -235,10 +235,10 @@ int main(int argc, char *argv[])
                 jsonOutput = true;
             }
         }
-        UiLanguageScope language(jsonOutput ? QString::fromLatin1(glimply::sourceUiLanguage) : effectiveUiLanguage());
+        UiLanguageScope language(jsonOutput ? QString::fromLatin1(itsova::sourceUiLanguage) : effectiveUiLanguage());
         QCoreApplication cliApp(argc, argv);
-        QCoreApplication::setApplicationName(QStringLiteral("glimply"));
-        QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+        QCoreApplication::setApplicationName(QStringLiteral("itsova"));
+        QCoreApplication::setApplicationVersion(QStringLiteral(ITSOVA_VERSION));
         if (jsonOutput) {
             QCoreApplication::installTranslator(new SourceTextTranslator(&cliApp));
         } else {
@@ -248,11 +248,11 @@ int main(int argc, char *argv[])
         QFile outFile;
         QFile errFile;
         if (!outFile.open(stdout, QIODevice::WriteOnly) || !errFile.open(stderr, QIODevice::WriteOnly)) {
-            std::fputs("glimply: failed to open standard streams.\n", stderr);
+            std::fputs("itsova: failed to open standard streams.\n", stderr);
             return 1;
         }
-        glimply::DBusCliBackend backend;
-        const int code = glimply::runCli(QCoreApplication::arguments(), backend, outFile, errFile);
+        itsova::DBusCliBackend backend;
+        const int code = itsova::runCli(QCoreApplication::arguments(), backend, outFile, errFile);
         outFile.flush();
         errFile.flush();
         return code;
@@ -261,48 +261,48 @@ int main(int argc, char *argv[])
     if (argc >= 2 && QString::fromLocal8Bit(argv[1]).compare(QLatin1String("mcp"), Qt::CaseInsensitive) == 0) {
         qInstallMessageHandler(routeQtLogsToStderr);
         // MCP texts stay English (#51).
-        UiLanguageScope language(QString::fromLatin1(glimply::sourceUiLanguage));
+        UiLanguageScope language(QString::fromLatin1(itsova::sourceUiLanguage));
         QCoreApplication mcpApp(argc, argv);
-        QCoreApplication::setApplicationName(QStringLiteral("glimply"));
-        QCoreApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+        QCoreApplication::setApplicationName(QStringLiteral("itsova"));
+        QCoreApplication::setApplicationVersion(QStringLiteral(ITSOVA_VERSION));
         QCoreApplication::setOrganizationDomain(QStringLiteral("m00sfett.github.io"));
         QCoreApplication::installTranslator(new SourceTextTranslator(&mcpApp));
         language.restoreEnvironment();
         const QStringList args = QCoreApplication::arguments();
         if (args.contains(QStringLiteral("--help")) || args.contains(QStringLiteral("-h"))) {
-            std::fputs("Usage: glimply mcp\n"
+            std::fputs("Usage: itsova mcp\n"
                        "Runs the local stdio JSON-RPC 2.0 MCP server (disabled by default; enable in\n"
-                       "glimply Settings -> Automation -> Local MCP Server).\n",
+                       "Itsova Settings -> Automation -> Local MCP Server).\n",
                        stderr);
             return 0;
         }
-        glimply::DBusMcpBackend backend;
-        return glimply::McpServer::runStdio(backend);
+        itsova::DBusMcpBackend backend;
+        return itsova::McpServer::runStdio(backend);
     }
 
     UiLanguageScope language(effectiveUiLanguage());
     QApplication application(argc, argv);
-    QApplication::setApplicationName(QStringLiteral("glimply"));
-    QApplication::setApplicationDisplayName(QStringLiteral("glimply"));
-    QApplication::setApplicationVersion(QStringLiteral(GLIMPLY_VERSION));
+    QApplication::setApplicationName(QStringLiteral("itsova"));
+    QApplication::setApplicationDisplayName(QStringLiteral("Itsova"));
+    QApplication::setApplicationVersion(QStringLiteral(ITSOVA_VERSION));
     QApplication::setOrganizationDomain(QStringLiteral("m00sfett.github.io"));
-    QApplication::setDesktopFileName(QStringLiteral("io.github.m00sfett.glimply"));
+    QApplication::setDesktopFileName(QStringLiteral("io.github.m00sfett.itsova"));
     language.install(application);
     language.restoreEnvironment();
-    glimply::setActiveUiLanguage(language.language());
+    itsova::setActiveUiLanguage(language.language());
     // Qt derives the direction from the qtbase catalog; set it from the language as well, since
     // not every UI language has a Qt catalog.
     QGuiApplication::setLayoutDirection(QLocale(language.language()).textDirection());
     // A tray application keeps running when the settings window closes.
     QApplication::setQuitOnLastWindowClosed(false);
     // Nor when the last QEventLoopLocker goes (a finished notification): with the tray icon hidden
-    // (#123) there may be no window and no item left, and glimply only quits when asked to.
+    // (#123) there may be no window and no item left, and itsova only quits when asked to.
     QCoreApplication::setQuitLockEnabled(false);
 
     // Used by the uninstaller: give the Print key back to its previous owner (usually Spectacle).
     if (QApplication::arguments().contains(QStringLiteral("--release-print-key"))) {
-        KConfig config(QStringLiteral("glimplyrc"), KConfig::SimpleConfig);
-        glimply::PrintKey::release(config, true);
+        KConfig config(QStringLiteral("itsovarc"), KConfig::SimpleConfig);
+        itsova::PrintKey::release(config, true);
         config.group(QStringLiteral("General")).writeEntry("UsePrintKey", false);
         config.sync();
         return 0;
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
     // One instance per session: a second start forwards its arguments and exits.
     KDBusService service(KDBusService::Unique);
 
-    glimply::App app;
+    itsova::App app;
     if (QApplication::arguments().contains(QStringLiteral("--verbose"))) {
         app.setVerboseFromCommandLine(true);
     }
@@ -339,7 +339,7 @@ int main(int argc, char *argv[])
                          for (const QString &path : paths) {
                              app.openEditorForFile(path);
                          }
-                         // A plain second start (launcher, `glimply`) opens the settings, the way
+                         // A plain second start (launcher, `itsova`) opens the settings, the way
                          // back when the tray icon is hidden (#123).
                          if (arguments.size() <= 1) {
                              qCInfo(lcApp) << "second start without arguments: opening the settings";

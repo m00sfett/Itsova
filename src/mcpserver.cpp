@@ -10,18 +10,18 @@
 #include <iostream>
 #include <string>
 
-#ifndef GLIMPLY_VERSION
-#define GLIMPLY_VERSION "0.8.0"
+#ifndef ITSOVA_VERSION
+#define ITSOVA_VERSION "0.8.0"
 #endif
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
 
-constexpr auto dbusService = "io.github.m00sfett.glimply";
+constexpr auto dbusService = "io.github.m00sfett.itsova";
 constexpr auto dbusPath = "/Control";
-constexpr auto dbusIface = "io.github.m00sfett.glimply.Control";
+constexpr auto dbusIface = "io.github.m00sfett.itsova.Control";
 
 QJsonObject propString(const QString &desc)
 {
@@ -132,7 +132,7 @@ McpToolResponse DBusMcpBackend::callTool(const QString &toolName, const QJsonObj
     QJsonParseError err{};
     const QJsonDocument doc = QJsonDocument::fromJson(payload.toUtf8(), &err);
     if (err.error != QJsonParseError::NoError || !doc.isObject()) {
-        return {false, {}, QStringLiteral("Invalid response from glimply daemon: %1").arg(err.errorString()),
+        return {false, {}, QStringLiteral("Invalid response from itsova daemon: %1").arg(err.errorString()),
                 std::nullopt};
     }
     return mcpToolResponseFromJson(doc.object());
@@ -158,7 +158,7 @@ QJsonArray McpServer::toolDefinitions()
 
     tools.append(makeTool(
         QStringLiteral("capture_target"),
-        QStringLiteral("Capture a saved area, group, monitor, or 'all' monitors cleanly via glimply."),
+        QStringLiteral("Capture a saved area, group, monitor, or 'all' monitors cleanly via itsova."),
         {
             {QStringLiteral("target"), propString(QStringLiteral("Target ID or name (area, group, monitor, or 'all')."))},
             {QStringLiteral("format"), propString(QStringLiteral("Optional image format: png, jpeg, webp, avif, jxl."))},
@@ -202,7 +202,7 @@ QJsonArray McpServer::toolDefinitions()
 
     tools.append(makeTool(
         QStringLiteral("get_last_capture"),
-        QStringLiteral("Inspect metadata (and optionally image data) for the most recent glimply capture."),
+        QStringLiteral("Inspect metadata (and optionally image data) for the most recent itsova capture."),
         {
             {QStringLiteral("include_image"), propBool(QStringLiteral("Also return base64-encoded image content."))},
             {QStringLiteral("max_dimension"), propInt(QStringLiteral("Optional max pixel width/height for inline image."))},
@@ -284,8 +284,8 @@ QByteArray McpServer::processMessage(const QByteArray &rawLine, McpToolBackend &
                 {QStringLiteral("protocolVersion"), proto},
                 {QStringLiteral("capabilities"), QJsonObject{{QStringLiteral("tools"), QJsonObject{{QStringLiteral("listChanged"), false}}}}},
                 {QStringLiteral("serverInfo"),
-                 QJsonObject{{QStringLiteral("name"), QStringLiteral("glimply")},
-                             {QStringLiteral("version"), QStringLiteral(GLIMPLY_VERSION)}}},
+                 QJsonObject{{QStringLiteral("name"), QStringLiteral("itsova")},
+                             {QStringLiteral("version"), QStringLiteral(ITSOVA_VERSION)}}},
             });
     }
 
@@ -363,4 +363,4 @@ int McpServer::runStdio(McpToolBackend &backend)
     return 0;
 }
 
-} // namespace glimply
+} // namespace itsova

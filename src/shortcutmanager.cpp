@@ -5,7 +5,7 @@
 #include <QAction>
 #include <QSet>
 
-namespace glimply
+namespace itsova
 {
 
 ShortcutManager::ShortcutManager(QObject *parent)
@@ -76,4 +76,4 @@ bool ShortcutManager::setShortcut(const QString &id, const QKeySequence &sequenc
     return ok;
 }
 
-} // namespace glimply
+} // namespace itsova

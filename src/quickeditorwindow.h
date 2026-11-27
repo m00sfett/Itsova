@@ -18,7 +18,7 @@ class QScrollBar;
 class QTimer;
 class QToolButton;
 
-namespace glimply
+namespace itsova
 {
 
 // Standalone native KDE/Breeze quick editor window opened from CaptureOverlay ("Edit in Window"),
@@ -118,4 +118,4 @@ private:
     QToolButton *zoomInButton_ = nullptr;
 };
 
-} // namespace glimply
+} // namespace itsova

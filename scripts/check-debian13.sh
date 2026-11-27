@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds glimply and runs its tests in a Debian 13 (trixie) container, the oldest supported
+# Builds itsova and runs its tests in a Debian 13 (trixie) container, the oldest supported
 # toolchain (#55): Qt 6.8, KDE Frameworks 6.13, CMake 3.31. The source is mounted read-only;
 # the build happens inside the container. Needs Docker. Usage: scripts/check-debian13.sh
 set -euo pipefail

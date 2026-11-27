@@ -5,7 +5,7 @@
 #include <QJsonArray>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 struct AnnotateRequest
@@ -34,4 +34,4 @@ struct AnnotateResult
 // image file using AnnotationDocument + renderAnnotatedCrop.
 [[nodiscard]] AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request);
 
-} // namespace glimply
+} // namespace itsova

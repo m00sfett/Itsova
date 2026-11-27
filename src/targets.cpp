@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -364,7 +364,7 @@ QString targetIdFromIntervalShortcutId(const QString &id)
 
 QString TargetStore::defaultCaptureDirectory()
 {
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).filePath(QStringLiteral("glimply"));
+    return QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).filePath(QStringLiteral("itsova"));
 }
 
 QString TargetStore::defaultFilenameTemplate()
@@ -1123,4 +1123,4 @@ bool TargetStore::targetIncludesCursor(const QString &targetId) const
     return false;
 }
 
-} // namespace glimply
+} // namespace itsova

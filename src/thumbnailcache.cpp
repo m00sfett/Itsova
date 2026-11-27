@@ -17,7 +17,7 @@
 #include <QSaveFile>
 #include <QStandardPaths>
 
-namespace glimply
+namespace itsova
 {
 
 ThumbnailCache::ThumbnailCache(QString directory)
@@ -27,7 +27,7 @@ ThumbnailCache::ThumbnailCache(QString directory)
 
 QString ThumbnailCache::defaultDirectory()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QStringLiteral("/glimply/thumbs");
+    return QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QStringLiteral("/itsova/thumbs");
 }
 
 QString ThumbnailCache::directory() const
@@ -168,4 +168,4 @@ void ThumbnailCache::sweep(const QStringList &keepSources) const
     }
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -16,7 +16,7 @@
 
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -28,9 +28,9 @@ constexpr int captureHideTimeoutMs = 250;
 // Safety net: pins never stay invisible because a capture path forgot endCapture().
 constexpr int captureWatchdogMs = 60'000;
 
-const QString controlService = QStringLiteral("io.github.m00sfett.glimply");
+const QString controlService = QStringLiteral("io.github.m00sfett.itsova");
 const QString controlPath = QStringLiteral("/Control");
-const QString controlInterface = QStringLiteral("io.github.m00sfett.glimply.Control");
+const QString controlInterface = QStringLiteral("io.github.m00sfett.itsova.Control");
 
 // Waits until every given window has had its last commit consumed by the compositor: a requested
 // update is delivered on the Wayland frame callback of the frame that showed the transparent pin.
@@ -105,14 +105,14 @@ PinManager::PinManager(QObject *parent)
     connect(saveTimer_, &QTimer::timeout, this, [this] {
         QString error;
         if (!store_.save(&error)) {
-            qWarning("glimply: could not save pins: %s", qPrintable(error));
+            qWarning("itsova: could not save pins: %s", qPrintable(error));
         }
     });
     captureWatchdog_->setSingleShot(true);
     captureWatchdog_->setInterval(captureWatchdogMs);
     connect(captureWatchdog_, &QTimer::timeout, this, [this] {
         if (captureDepth_ > 0) {
-            qWarning("glimply: pins were hidden for a capture for too long; showing them again");
+            qWarning("itsova: pins were hidden for a capture for too long; showing them again");
             captureDepth_ = 1;
             endCapture();
         }
@@ -141,7 +141,7 @@ void PinManager::restore()
 {
     QString error;
     if (!store_.load(&error)) {
-        qWarning("glimply: ignoring unreadable pin list: %s", qPrintable(error));
+        qWarning("itsova: ignoring unreadable pin list: %s", qPrintable(error));
         return;
     }
     for (const PinRecord &record : store_.pins()) {
@@ -184,7 +184,7 @@ void PinManager::pinImage(const QImage &image, const QRect &logicalRect)
     const std::optional<PinRecord> record =
         store_.add(image, placement ? placement->first : QString(), placement ? placement->second : topLeft, &error);
     if (!record) {
-        qWarning("glimply: could not store pin: %s", qPrintable(error));
+        qWarning("itsova: could not store pin: %s", qPrintable(error));
         return;
     }
     // A new pin is meant to be seen, even when the user hid the others before.
@@ -420,4 +420,4 @@ void PinManager::endCapture()
     }
 }
 
-} // namespace glimply
+} // namespace itsova

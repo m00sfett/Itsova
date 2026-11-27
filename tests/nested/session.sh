@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Nested-KWin acceptance tests (#93). Runs one test script against a glimply binary inside a
+# Nested-KWin acceptance tests (#93). Runs one test script against a itsova binary inside a
 # nested, virtual KWin on a private D-Bus session with a throw-away HOME, so the desktop session
 # is never touched.
 #
-# Usage: tests/nested/session.sh [options] <glimply> <fakekey> <test.sh>
+# Usage: tests/nested/session.sh [options] <itsova> <fakekey> <test.sh>
 #   --monitors N        virtual outputs (default 1)
 #   --size WxH          output size (default 1920x1080)
 #   --scale F           output scale of the nested KWin
-#   --apps "a b"        Wayland apps started before glimply (windows for window tests)
-#   --rc "[G]\nK=V"     lines appended to glimplyrc before glimply starts
+#   --apps "a b"        Wayland apps started before itsova (windows for window tests)
+#   --rc "[G]\nK=V"     lines appended to itsovarc before itsova starts
 #   --scheme NAME       colour scheme, e.g. BreezeLight or BreezeDark
 #   --out DIR           keep screenshots and files there (default: a temporary directory)
 #
@@ -41,17 +41,17 @@ done
 binary="$(realpath "${positional[0]}")"
 fakekey="$(realpath "${positional[1]}")"
 test_script="$(realpath "${positional[2]}")"
-[[ -x "$binary" ]] || { echo "glimply binary not found: $binary" >&2; exit 2; }
+[[ -x "$binary" ]] || { echo "itsova binary not found: $binary" >&2; exit 2; }
 for tool in kwin_wayland dbus-run-session busctl python3 magick ffprobe; do
     command -v "$tool" >/dev/null || { echo "skipped: $tool is missing" >&2; exit 77; }
 done
 python3 -c 'import dbus' 2>/dev/null || { echo "skipped: python-dbus is missing" >&2; exit 77; }
 
-if [[ -z "${GLIMPLY_NESTED_INNER:-}" ]]; then
+if [[ -z "${ITSOVA_NESTED_INNER:-}" ]]; then
     # Everything the private session starts must see only the throw-away HOME and no real display,
     # and the private bus must not activate any installed service (it would start the installed
-    # glimply with the real HOME instead of the binary under test).
-    home="$(mktemp -d "${TMPDIR:-/tmp}/glimply-nested.XXXXXX")"
+    # itsova with the real HOME instead of the binary under test).
+    home="$(mktemp -d "${TMPDIR:-/tmp}/itsova-nested.XXXXXX")"
     [[ -n "$out" ]] || out="$home/out"
     inner_pid=""
     outer_cleanup() {
@@ -67,7 +67,7 @@ if [[ -z "${GLIMPLY_NESTED_INNER:-}" ]]; then
     trap 'exit 130' INT TERM
     sed '/<standard_session_servicedirs/d' /usr/share/dbus-1/session.conf >"$home/session.conf"
     mkdir -p "$home/.config" "$home/.local/share" "$home/.cache" "$home/.local/state" "$home/Pictures"
-    setsid env -u WAYLAND_DISPLAY -u DISPLAY -u DBUS_SESSION_BUS_ADDRESS GLIMPLY_NESTED_INNER=1 \
+    setsid env -u WAYLAND_DISPLAY -u DISPLAY -u DBUS_SESSION_BUS_ADDRESS ITSOVA_NESTED_INNER=1 \
         HOME="$home" XDG_CONFIG_HOME="$home/.config" XDG_DATA_HOME="$home/.local/share" \
         XDG_CACHE_HOME="$home/.cache" XDG_STATE_HOME="$home/.local/state" QT_QPA_PLATFORM= \
         dbus-run-session --config-file="$home/session.conf" -- "${BASH_SOURCE[0]}" --monitors "$monitors" \
@@ -82,9 +82,9 @@ fi
 
 home="$HOME"
 here="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-socket="glimply-nested-$$"
+socket="itsova-nested-$$"
 kwin_pid=""
-glimply_pid=""
+itsova_pid=""
 app_pids=()
 stop_pid() {
     local pid="$1"
@@ -98,7 +98,7 @@ stop_pid() {
     wait "$pid" 2>/dev/null || true
 }
 cleanup() {
-    stop_pid "$glimply_pid"
+    stop_pid "$itsova_pid"
     for pid in "${app_pids[@]}"; do stop_pid "$pid"; done
     stop_pid "$kwin_pid"
 }
@@ -110,18 +110,18 @@ printf '[Desktop Entry]\nType=Application\nName=kwinshot\nNoDisplay=true\nExec=%
     "$(realpath "$(command -v python3)")" >"$home/.local/share/applications/kwinshot.desktop"
 printf '[Desktop Entry]\nType=Application\nName=fakekey\nNoDisplay=true\nExec=%s\nX-KDE-Wayland-Interfaces=org_kde_kwin_fake_input\n' \
     "$fakekey" >"$home/.local/share/applications/fakekey.desktop"
-printf '[Desktop Entry]\nType=Application\nName=glimply-under-test\nNoDisplay=true\nExec=%s\nX-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\nX-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1\n' \
-    "$binary" >"$home/.local/share/applications/glimply-under-test.desktop"
-# Notification events as an installed glimply has them.
+printf '[Desktop Entry]\nType=Application\nName=itsova-under-test\nNoDisplay=true\nExec=%s\nX-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2\nX-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1\n' \
+    "$binary" >"$home/.local/share/applications/itsova-under-test.desktop"
+# Notification events as an installed itsova has them.
 mkdir -p "$home/.local/share/knotifications6"
-cp "$here/../../data/io.github.m00sfett.glimply.notifyrc" "$home/.local/share/knotifications6/"
-[[ -n "$rc" ]] && printf '%b\n' "$rc" >>"$home/.config/glimplyrc"
+cp "$here/../../data/io.github.m00sfett.itsova.notifyrc" "$home/.local/share/knotifications6/"
+[[ -n "$rc" ]] && printf '%b\n' "$rc" >>"$home/.config/itsovarc"
 if [[ -n "$scheme" ]]; then
     cp "/usr/share/color-schemes/${scheme}.colors" "$home/.config/kdeglobals"
     printf '\n[General]\nColorScheme=%s\n' "$scheme" >>"$home/.config/kdeglobals"
 fi
 # Tests never open the first-start hint.
-printf '[General]\nOverlayFirstHintShown=true\n' >>"$home/.config/glimplyrc"
+printf '[General]\nOverlayFirstHintShown=true\n' >>"$home/.config/itsovarc"
 
 kwin_wayland --virtual --no-lockscreen ${scale:+--scale "$scale"} --socket "$socket" --width "${size%x*}" \
     --height "${size#*x}" --output-count "$monitors" >"$home/kwin.log" 2>&1 &
@@ -136,27 +136,27 @@ for app in $apps; do
 done
 [[ -n "$apps" ]] && sleep 3
 QT_FORCE_STDERR_LOGGING=1 WAYLAND_DISPLAY="$socket" QT_QPA_PLATFORM=wayland LANGUAGE=en LANG=en_US.UTF-8 \
-    "$binary" >"$home/glimply.log" 2>&1 &
-glimply_pid=$!
+    "$binary" >"$home/itsova.log" 2>&1 &
+itsova_pid=$!
 ready=0
 for _ in $(seq 100); do
-    if busctl --user --auto-start=no call io.github.m00sfett.glimply /Control \
-        io.github.m00sfett.glimply.Control LatencyReport >/dev/null 2>&1; then
+    if busctl --user --auto-start=no call io.github.m00sfett.itsova /Control \
+        io.github.m00sfett.itsova.Control LatencyReport >/dev/null 2>&1; then
         ready=1
         break
     fi
     sleep 0.1
 done
 if ((!ready)); then
-    echo "glimply did not come up"; cat "$home/glimply.log"; exit 1
+    echo "itsova did not come up"; cat "$home/itsova.log"; exit 1
 fi
 
 status=0
 socket="$socket" fakekey="$fakekey" kwinshot="$here/kwinshot.py" out="$out" home="$home" binary="$binary" \
-    GLIMPLY_NESTED_LIB="$here/lib.sh" bash -c 'source "$GLIMPLY_NESTED_LIB"; source "$0"' "$test_script" || status=$?
+    ITSOVA_NESTED_LIB="$here/lib.sh" bash -c 'source "$ITSOVA_NESTED_LIB"; source "$0"' "$test_script" || status=$?
 mkdir -p "$out/files" && cp -r "$home/Pictures/." "$out/files/" 2>/dev/null || true
 if ((status != 0)); then
-    echo "--- glimply.log (test exited with $status)"; tail -n 80 "$home/glimply.log"
+    echo "--- itsova.log (test exited with $status)"; tail -n 80 "$home/itsova.log"
 fi
-cp "$home/glimply.log" "$out/glimply.log" 2>/dev/null || true
+cp "$home/itsova.log" "$out/itsova.log" 2>/dev/null || true
 exit "$status"

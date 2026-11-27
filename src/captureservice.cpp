@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -46,7 +46,7 @@ QString describeError(const QDBusError &error, const QString &subject)
 {
     if (error.name() == QStringLiteral("org.kde.KWin.ScreenShot2.Error.NoAuthorized")
         || error.type() == QDBusError::AccessDenied) {
-        return CaptureText::tr("KWin denied permission to capture the screen. Install glimply with its desktop entry "
+        return CaptureText::tr("KWin denied permission to capture the screen. Install Itsova with its desktop entry "
                                "to grant access to the KDE screenshot service.");
     }
     if (error.type() == QDBusError::NoReply || error.type() == QDBusError::Timeout
@@ -265,4 +265,4 @@ CaptureResult CaptureService::captureWindow(const QString &handle, bool includeC
     return capture(QStringLiteral("CaptureWindow"), {handle}, includeCursor, QString(), CaptureText::tr("the window"));
 }
 
-} // namespace glimply
+} // namespace itsova

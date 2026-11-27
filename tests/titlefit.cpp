@@ -24,8 +24,8 @@ int main(int argc, char **argv)
         }
         const QString lang = line.left(tab);
         const QString title = line.mid(tab + 1);
-        const glimply::PanelTitleLayout layout =
-            glimply::fitPanelTitle(title, QFont(), glimply::PanelButton::side - 8);
+        const itsova::PanelTitleLayout layout =
+            itsova::fitPanelTitle(title, QFont(), itsova::PanelButton::side - 8);
         ++total;
         if (layout.elided) {
             ++elided;

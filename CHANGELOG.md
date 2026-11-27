@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Tray, recording shortcut and recording feedback from the 0.11.0 hand test (milestone 0.12.0).
 
+### Changed
+
+- Glimply is now Itsova. See the README for migrating an existing profile and KDE shortcuts.
+
 ### Added
 
 - Tray icon visibility (#123): *Settings → General → Tray icon* offers *Always* (default, as before), *Only while something runs* (a recording or interval captures) and *Only while recording*. Hidden, the status notifier item is removed, not only moved to the hidden part of the tray; it comes back with the recording icon as soon as a recording starts, so it can always be stopped, and goes when it ends. A hint under the setting says how to get back to the settings: a second start of `glimply` without arguments (launcher entry or command line) now opens the settings of the running instance, whatever the tray setting. glimply no longer quits when its last notification closes while no window and no tray icon is left.
@@ -25,7 +29,7 @@ Tray, recording shortcut and recording feedback from the 0.11.0 hand test (miles
 
 ## [0.11.0] - Unreleased
 
-Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0). The repository stays private until 1.0.0.
+Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0).
 
 ### Added
 
@@ -57,7 +61,7 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 
 ## [0.10.0] - Unreleased
 
-Screen recording (milestone 0.10.0, #30). The repository stays private until 1.0.0.
+Screen recording (milestone 0.10.0, #30).
 
 ### Added
 
@@ -79,7 +83,7 @@ Screen recording (milestone 0.10.0, #30). The repository stays private until 1.0
 
 ## [0.9.0] - Unreleased
 
-Overlay redesign and capture latency (milestone 0.9.0). The repository stays private until 1.0.0.
+Overlay redesign and capture latency (milestone 0.9.0).
 
 ### Added
 
@@ -103,7 +107,7 @@ Overlay redesign and capture latency (milestone 0.9.0). The repository stays pri
 
 ## [0.8.0] - Unreleased
 
-Public release readiness: translations, packaging and documentation. The repository stays private until 1.0.0.
+Public release readiness: translations, packaging and documentation.
 
 ### Added
 

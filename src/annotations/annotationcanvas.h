@@ -12,7 +12,7 @@
 #include <QSizeF>
 #include <QWidget>
 
-namespace glimply
+namespace itsova
 {
 
 class CropImageCommand;
@@ -76,7 +76,7 @@ Q_SIGNALS:
     void cropRectChanged(const QRect &logicalCropRect);
     void imageDimensionsChanged();
     void colorPickerActiveChanged(bool active);
-    void colorFormatChanged(glimply::ColorFormat format);
+    void colorFormatChanged(itsova::ColorFormat format);
     void colorPicked(const QColor &color, const QString &formatted, bool applyToTool);
 
 protected:
@@ -137,4 +137,4 @@ private:
     Qt::Edges cropEdges_;
 };
 
-} // namespace glimply
+} // namespace itsova

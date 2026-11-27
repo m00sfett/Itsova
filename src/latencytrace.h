@@ -6,15 +6,15 @@
 #include <QString>
 
 
-namespace glimply
+namespace itsova
 {
 
 // Timing of one Print capture, from the trigger to the written file (#67). On Wayland kglobalaccel
-// sends no key timestamp (always 0), so the time before glimply receives the trigger is unknown.
-// All offsets are microseconds after glimply received the trigger; -1 means "not reached".
+// sends no key timestamp (always 0), so the time before itsova receives the trigger is unknown.
+// All offsets are microseconds after itsova received the trigger; -1 means "not reached".
 struct LatencySample
 {
-    qint64 startedUs = 0; // CLOCK_MONOTONIC, when glimply received the trigger
+    qint64 startedUs = 0; // CLOCK_MONOTONIC, when itsova received the trigger
     qint64 requestUs = -1; // first ScreenShot2 request sent
     qint64 pixelsUs = -1; // frames of all monitors in memory
     qint64 overlayUs = -1; // first overlay frame painted
@@ -59,4 +59,4 @@ public:
     static void resetForTest();
 };
 
-} // namespace glimply
+} // namespace itsova

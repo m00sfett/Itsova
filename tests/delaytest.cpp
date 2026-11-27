@@ -9,7 +9,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class DelayTest : public QObject
 {
@@ -58,7 +58,7 @@ void DelayTest::delayPersistenceAndOneShotReset()
     QVERIFY(!store.consumeOneShotDelay());
     QCOMPARE(store.captureDelaySeconds, 6);
 
-    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("glimplyrc"));
+    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("itsovarc"));
     {
         KConfig saveCfg(iniPath, KConfig::SimpleConfig);
         store.save(saveCfg);

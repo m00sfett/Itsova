@@ -11,7 +11,7 @@
 
 #include <cstdio>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -25,7 +25,7 @@ namespace
 {
 
 // A pause takes effect from its middle: frames before it are earlier, frames after it later, so
-// a small offset between glimply's clock and the stream's does not matter.
+// a small offset between itsova's clock and the stream's does not matter.
 double pauseThreshold(const RecordingPause &pause)
 {
     return (pause.start + pause.end) / 2;
@@ -59,7 +59,7 @@ std::optional<TailFix> planTailFix(const QString &ffprobeCsv, double targetSecon
         }
         if (pts < lastPts) {
             // Packets out of display order (B-frames): the last packet is not the last picture,
-            // and changing its duration would not hold it. glimply's encoders write none.
+            // and changing its duration would not hold it. itsova's encoders write none.
             return std::nullopt;
         }
         bool durationOk = false;
@@ -244,4 +244,4 @@ void RecordingFinalizer::finish(bool extended, const QString &note)
     Q_EMIT done(extended, note);
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class LatencyTraceTest : public QObject
 {

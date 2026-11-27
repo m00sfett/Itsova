@@ -55,7 +55,7 @@
 
 #include <functional>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -73,7 +73,7 @@ QString websiteUrl()
 // The repository; private until the name is cleared, then public under the same address.
 QString projectUrl()
 {
-    return QStringLiteral("https://github.com/m00sfett/glimply");
+    return QStringLiteral("https://github.com/m00sfett/Itsova");
 }
 
 QLabel *makeHint(const QString &text, QWidget *parent)
@@ -462,8 +462,8 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     : KPageDialog(parent)
     , app_(app)
 {
-    setWindowTitle(tr("Configure glimply"));
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.m00sfett.glimply"),
+    setWindowTitle(tr("Configure Itsova"));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.m00sfett.itsova"),
                                    QIcon::fromTheme(QStringLiteral("camera-photo"))));
     setFaceType(KPageDialog::List);
     setStandardButtons(QDialogButtonBox::Close);
@@ -512,7 +512,7 @@ void SettingsWindow::addFooter()
     about->setTextFormat(Qt::RichText);
     about->setOpenExternalLinks(true);
     about->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    about->setText(tr("glimply v%1 · AGPL-3.0 · <a href=\"%2\">roteson.de</a> · <a href=\"%3\">GitHub</a>")
+    about->setText(tr("Itsova v%1 · AGPL-3.0 · <a href=\"%2\">roteson.de</a> · <a href=\"%3\">GitHub</a>")
                        .arg(QCoreApplication::applicationVersion(), websiteUrl(), projectUrl()));
     QFont small = about->font();
     small.setPointSizeF(small.pointSizeF() * 0.9);
@@ -532,7 +532,7 @@ void SettingsWindow::addFooter()
         row->addWidget(mark);
     };
     addMark(QStringLiteral(":/brand/brand-roteson.png"), tr("roteson.de"), websiteUrl());
-    addMark(QStringLiteral(":/brand/brand-r2w2.png"), tr("R²W² Development · glimply on GitHub"), projectUrl());
+    addMark(QStringLiteral(":/brand/brand-r2w2.png"), tr("R²W² Development · Itsova on GitHub"), projectUrl());
 
     // A full-width line under the pages and the Close button.
     if (auto *top = qobject_cast<QBoxLayout *>(layout())) {
@@ -1815,7 +1815,7 @@ QWidget *SettingsWindow::createGeneralPage()
         language_->addItem(choice.nativeName, choice.code);
     }
     form->addRow(tr("Language:"), language_);
-    languageRestart_ = new KMessageWidget(tr("glimply needs to restart to switch the language."), page);
+    languageRestart_ = new KMessageWidget(tr("Itsova needs to restart to switch the language."), page);
     languageRestart_->setMessageType(KMessageWidget::Information);
     languageRestart_->setWordWrap(true);
     languageRestart_->setCloseButtonVisible(false);
@@ -1840,14 +1840,14 @@ QWidget *SettingsWindow::createGeneralPage()
     connect(restartNow, &QAction::triggered, this, [this] {
         if (!app_->restart()) {
             languageRestart_->setMessageType(KMessageWidget::Warning);
-            languageRestart_->setText(tr("glimply could not restart itself. Quit and start it again to switch the "
+            languageRestart_->setText(tr("Itsova could not restart itself. Quit and start it again to switch the "
                                          "language."));
         }
     });
 
-    autostart_ = new QCheckBox(tr("Start glimply when I log in"), page);
+    autostart_ = new QCheckBox(tr("Start Itsova when I log in"), page);
     form->addRow(tr("Startup:"), autostart_);
-    form->addRow(QString(), makeHint(tr("Shortcuts only work while glimply is running."), page));
+    form->addRow(QString(), makeHint(tr("Shortcuts only work while Itsova is running."), page));
     connect(autostart_, &QCheckBox::toggled, this, [this](bool on) {
         if (!updating_) {
             app_->store().autostart = on;
@@ -1862,8 +1862,8 @@ QWidget *SettingsWindow::createGeneralPage()
     trayVisibility_->addItem(tr("Only while recording"), int(TargetStore::TrayVisibility::WhileRecording));
     form->addRow(tr("Tray icon:"), trayVisibility_);
     trayHint_ = makeHint(tr("Shows while a recording runs (or interval captures, with Only while something runs), "
-                            "so you can stop it. To open these settings again, start glimply from the "
-                            "application launcher or run glimply."),
+                            "so you can stop it. To open these settings again, start Itsova from the "
+                            "application launcher or run itsova."),
                          page);
     form->addRow(QString(), trayHint_);
     connect(trayVisibility_, &QComboBox::currentIndexChanged, this, [this] {
@@ -1875,7 +1875,7 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
-    usePrintKey_ = new QCheckBox(tr("Use the Print key for glimply"), page);
+    usePrintKey_ = new QCheckBox(tr("Use the Print key for Itsova"), page);
     form->addRow(tr("Print key:"), usePrintKey_);
     form->addRow(QString(), makeHint(tr("Print saves all monitors right away. Turning this off gives the Print key "
                                         "back to the application that had it before, usually Spectacle."),
@@ -1976,8 +1976,8 @@ QWidget *SettingsWindow::createGeneralPage()
     // Logging (#92): starts, stops and errors always reach the journal; this adds the details.
     verboseLogging_ = new QCheckBox(tr("Write detailed logs"), page);
     form->addRow(tr("Logging:"), verboseLogging_);
-    form->addRow(QString(), makeHint(tr("glimply always writes starts, stops and errors to the system journal. Detailed "
-                                        "logs help with bug reports. Show them with glimply logs."),
+    form->addRow(QString(), makeHint(tr("Itsova always writes starts, stops and errors to the system journal. Detailed "
+                                        "logs help with bug reports. Show them with itsova logs."),
                                      page));
     connect(verboseLogging_, &QCheckBox::toggled, this, [this](bool on) {
         if (!updating_) {
@@ -2025,7 +2025,7 @@ void SettingsWindow::refreshTextRecognition()
         ocrStatus_->setText(tr("Not installed. Install the tesseract package and a language package, for example "
                                "tesseract-data-eng, to copy text from captures."));
         ocrLanguages_->setEnabled(false);
-        ocrHint_->setText(tr("glimply works the same without it; Copy Text then explains what is missing."));
+        ocrHint_->setText(tr("Itsova works the same without it; Copy Text then explains what is missing."));
         return;
     }
     ocrStatus_->setText(tr("%1 found").arg(engine.description()));
@@ -2096,8 +2096,8 @@ QWidget *SettingsWindow::createAutomationPage()
     hookCommand_->setAccessibleName(tr("Post-capture command"));
     hookForm->addRow(tr("Command:"), hookCommand_);
     hookForm->addRow(QString(), makeHint(
-        tr("Executed directly without a shell. Pass %f for the file path(s), or read GLIMPLY_FILE, GLIMPLY_FILES, "
-           "GLIMPLY_TARGET_NAME, GLIMPLY_FORMAT, and GLIMPLY_TIMESTAMP. Use a script file for pipes or shell "
+        tr("Executed directly without a shell. Pass %f for the file path(s), or read ITSOVA_FILE, ITSOVA_FILES, "
+           "ITSOVA_TARGET_NAME, ITSOVA_FORMAT, and ITSOVA_TIMESTAMP. Use a script file for pipes or shell "
            "features."),
         hookDetails_));
 
@@ -2188,7 +2188,7 @@ QWidget *SettingsWindow::createAutomationPage()
     cmdRow->setSpacing(6);
     mcpCommandDisplay_ = new QLineEdit(mcpDetails_);
     mcpCommandDisplay_->setReadOnly(true);
-    mcpCommandDisplay_->setText(QStringLiteral("glimply mcp"));
+    mcpCommandDisplay_->setText(QStringLiteral("itsova mcp"));
     mcpCommandDisplay_->setAccessibleName(tr("MCP stdio launch command"));
     mcpCopyButton_ = new QPushButton(QIcon::fromTheme(QStringLiteral("edit-copy")), tr("Copy"), mcpDetails_);
     cmdRow->addWidget(mcpCommandDisplay_, 1);
@@ -2300,7 +2300,7 @@ QWidget *SettingsWindow::createAutomationPage()
         }
     });
     connect(mcpCopyButton_, &QPushButton::clicked, this, [this] {
-        QGuiApplication::clipboard()->setText(QStringLiteral("glimply mcp"));
+        QGuiApplication::clipboard()->setText(QStringLiteral("itsova mcp"));
         mcpCopyButton_->setText(tr("Copied"));
         QPointer<QPushButton> safeBtn(mcpCopyButton_);
         QTimer::singleShot(1500, this, [safeBtn] {
@@ -2410,4 +2410,4 @@ void SettingsWindow::refreshRecordingDefault()
     recordingDefaultRemove_->setVisible(!id.isEmpty());
 }
 
-} // namespace glimply
+} // namespace itsova

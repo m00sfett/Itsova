@@ -2,10 +2,10 @@
 # shortcut records exactly that target and stops it on the second press. Pinning Active Window
 # makes the shortcut record the focused window.
 # Linux keycodes: Right 106, Down 108, Escape 1, P 25.
-log="$home/glimply.log"
+log="$home/itsova.log"
 seen() { grep -c -- "$1" "$log"; }
 shortcut() {
-    busctl --user call org.kde.kglobalaccel /component/glimply org.kde.kglobalaccel.Component invokeShortcut s \
+    busctl --user call org.kde.kglobalaccel /component/itsova org.kde.kglobalaccel.Component invokeShortcut s \
         record-toggle >/dev/null || fail "could not invoke the recording shortcut"
 }
 # Without a default the shortcut opens the record overlay.
@@ -22,16 +22,16 @@ sleep 1
 shot monitor-pinned
 fake 1 1
 sleep 1
-grep -q '^DefaultTarget=screen:' "$home/.config/glimplyrc" || fail "default not saved"
+grep -q '^DefaultTarget=screen:' "$home/.config/itsovarc" || fail "default not saved"
 shortcut
 sleep 3
-[[ "$(recording_state)" == recording ]] || fail "the shortcut did not record the default: $(glimply_call RecordingState)"
+[[ "$(recording_state)" == recording ]] || fail "the shortcut did not record the default: $(itsova_call RecordingState)"
 grep -q 'start requested for "screen:' "$log" || fail "not the pinned monitor"
 shortcut
 wait_recording_idle 30 || fail "the second press did not stop"
 
 # Active Window: Windows menu (record mode), its first entry, P.
-glimply_call OpenRecordOverlay >/dev/null
+itsova_call OpenRecordOverlay >/dev/null
 sleep 2
 fake 106 106 106 108
 sleep 1

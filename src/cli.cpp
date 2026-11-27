@@ -16,19 +16,19 @@
 #include <algorithm>
 #include <array>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
 
 class CliText
 {
-    Q_DECLARE_TR_FUNCTIONS(glimply::cli)
+    Q_DECLARE_TR_FUNCTIONS(itsova::cli)
 };
 
-constexpr auto dbusService = "io.github.m00sfett.glimply";
+constexpr auto dbusService = "io.github.m00sfett.itsova";
 constexpr auto dbusPath = "/Control";
-constexpr auto dbusIface = "io.github.m00sfett.glimply.Control";
+constexpr auto dbusIface = "io.github.m00sfett.itsova.Control";
 
 void writeLine(QIODevice &dev, const QString &text)
 {
@@ -116,7 +116,7 @@ bool parseJsonDoc(const QByteArray &raw, QJsonDocument *doc, QString *error)
     *doc = QJsonDocument::fromJson(raw, &parseErr);
     if (parseErr.error != QJsonParseError::NoError) {
         if (error) {
-            *error = CliText::tr("Invalid JSON reply from glimply daemon: %1").arg(parseErr.errorString());
+            *error = CliText::tr("Invalid JSON reply from Itsova daemon: %1").arg(parseErr.errorString());
         }
         return false;
     }
@@ -142,7 +142,7 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
 {
     if (subcommand == QLatin1String("capture")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply capture <target|all|monitor:...|window:...> [options]\n\n"
+                  QStringLiteral("Usage: itsova capture <target|all|monitor:...|window:...> [options]\n\n"
                                  "Options:\n"
                                  "  --format <png|jpeg|webp|avif|jxl>  Output image format\n"
                                  "  --quality <1..100>                  Lossy encoder quality\n"
@@ -159,14 +159,14 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("list")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply list [--kind targets|monitors|windows] [--json]\n\n"
+                  QStringLiteral("Usage: itsova list [--kind targets|monitors|windows] [--json]\n\n"
                                  "Options:\n"
                                  "  --kind <targets|monitors|windows>   What to list (default: targets)\n"
                                  "  --json                              Output compact/pretty JSON\n"
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("area")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply area <subcommand> [options]\n\n"
+                  QStringLiteral("Usage: itsova area <subcommand> [options]\n\n"
                                  "Subcommands:\n"
                                  "  add [--name NAME] [--monitor CONNECTOR] [--rect X,Y,W,H] [--json]\n"
                                  "  edit <id-or-name>\n"
@@ -174,14 +174,14 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  remove <id-or-name> [--json]"));
     } else if (subcommand == QLatin1String("interval")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply interval <subcommand> [options]\n\n"
+                  QStringLiteral("Usage: itsova interval <subcommand> [options]\n\n"
                                  "Subcommands:\n"
                                  "  start <id-or-name> [--seconds N] [--max-captures N] [--max-minutes N] [--only-changed] [--json]\n"
                                  "  stop [<id-or-name> | --all] [--json]\n"
                                  "  status [--json]"));
     } else if (subcommand == QLatin1String("history")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply history [--limit N] [--json]\n\n"
+                  QStringLiteral("Usage: itsova history [--limit N] [--json]\n\n"
                                  "Lists recent captures, newest first (interval captures are not recorded).\n\n"
                                  "Options:\n"
                                  "  --limit <N>                         Show at most N captures\n"
@@ -189,9 +189,9 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("latency")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply latency [--last N] [--json]\n\n"
+                  QStringLiteral("Usage: itsova latency [--last N] [--json]\n\n"
                                  "Shows how long the last Print captures took, from the shortcut to the written file.\n"
-                                 "Times are milliseconds after glimply received the Print shortcut. The time before that, from\n"
+                                 "Times are milliseconds after itsova received the Print shortcut. The time before that, from\n"
                                  "the key press, is unknown: KDE sends no key timestamp on Wayland.\n\n"
                                  "Options:\n"
                                  "  --last <N>                          Only the last N captures\n"
@@ -199,7 +199,7 @@ void printSubcommandHelp(const QString &subcommand, QIODevice &out)
                                  "  -h, --help                          Show this help"));
     } else if (subcommand == QLatin1String("overlay")) {
         writeLine(out,
-                  QStringLiteral("Usage: glimply overlay [--mode frozen|live] [--delay N]\n\n"
+                  QStringLiteral("Usage: itsova overlay [--mode frozen|live] [--delay N]\n\n"
                                  "Options:\n"
                                  "  --mode <frozen|live>                Overlay capture mode override\n"
                                  "  --delay <0..60>                     Countdown seconds before opening\n"
@@ -595,7 +595,7 @@ int handleArea(const QStringList &args, CliBackend &backend, QIODevice &out, QIO
             }
         }
         if (pos.size() != 2) {
-            return emitError(jsonMode, 2, CliText::tr("Usage: glimply area rename <id-or-name> <new-name> [--json]"),
+            return emitError(jsonMode, 2, CliText::tr("Usage: itsova area rename <id-or-name> <new-name> [--json]"),
                              {}, out, err);
         }
         const CliResolveResult resolved = backend.resolveTarget(pos.at(0));
@@ -632,7 +632,7 @@ int handleArea(const QStringList &args, CliBackend &backend, QIODevice &out, QIO
             }
         }
         if (pos.size() != 1) {
-            return emitError(jsonMode, 2, CliText::tr("Usage: glimply area remove <id-or-name> [--json]"), {}, out, err);
+            return emitError(jsonMode, 2, CliText::tr("Usage: itsova area remove <id-or-name> [--json]"), {}, out, err);
         }
         const CliResolveResult resolved = backend.resolveTarget(pos.first());
         if (!resolved.ok) {
@@ -1370,7 +1370,7 @@ static int handleLatency(const QStringList &args, CliBackend &backend, QIODevice
         return 0;
     }
     if (samples.isEmpty()) {
-        writeLine(out, CliText::tr("No Print captures measured since glimply started."));
+        writeLine(out, CliText::tr("No Print captures measured since Itsova started."));
         return 0;
     }
     QStringList header{QStringLiteral("#")};
@@ -1473,4 +1473,4 @@ int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QI
     return 2;
 }
 
-} // namespace glimply
+} // namespace itsova

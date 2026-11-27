@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -410,4 +410,4 @@ QList<RenderedOutput> renderOutputs(const TriggerPlan &plan, const QHash<QString
     return rendered;
 }
 
-} // namespace glimply
+} // namespace itsova

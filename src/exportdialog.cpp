@@ -23,7 +23,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -378,4 +378,4 @@ void ExportDialog::acceptIfValid()
     accept();
 }
 
-} // namespace glimply
+} // namespace itsova

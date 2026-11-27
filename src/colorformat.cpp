@@ -6,7 +6,7 @@
 #include <array>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -194,4 +194,4 @@ QRect placeLoupeRect(const QPoint &cursorPos, const QSize &loupeSize, const QRec
     return fallback;
 }
 
-} // namespace glimply
+} // namespace itsova

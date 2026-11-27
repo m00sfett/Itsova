@@ -60,7 +60,7 @@
 #include <cstdlib>
 #include <mutex>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -182,7 +182,7 @@ public:
         QObject::connect(session, &CaptureSession::defaultRecordingTargetChanged, this, [this] { update(); });
     }
 
-    static constexpr const char *pinTargetProperty = "glimplyPinTarget";
+    static constexpr const char *pinTargetProperty = "itsovaPinTarget";
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
@@ -650,7 +650,7 @@ void CaptureSession::printPressed()
 
 void CaptureSession::finishLatencyBenchIfDone()
 {
-    if (finished_ || purpose_ != Purpose::Print || !qEnvironmentVariableIsSet("GLIMPLY_LATENCY_BENCH")) {
+    if (finished_ || purpose_ != Purpose::Print || !qEnvironmentVariableIsSet("ITSOVA_LATENCY_BENCH")) {
         return;
     }
     if (LatencyTrace::reached(LatencyTrace::Stage::Overlay) && LatencyTrace::reached(LatencyTrace::Stage::File)) {
@@ -1199,7 +1199,7 @@ QList<QRect> CaptureSession::screenRects() const
 
 QList<ScreenInfo> CaptureSession::intersectingScreens(const QRect &globalRect) const
 {
-    return glimply::intersectingScreens(screens_, globalRect);
+    return itsova::intersectingScreens(screens_, globalRect);
 }
 
 QStringList CaptureSession::intersectingConnectors(const QRect &globalRect) const
@@ -2396,7 +2396,7 @@ CaptureOverlay::CaptureOverlay(CaptureSession *session, const ScreenInfo &screen
     , lastPosition_(screen.geometry.topLeft())
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-    setWindowTitle(tr("glimply capture on %1").arg(session->monitorName(screen.connector)));
+    setWindowTitle(tr("Itsova capture on %1").arg(session->monitorName(screen.connector)));
     // Always translucent, so the same window can show the frozen picture or the live screen.
     setAttribute(Qt::WA_TranslucentBackground);
     setCursor(Qt::CrossCursor);
@@ -3290,7 +3290,7 @@ QWidget *CaptureOverlay::buildAreaForm()
         if (count == 1) {
             title->setText(tr("Save as Area"));
             explain->setText(tr("The shortcut is optional and works in every application. You can also capture the "
-                                "area from the glimply widget."));
+                                "area from the Itsova widget."));
             confirm->setText(tr("Save Area"));
         } else if (group) {
             title->setText(tr("Save %n areas as a group", nullptr, count));
@@ -4769,4 +4769,4 @@ void CaptureOverlay::keyPressEvent(QKeyEvent *event)
     session_->changed();
 }
 
-} // namespace glimply
+} // namespace itsova

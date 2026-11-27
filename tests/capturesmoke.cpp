@@ -13,24 +13,24 @@
 int main(int argc, char **argv)
 {
     QGuiApplication application(argc, argv);
-    application.setDesktopFileName(QStringLiteral("org.glimply.CaptureSmoke"));
+    application.setDesktopFileName(QStringLiteral("org.itsova.CaptureSmoke"));
     QTextStream report(stdout);
-    if (qEnvironmentVariable("GLIMPLY_CAPTURE_SMOKE") != QStringLiteral("1")) {
-        report << "Set GLIMPLY_CAPTURE_SMOKE=1 to run this live desktop check.\n";
+    if (qEnvironmentVariable("ITSOVA_CAPTURE_SMOKE") != QStringLiteral("1")) {
+        report << "Set ITSOVA_CAPTURE_SMOKE=1 to run this live desktop check.\n";
         return 2;
     }
 
     QTemporaryDir output(QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation)
-                         + QStringLiteral("/glimply-smoke-XXXXXX"));
+                         + QStringLiteral("/itsova-smoke-XXXXXX"));
     if (!output.isValid())
         return 1;
 
     QSettings config(QSettings::IniFormat, QSettings::UserScope,
-                     QStringLiteral("glimply"), QStringLiteral("capture-smoke"));
+                     QStringLiteral("itsova"), QStringLiteral("capture-smoke"));
     const QString selected = config.value(QStringLiteral("screen")).toString();
     const QRect area = config.value(QStringLiteral("area"), QRect(8, 64, 400, 300)).toRect();
     const auto timestamp = QDateTime::currentDateTime();
-    const glimply::OutputWriter writer(output.path());
+    const itsova::OutputWriter writer(output.path());
     int tested = 0;
     for (QScreen *screen : application.screens()) {
         if (!selected.isEmpty() && screen->name() != selected)
@@ -41,13 +41,13 @@ int main(int argc, char **argv)
         }
         QByteArray first;
         for (int i = 0; i < 2; ++i) {
-            const auto frame = glimply::CaptureService::captureScreen(screen->name());
+            const auto frame = itsova::CaptureService::captureScreen(screen->name());
             if (frame.image.isNull()) {
                 report << frame.error << '\n';
                 return 1;
             }
             QString error;
-            const auto crop = glimply::cropLogicalArea(frame.image, area, frame.scale, &error);
+            const auto crop = itsova::cropLogicalArea(frame.image, area, frame.scale, &error);
             // On Wayland QScreen::devicePixelRatio() may be the integer buffer scale.
             // Check the crop against the native frame and logical monitor dimensions.
             const qreal sx = qreal(frame.image.width()) / screen->size().width();

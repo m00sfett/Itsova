@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -225,4 +225,4 @@ void CountdownBanner::reposition()
     move(std::clamp(x, geom.left() + 8, std::max(geom.left() + 8, geom.right() - width() - 8)), y);
 }
 
-} // namespace glimply
+} // namespace itsova

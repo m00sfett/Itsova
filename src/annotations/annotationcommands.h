@@ -6,7 +6,7 @@
 #include <QPair>
 #include <QUndoCommand>
 
-namespace glimply
+namespace itsova
 {
 
 class AnnotationDocument;
@@ -74,4 +74,4 @@ private:
     int toIndex_ = -1;
 };
 
-} // namespace glimply
+} // namespace itsova

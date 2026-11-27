@@ -7,7 +7,7 @@
 
 class QPlainTextEdit;
 
-namespace glimply
+namespace itsova
 {
 
 // Frameless inline text editor hosted on top of AnnotationCanvas or CaptureOverlay.
@@ -35,9 +35,9 @@ public:
     void cancel();
 
 Q_SIGNALS:
-    void draftChanged(const glimply::AnnotationItem &item);
-    void styleToggled(const glimply::AnnotationItem &item);
-    void committed(const glimply::AnnotationItem &item, bool isExisting, bool switchToSelect);
+    void draftChanged(const itsova::AnnotationItem &item);
+    void styleToggled(const itsova::AnnotationItem &item);
+    void committed(const itsova::AnnotationItem &item, bool isExisting, bool switchToSelect);
     void cancelled(int existingItemId);
 
 protected:
@@ -65,4 +65,4 @@ private:
     QPointF startLogicalTopLeft_;
 };
 
-} // namespace glimply
+} // namespace itsova

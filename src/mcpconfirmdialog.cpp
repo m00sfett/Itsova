@@ -11,7 +11,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 McpConfirmDialog::McpConfirmDialog(const QString &summaryText, int timeoutSeconds, QWidget *parent)
@@ -107,4 +107,4 @@ void McpConfirmDialog::finalize(bool allowed)
     }
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -12,14 +12,14 @@
 #include <mutex>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 
 TriggerEngine::TriggerEngine(QObject *parent)
     : QObject(parent)
     , capturer_(&CaptureService::captureScreen)
 {
-    qRegisterMetaType<glimply::TriggerResult>();
+    qRegisterMetaType<itsova::TriggerResult>();
 }
 
 void TriggerEngine::setCapturer(Capturer capturer)
@@ -172,4 +172,4 @@ void TriggerEngine::runIntervalTick(TriggerPlan plan, const QString &directory, 
         }));
 }
 
-} // namespace glimply
+} // namespace itsova

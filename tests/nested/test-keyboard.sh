@@ -1,8 +1,8 @@
 # Nested test (#96), two monitors: the panel and its menus work with the keyboard alone.
 # Linux keycodes: Right 106, Left 105, Down 108, Up 103, Enter 28, Escape 1.
-log="$home/glimply.log"
+log="$home/itsova.log"
 seen() { grep -c -- "$1" "$log"; }
-glimply_call OpenOverlay si frozen 0 >/dev/null || fail "OpenOverlay failed"
+itsova_call OpenOverlay si frozen 0 >/dev/null || fail "OpenOverlay failed"
 sleep 2
 # Right focuses This Monitor, Right moves to Monitors, Down opens it and focuses the first entry.
 fake 106 106 108
@@ -25,7 +25,7 @@ sleep 2
 grep -q 'session end.*Virtual-1' "$log" || fail "Enter on the second monitor did not capture it"
 
 # New overlay: Left focuses Close (no wrap from the start), Enter closes.
-glimply_call OpenOverlay si frozen 0 >/dev/null
+itsova_call OpenOverlay si frozen 0 >/dev/null
 sleep 2
 ends=$(seen 'session end')
 fake 105 28
@@ -34,7 +34,7 @@ sleep 1
 
 # Escape levels: Record menu open with an entry focused → Escape → panel → Escape → menu was
 # closed already, so the overlay closes.
-glimply_call OpenOverlay si frozen 0 >/dev/null
+itsova_call OpenOverlay si frozen 0 >/dev/null
 sleep 2
 ends=$(seen 'session end')
 fake 106 106 106 106 106 108
@@ -48,7 +48,7 @@ fake 1
 sleep 1
 [[ $(seen 'session end') -gt $ends ]] || fail "the second Escape did not close the overlay"
 # A menu closed by the mouse while one of its entries has keyboard focus keeps the overlay.
-glimply_call OpenOverlay si frozen 0 >/dev/null
+itsova_call OpenOverlay si frozen 0 >/dev/null
 sleep 2
 fake 106 106 108 # Monitors open, first entry focused
 sleep 1

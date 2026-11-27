@@ -13,7 +13,7 @@
 #include <array>
 #include <set>
 
-using namespace glimply;
+using namespace itsova;
 
 class ImageOutputTest : public QObject {
     Q_OBJECT

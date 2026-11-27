@@ -11,7 +11,7 @@
 
 class PipeWireRecord;
 
-namespace glimply
+namespace itsova
 {
 
 class RecordingFinalizer;
@@ -19,7 +19,7 @@ class ScreencastManager;
 class ScreencastStream;
 
 // Records one target to a file (#30). KWin hands out a PipeWire stream of a region or a window
-// (zkde_screencast_unstable_v1, granted to glimply through its desktop file) and KPipeWire encodes
+// (zkde_screencast_unstable_v1, granted to itsova through its desktop file) and KPipeWire encodes
 // it. Nothing here runs before the first recording, so still captures and the Print path never
 // wait for PipeWire.
 class ScreenRecorder : public QObject
@@ -49,7 +49,7 @@ public:
     ~ScreenRecorder() override;
 
     // Returns false (and emits failed) when a recording is already running or KWin offers no
-    // screen streams to glimply.
+    // screen streams to itsova.
     bool start(const RecordingTarget &target, const Options &options);
     // origin names who asked (tray, shortcut, D-Bus, quit, …) for the journal (#92).
     void stop(const QString &origin);
@@ -65,9 +65,9 @@ public:
     [[nodiscard]] QString path() const { return options_.path; }
 
 Q_SIGNALS:
-    void stateChanged(glimply::ScreenRecorder::State state);
+    void stateChanged(itsova::ScreenRecorder::State state);
     // The file is complete and playable.
-    void finished(const QString &path, const glimply::RecordingTarget &target, qint64 durationMs);
+    void finished(const QString &path, const itsova::RecordingTarget &target, qint64 durationMs);
     void failed(const QString &error);
     // The recording ended without a stop from the user (KWin closed the stream, the encoder
     // stopped by itself). Emitted right before finished() (#90).
@@ -98,4 +98,4 @@ private:
     bool finalizing_ = false;
 };
 
-} // namespace glimply
+} // namespace itsova

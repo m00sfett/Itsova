@@ -17,7 +17,7 @@ class QSpinBox;
 class QTreeWidget;
 class QWidget;
 
-namespace glimply
+namespace itsova
 {
 
 class App;
@@ -26,7 +26,7 @@ class ExportOptionsWidget;
 class HookOverrideWidget;
 class IntervalConfigWidget;
 
-// The only window of glimply. Changes apply immediately; there is nothing to confirm.
+// The only window of itsova. Changes apply immediately; there is nothing to confirm.
 class SettingsWindow : public KPageDialog
 {
     Q_OBJECT
@@ -68,7 +68,7 @@ private:
     void renameArea();
     void renameGroup();
     void removeSelectedArea();
-    // Assigns a shortcut; asks before taking it away from another glimply target.
+    // Assigns a shortcut; asks before taking it away from another itsova target.
     void assignShortcut(const QString &id, const QKeySequence &sequence, KKeySequenceWidget *editor);
     void runSelector(const QRect &initialGlobalRect, const QString &areaId);
 
@@ -174,4 +174,4 @@ private:
     QPushButton *mcpCopyButton_ = nullptr;
 };
 
-} // namespace glimply
+} // namespace itsova

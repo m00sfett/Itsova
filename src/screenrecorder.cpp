@@ -11,7 +11,7 @@
 #include <QTimer>
 #include <QWaylandClientExtensionTemplate>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -86,7 +86,7 @@ protected:
             Q_EMIT ready(0, node);
         }
     }
-#ifdef GLIMPLY_SCREENCAST_SERIAL_EVENT
+#ifdef ITSOVA_SCREENCAST_SERIAL_EVENT
     void zkde_screencast_stream_unstable_v1_serial(uint32_t hi, uint32_t low) override
     {
         if (useSerial()) {
@@ -100,7 +100,7 @@ protected:
 private:
     [[nodiscard]] bool useSerial() const
     {
-#if defined(GLIMPLY_SCREENCAST_SERIAL_EVENT) && defined(GLIMPLY_KPIPEWIRE_SERIAL)
+#if defined(ITSOVA_SCREENCAST_SERIAL_EVENT) && defined(ITSOVA_KPIPEWIRE_SERIAL)
         return version() >= 6;
 #else
         return false;
@@ -136,7 +136,7 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
     }
     if (!manager_->isActive() || manager_->QWaylandClientExtension::version() < minimumVersion) {
         manager_.reset();
-        Q_EMIT failed(tr("KWin does not offer screen recording to glimply. Reinstall glimply so its desktop file "
+        Q_EMIT failed(tr("KWin does not offer screen recording to Itsova. Reinstall Itsova so its desktop file "
                          "grants the screencast interface, then log in again."));
         return false;
     }
@@ -184,7 +184,7 @@ void ScreenRecorder::onStreamReady(quint64 objectSerial, quint32 nodeId)
     encoder_->setEncoder(wanted);
     encoder_->setMaxFramerate(quint32(effectiveFrameRate(options_.format, options_.frameRate)), 1);
     encoder_->setOutput(options_.path);
-#ifdef GLIMPLY_KPIPEWIRE_SERIAL
+#ifdef ITSOVA_KPIPEWIRE_SERIAL
     if (objectSerial != 0) {
         encoder_->setObjectSerial(objectSerial);
     } else
@@ -222,7 +222,7 @@ void ScreenRecorder::onEncoderStateChanged()
             setState(State::Recording);
         }
         break;
-#ifdef GLIMPLY_KPIPEWIRE_PAUSE
+#ifdef ITSOVA_KPIPEWIRE_PAUSE
     case PipeWireBaseEncodedStream::Paused:
         if (state_ == State::Recording) {
             clock_.pause(monotonic_.elapsed());
@@ -330,7 +330,7 @@ void ScreenRecorder::stop(const QString &origin)
 
 bool ScreenRecorder::canPause()
 {
-#ifdef GLIMPLY_KPIPEWIRE_PAUSE
+#ifdef ITSOVA_KPIPEWIRE_PAUSE
     return true;
 #else
     return false;
@@ -339,7 +339,7 @@ bool ScreenRecorder::canPause()
 
 void ScreenRecorder::setPaused(bool paused)
 {
-#ifdef GLIMPLY_KPIPEWIRE_PAUSE
+#ifdef ITSOVA_KPIPEWIRE_PAUSE
     if (!encoder_) {
         return;
     }
@@ -424,6 +424,6 @@ void ScreenRecorder::cleanUp()
     finalizing_ = false;
 }
 
-} // namespace glimply
+} // namespace itsova
 
 #include "screenrecorder.moc"

@@ -2,7 +2,7 @@
 
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {

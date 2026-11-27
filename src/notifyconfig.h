@@ -3,14 +3,14 @@
 #include <QStandardPaths>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // KNotification looks events up in <componentName>.notifyrc, so the installed file must carry the
 // component's name (#91).
 inline QString notifyComponentName()
 {
-    return QStringLiteral("io.github.m00sfett.glimply");
+    return QStringLiteral("io.github.m00sfett.itsova");
 }
 
 inline QString notifyRcRelativePath()
@@ -26,4 +26,4 @@ inline bool haveNotifyEvents()
     return have;
 }
 
-} // namespace glimply
+} // namespace itsova

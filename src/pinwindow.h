@@ -7,7 +7,7 @@
 
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 // Borderless reference window showing one pinned screenshot (#28). It paints the image at native
@@ -70,4 +70,4 @@ private:
     QTimer *readoutTimer_;
 };
 
-} // namespace glimply
+} // namespace itsova

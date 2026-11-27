@@ -1,17 +1,17 @@
 #include "logging.h"
 
 // Debug is off by default (QtInfoMsg); distributions often disable debug output globally anyway.
-Q_LOGGING_CATEGORY(lcApp, "glimply.app", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCapture, "glimply.capture", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcOverlay, "glimply.overlay", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcRecord, "glimply.record", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcTray, "glimply.tray", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcDbus, "glimply.dbus", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcMcp, "glimply.mcp", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSettings, "glimply.settings", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcHooks, "glimply.hooks", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcApp, "itsova.app", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCapture, "itsova.capture", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcOverlay, "itsova.overlay", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcRecord, "itsova.record", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcTray, "itsova.tray", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDbus, "itsova.dbus", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMcp, "itsova.mcp", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSettings, "itsova.settings", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcHooks, "itsova.hooks", QtInfoMsg)
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -26,7 +26,7 @@ void setVerboseLogging(bool on)
     }
     verbose = on;
     // Filter rules override the categories' default level; an empty rule set restores them.
-    QLoggingCategory::setFilterRules(on ? QStringLiteral("glimply.*.debug=true") : QString());
+    QLoggingCategory::setFilterRules(on ? QStringLiteral("itsova.*.debug=true") : QString());
     qCInfo(lcApp) << "verbose logging" << (on ? "on" : "off");
 }
 
@@ -37,7 +37,7 @@ bool verboseLogging()
 
 QStringList journalctlArguments(const QStringList &extra)
 {
-    QStringList args{QStringLiteral("--user"), QStringLiteral("SYSLOG_IDENTIFIER=glimply"),
+    QStringList args{QStringLiteral("--user"), QStringLiteral("SYSLOG_IDENTIFIER=itsova"),
                      QStringLiteral("--output=short-precise")};
     // Without options show the recent past instead of paging through every line ever logged.
     if (extra.isEmpty()) {
@@ -47,4 +47,4 @@ QStringList journalctlArguments(const QStringList &extra)
     return args;
 }
 
-} // namespace glimply
+} // namespace itsova

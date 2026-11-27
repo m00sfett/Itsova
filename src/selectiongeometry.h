@@ -11,7 +11,7 @@
 
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 // Logical pixel threshold for magnetic snapping onto connected monitor edges.
@@ -106,4 +106,4 @@ private:
                                            Qt::LayoutDirection direction);
 [[nodiscard]] QPointF overlaySelectionBadgeCenter(const QRectF &frame, Qt::LayoutDirection direction);
 
-} // namespace glimply
+} // namespace itsova

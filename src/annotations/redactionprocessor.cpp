@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -217,4 +217,4 @@ QImage renderRedactedPatch(const QImage &sourceImage,
     return blurPatch(src, radiusPx);
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -16,7 +16,7 @@
 
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 struct ActiveIntervalStatus
@@ -76,7 +76,7 @@ public:
 
 Q_SIGNALS:
     void changed();
-    void captureSaved(const QString &targetId, const glimply::TriggerResult &result);
+    void captureSaved(const QString &targetId, const itsova::TriggerResult &result);
     void intervalFinished(const QString &targetId, const QString &displayName, int captureCount);
     void intervalStoppedWithError(const QString &targetId, const QString &displayName, const QString &reason);
 
@@ -110,4 +110,4 @@ private:
     std::uint64_t nextGeneration_ = 1;
 };
 
-} // namespace glimply
+} // namespace itsova

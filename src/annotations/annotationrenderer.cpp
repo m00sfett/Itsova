@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -480,4 +480,4 @@ void paintAnnotationOverlay(QPainter &painter, const QRectF &logicalViewportRect
     painter.restore();
 }
 
-} // namespace glimply
+} // namespace itsova

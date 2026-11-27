@@ -13,7 +13,7 @@
 
 class QIODevice;
 
-namespace glimply
+namespace itsova
 {
 
 struct CliCaptureFile
@@ -151,4 +151,4 @@ public:
 [[nodiscard]] bool isCliSubcommand(const QString &arg);
 [[nodiscard]] int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QIODevice &err);
 
-} // namespace glimply
+} // namespace itsova

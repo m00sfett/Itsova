@@ -3,7 +3,7 @@
 #include <QRect>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // Qt cannot keep a window above others or place it on Wayland. Pins therefore ask KWin through a
@@ -24,10 +24,10 @@ struct KWinPinScriptRequest
 [[nodiscard]] QString kwinPinScriptSource(const KWinPinScriptRequest &request);
 [[nodiscard]] QString kwinPinPluginName(const QString &pinId);
 
-// Writes the script to $XDG_RUNTIME_DIR/glimply/, replaces any earlier script of the same pin in
+// Writes the script to $XDG_RUNTIME_DIR/itsova/, replaces any earlier script of the same pin in
 // KWin and runs it. Asynchronous; failures are only logged (the pin still shows, just unmanaged).
 void applyKWinPinScript(const KWinPinScriptRequest &request);
 // Unloads the pin's script from KWin and deletes the file.
 void unloadKWinPinScript(const QString &pinId);
 
-} // namespace glimply
+} // namespace itsova

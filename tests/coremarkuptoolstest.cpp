@@ -19,7 +19,7 @@
 
 #include <cmath>
 
-using namespace glimply;
+using namespace itsova;
 
 class CoreMarkupToolsTest : public QObject
 {
@@ -272,7 +272,7 @@ void CoreMarkupToolsTest::settingsConfigRoundTrip()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
 
     TargetStore store;
     store.annotations.strokeColor = QColor(0x1E, 0x88, 0xE5);

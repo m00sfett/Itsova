@@ -7,7 +7,7 @@
 #include <QPointF>
 #include <QRectF>
 
-namespace glimply
+namespace itsova
 {
 
 // Modifiers active while drawing or resizing an annotation (PhotoCraft / Photoshop aligned):
@@ -32,4 +32,4 @@ struct DrawModifiers {
 
 [[nodiscard]] QPainterPath smoothPolylinePath(const QList<QPointF> &points);
 
-} // namespace glimply
+} // namespace itsova

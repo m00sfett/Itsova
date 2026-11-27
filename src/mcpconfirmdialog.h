@@ -7,7 +7,7 @@ class QLabel;
 class QPushButton;
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 // Topmost native KDE/Breeze confirmation dialog shown when MCP access mode is ConfirmPerCapture.
@@ -39,4 +39,4 @@ private:
     bool allowed_ = false;
 };
 
-} // namespace glimply
+} // namespace itsova

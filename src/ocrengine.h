@@ -9,7 +9,7 @@
 
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 struct OcrResult
@@ -19,7 +19,7 @@ struct OcrResult
     QString error;
 };
 
-// Optional local text recognition (#27). glimply builds and runs without any OCR backend; the
+// Optional local text recognition (#27). itsova builds and runs without any OCR backend; the
 // engine only looks for one at runtime. An integrated engine can later implement this interface.
 class OcrEngine
 {
@@ -74,4 +74,4 @@ private:
 // One-line preview of at most maxChars characters for notifications.
 [[nodiscard]] QString ocrPreview(const QString &text, int maxChars = 80);
 
-} // namespace glimply
+} // namespace itsova

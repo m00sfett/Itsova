@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -145,4 +145,4 @@ void AnnotationSettings::save(KConfig &config) const
     group.writeEntry("BlurRadius", std::clamp(blurRadius, 14, 48));
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -10,7 +10,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class HookTest : public QObject
 {
@@ -99,7 +99,7 @@ void HookTest::overridePrecedenceAndPersistence()
     store.setTargetHookOverride(screenTargetId(QStringLiteral("DP-1")),
                                 {HookOverrideMode::Custom, QStringLiteral("/bin/mon %f"), 12});
 
-    const QString ini = tempDir.filePath(QStringLiteral("glimplyrc"));
+    const QString ini = tempDir.filePath(QStringLiteral("itsovarc"));
     {
         KConfig cfg(ini, KConfig::SimpleConfig);
         store.save(cfg);
@@ -132,7 +132,7 @@ void HookTest::realExecutionEnvVarsAndMetacharacters()
             "out = os.environ.get('REPORT_OUT')\n"
             "with open(out, 'w') as fp:\n"
             "    fp.write('ARGV=' + '|'.join(sys.argv[1:]) + '\\n')\n"
-            "    for k in ['GLIMPLY_FILES','GLIMPLY_FILE','GLIMPLY_FILE_COUNT','GLIMPLY_TARGET_ID','GLIMPLY_TARGET_NAME','GLIMPLY_TRIGGER_KIND','GLIMPLY_TIMESTAMP','GLIMPLY_FORMAT']:\n"
+            "    for k in ['ITSOVA_FILES','ITSOVA_FILE','ITSOVA_FILE_COUNT','ITSOVA_TARGET_ID','ITSOVA_TARGET_NAME','ITSOVA_TRIGGER_KIND','ITSOVA_TIMESTAMP','ITSOVA_FORMAT']:\n"
             "        fp.write(f'{k}={os.environ.get(k, \"\")}\\n')\n");
         f.close();
     }
@@ -171,12 +171,12 @@ void HookTest::realExecutionEnvVarsAndMetacharacters()
     QVERIFY(rep.open(QIODevice::ReadOnly));
     const QString report = QString::fromUtf8(rep.readAll());
     QVERIFY(report.contains(QStringLiteral("ARGV=%1").arg(dangerousName)));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_FILE=%1\n").arg(dangerousName)));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_FILE_COUNT=1\n")));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_TARGET_ID=area:abc\n")));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_TARGET_NAME=Work Area\n")));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_TRIGGER_KIND=trigger\n")));
-    QVERIFY(report.contains(QStringLiteral("GLIMPLY_FORMAT=webp\n")));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_FILE=%1\n").arg(dangerousName)));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_FILE_COUNT=1\n")));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_TARGET_ID=area:abc\n")));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_TARGET_NAME=Work Area\n")));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_TRIGGER_KIND=trigger\n")));
+    QVERIFY(report.contains(QStringLiteral("ITSOVA_FORMAT=webp\n")));
 }
 
 void HookTest::failureAndTimeoutDoNotBlockSubsequent()
@@ -237,7 +237,7 @@ void HookTest::runTestCreatesAndCleansTempPng()
 
     const QString cmd = QStringLiteral(
         "/usr/bin/python3 -c \"import os, sys; "
-        "assert os.environ['GLIMPLY_TRIGGER_KIND'] == 'test'; "
+        "assert os.environ['ITSOVA_TRIGGER_KIND'] == 'test'; "
         "data = open(sys.argv[1], 'rb').read(8); "
         "assert data == bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]); "
         "print(sys.argv[1])\" %f");

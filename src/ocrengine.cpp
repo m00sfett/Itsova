@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -249,4 +249,4 @@ QString ocrPreview(const QString &text, int maxChars)
     return flat;
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -1,13 +1,13 @@
 # Nested test (#103): a monitor recording and a window recording carry monitor, position and
-# scale as the "glimply" tag, read back with ffprobe.
+# scale as the "itsova" tag, read back with ffprobe.
 record() {
-    glimply_call StartRecording si "$1" 0 >/dev/null
+    itsova_call StartRecording si "$1" 0 >/dev/null
     for _ in $(seq 20); do [[ "$(recording_state)" == recording ]] && break; sleep 0.25; done
     sleep 1.5
-    glimply_call StopRecording >/dev/null
+    itsova_call StopRecording >/dev/null
     wait_recording_idle 20 || fail "recording $1 did not finish"
 }
-tag() { ffprobe -v error -show_entries format_tags=glimply -of default=nw=1:nk=1 "$1"; }
+tag() { ffprobe -v error -show_entries format_tags=itsova -of default=nw=1:nk=1 "$1"; }
 record "screen:Virtual-0"
 file=$(newest_file '*Virtual-0.mp4')
 meta=$(tag "$file")

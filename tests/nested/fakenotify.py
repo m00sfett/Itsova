@@ -24,7 +24,7 @@ class Server(dbus.service.Object):
 
     @dbus.service.method("org.freedesktop.Notifications", out_signature="ssss")
     def GetServerInformation(self):
-        return ["fakenotify", "glimply-tests", "1", "1.2"]
+        return ["fakenotify", "itsova-tests", "1", "1.2"]
 
     @dbus.service.method("org.freedesktop.Notifications", in_signature="susssasa{sv}i", out_signature="u")
     def Notify(self, app, replaces, icon, summary, body, actions, hints, timeout):

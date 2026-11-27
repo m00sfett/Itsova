@@ -10,7 +10,7 @@
 #include <QString>
 #include <QStringList>
 
-namespace glimply
+namespace itsova
 {
 
 struct OutputSpec
@@ -69,4 +69,4 @@ struct RenderedOutput
 [[nodiscard]] QList<RenderedOutput> renderOutputs(const TriggerPlan &plan,
                                                   const QHash<QString, CaptureResult> &frames);
 
-} // namespace glimply
+} // namespace itsova

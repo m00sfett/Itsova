@@ -12,7 +12,7 @@
 
 class QIODevice;
 
-namespace glimply {
+namespace itsova {
 
 enum class ImageFormat {
     Png,
@@ -119,4 +119,4 @@ private:
     ExportOptions defaultOptions_;
 };
 
-} // namespace glimply
+} // namespace itsova

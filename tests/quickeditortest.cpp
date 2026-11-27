@@ -20,7 +20,7 @@
 
 #include <memory>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {

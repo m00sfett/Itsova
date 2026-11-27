@@ -3,17 +3,17 @@
     "KPlugin": {
         "Authors": [
             {
-                "Name": "glimply contributors"
+                "Name": "Itsova contributors"
             }
         ],
         "Category": "Utilities",
         "Description": "Capture fixed screen areas and monitors, and manage them",
         "EnabledByDefault": true,
-        "Icon": "io.github.m00sfett.glimply",
-        "Id": "io.github.m00sfett.glimply.widget",
+        "Icon": "io.github.m00sfett.itsova",
+        "Id": "io.github.m00sfett.itsova.widget",
         "License": "AGPL-3.0-or-later",
-        "Name": "glimply",
-        "Version": "@GLIMPLY_VERSION@",
+        "Name": "Itsova",
+        "Version": "@ITSOVA_VERSION@",
         "Description[de]": "Feste Bildschirmbereiche und Bildschirme aufnehmen und verwalten",
         "Description[fr]": "Capturer des zones fixes de l'écran et des écrans, et les gérer",
         "Description[ja]": "固定の画面範囲とディスプレイをキャプチャして管理します",
@@ -34,7 +34,7 @@
         "Description[zh_TW]": "擷取固定螢幕區域與螢幕並進行管理"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
-    "X-Plasma-DBusActivationService": "io.github.m00sfett.glimply",
+    "X-Plasma-DBusActivationService": "io.github.m00sfett.itsova",
     "X-Plasma-NotificationArea": "true",
     "X-Plasma-NotificationAreaCategory": "ApplicationStatus"
 }

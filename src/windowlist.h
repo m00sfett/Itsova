@@ -4,7 +4,7 @@
 #include <QRect>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // A window KWin can capture on its own.
@@ -27,4 +27,4 @@ struct WindowInfo {
 // File name token for a window capture, e.g. "window-konsole".
 [[nodiscard]] QString windowToken(const WindowInfo &window);
 
-} // namespace glimply
+} // namespace itsova

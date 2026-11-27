@@ -16,7 +16,7 @@
 
 #include <cstring>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -300,7 +300,7 @@ void CrossMonitorTest::configRoundTripSingleAndCrossMonitor()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
 
     const QList<ScreenInfo> layout{
         {QStringLiteral("DP-1"), QRect(-1920, 0, 1920, 1080), QStringLiteral("Acme, Ltd"), QStringLiteral("UHD"),

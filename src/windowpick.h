@@ -7,7 +7,7 @@
 #include <QPoint>
 #include <QRect>
 
-namespace glimply
+namespace itsova
 {
 
 // What a click into the overlay takes (#97): the window under the pointer, or the monitor over the
@@ -30,4 +30,4 @@ struct PickTarget
 [[nodiscard]] PickTarget pickTargetAt(const QPoint &globalPos, const QList<WindowInfo> &windows,
                                       const QList<ScreenInfo> &screens);
 
-} // namespace glimply
+} // namespace itsova

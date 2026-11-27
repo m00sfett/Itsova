@@ -6,7 +6,7 @@
 #include <ctime>
 #include <mutex>
 
-namespace glimply
+namespace itsova
 {
 
 namespace
@@ -182,4 +182,4 @@ void LatencyTrace::resetForTest()
     s.running = false;
 }
 
-} // namespace glimply
+} // namespace itsova

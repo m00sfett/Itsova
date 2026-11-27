@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=io.github.m00sfett.glimply
-Exec=@GLIMPLY_EXEC@

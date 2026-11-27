@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Checks glimply's translation catalogs (#51).
+"""Checks itsova's translation catalogs (#51).
 
-Application catalogs: i18n/glimply_<lang>.ts (Qt). Plasma widget catalogs:
+Application catalogs: i18n/itsova_<lang>.ts (Qt). Plasma widget catalogs:
 plasmoid/po/<lang>/<domain>.po (gettext). English is the source language.
 
 Errors (exit code 1):
@@ -39,9 +39,9 @@ QT_PLURAL_FORMS = {"ar": 6, "de": 2, "es": 2, "fr": 2, "hi": 2, "id": 1, "it": 2
                    "nl": 2, "pl": 3, "pt": 2, "ru": 3, "tr": 1, "uk": 3, "vi": 1, "zh_CN": 1,
                    "zh_TW": 1}
 TS_DIR = ROOT / "i18n"
-TS_BASE = "glimply"
+TS_BASE = "itsova"
 PO_DIR = ROOT / "plasmoid" / "po"
-PO_DOMAIN = "plasma_applet_io.github.m00sfett.glimply.widget"
+PO_DOMAIN = "plasma_applet_io.github.m00sfett.itsova.widget"
 GLOSSARY = TS_DIR / "glossary.md"
 
 QT_PLACEHOLDER = re.compile(r"%L?\d+|%n")

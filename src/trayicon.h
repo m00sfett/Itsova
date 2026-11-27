@@ -2,7 +2,7 @@
 
 #include <QIcon>
 
-namespace glimply
+namespace itsova
 {
 
 enum class TrayIconState {
@@ -25,4 +25,4 @@ enum class TrayIconState {
 enum class TrayPresence { Hidden, Standby, Shown };
 [[nodiscard]] TrayPresence trayPresence(int mode, bool recording, bool intervalsActive, bool widgetActive);
 
-} // namespace glimply
+} // namespace itsova

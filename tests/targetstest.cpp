@@ -14,7 +14,7 @@
 #include <QTemporaryDir>
 #include <QtTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -96,7 +96,7 @@ void TargetsTest::configRoundTrip()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
 
     TargetStore store;
     const auto layout = testLayout();
@@ -142,7 +142,7 @@ void TargetsTest::legacyRegionConfigIsMigrated()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     {
         QFile file(path);
         QVERIFY(file.open(QIODevice::WriteOnly));
@@ -182,7 +182,7 @@ void TargetsTest::lastRecordingTargetBecomesDefaultOnce()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     {
         QFile file(path);
         QVERIFY(file.open(QIODevice::WriteOnly));
@@ -240,7 +240,7 @@ void TargetsTest::trayVisibilityRoundTrip()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     TargetStore store;
     QCOMPARE(store.trayVisibility, TargetStore::TrayVisibility::Always);
     for (const auto mode : {TargetStore::TrayVisibility::WhileRecording, TargetStore::TrayVisibility::WhileRunning,
@@ -261,7 +261,7 @@ void TargetsTest::overlayStartMode()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     {
         QFile file(path);
         QVERIFY(file.open(QIODevice::WriteOnly));
@@ -337,7 +337,7 @@ void TargetsTest::monitorNames()
     // Survives a save and load; an empty name or the connector itself removes it.
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     {
         KConfig config(path, KConfig::SimpleConfig);
         store.save(config);
@@ -362,7 +362,7 @@ void TargetsTest::overlayPanelPositionsRoundTrip()
     store.overlayPanelPositions.insert(TargetStore::monitorKey(dp), QPoint(40, 900));
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
     {
         KConfig config(path, KConfig::SimpleConfig);
         store.save(config);

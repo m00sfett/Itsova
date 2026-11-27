@@ -4,7 +4,7 @@
 
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 enum class McpDecision {
@@ -25,4 +25,4 @@ struct McpPolicyResult
                                                   const QString &toolName,
                                                   const QString &resolvedTargetId = QString());
 
-} // namespace glimply
+} // namespace itsova

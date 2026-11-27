@@ -9,7 +9,7 @@
 #include <QRectF>
 #include <QSize>
 
-namespace glimply
+namespace itsova
 {
 
 // Maps a logical redaction item rectangle into device-pixel coordinates inside an image whose
@@ -29,4 +29,4 @@ namespace glimply
                                          const AnnotationItem &item,
                                          qreal nativeScale);
 
-} // namespace glimply
+} // namespace itsova

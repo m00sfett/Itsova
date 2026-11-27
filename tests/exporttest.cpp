@@ -17,7 +17,7 @@
 #include <QTest>
 #include <QTimeZone>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -198,7 +198,7 @@ void ExportTest::targetOverridePrecedenceAndTriggerEngine()
 
     store.setTargetExportOverride(screenTargetId(screen.connector), {true, ExportOptions{ImageFormat::Jpeg, 65, -1, false}});
 
-    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("glimplyrc"));
+    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("itsovarc"));
     {
         KConfig saveCfg(iniPath, KConfig::SimpleConfig);
         store.save(saveCfg);

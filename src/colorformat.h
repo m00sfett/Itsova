@@ -8,7 +8,7 @@
 #include <QSize>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 enum class ColorFormat { Hex, Rgb, Hsl, Hsv };
@@ -26,4 +26,4 @@ enum class ColorFormat { Hex, Rgb, Hsl, Hsv };
 [[nodiscard]] QRect placeLoupeRect(const QPoint &cursorPos, const QSize &loupeSize, const QRect &containerRect,
                                      int offset = 20, int edgeMargin = 8);
 
-} // namespace glimply
+} // namespace itsova

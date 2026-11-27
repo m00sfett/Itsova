@@ -10,7 +10,7 @@
 
 #include <memory>
 
-namespace glimply
+namespace itsova
 {
 
 class AddItemCommand;
@@ -88,4 +88,4 @@ private:
     QUndoStack *undoStack_ = nullptr;
 };
 
-} // namespace glimply
+} // namespace itsova

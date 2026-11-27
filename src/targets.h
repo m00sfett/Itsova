@@ -14,7 +14,7 @@
 
 class KConfig;
 
-namespace glimply
+namespace itsova
 {
 
 // A connected monitor as seen at trigger or setup time. Geometry is logical (compositor space).
@@ -186,7 +186,7 @@ public:
     bool autostartInitialized = false;
 
     // Print key and capture overlay.
-    bool usePrintKey = true; // glimply owns the Print key (handed back to its previous owner when off)
+    bool usePrintKey = true; // itsova owns the Print key (handed back to its previous owner when off)
     bool printOpensOverlay = true; // false: Print only saves the full screenshot
     enum class OverlayStart { LastUsed, Frozen, Live };
     OverlayStart overlayStart = OverlayStart::LastUsed;
@@ -199,7 +199,7 @@ public:
     [[nodiscard]] bool overlayStartsFrozen() const;
     bool captureOnRelease = false; // save as soon as a new rectangle is drawn
     bool showSelectionLoupe = true;
-    bool verboseLogging = false; // debug lines of every glimply category in the journal (#92)
+    bool verboseLogging = false; // debug lines of every itsova category in the journal (#92)
     // When the tray icon is there (#123). Hidden, the status notifier item is removed.
     enum class TrayVisibility { Always, WhileRunning, WhileRecording };
     TrayVisibility trayVisibility = TrayVisibility::Always;
@@ -283,4 +283,4 @@ public:
     [[nodiscard]] bool targetIncludesCursor(const QString &targetId) const;
 };
 
-} // namespace glimply
+} // namespace itsova

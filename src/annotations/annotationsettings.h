@@ -9,14 +9,14 @@
 
 class KConfig;
 
-namespace glimply
+namespace itsova
 {
 
 // Returns the curated 7-color quick palette used by markup tools.
 [[nodiscard]] QList<QColor> defaultAnnotationSwatches();
 
 // Persistent user defaults for markup, text (#14), and redaction (#15) tools, stored under
-// [Annotations] in glimplyrc.
+// [Annotations] in itsovarc.
 struct AnnotationSettings {
     QColor strokeColor = QColor(0xE5, 0x39, 0x35);
     QColor highlighterColor = QColor(0xFD, 0xD8, 0x35);
@@ -46,4 +46,4 @@ struct AnnotationSettings {
     void save(KConfig &config) const;
 };
 
-} // namespace glimply
+} // namespace itsova

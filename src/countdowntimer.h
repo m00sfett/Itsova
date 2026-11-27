@@ -10,7 +10,7 @@ class QLabel;
 class QPushButton;
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 // Coordinates a non-blocking pre-capture or retake countdown. Hides any countdown UI strictly
@@ -80,4 +80,4 @@ private:
     QString currentLabel_;
 };
 
-} // namespace glimply
+} // namespace itsova

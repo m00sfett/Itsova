@@ -4,12 +4,12 @@
 #include <QPixmap>
 #include <QPolygonF>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
 
-// The colours of the roteson.de tools (see data/io.github.m00sfett.glimply-tray.svg).
+// The colours of the roteson.de tools (see data/io.github.m00sfett.itsova-tray.svg).
 const QColor ink(0x08, 0x06, 0x04);
 const QColor red(0xB1, 0x12, 0x18);
 const QColor yellow(0xFF, 0xD2, 0x1F);
@@ -98,4 +98,4 @@ TrayPresence trayPresence(int mode, bool recording, bool intervalsActive, bool w
     }
 }
 
-} // namespace glimply
+} // namespace itsova

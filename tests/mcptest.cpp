@@ -25,7 +25,7 @@
 namespace
 {
 
-using namespace glimply;
+using namespace itsova;
 
 class MockMcpBackend final : public McpToolBackend
 {
@@ -51,7 +51,7 @@ private Q_SLOTS:
     {
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
-        const QString cfgPath = dir.filePath(QStringLiteral("glimplyrc"));
+        const QString cfgPath = dir.filePath(QStringLiteral("itsovarc"));
 
         TargetStore store;
         Area a;
@@ -216,9 +216,9 @@ private Q_SLOTS:
         const QJsonObject initRes = initObj.value(QStringLiteral("result")).toObject();
         QCOMPARE(initRes.value(QStringLiteral("protocolVersion")).toString(), QStringLiteral("2024-11-05"));
         QCOMPARE(initRes.value(QStringLiteral("serverInfo")).toObject().value(QStringLiteral("name")).toString(),
-                 QStringLiteral("glimply"));
+                 QStringLiteral("itsova"));
         QCOMPARE(initRes.value(QStringLiteral("serverInfo")).toObject().value(QStringLiteral("version")).toString(),
-                 QStringLiteral(GLIMPLY_VERSION));
+                 QStringLiteral(ITSOVA_VERSION));
 
         // 2. Notification produces empty reply
         QCOMPARE(McpServer::processMessage(R"({"jsonrpc":"2.0","method":"notifications/initialized"})", backend),

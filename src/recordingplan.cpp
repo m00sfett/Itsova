@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 
 QString recordingFormatKey(RecordingFormat format)
@@ -270,4 +270,4 @@ RecordingHintPlacement planRecordingHint(bool windowTarget, const QRect &recorde
     return placement;
 }
 
-} // namespace glimply
+} // namespace itsova

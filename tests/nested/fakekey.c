@@ -1,6 +1,6 @@
 // Test helper (#93): sends keys and pointer events through KWin's fake input. Only for a nested,
 // throw-away KWin (tests/nested/session.sh grants it the interface through a desktop file).
-// Usage: glimply-fakekey <step>...  steps: <keycode>[+<keycode>...] ("29+46" = Ctrl+C), m:X,Y
+// Usage: itsova-fakekey <step>...  steps: <keycode>[+<keycode>...] ("29+46" = Ctrl+C), m:X,Y
 // (absolute pointer), d / u (left button down / up), w:MS (wait).
 #include "fake-input.h"
 #include <stdio.h>
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     wl_registry_add_listener(registry, &listener, NULL);
     wl_display_roundtrip(display);
     if (!fake) { fprintf(stderr, "no fake input\n"); return 2; }
-    org_kde_kwin_fake_input_authenticate(fake, "fakekey", "glimply panel test");
+    org_kde_kwin_fake_input_authenticate(fake, "fakekey", "itsova panel test");
     for (int i = 1; i < argc; ++i) {
         int x, y, ms;
         if (sscanf(argv[i], "m:%d,%d", &x, &y) == 2) { /* absolute pointer position (#79) */

@@ -10,7 +10,7 @@
 #include <functional>
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 struct TriggerOutputInfo
@@ -77,11 +77,11 @@ public:
                                                                FrameMap *updatedFrames);
 
 Q_SIGNALS:
-    void finished(const glimply::TriggerResult &result);
+    void finished(const itsova::TriggerResult &result);
 
 private:
     Capturer capturer_;
     QStringList lastPaths_;
 };
 
-} // namespace glimply
+} // namespace itsova

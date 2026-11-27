@@ -6,7 +6,7 @@
 #include <cmath>
 #include <limits>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -322,4 +322,4 @@ QPainterPath smoothPolylinePath(const QList<QPointF> &points)
     return path;
 }
 
-} // namespace glimply
+} // namespace itsova

@@ -6,7 +6,7 @@
 #include <QPainter>
 #include <QSizeF>
 
-namespace glimply
+namespace itsova
 {
 
 // Resolves item.font against the application default font while keeping bold/italic/pointSize.
@@ -20,4 +20,4 @@ namespace glimply
 // emoji) and applies item.legibility (None, Shadow, Outline, or Pill).
 void drawAnnotationText(QPainter &painter, const AnnotationItem &item);
 
-} // namespace glimply
+} // namespace itsova

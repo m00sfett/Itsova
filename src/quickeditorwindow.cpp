@@ -41,7 +41,7 @@
 #include <cmath>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -117,7 +117,7 @@ QuickEditorWindow::QuickEditorWindow(TargetStore &store, const QImage &nativeIma
 
 void QuickEditorWindow::buildUi()
 {
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.m00sfett.glimply"),
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.m00sfett.itsova"),
                                    QIcon::fromTheme(QStringLiteral("document-edit"))));
 
     // Main file/clipboard toolbar.
@@ -442,7 +442,7 @@ QString QuickEditorWindow::displayName() const
 void QuickEditorWindow::updateWindowState()
 {
     setWindowModified(isDirty());
-    setWindowTitle(tr("%1[*] — glimply").arg(displayName()));
+    setWindowTitle(tr("%1[*] — Itsova").arg(displayName()));
 }
 
 void QuickEditorWindow::updateStatusBar()
@@ -697,4 +697,4 @@ void QuickEditorWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-} // namespace glimply
+} // namespace itsova

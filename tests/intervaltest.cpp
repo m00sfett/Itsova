@@ -14,7 +14,7 @@
 
 #include <cstring>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -64,7 +64,7 @@ void IntervalTest::configRoundTrip()
     store.setTargetIntervalConfig(screenTargetId(QStringLiteral("DP-1")), IntervalConfig{3, 5, 0, true});
     store.setTargetIntervalConfig(allMonitorsTargetId(), IntervalConfig{15, 0, 0, true});
 
-    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("glimplyrc"));
+    const QString iniPath = QDir(tempDir.path()).filePath(QStringLiteral("itsovarc"));
     {
         KConfig cfg(iniPath, KConfig::SimpleConfig);
         store.save(cfg);

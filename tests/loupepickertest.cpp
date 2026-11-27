@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <memory>
 
-using namespace glimply;
+using namespace itsova;
 
 class LoupePickerTest : public QObject
 {
@@ -134,7 +134,7 @@ void LoupePickerTest::storePersistsColorFormatAndLoupeToggle()
 {
     QTemporaryDir dir;
     QVERIFY(dir.isValid());
-    const QString path = dir.filePath(QStringLiteral("glimplyrc"));
+    const QString path = dir.filePath(QStringLiteral("itsovarc"));
 
     TargetStore defaults;
     QVERIFY(defaults.showSelectionLoupe);

@@ -6,7 +6,7 @@
 #include <QRect>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 // Screen recording (#30): what to record and how, without any compositor or encoder code, so the
@@ -53,7 +53,7 @@ struct RecordingTarget
 // per side when region × scale would be odd.
 [[nodiscard]] QRect evenSizedRegion(const QRect &region, qreal scale);
 
-// Files glimply writes as recordings (.mp4, .webm, .gif): opened with the default player instead of
+// Files itsova writes as recordings (.mp4, .webm, .gif): opened with the default player instead of
 // the editor, never pinned.
 [[nodiscard]] bool isRecordingFile(const QString &path);
 
@@ -107,4 +107,4 @@ private:
     QList<QPair<qint64, qint64>> pauses_;
 };
 
-} // namespace glimply
+} // namespace itsova

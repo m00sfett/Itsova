@@ -9,7 +9,7 @@
 
 class QIODevice;
 
-namespace glimply
+namespace itsova
 {
 
 struct McpImagePayload
@@ -55,4 +55,4 @@ public:
     static int runStdio(McpToolBackend &backend);
 };
 
-} // namespace glimply
+} // namespace itsova

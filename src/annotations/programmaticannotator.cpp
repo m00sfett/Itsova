@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace glimply
+namespace itsova
 {
 namespace
 {
@@ -346,4 +346,4 @@ AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request)
     return res;
 }
 
-} // namespace glimply
+} // namespace itsova

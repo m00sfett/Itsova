@@ -1,8 +1,10 @@
-# glimply
+# Itsova
 
-> **Note:** `glimply` is currently a working name while in pre-release development (`0.12.0`, targeting `1.0.0`). There are no tagged releases yet; screenshots will be added with `1.0.0`.
+> **Beta:** Itsova is in early development. Features and shortcuts may change, and bugs are expected.
 
-**glimply** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, screen recording, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server.
+**Itsova** is a lightweight screenshot and annotation utility for KDE Plasma on Wayland (`org.kde.KWin.ScreenShot2`). It combines repeatable, shortcut-bound fixed areas with an interactive capture overlay, screen recording, non-destructive vector annotations, floating screen pins, interval captures, local OCR, a Plasma panel widget, a scriptable CLI, and an optional local MCP server. Because taking a screenshot is sometimes not enough.
+
+**Itsova** stands for **Itsova Takes Screenshots Or Videos, Actually**.
 
 ---
 
@@ -11,13 +13,13 @@
 - **Fixed areas, groups, monitors, and windows:** Save named rectangular screen areas (single-monitor or spanning multiple monitors), group multiple targets, or capture an individual monitor, all monitors, or an open window via global KDE shortcuts (`KGlobalAccel`).
 - **Interactive capture overlay (`Print`):** Capture in frozen or live mode, adjust selections with a pixel loupe and color picker, trigger saved areas directly, or annotate before saving/copying.
 - **Screen recording:** Record a monitor, all monitors, a saved area, a drawn rectangle, or a single window to MP4 (H.264), GIF, or WebM (VP9) from the overlay (`Ctrl+R`), the widget, or a global start/stop shortcut, with pause, a recording indicator in the tray, and short hints for start, pause, stop and errors that stay out of the video. Recordings keep each monitor's native resolution and have no sound. A window recording contains only the window's content: KWin sends a new frame only when the window changes, so while the window is moved or stays still the video holds the last picture.
-- **Non-destructive annotations & Quick Editor:** Draw on captures with *Markup* inside the capture overlay or open images standalone via `glimply -e <file>` (`glimply <files...>`). Available tools: `Select`, `Crop`, `Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Highlighter`, `Text`, numbered `Step` counters, `Redact` (*Solid*, *Pixelate*, *Blur*), and `Spotlight` (*Rectangle*, *Ellipse*).
+- **Non-destructive annotations & Quick Editor:** Draw on captures with *Markup* inside the capture overlay or open images standalone via `itsova -e <file>` (`itsova <files...>`). Available tools: `Select`, `Crop`, `Arrow`, `Rectangle`, `Ellipse`, `Pen`, `Highlighter`, `Text`, numbered `Step` counters, `Redact` (*Solid*, *Pixelate*, *Blur*), and `Spotlight` (*Rectangle*, *Ellipse*).
 - **Pinned floating captures:** Keep screenshots floating always-on-top on your desktop. While a capture runs, pins paint themselves fully transparent, so they do not appear in screenshots; KWin's `excludeFromCapture` property did not achieve this in testing. A small KWin window script keeps pins above other windows and places them, and they can be restored across restarts.
-- **Countdowns, intervals, history, and hooks:** Pre-capture countdown timers, timed interval captures (`--seconds`, `--max-captures`, `--max-minutes`, `--only-changed`), recent capture history (`glimply history`), desktop notifications, tray controls, and optional post-capture hooks.
+- **Countdowns, intervals, history, and hooks:** Pre-capture countdown timers, timed interval captures (`--seconds`, `--max-captures`, `--max-minutes`, `--only-changed`), recent capture history (`itsova history`), desktop notifications, tray controls, and optional post-capture hooks.
 - **Plasma widget (`plasmoid`):** Displays recent captures and triggers configured areas, groups, and monitors directly from KDE Plasma (follows your Plasma UI language).
-- **Local OCR (`tesseract`):** Extract text from screenshots via *Copy Text* or `glimply capture --ocr`.
+- **Local OCR (`tesseract`):** Extract text from screenshots via *Copy Text* or `itsova capture --ocr`.
 - **Export formats:** PNG, JPEG, WebP, AVIF, and JXL (WebP/AVIF/JXL require the corresponding Qt image-format plugins).
-- **CLI & local stdio MCP server:** Scriptable JSON/stdout CLI (`capture`, `list`, `area`, `interval`, `overlay`, `history`, `mcp`) and an opt-in local JSON-RPC 2.0 stdio MCP server (`glimply mcp`).
+- **CLI & local stdio MCP server:** Scriptable JSON/stdout CLI (`capture`, `list`, `area`, `interval`, `overlay`, `history`, `mcp`) and an opt-in local JSON-RPC 2.0 stdio MCP server (`itsova mcp`).
 - **19 UI languages:** English (base/fallback), Arabic, Chinese (Simplified & Traditional), Dutch, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish, Ukrainian, and Vietnamese (*Settings -> General -> Language*).
 
 ---
@@ -46,28 +48,35 @@
 
 ## Privacy & Local Processing
 
-glimply runs strictly locally on your machine:
+Itsova runs strictly locally on your machine:
 
-- **No network communication:** Qt's network stack is not linked, and glimply makes no network requests (no telemetry, no crash uploads, no update checks).
-- **Local storage & processing:** Screenshots, annotations, capture history, and configuration (`glimplyrc`) are stored locally. OCR runs locally using the installed `tesseract` binary.
+- **No network communication:** Qt's network stack is not linked, and Itsova makes no network requests (no telemetry, no crash uploads, no update checks).
+- **Local storage & processing:** Screenshots, annotations, capture history, and configuration (`itsovarc`) are stored locally. OCR runs locally using the installed `tesseract` binary.
 
 ---
 
 ## Permissions & KDE Plasma Integration
 
-- **Screen capture (`org.kde.KWin.ScreenShot2`):** glimply installs a desktop file that declares `X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` and points `Exec=` at the installed binary. This is the access model KWin documents: KWin should only accept `ScreenShot2` requests from programs started through such a file. On the development system, KWin did not enforce it. Test programs without a matching file, including a plain Python script, received captures without a prompt, and the cause is not yet known. Do not treat this declaration as a security boundary against other programs in your session. Install glimply with a matching prefix (or use `scripts/install.sh` for `~/.local`) and run the installed binary rather than running straight from a temporary build directory. When Autostart is enabled in settings, glimply keeps the autostart `.desktop` entry pointing at the active binary.
-- **Screen recording (`zkde_screencast_unstable_v1`):** KWin grants its screencast protocol through the same desktop file (`X-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1`); KPipeWire encodes the stream. After a recording, glimply runs `ffprobe`/`ffmpeg` once on the file to hold the last frame until *Stop* (container timing only).
-- **Global `Print` key shortcut:** glimply can register `Print` through KDE GlobalAccel to launch its capture overlay. To release the `Print` binding cleanly (for example before switching back to Spectacle or uninstalling), run:
+- **Screen capture (`org.kde.KWin.ScreenShot2`):** Itsova installs a desktop file that declares `X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` and points `Exec=` at the installed binary. This is the access model KWin documents: KWin should only accept `ScreenShot2` requests from programs started through such a file. On the development system, KWin did not enforce it. Test programs without a matching file, including a plain Python script, received captures without a prompt, and the cause is not yet known. Do not treat this declaration as a security boundary against other programs in your session. Install Itsova with a matching prefix (or use `scripts/install.sh` for `~/.local`) and run the installed binary rather than running straight from a temporary build directory. When Autostart is enabled in settings, Itsova keeps the autostart `.desktop` entry pointing at the active binary.
+- **Screen recording (`zkde_screencast_unstable_v1`):** KWin grants its screencast protocol through the same desktop file (`X-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1`); KPipeWire encodes the stream. After a recording, Itsova runs `ffprobe`/`ffmpeg` once on the file to hold the last frame until *Stop* (container timing only).
+- **Global `Print` key shortcut:** Itsova can register `Print` through KDE GlobalAccel to launch its capture overlay. To release the `Print` binding cleanly (for example before switching back to Spectacle or uninstalling), run:
   ```bash
-  glimply --release-print-key
+  itsova --release-print-key
   ```
-- **Local MCP server (disabled by default):** `glimply mcp` exposes 10 local stdio tools (`list_targets`, `list_monitors`, `list_windows`, `capture_target`, `capture_region`, `capture_window`, `get_last_capture`, `start_interval`, `stop_interval`, `annotate_image`) and denies all calls until explicitly enabled under **Settings -> Automation -> Local MCP Server**. Access scopes:
+- **Local MCP server (disabled by default):** `itsova mcp` exposes 10 local stdio tools (`list_targets`, `list_monitors`, `list_windows`, `capture_target`, `capture_region`, `capture_window`, `get_last_capture`, `start_interval`, `stop_interval`, `annotate_image`) and denies all calls until explicitly enabled under **Settings -> Automation -> Local MCP Server**. Access scopes:
   - `Allowlist` — only pre-approved saved targets (`list_windows`, `capture_region`, and `capture_window` are blocked).
   - `ConfirmPerCapture` — asks the user via dialog before captures, interval starts, and annotations.
   - `FullSession` — allows all MCP tools without per-call confirmation for the configured session scope.
-- **Optional OCR (`tesseract`):** Only executed locally when *Copy Text* or `glimply capture --ocr` is invoked; requires `tesseract` and the matching language data (such as `tesseract-data-eng`).
+- **Optional OCR (`tesseract`):** Only executed locally when *Copy Text* or `itsova capture --ocr` is invoked; requires `tesseract` and the matching language data (such as `tesseract-data-eng`).
 
 ---
+
+## Beta limitations
+
+- Resizing a window during recording can distort the picture ([#127](https://github.com/m00sfett/Itsova/issues/127)).
+- Screen capture and recording require KDE Plasma on Wayland and KWin; other desktops are not supported.
+- Some desktop configurations, including multiple monitors and fractional scaling, need further hands-on testing.
+- Translations are machine-generated and may contain errors.
 
 ## Requirements
 
@@ -92,12 +101,12 @@ Minimum supported toolchain (verified in Debian 13 `trixie` via [`scripts/check-
 
 Packaging files are provided in [`packaging/arch/`](packaging/arch/):
 
-- **Development package (current `main`):** [`packaging/arch/glimply-git/PKGBUILD`](packaging/arch/glimply-git/PKGBUILD)
+- **Development package (current `main`):** [`packaging/arch/itsova-git/PKGBUILD`](packaging/arch/itsova-git/PKGBUILD)
   ```bash
-  cd packaging/arch/glimply-git
+  cd packaging/arch/itsova-git
   makepkg -si
   ```
-- **Release template (`1.0.0`+ once tagged):** [`packaging/arch/glimply/PKGBUILD`](packaging/arch/glimply/PKGBUILD) (no release tags exist prior to `1.0.0`).
+- **Beta release template:** [`packaging/arch/itsova/PKGBUILD`](packaging/arch/itsova/PKGBUILD) is prepared for `v0.12.0-beta.1`. It requires the published tag and a verified source checksum before it can be built. Until then, use the development package or build from source.
 
 ### Build from Source
 
@@ -114,7 +123,7 @@ For a rootless user installation under `~/.local` (also refreshes KDE desktop/ic
 ./scripts/install.sh
 ```
 
-`./scripts/install.sh` also accepts `--prefix DIR` and `--uninstall` (stops `glimply`, releases the `Print` shortcut via `--release-print-key`, and removes installed files while keeping `~/.config/glimplyrc` and captures).
+`./scripts/install.sh` also accepts `--prefix DIR` and `--uninstall` (stops `itsova`, releases the `Print` shortcut via `--release-print-key`, and removes installed files while keeping `~/.config/itsovarc` and captures).
 
 To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain in a `debian:trixie` container (requires Docker):
 
@@ -125,7 +134,7 @@ To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain i
 ### Tests
 
 - **Offscreen tests** (`ctest -LE nested`): QTest on Qt's `offscreen` platform; CTest sets it for every test, so no window ever appears on the desktop. These run on every build and in `install.sh`.
-- **Nested-KWin tests** (`ctest -L nested`): each test starts a virtual `kwin_wayland` on a private D-Bus session with a throw-away home, runs the freshly built `glimply` there and drives it through D-Bus and KWin's fake input (`glimply-fakekey`); screenshots and files land in `<build>/nested/<test>/`. The desktop session is never touched. They need `kwin_wayland`, `wayland-scanner`, `python-dbus`, ImageMagick and FFmpeg, and are skipped otherwise. Run one by hand with `tests/nested/session.sh --help`.
+- **Nested-KWin tests** (`ctest -L nested`): each test starts a virtual `kwin_wayland` on a private D-Bus session with a throw-away home, runs the freshly built `itsova` there and drives it through D-Bus and KWin's fake input (`itsova-fakekey`); screenshots and files land in `<build>/nested/<test>/`. The desktop session is never touched. They need `kwin_wayland`, `wayland-scanner`, `python-dbus`, ImageMagick and FFmpeg, and are skipped otherwise. Run one by hand with `tests/nested/session.sh --help`.
 - **Coverage**: `scripts/coverage.sh [build-dir]` builds with `--coverage`, runs the offscreen tests and writes a `gcovr` report (reported, no gate).
 - **Mutation testing**: `scripts/mutate.sh <src/file.cpp>...` runs [Mull](https://github.com/mull-project/mull) on the named files only and reports surviving mutants. It needs Mull built for the installed clang's LLVM version (`MULL_DIR`).
 - Every change starts with a failing test (red), then the fix (green).
@@ -135,31 +144,31 @@ To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain i
 ## CLI Quick Reference
 
 ```bash
-glimply overlay [--mode frozen|live] [--delay N]
-glimply capture <target|all|monitor:...|window:...> [--format png|jpeg|webp|avif|jxl] [--ocr] [--clipboard] [--stdout] [--no-save] [--json]
-glimply list [--kind targets|monitors|windows] [--json]
-glimply area add|edit|rename|remove ...
-glimply interval start|stop|status ...
-glimply history [--limit N] [--json]
-glimply latency [--last N] [--json]
-glimply logs [journalctl options]
-glimply -e <file>
-glimply mcp
-glimply --verbose
-glimply --release-print-key
+itsova overlay [--mode frozen|live] [--delay N]
+itsova capture <target|all|monitor:...|window:...> [--format png|jpeg|webp|avif|jxl] [--ocr] [--clipboard] [--stdout] [--no-save] [--json]
+itsova list [--kind targets|monitors|windows] [--json]
+itsova area add|edit|rename|remove ...
+itsova interval start|stop|status ...
+itsova history [--limit N] [--json]
+itsova latency [--last N] [--json]
+itsova logs [journalctl options]
+itsova -e <file>
+itsova mcp
+itsova --verbose
+itsova --release-print-key
 ```
 
-Run `glimply <subcommand> --help` for full options.
+Run `itsova <subcommand> --help` for full options.
 
 ### Logs
 
-glimply writes every capture, overlay session, recording start and stop (with who asked: tray, shortcut, D-Bus, quit, KWin) and every error to the user journal. `glimply logs` shows the last hour; pass `journalctl` options such as `-f`, `-n 200` or `--since today`. Detailed (debug) lines are off by default; turn them on in *Settings → General → Logging* or start the daemon with `glimply --verbose`. Logs never contain secrets, hook commands or file contents, only paths.
+Itsova writes every capture, overlay session, recording start and stop (with who asked: tray, shortcut, D-Bus, quit, KWin) and every error to the user journal. `itsova logs` shows the last hour; pass `journalctl` options such as `-f`, `-n 200` or `--since today`. Detailed (debug) lines are off by default; turn them on in *Settings → General → Logging* or start the daemon with `itsova --verbose`. Logs never contain secrets, hook commands or file contents, only paths.
 
 ---
 
 ## Translations
 
-English is the source language (`i18n/glimply_en.ts` provides English plural rules).
+English is the source language (`i18n/itsova_en.ts` provides English plural rules).
 
 > **Note on translations:** The 18 non-English UI translations were generated via machine/AI translation and may contain awkward phrasing or terminology issues. Corrections and native-speaker pull requests are very welcome!
 
@@ -173,4 +182,4 @@ Developer helpers for catalogs:
 
 ## License
 
-`glimply` is licensed under the **GNU Affero General Public License v3.0 or later** (`AGPL-3.0-or-later`) — see [`LICENSE`](LICENSE). Clean-room implementation: no source code is copied from Spectacle or other screenshot tools.
+`itsova` is licensed under the **GNU Affero General Public License v3.0 or later** (`AGPL-3.0-or-later`) — see [`LICENSE`](LICENSE). Clean-room implementation: no source code is copied from Spectacle or other screenshot tools.

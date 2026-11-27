@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 AddItemCommand::AddItemCommand(AnnotationDocument *doc, AnnotationItem item)
@@ -201,4 +201,4 @@ void ReorderItemCommand::undo()
     Q_EMIT doc_->changed();
 }
 
-} // namespace glimply
+} // namespace itsova

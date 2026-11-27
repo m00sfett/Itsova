@@ -14,7 +14,7 @@ class KStatusNotifierItem;
 class QMenu;
 class QTimer;
 
-namespace glimply
+namespace itsova
 {
 
 struct MenuTarget
@@ -120,4 +120,4 @@ private:
     QString recordingStopShortcut_;
 };
 
-} // namespace glimply
+} // namespace itsova

@@ -3,7 +3,7 @@
 
 #include <QtTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {

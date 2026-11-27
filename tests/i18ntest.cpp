@@ -7,7 +7,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class I18nTest : public QObject
 {
@@ -103,7 +103,7 @@ private Q_SLOTS:
     {
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
-        KConfig config(dir.filePath(QStringLiteral("glimplyrc")), KConfig::SimpleConfig);
+        KConfig config(dir.filePath(QStringLiteral("itsovarc")), KConfig::SimpleConfig);
         QCOMPARE(configuredUiLanguage(config), QString());
         config.group(QStringLiteral("General")).writeEntry("Language", QStringLiteral(" zh_TW "));
         QCOMPARE(configuredUiLanguage(config), QStringLiteral("zh_TW"));

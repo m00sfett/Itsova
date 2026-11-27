@@ -1,6 +1,6 @@
 #include "mcppolicy.h"
 
-namespace glimply
+namespace itsova
 {
 
 // Denial reasons go back to the MCP client and stay English whatever the UI language (#51).
@@ -8,7 +8,7 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
 {
     if (!config.enabled) {
         return {McpDecision::Deny,
-                QStringLiteral("MCP server access is disabled. Enable it in glimply Settings -> Automation -> "
+                QStringLiteral("MCP server access is disabled. Enable it in Itsova Settings -> Automation -> "
                                   "Local MCP Server.")};
     }
 
@@ -40,7 +40,7 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
     if (toolName == QLatin1String("capture_region") || toolName == QLatin1String("capture_window")) {
         return {McpDecision::Deny,
                 QStringLiteral("Arbitrary regions and windows are blocked in MCP Allowlist mode. Choose explicitly "
-                                  "allowlisted targets or change access scope in glimply Settings -> Automation.")};
+                                  "allowlisted targets or change access scope in Itsova Settings -> Automation.")};
     }
     if (toolName == QLatin1String("annotate_image")) {
         return {McpDecision::Allow, {}};
@@ -51,7 +51,7 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
             return {McpDecision::Allow, {}};
         }
         return {McpDecision::Deny,
-                QStringLiteral("Target '%1' is not in the MCP allowlist. Approve it in glimply Settings -> "
+                QStringLiteral("Target '%1' is not in the MCP allowlist. Approve it in Itsova Settings -> "
                                   "Automation -> Local MCP Server.")
                     .arg(resolvedTargetId)};
     }
@@ -66,4 +66,4 @@ McpPolicyResult evaluateMcpAccess(const McpConfig &config, const QString &toolNa
     return {McpDecision::Deny, QStringLiteral("Unknown MCP tool: %1").arg(toolName)};
 }
 
-} // namespace glimply
+} // namespace itsova

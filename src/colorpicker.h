@@ -12,7 +12,7 @@
 #include <QRect>
 #include <QWidget>
 
-namespace glimply
+namespace itsova
 {
 
 class App;
@@ -77,4 +77,4 @@ private:
     ScreenInfo screen_;
 };
 
-} // namespace glimply
+} // namespace itsova

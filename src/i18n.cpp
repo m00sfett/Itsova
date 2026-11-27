@@ -9,7 +9,7 @@
 
 #include <algorithm>
 
-namespace glimply
+namespace itsova
 {
 
 const QStringList &translatedUiLanguages()
@@ -115,7 +115,7 @@ QString configuredUiLanguage(const KConfig &config)
 
 QString configuredUiLanguage()
 {
-    const KConfig config(QStringLiteral("glimplyrc"), KConfig::SimpleConfig);
+    const KConfig config(QStringLiteral("itsovarc"), KConfig::SimpleConfig);
     return configuredUiLanguage(config);
 }
 
@@ -185,10 +185,10 @@ QStringList translationDirectories()
     QStringList dirs;
     const QString appDir = QCoreApplication::applicationDirPath();
     if (!appDir.isEmpty()) {
-        dirs << appDir << QDir::cleanPath(appDir + QStringLiteral("/../share/glimply/translations"));
+        dirs << appDir << QDir::cleanPath(appDir + QStringLiteral("/../share/itsova/translations"));
     }
     for (const QString &dataDir : QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation)) {
-        const QString dir = dataDir + QStringLiteral("/glimply/translations");
+        const QString dir = dataDir + QStringLiteral("/itsova/translations");
         if (!dirs.contains(dir)) {
             dirs << dir;
         }
@@ -196,4 +196,4 @@ QStringList translationDirectories()
     return dirs;
 }
 
-} // namespace glimply
+} // namespace itsova

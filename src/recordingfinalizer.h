@@ -9,7 +9,7 @@
 
 class QProcess;
 
-namespace glimply
+namespace itsova
 {
 
 // KWin sends a frame only when the screen changes, so a recording that ends on a still picture
@@ -28,7 +28,7 @@ struct TailFix
     int lastPacket = -1; // index of the last video packet
     double extraSeconds = 0; // new display duration of that packet; 0 keeps it
     QList<RecordingPause> pauses; // pauses to cut out
-    QString metadata; // #103: JSON written as the container tag "glimply"; empty writes none
+    QString metadata; // #103: JSON written as the container tag "itsova"; empty writes none
 };
 
 // ffprobeCsv: "pts_time,duration_time" per video packet (ffprobe -of csv=p=0). targetSeconds is the
@@ -70,4 +70,4 @@ private:
     bool finished_ = true;
 };
 
-} // namespace glimply
+} // namespace itsova

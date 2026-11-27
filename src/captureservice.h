@@ -3,7 +3,7 @@
 #include <QImage>
 #include <QString>
 
-namespace glimply
+namespace itsova
 {
 
 struct CaptureResult
@@ -22,4 +22,4 @@ public:
     [[nodiscard]] static CaptureResult captureWindow(const QString &handle, bool includeCursor = false);
 };
 
-} // namespace glimply
+} // namespace itsova

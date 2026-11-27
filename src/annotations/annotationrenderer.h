@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QRectF>
 
-namespace glimply
+namespace itsova
 {
 
 // Renders document items intersecting logicalCropRect directly into nativeCrop at nativeScale,
@@ -32,4 +32,4 @@ void paintAnnotationOverlay(QPainter &painter,
                             const QPointF &backdropLogicalOrigin = {},
                             int hiddenItemId = 0);
 
-} // namespace glimply
+} // namespace itsova

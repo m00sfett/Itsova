@@ -9,7 +9,7 @@
 #include <QRect>
 #include <QSize>
 
-namespace glimply::PixelLoupe
+namespace itsova::PixelLoupe
 {
 
 // The magnified native pixels around nativePixel (#101): pixels outside nativeSelection (frame
@@ -46,4 +46,4 @@ void paintColorPickerLoupe(QPainter &painter,
                            ColorFormat format,
                            bool showAltHint);
 
-} // namespace glimply::PixelLoupe
+} // namespace itsova::PixelLoupe

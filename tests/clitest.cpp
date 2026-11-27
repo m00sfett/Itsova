@@ -10,7 +10,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 
-using namespace glimply;
+using namespace itsova;
 
 namespace
 {
@@ -246,7 +246,7 @@ void CliTest::captureOcrOutput()
     QBuffer err;
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
                     backend, out, err),
              0);
     QVERIFY(backend.lastCaptureReq.ocr);
@@ -254,7 +254,7 @@ void CliTest::captureOcrOutput()
 
     QBuffer jsonOut;
     jsonOut.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
                      QStringLiteral("--json")},
                     backend, jsonOut, err),
              0);
@@ -271,7 +271,7 @@ void CliTest::captureOcrOutput()
     QBuffer missingErr;
     missingOut.open(QIODevice::ReadWrite);
     missingErr.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr")},
                     backend, missingOut, missingErr),
              1);
     QVERIFY(missingOut.data().startsWith("/p/a.png\n"));
@@ -279,7 +279,7 @@ void CliTest::captureOcrOutput()
 
     QBuffer conflictOut;
     conflictOut.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Both"), QStringLiteral("--ocr"),
                      QStringLiteral("--stdout")},
                     backend, conflictOut, err),
              2);
@@ -297,7 +297,7 @@ void CliTest::historySubcommand()
     QBuffer err;
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history")}, backend, out, err), 0);
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("history")}, backend, out, err), 0);
     const QStringList lines = QString::fromUtf8(out.data()).trimmed().split(QLatin1Char('\n'));
     QCOMPARE(lines.size(), 3);
     QCOMPARE(lines.first(), QStringLiteral("2026-11-24 15:01:02\tBoth Monitors\t/p/a.png"));
@@ -305,7 +305,7 @@ void CliTest::historySubcommand()
 
     QBuffer jsonOut;
     jsonOut.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("1"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("1"),
                      QStringLiteral("--json")},
                     backend, jsonOut, err),
              0);
@@ -315,7 +315,7 @@ void CliTest::historySubcommand()
 
     QBuffer badOut;
     badOut.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("0")},
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("history"), QStringLiteral("--limit"), QStringLiteral("0")},
                     backend, badOut, err),
              2);
     QVERIFY(isCliSubcommand(QStringLiteral("history")));
@@ -337,7 +337,7 @@ void CliTest::captureJsonAndOptions()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
+    const int rc = runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
                            QStringLiteral("--format"), QStringLiteral("jpeg"), QStringLiteral("--quality"),
                            QStringLiteral("82"), QStringLiteral("--delay"), QStringLiteral("3"), QStringLiteral("--cursor"),
                            QStringLiteral("--out"), QStringLiteral("/tmp/shot.jpg"), QStringLiteral("--json")},
@@ -389,7 +389,7 @@ void CliTest::captureStdoutBinaryAndCleanup()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1"),
+    const int rc = runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("DP-1"),
                            QStringLiteral("--stdout"), QStringLiteral("--no-save")},
                           backend, out, err);
     QCOMPARE(rc, 0);
@@ -406,7 +406,7 @@ void CliTest::captureErrorsAndExitCodes()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("DP-1"),
                      QStringLiteral("--stdout"), QStringLiteral("--json")},
                     backend, out, err),
              2);
@@ -415,7 +415,7 @@ void CliTest::captureErrorsAndExitCodes()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("DP-1"),
                      QStringLiteral("--quality"), QStringLiteral("0")},
                     backend, out, err),
              2);
@@ -425,7 +425,7 @@ void CliTest::captureErrorsAndExitCodes()
     backend.nextCaptureResult.ok = false;
     backend.nextCaptureResult.exitCode = 3;
     backend.nextCaptureResult.error = QStringLiteral("Not found");
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("missing")}, backend, out, err),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("missing")}, backend, out, err),
              3);
 }
 
@@ -438,7 +438,7 @@ void CliTest::captureRelativeOutIsAbsolute()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
+    const int rc = runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("DP-1-1"),
                            QStringLiteral("--out"), QStringLiteral("sub/shot.png")},
                           backend, out, err);
     QCOMPARE(rc, 0);
@@ -459,7 +459,7 @@ void CliTest::capturePartialFailureReportsFiles()
     QBuffer err;
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
-    const int rc = runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Dual"),
+    const int rc = runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Dual"),
                            QStringLiteral("--json")},
                           backend, out, err);
     QCOMPARE(rc, 1);
@@ -473,7 +473,7 @@ void CliTest::capturePartialFailureReportsFiles()
     QBuffer textErr;
     textOut.open(QIODevice::ReadWrite);
     textErr.open(QIODevice::ReadWrite);
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("capture"), QStringLiteral("Dual")}, backend,
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("capture"), QStringLiteral("Dual")}, backend,
                     textOut, textErr),
              1);
     QVERIFY(textOut.data().contains("/tmp/a.png"));
@@ -488,7 +488,7 @@ void CliTest::listSubcommands()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("list"), QStringLiteral("--kind"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("list"), QStringLiteral("--kind"),
                      QStringLiteral("windows"), QStringLiteral("--json")},
                     backend, out, err),
              0);
@@ -499,7 +499,7 @@ void CliTest::listSubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("list"), QStringLiteral("--kind"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("list"), QStringLiteral("--kind"),
                      QStringLiteral("invalid")},
                     backend, out, err),
              2);
@@ -513,7 +513,7 @@ void CliTest::areaSubcommands()
     out.open(QIODevice::ReadWrite);
     err.open(QIODevice::ReadWrite);
 
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("area"), QStringLiteral("add"), QStringLiteral("--name"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("area"), QStringLiteral("add"), QStringLiteral("--name"),
                      QStringLiteral("Box"), QStringLiteral("--monitor"), QStringLiteral("DP-1"),
                      QStringLiteral("--rect"), QStringLiteral("10,20,300,200"), QStringLiteral("--json")},
                     backend, out, err),
@@ -524,7 +524,7 @@ void CliTest::areaSubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("area"), QStringLiteral("rename"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("area"), QStringLiteral("rename"),
                      QStringLiteral("DP-1-1"), QStringLiteral("RenamedBox"), QStringLiteral("--json")},
                     backend, out, err),
              0);
@@ -533,14 +533,14 @@ void CliTest::areaSubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("area"), QStringLiteral("remove"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("area"), QStringLiteral("remove"),
                      QStringLiteral("DP-1"), QStringLiteral("--json")},
                     backend, out, err),
              2);
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("area"), QStringLiteral("remove"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("area"), QStringLiteral("remove"),
                      QStringLiteral("DP-1-1"), QStringLiteral("--json")},
                     backend, out, err),
              0);
@@ -556,7 +556,7 @@ void CliTest::intervalAndOverlaySubcommands()
     err.open(QIODevice::ReadWrite);
 
     // Passing only --only-changed should preserve target's saved seconds/maxCaptures/maxMinutes from Targets().
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("interval"), QStringLiteral("start"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("interval"), QStringLiteral("start"),
                      QStringLiteral("DP-1-1"), QStringLiteral("--only-changed"), QStringLiteral("--json")},
                     backend, out, err),
              0);
@@ -568,7 +568,7 @@ void CliTest::intervalAndOverlaySubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("interval"), QStringLiteral("stop"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("interval"), QStringLiteral("stop"),
                      QStringLiteral("--all"), QStringLiteral("--json")},
                     backend, out, err),
              0);
@@ -576,7 +576,7 @@ void CliTest::intervalAndOverlaySubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("overlay"), QStringLiteral("--mode"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("overlay"), QStringLiteral("--mode"),
                      QStringLiteral("live"), QStringLiteral("--delay"), QStringLiteral("4")},
                     backend, out, err),
              0);
@@ -585,7 +585,7 @@ void CliTest::intervalAndOverlaySubcommands()
 
     out.setData({});
     err.setData({});
-    QCOMPARE(runCli({QStringLiteral("glimply"), QStringLiteral("overlay"), QStringLiteral("--mode"),
+    QCOMPARE(runCli({QStringLiteral("itsova"), QStringLiteral("overlay"), QStringLiteral("--mode"),
                      QStringLiteral("bad")},
                     backend, out, err),
              2);

@@ -1,7 +1,7 @@
 # Nested test (#122): moving a recorded window does not end the recording. Content changes after
 # the move are in the video, and the file is as long as the recording (last frame held).
 geom() {
-    glimply_call ListWindows | sed 's/^s "//; s/"$//; s/\\"/"/g' | python3 -c '
+    itsova_call ListWindows | sed 's/^s "//; s/"$//; s/\\"/"/g' | python3 -c '
 import json, sys
 for w in json.load(sys.stdin):
     if w["appName"] == "kcalc":
@@ -14,11 +14,11 @@ win=$(first_window_id)
 read -r x y w h < <(geom)
 cx=$((x + w / 2))
 fake m:$cx,$((y + h / 2)) d u # focus kcalc
-result=$(glimply_call StartRecording si "window:$win" 0)
+result=$(itsova_call StartRecording si "window:$win" 0)
 [[ "$result" == 's ""' ]] || fail "StartRecording: $result"
 started=$(date +%s.%N)
 sleep 2
-[[ "$(recording_state)" == recording ]] || fail "not recording: $(glimply_call RecordingState)"
+[[ "$(recording_state)" == recording ]] || fail "not recording: $(itsova_call RecordingState)"
 type_digits 2
 # Drag the title bar.
 ty=$((y + 12))
@@ -31,7 +31,7 @@ type_digits 4
 sleep 2
 state=$(recording_state)
 stopped=$(date +%s.%N)
-glimply_call StopRecording >/dev/null
+itsova_call StopRecording >/dev/null
 wait_recording_idle 30 || fail "did not finish"
 [[ "$state" == recording ]] || fail "recording ended on its own after the move (state $state)"
 file=$(newest_file '*.mp4')

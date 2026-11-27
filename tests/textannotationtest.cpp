@@ -17,7 +17,7 @@
 #include <QToolButton>
 #include <QtTest>
 
-using namespace glimply;
+using namespace itsova;
 
 class TextAnnotationTest : public QObject
 {

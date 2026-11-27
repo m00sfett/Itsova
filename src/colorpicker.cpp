@@ -19,7 +19,7 @@
 #include <mutex>
 #include <utility>
 
-namespace glimply
+namespace itsova
 {
 
 ColorPickerSession::ColorPickerSession(App *app, QObject *parent)
@@ -303,4 +303,4 @@ void ColorPickerOverlay::keyPressEvent(QKeyEvent *event)
     event->accept();
 }
 
-} // namespace glimply
+} // namespace itsova

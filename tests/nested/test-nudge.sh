@@ -1,7 +1,7 @@
 # Nested test (#102): with the mouse button held, arrow keys move the dragged corner by one native
 # pixel (Shift: ten); small mouse moves after a key are ignored; the saved file includes the nudge.
-log="$home/glimply.log"
-glimply_call OpenOverlay si frozen 0 >/dev/null || fail "OpenOverlay failed"
+log="$home/itsova.log"
+itsova_call OpenOverlay si frozen 0 >/dev/null || fail "OpenOverlay failed"
 sleep 2
 # Draw 200 × 100 from (500,400) to (700,500); keep the button down while the keys come.
 fake_bg m:500,400 d m:600,450 m:700,500 w:1200 m:704,503 w:2200 u

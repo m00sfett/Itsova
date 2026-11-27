@@ -6,17 +6,17 @@
 
 class KConfig;
 
-namespace glimply
+namespace itsova
 {
 
 // English is the source language and needs no translation file.
 inline constexpr char sourceUiLanguage[] = "en";
 
-// The UI languages glimply ships besides English (#51), as translation file suffixes.
+// The UI languages itsova ships besides English (#51), as translation file suffixes.
 [[nodiscard]] const QStringList &translatedUiLanguages();
 
 // Maps a locale code such as "de-DE", "pt_BR", "zh-Hant-HK" or "en_GB.UTF-8" to "en" or one of
-// translatedUiLanguages(); empty when glimply has no matching translation.
+// translatedUiLanguages(); empty when itsova has no matching translation.
 [[nodiscard]] QString matchUiLanguage(const QString &code);
 
 // The language the UI uses: the configured one when supported, else the first supported entry of
@@ -29,7 +29,7 @@ inline constexpr char sourceUiLanguage[] = "en";
                                                      const QString &lcMessages, const QString &lang);
 [[nodiscard]] QStringList systemUiLanguages();
 
-// [General] Language from glimplyrc; empty means "follow the system".
+// [General] Language from itsovarc; empty means "follow the system".
 [[nodiscard]] QString configuredUiLanguage(const KConfig &config);
 [[nodiscard]] QString configuredUiLanguage();
 
@@ -50,8 +50,8 @@ struct UiLanguageChoice
 void setActiveUiLanguage(const QString &code);
 [[nodiscard]] QString activeUiLanguage();
 
-// Directories searched for glimply_<lang>.qm, most specific first: next to the executable (build
+// Directories searched for itsova_<lang>.qm, most specific first: next to the executable (build
 // tree), the install prefix relative to the executable, then the XDG data directories.
 [[nodiscard]] QStringList translationDirectories();
 
-} // namespace glimply
+} // namespace itsova

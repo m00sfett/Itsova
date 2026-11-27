@@ -9,7 +9,7 @@
 #include <functional>
 #include <optional>
 
-namespace glimply
+namespace itsova
 {
 
 // One capture event: a single trigger, possibly with several files (groups, multiple rectangles).
@@ -36,7 +36,7 @@ public:
 
     explicit HistoryStore(QString filePath = defaultFilePath(), int limit = DefaultLimit);
 
-    // ~/.local/state/glimply/history.json
+    // ~/.local/state/itsova/history.json
     [[nodiscard]] static QString defaultFilePath();
     [[nodiscard]] QString filePath() const;
 
@@ -76,4 +76,4 @@ private:
     QList<HistoryEntry> entries_;
 };
 
-} // namespace glimply
+} // namespace itsova
