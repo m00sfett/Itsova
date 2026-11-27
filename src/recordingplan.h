@@ -1,5 +1,7 @@
 #pragma once
 
+#include "recordingaudio.h"
+
 #include <QDateTime>
 #include <QList>
 #include <QPair>
@@ -14,6 +16,7 @@ namespace itsova
 // selection) or one window; the recorder turns that into a file.
 enum class RecordingFormat { Mp4, Gif, WebM };
 
+[[nodiscard]] QString recordingAudioSourceLabel(RecordingAudioSource source);
 [[nodiscard]] QString recordingFormatKey(RecordingFormat format); // "mp4", "gif", "webm"
 [[nodiscard]] RecordingFormat recordingFormatFromKey(const QString &key); // unknown keys: Mp4
 [[nodiscard]] QString recordingExtension(RecordingFormat format);

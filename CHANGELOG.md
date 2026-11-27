@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Optional experimental audio for MP4 and WebM recordings. Enable it under Settings → Storage, then choose system audio or the default microphone for each recording in the overlay. Recording starts silent by default and continues if the audio source is unavailable (#155).
+
 ### Fixed
 
 - Preserve recording timing through pause, resume, and window resizing. The recording finalizer can attach separate audio tracks on the same timeline and excludes samples from paused intervals (#154).

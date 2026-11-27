@@ -129,7 +129,7 @@ public:
 
     // The one panel of the session (#69). It shows on one monitor: where the pointer is while
     // nothing is selected, then where the selection is; a monitor the user dragged it to wins.
-    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help, Record, Monitors };
+    enum class PanelDrawer { None, Window, Areas, Delay, Markup, More, SaveArea, Help, Record, Monitors, Audio };
     [[nodiscard]] PanelDrawer panelDrawer() const;
     void setPanelDrawer(PanelDrawer drawer);
     // A second click on the button of the open drawer closes it.
@@ -187,6 +187,9 @@ public:
     // Print file and opens the Record drawer.
     void setRecordMode(bool on);
     [[nodiscard]] bool recordMode() const { return recordMode_; }
+    [[nodiscard]] bool recordingAudioAvailable() const;
+    [[nodiscard]] RecordingAudioSource recordingAudioSelection() const { return recordingAudioSelection_; }
+    void chooseRecordingAudio(RecordingAudioSource source);
     // Closes the overlay and records targetId (see App::startRecording) once it is gone, after the
     // delay chosen in the panel.
     void record(const QString &targetId);
@@ -265,6 +268,7 @@ private:
     bool forceShowOverlay_ = false;
     bool textMode_ = false;
     bool recordMode_ = false;
+    RecordingAudioSource recordingAudioSelection_ = RecordingAudioSource::None;
     bool frozen_ = true;
     bool forceNew_ = false;
     bool dragging_ = false;
@@ -346,6 +350,7 @@ private:
     [[nodiscard]] QWidget *buildMonitorList();
     [[nodiscard]] QWidget *buildAreaList();
     [[nodiscard]] QWidget *buildDelayRow();
+    [[nodiscard]] QWidget *buildAudioRow();
     [[nodiscard]] QWidget *buildMarkupDrawer();
     [[nodiscard]] QWidget *buildMoreRow();
     [[nodiscard]] QWidget *buildAreaForm();
@@ -400,6 +405,7 @@ private:
     QList<QPointer<PanelButton>> mainButtons_;
     QPointer<PanelButton> saveButton_;
     QPointer<PanelButton> delayButton_;
+    QPointer<PanelButton> audioButton_;
     bool panelDragging_ = false;
     QPoint panelGrabOffset_;
 };

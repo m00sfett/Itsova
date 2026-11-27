@@ -415,6 +415,19 @@ void CaptureOverlay::buildPanel()
     panel_->hide();
 }
 
+static QString recordingAudioIcon(RecordingAudioSource source)
+{
+    switch (source) {
+    case RecordingAudioSource::System:
+        return QStringLiteral("audio-volume-high-symbolic");
+    case RecordingAudioSource::Microphone:
+        return QStringLiteral("audio-input-microphone-symbolic");
+    case RecordingAudioSource::None:
+        return QStringLiteral("audio-volume-muted-symbolic");
+    }
+    return {};
+}
+
 QString CaptureOverlay::panelState() const
 {
     if (session_->purpose() != CaptureSession::Purpose::Print) {
@@ -431,6 +444,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     mainButtons_.clear();
     saveButton_ = nullptr;
     delayButton_ = nullptr;
+    audioButton_ = nullptr;
 
     const auto add = [this](const QString &icon, const QString &title, const QString &shortcut,
                             const std::function<void()> &action) {
@@ -449,6 +463,12 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     };
     const auto close = [&] {
         add(QStringLiteral("window-close"), tr("Close"), QStringLiteral("Esc"), [this] { session_->close(); });
+    };
+    const auto audio = [&] {
+        if (session_->recordingAudioAvailable()) {
+            audioButton_ = drawer(Drawer::Audio, recordingAudioIcon(session_->recordingAudioSelection()),
+                                  tr("Recording audio"), {});
+        }
     };
     // Every tool letter opens Markup; listed one by one, never abbreviated.
     const QString toolKeys = QStringLiteral("V A R E B M T N X S");
@@ -470,6 +490,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
         // Opened to record (#30): recording the selection is the main action.
         PanelButton *record = add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Enter"),
                                   [this] { session_->recordSelection(); });
+        audio();
         record->setPrimary(true);
         // #124: the drawn rectangle as the default of the recording shortcut.
         PanelButton *pin = add(QStringLiteral("pin"), session_->defaultRecordingTip(), QStringLiteral("P"),
@@ -500,6 +521,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
             [this] { session_->copyText(screen_.connector); });
         add(QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"),
             [this] { session_->recordSelection(); });
+        audio();
         panel_->addGroupGap();
         drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Markup"), toolKeys);
         panel_->addGroupGap();
@@ -523,12 +545,14 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     drawer(Drawer::Areas, QStringLiteral("select-rectangular"), tr("Areas"), QStringLiteral("G"));
     panel_->addGroupGap();
     if (record) {
+        audio();
         delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
         panel_->addGroupGap();
         close();
         return;
     }
     drawer(Drawer::Record, QStringLiteral("media-record"), tr("Record"), QStringLiteral("Ctrl+R"));
+    audio();
     panel_->addGroupGap();
     delayButton_ = drawer(Drawer::Delay, QStringLiteral("chronometer"), tr("Delay"), QStringLiteral("D"));
     drawer(Drawer::Markup, QStringLiteral("draw-freehand"), tr("Markup"), toolKeys);
@@ -572,6 +596,8 @@ QWidget *CaptureOverlay::buildDrawer(CaptureSession::PanelDrawer drawer)
         return buildAreaList();
     case Drawer::Delay:
         return buildDelayRow();
+    case Drawer::Audio:
+        return buildAudioRow();
     case Drawer::Markup:
         return buildMarkupDrawer();
     case Drawer::More:
@@ -1018,6 +1044,21 @@ QWidget *CaptureOverlay::buildDelayRow()
     return buttonRow(buttons);
 }
 
+QWidget *CaptureOverlay::buildAudioRow()
+{
+    QList<QWidget *> buttons;
+    for (const auto source : {RecordingAudioSource::None, RecordingAudioSource::System, RecordingAudioSource::Microphone}) {
+        auto *button = new PanelButton(recordingAudioIcon(source), recordingAudioSourceLabel(source), {}, nullptr);
+        button->setCheckable(true);
+        const bool selected = source == session_->recordingAudioSelection();
+        button->setChecked(selected);
+        button->setActive(selected);
+        connect(button, &QAbstractButton::clicked, this, [this, source] { session_->chooseRecordingAudio(source); });
+        buttons.append(button);
+    }
+    return buttonRow(buttons);
+}
+
 QWidget *CaptureOverlay::buildMoreRow()
 {
     using Drawer = CaptureSession::PanelDrawer;
@@ -1285,6 +1326,11 @@ void CaptureOverlay::refreshPanel()
     if (delayButton_) {
         const int delay = session_->captureDelaySeconds();
         delayButton_->setBadge(delay > 0 ? tr("%1 s").arg(delay) : QString());
+    }
+    if (audioButton_) {
+        const auto source = session_->recordingAudioSelection();
+        audioButton_->setIconName(recordingAudioIcon(source));
+        audioButton_->setTitle(tr("Recording audio: %1").arg(recordingAudioSourceLabel(source)));
     }
 
     panel_->adjustSize();
