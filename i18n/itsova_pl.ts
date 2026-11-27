@@ -505,8 +505,8 @@
         <translation>Zamaż</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Nieodwracalne zamazanie (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Zasłoń wrażliwe obszary (X) — użyj pełnego wypełnienia dla wrażliwego tekstu</translation>
     </message>
     <message>
         <source>Spotlight</source>

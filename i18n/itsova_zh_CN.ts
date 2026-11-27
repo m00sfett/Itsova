@@ -505,8 +505,8 @@
         <translation>遮盖</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>不可逆遮盖 (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>遮盖敏感区域 (X) — 敏感文本请使用纯色填充</translation>
     </message>
     <message>
         <source>Spotlight</source>

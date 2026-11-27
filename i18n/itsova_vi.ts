@@ -505,8 +505,8 @@
         <translation>Che mờ</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Che mờ không thể hoàn tác (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Che vùng nhạy cảm (X) — dùng Tô đặc cho văn bản nhạy cảm</translation>
     </message>
     <message>
         <source>Spotlight</source>

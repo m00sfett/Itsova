@@ -505,8 +505,8 @@
         <translation>墨消し</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>元に戻せない墨消し (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>機密領域を隠す (X) — 機密テキストには塗りつぶしを使用してください</translation>
     </message>
     <message>
         <source>Spotlight</source>

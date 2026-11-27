@@ -505,8 +505,8 @@
         <translation>Redaksi</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Redaksi permanen (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Samarkan area sensitif (X) — gunakan Isi padat untuk teks sensitif</translation>
     </message>
     <message>
         <source>Spotlight</source>

@@ -505,8 +505,8 @@
         <translation>Masquer</translation>
     </message>
     <message>
-        <source>Irreversible redaction (X)</source>
-        <translation>Masquage irréversible (X)</translation>
+        <source>Redact sensitive areas (X) — use Solid for sensitive text</source>
+        <translation>Masquer les zones sensibles (X) — utilisez Remplissage uni pour le texte sensible</translation>
     </message>
     <message>
         <source>Spotlight</source>

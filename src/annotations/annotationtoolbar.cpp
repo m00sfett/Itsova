@@ -283,7 +283,7 @@ void AnnotationToolbar::buildUi()
     addTool(ToolKind::Highlighter, tr("Highlighter"), tr("Multiply highlighter (M)"));
     addTool(ToolKind::Text, tr("Text"), tr("Add text annotation; click or drag box (T)"));
     addTool(ToolKind::Step, tr("Step Counter"), tr("Place numbered badge; drag to add pointer (N)"));
-    addTool(ToolKind::Redact, tr("Redact"), tr("Irreversible redaction (X)"));
+    addTool(ToolKind::Redact, tr("Redact"), tr("Redact sensitive areas (X) — use Solid for sensitive text"));
     addTool(ToolKind::Spotlight, tr("Spotlight"), tr("Highlight region and dim surroundings (S)"));
 
     QFrame *sep2 = makeVerticalRule(toolRow_);
