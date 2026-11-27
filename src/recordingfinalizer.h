@@ -1,11 +1,14 @@
 #pragma once
 
+#include "recordingaudio.h"
+
 #include <QList>
 #include <QObject>
 #include <QSize>
 #include <QString>
 #include <QStringList>
 
+#include <functional>
 #include <optional>
 
 class QProcess;
@@ -13,9 +16,6 @@ class QProcess;
 namespace itsova
 {
 
-// KWin sends a frame only when the screen changes, so a recording that ends on a still picture
-// would stop at the last change (#30). The finalizer holds the last frame until the end of the
-// recording by rewriting the container timing with ffmpeg (stream copy, never re-encoding).
 // A pause, in seconds after the start of the recording. KPipeWire drops the frames of a pause but
 // keeps the clock running, so the frames after it are shifted back by its length.
 struct RecordingPause
@@ -60,19 +60,27 @@ public:
     explicit RecordingFinalizer(QObject *parent = nullptr);
     ~RecordingFinalizer() override;
 
+    // Holds sparse video through the recording end and adds audio on the edited video clock.
     // Runs asynchronously; emits done exactly once. Without ffmpeg/ffprobe the file stays as it is.
     // metadata (#103) is written into the file in the same pass; it alone is reason for a pass.
     void finalize(const QString &path, qint64 targetDurationMs, const QList<RecordingPause> &pauses = {},
-                  const QString &metadata = QString(), const QList<WindowResizeSample> &resizeSamples = {});
+                  const QString &metadata = QString(), const QList<WindowResizeSample> &resizeSamples = {},
+                  const QList<RecordingAudioTrack> &audioTracks = {});
 
 Q_SIGNALS:
     // extended: the last frame now lasts until the end. note: why nothing changed, for the log.
     void done(bool extended, const QString &note);
 
 private:
-    void runFix(const TailFix &fix);
+    void probePackets(bool letterboxed, const QString &note = {});
+    void runFix(const TailFix &fix, bool letterboxed, const QString &note);
     void probeSizeAndLetterbox(bool alreadyExtended, const QString &priorNote);
     void runLetterbox(const QString &filterGraph, bool alreadyExtended, const QString &priorNote);
+    void muxAudio(bool extended, const QString &note);
+    void startProcess(const QString &program, const QStringList &args,
+                      const std::function<void(bool, const QByteArray &)> &completed);
+    bool openTemporary(const QString &purpose);
+    bool replaceWithTemporary(bool success);
     void finish(bool extended, const QString &note);
 
     QProcess *process_ = nullptr;
@@ -81,8 +89,8 @@ private:
     double targetSeconds_ = 0;
     QList<RecordingPause> pauses_;
     QList<WindowResizeSample> resizeSamples_;
+    QList<RecordingAudioTrack> audioTracks_;
     QString metadata_;
-    TailFix currentFix_;
     bool finished_ = true;
 };
 
