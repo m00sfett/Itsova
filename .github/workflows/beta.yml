@@ -1,0 +1,45 @@
+name: Beta prerelease
+on:
+  push:
+    tags:
+      - 'v*-beta.*'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate beta tag and version
+        env:
+          TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)-beta\.([1-9][0-9]*)$ ]]
+          version="${BASH_REMATCH[1]}"
+          grep -Fqx "project(itsova VERSION $version LANGUAGES C CXX)" CMakeLists.txt
+          test -f "release/$TAG.md"
+          test "$(git rev-list -n1 "$TAG")" = "$(git rev-parse HEAD)"
+      - name: Prepare source archive and Arch recipe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          archive="itsova-${TAG#v}-source.tar.gz"
+          curl -fsSL "https://github.com/$REPO/archive/refs/tags/$TAG.tar.gz" -o "dist/$archive"
+          checksum=$(sha256sum "dist/$archive" | cut -d' ' -f1)
+          cp packaging/arch/itsova/PKGBUILD dist/PKGBUILD
+          sed -i "s/REPLACE_WITH_VERIFIED_SHA256/$checksum/" dist/PKGBUILD
+          (cd dist && sha256sum "$archive" PKGBUILD > SHA256SUMS)
+      - name: Publish prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/* --prerelease --latest=false --title "Itsova $TAG Beta" --notes-file "release/$TAG.md" --verify-tag
