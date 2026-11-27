@@ -11,7 +11,8 @@ packages=(
     qt6-base-dev qt6-base-dev-tools qt6-image-formats-plugins qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     libkf6config-dev libkf6globalaccel-dev libkf6statusnotifieritem-dev libkf6notifications-dev
     libkf6dbusaddons-dev libkf6widgetsaddons-dev libkf6xmlgui-dev libkf6i18n-dev
-    qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols libkpipewire-dev ffmpeg
+    qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols libkpipewire-dev
+    liblayershellqtinterface-dev ffmpeg
 )
 
 docker run --rm --cpus 4 --memory 8g \

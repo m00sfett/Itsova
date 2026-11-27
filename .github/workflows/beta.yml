@@ -1,15 +1,58 @@
 name: Beta prerelease
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Beta tag to rehearse (defaults to latest release/v<version>-beta.*.md matching CMakeLists.txt)'
+        required: false
+        default: ''
+        type: string
   push:
     tags:
       - 'v*-beta.*'
 permissions:
-  contents: write
+  contents: read
 jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    permissions:
+      contents: read
+    steps:
+      - name: Install Debian 13 toolchain and dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends \
+            ca-certificates git cmake ninja-build g++ python3 gettext ffmpeg \
+            qt6-base-dev qt6-base-dev-tools qt6-image-formats-plugins qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+            libkf6config-dev libkf6globalaccel-dev libkf6statusnotifieritem-dev libkf6notifications-dev \
+            libkf6dbusaddons-dev libkf6widgetsaddons-dev libkf6xmlgui-dev libkf6i18n-dev \
+            qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols libkpipewire-dev \
+            liblayershellqtinterface-dev
+      - uses: actions/checkout@v4
+      - name: Configure and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON
+          cmake --build build
+      - name: Run offscreen test suite
+        env:
+          QT_QPA_PLATFORM: offscreen
+        shell: bash
+        run: |
+          set -euo pipefail
+          ctest --test-dir build --output-on-failure -LE nested
+
   release:
+    needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +88,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: gh release create "$TAG" dist/* --prerelease --latest=false --title "Itsova $TAG Beta" --notes-file "release/$TAG.md" --verify-tag
+
   rehearsal:
+    needs: build-and-test
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
@@ -53,14 +98,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate beta recipe and source archive
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
         shell: bash
         run: |
           set -euo pipefail
-          tag=v0.12.0-beta.1
+          tag="$INPUT_TAG"
+          if [[ -z "$tag" ]]; then
+            version=$(sed -n 's/^project(itsova VERSION \([0-9.]*\) LANGUAGES C CXX)$/\1/p' CMakeLists.txt)
+            test -n "$version"
+            tag=$(find release -maxdepth 1 -type f -name "v${version}-beta.*.md" -printf '%f\n' | sed 's/\.md$//' | sort -V | tail -n 1)
+            test -n "$tag"
+          fi
           [[ "$tag" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)-beta\.([1-9][0-9]*)$ ]]
           grep -Fqx "project(itsova VERSION ${BASH_REMATCH[1]} LANGUAGES C CXX)" CMakeLists.txt
           test -f "release/$tag.md"
+          test -f packaging/debian/copyright
           bash -n packaging/arch/itsova/PKGBUILD
+          bash -n packaging/arch/itsova-git/PKGBUILD
           git archive --format=tar.gz --prefix="Itsova-${tag#v}/" HEAD > candidate.tar.gz
           mkdir extracted
           tar -xzf candidate.tar.gz -C extracted
