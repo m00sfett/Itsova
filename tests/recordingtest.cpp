@@ -9,6 +9,10 @@
 #include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
+#include <QtEndian>
+
+#include <cmath>
+#include <numbers>
 
 using namespace itsova;
 
@@ -17,6 +21,44 @@ class RecordingTest : public QObject
     Q_OBJECT
 
 private:
+    static QByteArray convertMedia(const QString &tool, const QStringList &args)
+    {
+        QProcess process;
+        process.start(tool, QStringList{QStringLiteral("-v"), QStringLiteral("error")} + args);
+        if (!process.waitForFinished(30000) || process.exitStatus() != QProcess::NormalExit || process.exitCode() != 0) {
+            qWarning().noquote() << process.readAllStandardError().trimmed();
+            return {};
+        }
+        return process.readAllStandardOutput();
+    }
+
+    static QByteArray decodedAudio(const QString &path, int index)
+    {
+        return convertMedia(QStringLiteral("ffmpeg"),
+                            {QStringLiteral("-i"), path, QStringLiteral("-map"),
+                             QStringLiteral("0:a:%1").arg(index), QStringLiteral("-ac"), QStringLiteral("1"),
+                             QStringLiteral("-ar"), QString::number(recordingAudioRate), QStringLiteral("-f"),
+                             QStringLiteral("s16le"), QStringLiteral("-")});
+    }
+
+    static double toneStrength(const QByteArray &pcm, double start, int hz)
+    {
+        const int first = qRound(start * recordingAudioRate);
+        const int count = recordingAudioRate / 20;
+        if ((first + count) * 2 > pcm.size()) {
+            return 0;
+        }
+        double sine = 0;
+        double cosine = 0;
+        for (int i = 0; i < count; ++i) {
+            const double phase = i * 2 * std::numbers::pi * hz / recordingAudioRate;
+            const qint16 sample = qFromLittleEndian<qint16>(pcm.constData() + (first + i) * 2);
+            sine += sample * std::sin(phase);
+            cosine += sample * std::cos(phase);
+        }
+        return 2 * std::hypot(sine, cosine) / count;
+    }
+
     static double probeDuration(const QString &path)
     {
         QProcess probe;
@@ -230,12 +272,15 @@ private Q_SLOTS:
         const QString graph = letterboxFilterGraph(
             QSize(640, 508), {{0.0, QSize(640, 508)}, {2.0, QSize(1920, 1080)}, {4.5, QSize(640, 508)}});
         QVERIFY(!graph.isEmpty());
-        QVERIFY2(graph.contains(QStringLiteral("scale=640:360,pad=640:508:0:74:black")), qPrintable(graph));
-        QVERIFY2(graph.contains(QStringLiteral("concat=n=3:v=1:a=0[outv]")), qPrintable(graph));
+        QVERIFY2(graph.contains(QStringLiteral("scale=w='640':h='if(lt(t,2.000),508,if(lt(t,4.500),360,508))'")),
+                 qPrintable(graph));
+        QVERIFY2(graph.contains(QStringLiteral("pad=w=640:h=508:x='(ow-iw)/2':y='(oh-ih)/2':color=black:eval=frame")),
+                 qPrintable(graph));
+        QVERIFY(!graph.contains(QStringLiteral("setpts")));
 
         // Wide canvas -> narrow window produces pillarboxed output.
         const QString pillar = letterboxFilterGraph(QSize(1280, 720), {{0.0, QSize(1280, 720)}, {1.0, QSize(400, 800)}});
-        QVERIFY2(pillar.contains(QStringLiteral("scale=360:720,pad=1280:720:460:0:black")), qPrintable(pillar));
+        QVERIFY2(pillar.contains(QStringLiteral("scale=w='if(lt(t,1.000),1280,360)':h='720'")), qPrintable(pillar));
     }
 
     void formatsRoundTrip()
@@ -396,6 +441,177 @@ private Q_SLOTS:
         QVERIFY(done.wait(60000));
         QVERIFY2(done.first().at(0).toBool(), qPrintable(done.first().at(1).toString()));
         QVERIFY2(qAbs(probeDuration(path) - 2.0) < 0.15, qPrintable(QString::number(probeDuration(path))));
+    }
+
+    void finalizerKeepsAudioInSync_data()
+    {
+        QTest::addColumn<QString>("extension");
+        QTest::addColumn<bool>("resize");
+        QTest::newRow("mp4") << QStringLiteral("mp4") << false;
+        QTest::newRow("letterboxed mp4") << QStringLiteral("mp4") << true;
+        QTest::newRow("letterboxed webm") << QStringLiteral("webm") << true;
+    }
+
+    void finalizerKeepsAudioInSync()
+    {
+        QFETCH(QString, extension);
+        QFETCH(bool, resize);
+        if (QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+            || QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty()) {
+            QSKIP("ffmpeg/ffprobe not installed");
+        }
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const QString path = dir.filePath(QStringLiteral("sparse.") + extension);
+        const QString desktop = dir.filePath(QStringLiteral("desktop.pcm"));
+        const QString mic = dir.filePath(QStringLiteral("mic.pcm"));
+        const bool mp4 = extension == QLatin1String("mp4");
+        const QStringList videoCodec = mp4
+            ? QStringList{QStringLiteral("libx264"), QStringLiteral("-bf"), QStringLiteral("0"),
+                          QStringLiteral("-pix_fmt"), QStringLiteral("yuv420p")}
+            : QStringList{QStringLiteral("libvpx-vp9")};
+        QProcess make;
+        make.start(QStringLiteral("ffmpeg"),
+                   QStringList{QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"),
+                               QStringLiteral("lavfi"), QStringLiteral("-i"),
+                               QStringLiteral("color=red:size=64x48:rate=10:duration=5"),
+                               QStringLiteral("-vf"), QStringLiteral("select='eq(n,0)+eq(n,4)+eq(n,21)+eq(n,29)+eq(n,41)+eq(n,43)'"),
+                               QStringLiteral("-fps_mode"), QStringLiteral("passthrough"), QStringLiteral("-c:v")}
+                       + videoCodec + QStringList{path});
+        QVERIFY(make.waitForFinished(30000));
+        if (make.exitCode() != 0) {
+            QSKIP("this ffmpeg cannot write the test clip");
+        }
+        // The 1 kHz bursts are outside pauses. The 2 kHz bursts occur only while paused.
+        const QString wave = QStringLiteral(
+            "(between(t,0.2,0.4)+between(t,2.2,2.4)+between(t,4.2,4.4))*0.3*sin(2*PI*1000*t)"
+            "+(between(t,1,2)+between(t,3,4)+between(t,5,6.2))*0.3*sin(2*PI*2000*t)");
+        const auto makePcm = [](const QString &source, const QString &destination) {
+            QProcess audio;
+            audio.start(QStringLiteral("ffmpeg"),
+                        {QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"), QStringLiteral("lavfi"),
+                         QStringLiteral("-i"), source, QStringLiteral("-ac"), QStringLiteral("2"),
+                         QStringLiteral("-f"), QStringLiteral("s16le"), destination});
+            return audio.waitForFinished(30000) && audio.exitCode() == 0;
+        };
+        QVERIFY(makePcm(QStringLiteral("aevalsrc='%1':s=48000:d=6.2").arg(wave), desktop));
+        QVERIFY(makePcm(QStringLiteral("sine=f=400:r=48000:d=4.7"), mic));
+
+        RecordingFinalizer finalizer;
+        QSignalSpy done(&finalizer, &RecordingFinalizer::done);
+        const QList<WindowResizeSample> sizes = resize
+            ? QList<WindowResizeSample>{{0, QSize(64, 48)}, {0.9, QSize(64, 32)}, {2.5, QSize(64, 48)}}
+            : QList<WindowResizeSample>();
+        RecordingMetadata meta;
+        meta.targetId = QStringLiteral("window:fixture");
+        finalizer.finalize(path, 3000, {{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.2}}, recordingMetadataJson(meta), sizes,
+                           {{desktop, QStringLiteral("System audio"), 0},
+                            {dir.filePath(QStringLiteral("missing.pcm")), QStringLiteral("Unavailable"), 0},
+                            {mic, QStringLiteral("Microphone"), 1500000}});
+        QVERIFY(done.wait(30000));
+        QCOMPARE(done.size(), 1);
+        QVERIFY2(done.first().at(0).toBool(), qPrintable(done.first().at(1).toString()));
+
+        const QString tag = mp4 ? QStringLiteral("handler_name") : QStringLiteral("title");
+        const QByteArray tracks = convertMedia(
+            QStringLiteral("ffprobe"), {QStringLiteral("-select_streams"), QStringLiteral("a"),
+                                        QStringLiteral("-show_entries"), QStringLiteral("stream_tags=") + tag,
+                                        QStringLiteral("-of"), QStringLiteral("csv=p=0"), path});
+        QCOMPARE(tracks.trimmed(), QByteArray("System audio\nMicrophone"));
+        const auto metadata = readRecordingMetadata(path);
+        QVERIFY(metadata);
+        QCOMPARE(metadata->targetId, meta.targetId);
+
+        const QStringList packets = QString::fromUtf8(
+                                        convertMedia(QStringLiteral("ffprobe"), ffprobePacketArguments(path).mid(2)))
+                                        .split(QLatin1Char('\n'), Qt::SkipEmptyParts);
+        const QList<double> editedPts{0.0, 0.4, 1.1, 1.9, 2.1, 2.3};
+        QCOMPARE(packets.size(), editedPts.size());
+        for (qsizetype i = 0; i < packets.size(); ++i) {
+            const double pts = packets.at(i).section(QLatin1Char(','), 0, 0).toDouble();
+            QVERIFY2(qAbs(pts - editedPts.at(i)) < 0.015, qPrintable(packets.at(i)));
+        }
+        QVERIFY2(qAbs(packets.last().section(QLatin1Char(','), 1, 1).toDouble() - 0.7) < 0.025,
+                 qPrintable(packets.last()));
+        if (resize) {
+            const QByteArray pixels = convertMedia(
+                QStringLiteral("ffmpeg"), {QStringLiteral("-i"), path, QStringLiteral("-map"), QStringLiteral("0:v"),
+                                            QStringLiteral("-fps_mode"), QStringLiteral("passthrough"), QStringLiteral("-f"),
+                                            QStringLiteral("rawvideo"), QStringLiteral("-pix_fmt"),
+                                            QStringLiteral("rgb24"), QStringLiteral("-")});
+            constexpr int frameBytes = 64 * 48 * 3;
+            constexpr int center = (24 * 64 + 32) * 3;
+            QCOMPARE(pixels.size(), editedPts.size() * frameBytes);
+            QVERIFY(quint8(pixels.at(0)) > 200); // first frame fills the canvas
+            QVERIFY(quint8(pixels.at(2 * frameBytes)) < 20); // first frame after resize has a bar
+            QVERIFY(quint8(pixels.at(2 * frameBytes + center)) > 200);
+        }
+
+        const QByteArray systemAudio = decodedAudio(path, 0);
+        const QByteArray micAudio = decodedAudio(path, 1);
+        for (const QByteArray &pcm : {systemAudio, micAudio}) {
+            QVERIFY(qAbs(double(pcm.size()) / (2 * recordingAudioRate) - 3.0) < 0.025);
+        }
+        for (int segment = 0; segment < 3; ++segment) {
+            QVERIFY(toneStrength(systemAudio, segment + 0.25, 1000) > 2000);
+            QVERIFY(toneStrength(systemAudio, segment + 0.05, 2000) < 150);
+            QVERIFY(toneStrength(systemAudio, segment + 0.75, 2000) < 150);
+        }
+        QVERIFY(toneStrength(micAudio, 0.75, 400) < 150);
+        QVERIFY(toneStrength(micAudio, 1.05, 400) > 1000);
+        QVERIFY(toneStrength(micAudio, 2.9, 400) > 1000);
+    }
+
+    void finalizerKeepsTheVideoWithoutUsableAudio_data()
+    {
+        QTest::addColumn<QString>("extension");
+        QTest::addColumn<QStringList>("codec");
+        QTest::newRow("missing mp4 sidecar")
+            << QStringLiteral("mp4")
+            << QStringList{QStringLiteral("-c:v"), QStringLiteral("libx264"), QStringLiteral("-bf"), QStringLiteral("0")};
+        QTest::newRow("gif with audio") << QStringLiteral("gif") << QStringList{};
+    }
+
+    void finalizerKeepsTheVideoWithoutUsableAudio()
+    {
+        QFETCH(QString, extension);
+        QFETCH(QStringList, codec);
+        if (QStandardPaths::findExecutable(QStringLiteral("ffmpeg")).isEmpty()
+            || QStandardPaths::findExecutable(QStringLiteral("ffprobe")).isEmpty()) {
+            QSKIP("ffmpeg/ffprobe not installed");
+        }
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const QString path = dir.filePath(QStringLiteral("video.") + extension);
+        QProcess make;
+        make.start(QStringLiteral("ffmpeg"),
+                   QStringList{QStringLiteral("-v"), QStringLiteral("error"), QStringLiteral("-f"),
+                               QStringLiteral("lavfi"), QStringLiteral("-i"),
+                               QStringLiteral("testsrc=size=64x48:rate=10:duration=1")}
+                       + codec + QStringList{path});
+        QVERIFY(make.waitForFinished(30000));
+        if (make.exitCode() != 0) {
+            QSKIP("this ffmpeg cannot write the test clip");
+        }
+        QFile pcm(dir.filePath(QStringLiteral("audio.pcm")));
+        if (extension == QLatin1String("gif")) {
+            QVERIFY(pcm.open(QIODevice::WriteOnly));
+            const QByteArray samples(4800 * recordingAudioFrameBytes, 'a');
+            QCOMPARE(pcm.write(samples), samples.size());
+            pcm.close();
+        }
+        QFile video(path);
+        QVERIFY(video.open(QIODevice::ReadOnly));
+        const QByteArray original = video.readAll();
+        video.close();
+        QVERIFY(!original.isEmpty());
+
+        RecordingFinalizer finalizer;
+        QSignalSpy done(&finalizer, &RecordingFinalizer::done);
+        finalizer.finalize(path, 1000, {}, {}, {}, {{pcm.fileName(), QStringLiteral("Microphone"), 0}});
+        QVERIFY(done.wait(30000));
+        QVERIFY(video.open(QIODevice::ReadOnly));
+        QCOMPARE(video.readAll(), original);
     }
 
     void finalizerExtendsARealFile_data()

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Preserve recording timing through pause, resume, and window resizing. The recording finalizer can attach separate audio tracks on the same timeline and excludes samples from paused intervals (#154).
+
 ## [0.12.0-beta.1] - 2026-11-27
 
 First public beta release: rename to Itsova, tray visibility, default recording shortcut, recording hints, and Debian/Arch packaging (milestone 0.12.0).
