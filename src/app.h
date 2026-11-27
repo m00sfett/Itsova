@@ -115,7 +115,8 @@ public:
     void editLastCapture();
     void openEditorForFile(const QString &path);
     void openEditorFromCapture(const QImage &image, qreal scale, std::unique_ptr<AnnotationDocument> annotations,
-                               const QString &baseToken);
+                               const QString &baseToken, const QString &deferredPrintPath = QString(),
+                               bool deferredClearClipboard = false);
     void openCaptureFolder();
     // addArea starts the selection overlay; targetId selects that target or group in the window.
     void showSettings(bool addArea = false, const QString &targetId = QString());
@@ -204,7 +205,8 @@ private:
     void migrateLegacyIds();
     void claimPrintKey();
     void applyAutostart();
-    void attachEditorWindow(QuickEditorWindow *window);
+    void attachEditorWindow(QuickEditorWindow *window, const QString &deferredPrintPath = QString(),
+                            bool deferredClearClipboard = false);
     void notify(const QString &eventId, const QString &title, const QStringList &messages);
     void notifyError(const QString &title, const QStringList &messages);
     void showInFolder(const QStringList &paths);

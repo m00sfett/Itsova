@@ -1886,14 +1886,31 @@ QWidget *SettingsWindow::createGeneralPage()
         }
     });
 
-    printOpensOverlay_ = new QCheckBox(tr("Open the selection overlay after saving"), page);
+    printOpensOverlay_ = new QCheckBox(tr("Open the selection overlay"), page);
     form->addRow(tr("After Print:"), printOpensOverlay_);
     form->addRow(QString(), makeHint(tr("In the overlay you can cut the screenshot down to rectangles, a monitor or a "
-                                        "window. Without it, Print only saves the full screenshot."),
+                                        "window. Without it, Print saves the full screenshot directly."),
                                      page));
     connect(printOpensOverlay_, &QCheckBox::toggled, this, [this](bool on) {
         if (!updating_) {
             app_->store().printOpensOverlay = on;
+            app_->storeChanged();
+        }
+        if (saveImmediatelyOnPrint_) {
+            saveImmediatelyOnPrint_->setEnabled(on);
+        }
+    });
+
+    saveImmediatelyOnPrint_ = new QCheckBox(tr("Save full screenshot immediately on Print"), page);
+    form->addRow(QString(), saveImmediatelyOnPrint_);
+    form->addRow(QString(),
+                 makeHint(tr("Off by default: Print keeps the capture in memory until you save, copy, pin, or edit "
+                             "it. Turn this on to write the full screenshot to disk and copy it to the clipboard "
+                             "immediately when Print is pressed."),
+                          page));
+    connect(saveImmediatelyOnPrint_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().saveImmediatelyOnPrint = on;
             app_->storeChanged();
         }
     });
@@ -2343,6 +2360,8 @@ void SettingsWindow::refreshStorage()
     trayHint_->setVisible(store.trayVisibility != TargetStore::TrayVisibility::Always);
     usePrintKey_->setChecked(store.usePrintKey);
     printOpensOverlay_->setChecked(store.printOpensOverlay);
+    saveImmediatelyOnPrint_->setChecked(store.saveImmediatelyOnPrint);
+    saveImmediatelyOnPrint_->setEnabled(store.printOpensOverlay);
     overlayStart_->setCurrentIndex(overlayStart_->findData(int(store.overlayStart)));
     resetPanelPosition_->setEnabled(!store.overlayPanelPositions.isEmpty());
     showFirstHintAgain_->setEnabled(store.overlayFirstHintShown);

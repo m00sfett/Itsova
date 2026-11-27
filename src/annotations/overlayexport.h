@@ -27,6 +27,10 @@ namespace itsova
                                                 QString *error = nullptr);
 
 // Pure security policy guards preventing raw Print snapshots from leaking unredacted pixels.
+[[nodiscard]] bool shouldSavePrintImmediately(bool printOpensOverlay,
+                                              bool forceShowOverlay,
+                                              bool saveImmediatelyOnPrint);
+[[nodiscard]] bool shouldPurgeDeferredPrintOnEditorSave(const QString &deferredPrintPath, const QString &savedPath);
 [[nodiscard]] bool shouldBypassRawPrintFastPath(bool frozen, const QString &printPath, const AnnotationDocument &doc);
 [[nodiscard]] bool shouldDeletePrintFileOnCopy(const AnnotationDocument &doc, const QString &printPath);
 bool purgeUnredactedPrintFile(const QString &printPath, bool clearClipboard);

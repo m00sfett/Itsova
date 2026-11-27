@@ -59,6 +59,19 @@ QImage renderAnnotatedAllMonitors(const QList<ScreenInfo> &screens, const QHash<
     return renderAnnotatedCrop(composed, QRectF(bounds), maxScale, doc);
 }
 
+bool shouldSavePrintImmediately(bool printOpensOverlay, bool forceShowOverlay, bool saveImmediatelyOnPrint)
+{
+    if (!printOpensOverlay && !forceShowOverlay) {
+        return true;
+    }
+    return saveImmediatelyOnPrint;
+}
+
+bool shouldPurgeDeferredPrintOnEditorSave(const QString &deferredPrintPath, const QString &savedPath)
+{
+    return !deferredPrintPath.isEmpty() && savedPath != deferredPrintPath;
+}
+
 bool shouldBypassRawPrintFastPath(bool frozen, const QString &printPath, const AnnotationDocument &doc)
 {
     return frozen && !printPath.isEmpty() && doc.isEmpty();

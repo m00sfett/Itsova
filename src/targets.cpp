@@ -438,6 +438,7 @@ void TargetStore::load(const KConfig &config)
     autostart = general.readEntry("Autostart", true);
     usePrintKey = general.readEntry("UsePrintKey", true);
     printOpensOverlay = general.readEntry("PrintOpensOverlay", true);
+    saveImmediatelyOnPrint = general.readEntry("SaveImmediatelyOnPrint", false);
     const QString start = general.readEntry("OverlayStart", QString());
     if (start == QLatin1String("frozen")) {
         overlayStart = OverlayStart::Frozen;
@@ -627,6 +628,7 @@ void TargetStore::save(KConfig &config) const
     general.writeEntry("Autostart", autostart);
     general.writeEntry("UsePrintKey", usePrintKey);
     general.writeEntry("PrintOpensOverlay", printOpensOverlay);
+    general.writeEntry("SaveImmediatelyOnPrint", saveImmediatelyOnPrint);
     general.writeEntry("Language", uiLanguage);
     switch (overlayStart) {
     case OverlayStart::LastUsed:
