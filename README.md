@@ -208,6 +208,7 @@ To verify compilation and tests against the minimum Qt 6.8 / KF 6.13 toolchain i
 
 ```bash
 itsova overlay [--mode frozen|live] [--delay N]
+itsova replay [--screen <name>] <file>
 itsova capture <target|all|monitor:...|window:...> [--format png|jpeg|webp|avif|jxl] [--ocr] [--clipboard] [--stdout] [--no-save] [--json]
 itsova list [--kind targets|monitors|windows] [--json]
 itsova area add|edit|rename|remove ...

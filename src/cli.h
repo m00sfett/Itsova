@@ -123,6 +123,17 @@ public:
         Q_UNUSED(outArray);
         return {false, 1, {}, QStringLiteral("latency is not supported by this backend")};
     }
+    // Replay (#104): plays a video fullscreen; empty screenName uses metadata or pointer monitor.
+    virtual CliSimpleResult startReplay(const QString &filePath, const QString &screenName)
+    {
+        Q_UNUSED(filePath);
+        Q_UNUSED(screenName);
+        return {false, 1, {}, QStringLiteral("replay is not supported by this backend")};
+    }
+    virtual CliSimpleResult stopReplay()
+    {
+        return {false, 1, {}, QStringLiteral("replay is not supported by this backend")};
+    }
 };
 
 class DBusCliBackend final : public CliBackend
@@ -146,6 +157,8 @@ public:
     CliSimpleResult openOverlay(const QString &mode, int delaySeconds) override;
     CliSimpleResult history(QJsonArray *outArray) override;
     CliSimpleResult latencyReport(QJsonArray *outArray) override;
+    CliSimpleResult startReplay(const QString &filePath, const QString &screenName) override;
+    CliSimpleResult stopReplay() override;
 };
 
 [[nodiscard]] bool isCliSubcommand(const QString &arg);

@@ -8,7 +8,7 @@ source_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 image="debian:trixie"
 packages=(
     cmake ninja-build g++ python3 gettext
-    qt6-base-dev qt6-base-dev-tools qt6-image-formats-plugins qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
+    qt6-base-dev qt6-base-dev-tools qt6-multimedia-dev qt6-image-formats-plugins qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
     libkf6config-dev libkf6globalaccel-dev libkf6statusnotifieritem-dev libkf6notifications-dev
     libkf6dbusaddons-dev libkf6widgetsaddons-dev libkf6xmlgui-dev libkf6i18n-dev
     qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols libkpipewire-dev

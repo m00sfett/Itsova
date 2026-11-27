@@ -473,6 +473,12 @@ void TargetStore::load(const KConfig &config)
                                      ? recording.readEntry("DefaultTarget", QString())
                                      : recording.readEntry("LastTarget", QString());
     }
+    {
+        const KConfigGroup replay = config.group(QStringLiteral("Replay"));
+        replayLoop = replay.readEntry("Loop", true);
+        replayShowCursor = replay.readEntry("ShowCursor", true);
+        replayFirstHintShown = replay.readEntry("FirstHintShown", false);
+    }
     colorPickerFormat = colorFormatFromKey(general.readEntry("ColorPickerFormat", QStringLiteral("hex")));
 
     overlayPanelPositions.clear();
@@ -669,6 +675,12 @@ void TargetStore::save(KConfig &config) const
         recording.writeEntry("IncludeCursor", recordingCursor);
         recording.writeEntry("DefaultTarget", defaultRecordingTarget);
         recording.deleteEntry("LastTarget");
+    }
+    {
+        KConfigGroup replay = config.group(QStringLiteral("Replay"));
+        replay.writeEntry("Loop", replayLoop);
+        replay.writeEntry("ShowCursor", replayShowCursor);
+        replay.writeEntry("FirstHintShown", replayFirstHintShown);
     }
     general.writeEntry("ColorPickerFormat", colorFormatConfigKey(colorPickerFormat));
     general.writeEntry("KeepDelayActive", keepDelayActive);

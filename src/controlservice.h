@@ -76,6 +76,10 @@ public Q_SLOTS:
     Q_SCRIPTABLE void PauseRecording(bool paused);
     // JSON object, see App::recordingState.
     Q_SCRIPTABLE QString RecordingState() const;
+    // Replay (#104): plays a video fullscreen; returns an error message or "".
+    Q_SCRIPTABLE QString StartReplay(const QString &filePath, const QString &screenName);
+    Q_SCRIPTABLE void StopReplay();
+    Q_SCRIPTABLE bool ReplayActive() const;
     // The widget calls this when it loads. While it is present, the separate tray icon steps back.
     Q_SCRIPTABLE void RegisterWidget();
 

@@ -8,7 +8,7 @@ url='https://github.com/m00sfett/Itsova'
 license=('AGPL-3.0-or-later')
 depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
          'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'layer-shell-qt' 'kwidgetsaddons' 'kwin' 'kxmlgui'
-         'qt6-base' 'qt6-wayland' 'wayland')
+         'qt6-base' 'qt6-multimedia' 'qt6-wayland' 'wayland')
 makedepends=('cmake' 'git' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
 checkdepends=('python' 'qt6-imageformats')
 optdepends=('tesseract: text recognition (Copy Text, itsova capture --ocr)'

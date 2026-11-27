@@ -56,6 +56,8 @@ public:
     void setRecordingPauseAvailable(bool available);
     // The global record shortcut, named in the "Click to stop" tooltip (#98).
     void setRecordingStopShortcut(const QString &shortcut);
+    // Replay (#104): shows "Stop Replay" in the tray menu while active.
+    void setReplayActive(bool active);
     // Standby: Plasma keeps the icon in the hidden part of the tray (used while the widget is shown).
     void setStandby(bool standby);
     // TargetStore::TrayVisibility as int (#123): 0 always, 1 while something runs, 2 while recording.
@@ -84,6 +86,7 @@ Q_SIGNALS:
     void pinsShownRequested(bool shown);
     void removeAllPinsRequested();
     void stopRecordingRequested(const QString &origin);
+    void stopReplayRequested();
     void quitRequested();
     void pauseRecordingRequested(bool paused);
 
@@ -118,6 +121,7 @@ private:
     bool countdownActive_ = false;
     int countdownRemaining_ = 0;
     QString recordingStopShortcut_;
+    bool replayActive_ = false;
 };
 
 } // namespace itsova

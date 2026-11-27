@@ -468,4 +468,21 @@ void ControlService::RegisterWidget()
     }
 }
 
+QString ControlService::StartReplay(const QString &filePath, const QString &screenName)
+{
+    qCInfo(lcDbus) << "StartReplay" << filePath << screenName;
+    return app_->startReplay(filePath, screenName);
+}
+
+void ControlService::StopReplay()
+{
+    qCInfo(lcDbus) << "StopReplay";
+    app_->stopReplay();
+}
+
+bool ControlService::ReplayActive() const
+{
+    return app_->isReplayActive();
+}
+
 } // namespace itsova

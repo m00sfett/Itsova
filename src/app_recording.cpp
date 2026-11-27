@@ -25,6 +25,7 @@
 #include "quickeditorwindow.h"
 #include "recordingplan.h"
 #include "recordinghint.h"
+#include "replaymanager.h"
 #include "screenrecorder.h"
 #include "controlservice.h"
 
@@ -593,6 +594,34 @@ void App::syncRecordingUi()
     tray_->setRecordingStopShortcut(recordingStopShortcutText());
     tray_->setRecordingState(int(recorder_->state()), recorder_->elapsedMs(), recorder_->target().displayName);
     Q_EMIT recordingChanged();
+}
+
+QString App::startReplay(const QString &filePath, const QString &explicitScreen)
+{
+    if (!replay_) {
+        return tr("Replay is not available.");
+    }
+    QStringList missing;
+    const QString err = replay_->startReplay(filePath, explicitScreen, QCursor::pos(), &missing);
+    if (!err.isEmpty()) {
+        return err;
+    }
+    if (!missing.isEmpty()) {
+        notifyPartialCapture(tr("Replay started without missing monitor(s)"), missing);
+    }
+    return {};
+}
+
+void App::stopReplay()
+{
+    if (replay_) {
+        replay_->stopAll();
+    }
+}
+
+bool App::isReplayActive() const
+{
+    return replay_ && replay_->isRunning();
 }
 
 } // namespace itsova

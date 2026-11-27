@@ -213,6 +213,10 @@ public:
     // What the start/stop shortcut records (#124), pinned in the overlay; empty: ask in the overlay.
     // Taken once from the old [Recording] LastTarget.
     QString defaultRecordingTarget;
+    // Replay (#104).
+    bool replayLoop = true;
+    bool replayShowCursor = true;
+    bool replayFirstHintShown = false;
     ColorFormat colorPickerFormat = ColorFormat::Hex;
 
     AnnotationSettings annotations;

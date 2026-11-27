@@ -25,6 +25,7 @@
 #include "quickeditorwindow.h"
 #include "recordingplan.h"
 #include "recordinghint.h"
+#include "replaymanager.h"
 #include "screenrecorder.h"
 #include "controlservice.h"
 
@@ -288,6 +289,10 @@ App::App(QObject *parent)
     connect(tray_, &TrayController::stopRecordingRequested, this, &App::stopRecording);
     connect(tray_, &TrayController::quitRequested, this, &App::quit);
     connect(tray_, &TrayController::pauseRecordingRequested, this, &App::setRecordingPaused);
+    replay_ = new ReplayManager(store_, this);
+    connect(tray_, &TrayController::stopReplayRequested, this, &App::stopReplay);
+    connect(replay_, &ReplayManager::activeChanged, this, [this](bool active) { tray_->setReplayActive(active); });
+    connect(replay_, &ReplayManager::settingsChanged, this, [this] { storeChanged(); });
 
     // New or removed monitors change the built-in targets.
     const auto layoutChanged = [this] {
@@ -407,6 +412,10 @@ void App::storeChanged(const QStringList &deletedIds)
     store_.save(*config_);
     setVerboseLogging(store_.verboseLogging || verboseFromCommandLine_);
     tray_->setVisibilityMode(int(store_.trayVisibility));
+    if (replay_) {
+        replay_->setShowCursor(store_.replayShowCursor);
+        replay_->setLoop(store_.replayLoop);
+    }
     if (history_->setLimit(store_.historyLimit)) {
         historyModified(true);
     }
@@ -1083,6 +1092,9 @@ QString App::historyAction(const QString &action, const QString &entryId, const 
             showInFolder(existing);
         }
         return {};
+    }
+    if (action == QLatin1String("replay")) {
+        return startReplay(existing.first());
     }
     if (action == QLatin1String("edit")) {
         openEditorForFile(existing.first());

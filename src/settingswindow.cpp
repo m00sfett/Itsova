@@ -483,6 +483,9 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     auto *general = addPage(createGeneralPage(), tr("General"));
     general->setHeader(tr("General"));
     general->setIcon(QIcon::fromTheme(QStringLiteral("configure")));
+    auto *replay = addPage(createReplayPage(), tr("Replay"));
+    replay->setHeader(tr("Fullscreen video replay"));
+    replay->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
     auto *automation = addPage(createAutomationPage(), tr("Automation"));
     automation->setHeader(tr("Post-capture hooks and external automation"));
     automation->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
@@ -2076,6 +2079,46 @@ void SettingsWindow::refreshTextRecognition()
     ocrHint_->setText(hint);
 }
 
+QWidget *SettingsWindow::createReplayPage()
+{
+    auto *page = new QWidget(this);
+    auto *form = new QFormLayout(page);
+    form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+
+    replayLoop_ = new QCheckBox(tr("Loop video playback"), page);
+    form->addRow(tr("Playback:"), replayLoop_);
+    connect(replayLoop_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().replayLoop = on;
+            app_->storeChanged();
+        }
+    });
+
+    replayShowCursor_ = new QCheckBox(tr("Show mouse pointer during replay"), page);
+    form->addRow(tr("Mouse pointer:"), replayShowCursor_);
+    form->addRow(QString(), makeHint(tr("During playback: M shows/hides the pointer, Esc ends."), page));
+    connect(replayShowCursor_, &QCheckBox::toggled, this, [this](bool on) {
+        if (!updating_) {
+            app_->store().replayShowCursor = on;
+            app_->storeChanged();
+        }
+    });
+
+    return page;
+}
+
+void SettingsWindow::refreshReplay()
+{
+    if (!replayLoop_ || !replayShowCursor_) {
+        return;
+    }
+    updating_ = true;
+    const TargetStore &store = app_->store();
+    replayLoop_->setChecked(store.replayLoop);
+    replayShowCursor_->setChecked(store.replayShowCursor);
+    updating_ = false;
+}
+
 QWidget *SettingsWindow::createAutomationPage()
 {
     auto *scroll = new QScrollArea;
@@ -2421,6 +2464,7 @@ void SettingsWindow::refresh()
     refreshTargets();
     refreshGroups();
     refreshStorage();
+    refreshReplay();
     refreshAutomation();
 }
 
