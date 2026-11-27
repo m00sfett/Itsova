@@ -46,6 +46,7 @@ private:
     QWidget *createGroupsPage();
     QWidget *createStoragePage();
     QWidget *createGeneralPage();
+    QWidget *createReplayPage();
     QWidget *createAutomationPage();
 
     void refresh();
@@ -55,6 +56,7 @@ private:
     void refreshGroups();
     void refreshGroupDetails();
     void refreshStorage();
+    void refreshReplay();
     void refreshTextRecognition();
     void refreshAutomation();
 
@@ -136,6 +138,8 @@ private:
     QCheckBox *usePrintKey_ = nullptr;
     QCheckBox *printOpensOverlay_ = nullptr;
     QCheckBox *saveImmediatelyOnPrint_ = nullptr;
+    QCheckBox *replayLoop_ = nullptr;
+    QCheckBox *replayShowCursor_ = nullptr;
     QComboBox *overlayStart_ = nullptr;
     QComboBox *trayVisibility_ = nullptr;
     QLabel *trayHint_ = nullptr;

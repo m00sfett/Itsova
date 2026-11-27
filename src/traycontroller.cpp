@@ -169,6 +169,14 @@ QMenu *TrayController::buildHistoryMenu(QMenu *parent)
             {"folder-open", tr("Show in Folder"), "folder"},
             {"window-pin", tr("Pin to Screen"), "pin"},
         };
+        if (!path.isEmpty() && isRecordingFile(path)) {
+            QAction *replayAct = target->addAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
+                                                   tr("Play as Replay"));
+            connect(replayAct, &QAction::triggered, this, [this, entryId, path] {
+                Q_EMIT historyActionRequested(QStringLiteral("replay"), entryId, path);
+            });
+            target->addSeparator();
+        }
         for (const Item &item : items) {
             QAction *action = target->addAction(QIcon::fromTheme(QString::fromLatin1(item.icon)), item.text);
             connect(action, &QAction::triggered, this, [this, entryId, path, name = QString::fromLatin1(item.action)] {
@@ -284,6 +292,17 @@ void TrayController::setStatusText(const QString &text)
     updateToolTip();
 }
 
+void TrayController::setReplayActive(bool active)
+{
+    if (replayActive_ == active) {
+        return;
+    }
+    replayActive_ = active;
+    applyPresence();
+    updateToolTip();
+    rebuildMenu();
+}
+
 void TrayController::setStandby(bool standby)
 {
     widgetActive_ = standby;
@@ -343,6 +362,11 @@ void TrayController::updateToolTip()
         }
         return;
     }
+    if (replayActive_) {
+        item_->setToolTipSubTitle(tr("Replaying video — click Stop Replay in the menu or press Esc"));
+        return;
+    }
+
     if (countdownActive_) {
         item_->setToolTipSubTitle(tr("Capturing in %1 s…").arg(countdownRemaining_));
         return;
@@ -399,6 +423,13 @@ void TrayController::rebuildMenu()
                                           paused ? tr("Resume Recording") : tr("Pause Recording"), menu_));
             connect(pause, &QAction::triggered, this, [this, paused] { Q_EMIT pauseRecordingRequested(!paused); });
         }
+        first = false;
+    }
+
+    if (replayActive_) {
+        auto *stopReplay = add(new QAction(QIcon::fromTheme(QStringLiteral("media-playback-stop")),
+                                           tr("Stop Replay"), menu_));
+        connect(stopReplay, &QAction::triggered, this, &TrayController::stopReplayRequested);
         first = false;
     }
 

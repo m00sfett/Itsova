@@ -31,7 +31,7 @@ set(CMAKE_AUTOMOC ON)
 
 include(GNUInstallDirs)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Widgets Concurrent DBus Gui LinguistTools)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Widgets Concurrent DBus Gui LinguistTools Multimedia)
 find_package(KF6Config 6.13 REQUIRED)
 find_package(KF6GlobalAccel 6.13 REQUIRED)
 find_package(KF6StatusNotifierItem 6.13 REQUIRED)
@@ -60,6 +60,7 @@ add_executable(itsova
     src/capturesession.cpp
     src/pinmanager.cpp
     src/printkey.cpp
+    src/replaymanager.cpp
     src/settingswindow.cpp
     src/shortcutmanager.cpp
     src/traycontroller.cpp
@@ -75,6 +76,7 @@ target_link_libraries(itsova
         itsova_ui
         Qt6::Concurrent
         Qt6::DBus
+        Qt6::Multimedia
         Qt6::Widgets
         KF6::ConfigCore
         KF6::DBusAddons
@@ -118,6 +120,7 @@ add_library(itsova_capture STATIC
     src/recordingfinalizer.cpp
     src/recordingmetadata.cpp
     src/recordingplan.cpp
+    src/replayplan.cpp
     src/screens.cpp
     src/selectiongeometry.cpp
     src/selectionmodel.cpp
@@ -196,8 +199,10 @@ ki18n_install(plasmoid/po)
 # Exec must be the absolute installed path.
 set(ITSOVA_EXEC "${CMAKE_INSTALL_FULL_BINDIR}/itsova")
 configure_file(data/io.github.m00sfett.itsova.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.itsova.desktop" @ONLY)
+configure_file(data/io.github.m00sfett.itsova-replay.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.itsova-replay.desktop" @ONLY)
 install(TARGETS itsova RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.itsova.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.itsova-replay.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/kio/servicemenus)
 install(FILES data/io.github.m00sfett.itsova.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/knotifications6)
 install(FILES data/io.github.m00sfett.itsova.svg data/io.github.m00sfett.itsova-tray.svg
               data/io.github.m00sfett.itsova-tray-flash.svg
@@ -312,6 +317,9 @@ if(BUILD_TESTING)
     add_executable(recordingtest tests/recordingtest.cpp)
     target_link_libraries(recordingtest PRIVATE itsova_capture Qt6::Test)
     add_test(NAME recording COMMAND recordingtest)
+    add_executable(replaytest tests/replaytest.cpp)
+    target_link_libraries(replaytest PRIVATE itsova_capture Qt6::Test)
+    add_test(NAME replay COMMAND replaytest)
 
     # Widget tests never show windows on the desktop and never depend on a compositor's timing
     # (#76): CTest runs every test on the offscreen platform.
@@ -358,6 +366,7 @@ if(BUILD_TESTING)
         itsova_nested_test(record-window-closed OPTIONS --apps kcalc)
         itsova_nested_test(record-window-move OPTIONS --apps kcalc)
         itsova_nested_test(record-window-resize OPTIONS --apps kcalc)
+        itsova_nested_test(replay)
         itsova_nested_test(tray-visibility OPTIONS --apps kcalc --rc "[General]\\nTrayIcon=recording")
         itsova_nested_test(record-default OPTIONS --apps kcalc)
     endif()

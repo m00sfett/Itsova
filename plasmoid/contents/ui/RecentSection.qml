@@ -213,6 +213,12 @@ ColumnLayout {
         property string path
 
         PlasmaComponents3.MenuItem {
+            icon.name: "media-playback-start"
+            text: i18n("Play as Replay")
+            visible: /\.(mp4|webm|gif|mkv|mov|avi)$/i.test(fileMenu.path)
+            onTriggered: section.action("replay", fileMenu.entryId, fileMenu.path)
+        }
+        PlasmaComponents3.MenuItem {
             icon.name: "document-open"
             text: i18n("Open")
             onTriggered: section.action("open", fileMenu.entryId, fileMenu.path)

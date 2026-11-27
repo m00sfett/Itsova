@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+MimeType=video/*;
+Actions=playAsReplay;
+X-KDE-Priority=TopLevel
+
+[Desktop Action playAsReplay]
+Name=Play as Replay with Itsova
+Icon=io.github.m00sfett.itsova
+Exec=@ITSOVA_EXEC@ replay %f

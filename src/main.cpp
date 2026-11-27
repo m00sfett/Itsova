@@ -50,6 +50,7 @@ void configureParser(QCommandLineParser &parser, const QCommandLineOption &editO
         "  area               Add, edit, rename, or remove saved areas\n"
         "  interval           Start, stop, or inspect interval captures\n"
         "  overlay            Open the interactive capture overlay\n"
+        "  replay             Play a video fullscreen (all-monitor recordings on all monitors)\n"
         "  mcp                Run the local stdio MCP server (disabled by default)"));
     parser.addHelpOption();
     parser.addVersionOption();

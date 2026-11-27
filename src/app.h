@@ -41,6 +41,7 @@ class RecordingHint;
 struct HookResult;
 class IntervalController;
 class PinManager;
+class ReplayManager;
 class TesseractOcrEngine;
 class ThumbnailCache;
 struct McpToolResponse;
@@ -182,6 +183,10 @@ public:
     [[nodiscard]] bool isRecording() const;
     // {state: idle|starting|recording|paused|finishing, elapsedMs, target, targetName, format}
     [[nodiscard]] QJsonObject recordingState() const;
+    // Replay (#104): plays any video fullscreen (all-monitor recordings across all monitors).
+    QString startReplay(const QString &filePath, const QString &explicitScreen = QString());
+    void stopReplay();
+    [[nodiscard]] bool isReplayActive() const;
     // Opens the overlay with the Record drawer, to choose what to record.
     void openOverlayForRecording();
     // Quits; a running recording is stopped and written first (at most a few seconds).
@@ -250,6 +255,7 @@ private:
     QString lastCaptureDisplayName_;
     QDateTime lastCaptureTimestamp_;
     ScreenRecorder *recorder_ = nullptr;
+    ReplayManager *replay_ = nullptr;
     // Native scale per connector as KWin reports it in captures, with the geometry it belongs to
     // (QScreen has no fractional scale on Wayland). Filled before region recordings.
     QHash<QString, QPair<QRect, qreal>> nativeScales_;

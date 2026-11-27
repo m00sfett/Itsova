@@ -1431,11 +1431,89 @@ CliSimpleResult DBusCliBackend::history(QJsonArray *outArray)
     return {true, 0, {}, {}};
 }
 
+CliSimpleResult DBusCliBackend::startReplay(const QString &filePath, const QString &screenName)
+{
+    QString err;
+    const QDBusMessage reply = callControl(QStringLiteral("StartReplay"), {filePath, screenName}, 15'000, &err);
+    if (!err.isEmpty()) {
+        return {false, 1, {}, err};
+    }
+    const QString msg = reply.arguments().value(0).toString();
+    return {msg.isEmpty(), msg.isEmpty() ? 0 : 1, {}, msg};
+}
+
+CliSimpleResult DBusCliBackend::stopReplay()
+{
+    QString err;
+    callControl(QStringLiteral("StopReplay"), {}, 10'000, &err);
+    return {err.isEmpty(), err.isEmpty() ? 0 : 1, {}, err};
+}
+
+static int handleReplay(const QStringList &args, CliBackend &backend, QIODevice &out, QIODevice &err)
+{
+    QString screen;
+    QString file;
+    bool stop = false;
+    for (int i = 0; i < args.size(); ++i) {
+        const QString &arg = args.at(i);
+        if (arg == QLatin1String("-h") || arg == QLatin1String("--help")) {
+            writeLine(out,
+                      QStringLiteral("Usage: itsova replay [--screen <name>] <file>\n"
+                                     "       itsova replay --stop\n\n"
+                                     "Play a video fullscreen (all-monitor recordings on all monitors)."));
+            return 0;
+        }
+        if (arg == QLatin1String("--stop")) {
+            stop = true;
+            continue;
+        }
+        if (arg == QLatin1String("--screen")) {
+            if (i + 1 >= args.size()) {
+                writeLine(err, CliText::tr("--screen requires a monitor name."));
+                return 2;
+            }
+            screen = args.at(++i);
+            continue;
+        }
+        if (arg.startsWith(QLatin1String("--screen="))) {
+            screen = arg.mid(9);
+            continue;
+        }
+        if (arg.startsWith(QLatin1Char('-'))) {
+            writeLine(err, CliText::tr("Unknown option: %1").arg(arg));
+            return 2;
+        }
+        if (!file.isEmpty()) {
+            writeLine(err, CliText::tr("Unexpected argument: %1").arg(arg));
+            return 2;
+        }
+        file = arg;
+    }
+
+    if (stop) {
+        const CliSimpleResult res = backend.stopReplay();
+        if (!res.ok) {
+            writeLine(err, res.error);
+        }
+        return res.exitCode;
+    }
+    if (file.isEmpty()) {
+        writeLine(err, CliText::tr("Missing video file path."));
+        return 2;
+    }
+    const QString absFile = QFileInfo(file).absoluteFilePath();
+    const CliSimpleResult res = backend.startReplay(absFile, screen);
+    if (!res.ok) {
+        writeLine(err, res.error);
+    }
+    return res.exitCode;
+}
+
 bool isCliSubcommand(const QString &arg)
 {
     return arg == QLatin1String("capture") || arg == QLatin1String("list") || arg == QLatin1String("area")
         || arg == QLatin1String("interval") || arg == QLatin1String("overlay") || arg == QLatin1String("history")
-        || arg == QLatin1String("latency");
+        || arg == QLatin1String("latency") || arg == QLatin1String("replay");
 }
 
 int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QIODevice &err)
@@ -1467,6 +1545,9 @@ int runCli(const QStringList &arguments, CliBackend &backend, QIODevice &out, QI
     }
     if (subcommand == QLatin1String("latency")) {
         return handleLatency(subArgs, backend, out, err);
+    }
+    if (subcommand == QLatin1String("replay")) {
+        return handleReplay(subArgs, backend, out, err);
     }
 
     writeLine(err, CliText::tr("Unknown subcommand: %1").arg(subcommand));
