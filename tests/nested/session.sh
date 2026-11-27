@@ -121,7 +121,7 @@ if [[ -n "$scheme" ]]; then
     printf '\n[General]\nColorScheme=%s\n' "$scheme" >>"$home/.config/kdeglobals"
 fi
 # Tests never open the first-start hint.
-printf '[General]\nOverlayFirstHintShown=true\n' >>"$home/.config/itsovarc"
+printf '[General]\nOverlayFirstHintShown=true\n[PrintKey]\nClaimed=true\n' >>"$home/.config/itsovarc"
 
 kwin_wayland --virtual --no-lockscreen ${scale:+--scale "$scale"} --socket "$socket" --width "${size%x*}" \
     --height "${size#*x}" --output-count "$monitors" >"$home/kwin.log" 2>&1 &

@@ -186,6 +186,7 @@ public:
     bool autostartInitialized = false;
 
     // Print key and capture overlay.
+    bool hasExistingConfig = false; // true when loaded from a non-empty config file (#137)
     bool usePrintKey = true; // itsova owns the Print key (handed back to its previous owner when off)
     bool printOpensOverlay = true; // false: Print only saves the full screenshot
     bool saveImmediatelyOnPrint = false; // true: write full screenshot + clipboard immediately on Print (#134)
@@ -283,5 +284,9 @@ public:
 
     [[nodiscard]] bool targetIncludesCursor(const QString &targetId) const;
 };
+
+// First-launch Print key decision helpers (#137).
+[[nodiscard]] bool shouldPromptForPrintKey(const KConfig &config, bool hasExistingConfig);
+void markPrintKeyDeclined(KConfig &config);
 
 } // namespace itsova

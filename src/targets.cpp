@@ -434,6 +434,7 @@ void TargetStore::load(const KConfig &config)
     captureDelaySeconds = keepDelayActive ? std::clamp(general.readEntry("CaptureDelaySeconds", 0), 0, 60) : 0;
     captureDirectory = general.readEntry("CaptureDirectory", QString());
     filenameTemplate = general.readEntry("FilenameTemplate", QString());
+    hasExistingConfig = !config.groupList().isEmpty();
     autostartInitialized = general.hasKey("Autostart");
     autostart = general.readEntry("Autostart", true);
     usePrintKey = general.readEntry("UsePrintKey", true);
@@ -1123,6 +1124,21 @@ bool TargetStore::targetIncludesCursor(const QString &targetId) const
         return g->includeCursor;
     }
     return false;
+}
+
+bool shouldPromptForPrintKey(const KConfig &config, bool hasExistingConfig)
+{
+    if (hasExistingConfig) {
+        return false;
+    }
+    return !config.group(QStringLiteral("PrintKey")).hasKey("Claimed");
+}
+
+void markPrintKeyDeclined(KConfig &config)
+{
+    KConfigGroup group = config.group(QStringLiteral("PrintKey"));
+    group.writeEntry("Claimed", false);
+    config.sync();
 }
 
 } // namespace itsova
