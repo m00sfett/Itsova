@@ -204,6 +204,7 @@ private:
     void syncShortcuts(const QStringList &deletedIds = {});
     void migrateLegacyIds();
     void claimPrintKey();
+    void promptPrintKeyOnFirstLaunch();
     void applyAutostart();
     void attachEditorWindow(QuickEditorWindow *window, const QString &deferredPrintPath = QString(),
                             bool deferredClearClipboard = false);

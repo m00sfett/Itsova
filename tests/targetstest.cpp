@@ -66,6 +66,7 @@ private Q_SLOTS:
     void monitorIdentityChangeWarns();
     void allMonitorsComposition();
     void groupTriggerSharesTimestampAndFrames();
+    void printKeyFirstLaunchPrompt();
 };
 
 void TargetsTest::autoNamesAreSequentialAndUnique()
@@ -515,6 +516,43 @@ void TargetsTest::groupTriggerSharesTimestampAndFrames()
     QCOMPARE(QImageReader(result.writtenPaths.at(0)).size(), QSize(500, 375)); // A8
     QCOMPARE(QImageReader(result.writtenPaths.at(1)).size(), QSize(400, 300));
     QCOMPARE(QImageReader(result.writtenPaths.at(3)).size(), QSize(6240, 2160));
+}
+
+void TargetsTest::printKeyFirstLaunchPrompt()
+{
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString cfgPath = dir.filePath(QStringLiteral("freshrc"));
+
+    // Fresh config: hasExistingConfig is false -> prompt should be shown.
+    {
+        KConfig fresh(cfgPath, KConfig::SimpleConfig);
+        TargetStore store;
+        store.load(fresh);
+        QVERIFY(!store.hasExistingConfig);
+        QVERIFY(!store.saveImmediatelyOnPrint);
+        QVERIFY(shouldPromptForPrintKey(fresh, store.hasExistingConfig));
+
+        // Declining persists Claimed=false so the prompt does not reappear.
+        markPrintKeyDeclined(fresh);
+        QVERIFY(!shouldPromptForPrintKey(fresh, false));
+        QCOMPARE(fresh.group(QStringLiteral("PrintKey")).readEntry("Claimed", true), false);
+    }
+
+    // Existing user config without [PrintKey]: do not prompt again (#137).
+    const QString existingPath = dir.filePath(QStringLiteral("existingrc"));
+    {
+        KConfig existing(existingPath, KConfig::SimpleConfig);
+        existing.group(QStringLiteral("General")).writeEntry("UsePrintKey", true);
+        existing.sync();
+    }
+    {
+        KConfig existing(existingPath, KConfig::SimpleConfig);
+        TargetStore store;
+        store.load(existing);
+        QVERIFY(store.hasExistingConfig);
+        QVERIFY(!shouldPromptForPrintKey(existing, store.hasExistingConfig));
+    }
 }
 
 QTEST_GUILESS_MAIN(TargetsTest)

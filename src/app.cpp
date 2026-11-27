@@ -68,6 +68,8 @@
 #include <QLocale>
 #include <QMimeData>
 #include <QPointer>
+#include <QMessageBox>
+#include <QPushButton>
 #include <QSaveFile>
 #include <QScreen>
 #include <QSet>
@@ -308,9 +310,11 @@ App::App(QObject *parent)
     syncShortcuts();
     migrateLegacyIds();
     applyAutostart();
-    // First start of a version with the Print key: take it over once. Later the user decides,
-    // here or in System Settings.
-    if (store_.usePrintKey && !PrintKey::isDecided(*config_)) {
+    // First launch without an existing config: ask before taking over the Print key (#137).
+    // Existing users with a saved config keep their previous behavior without being prompted again.
+    if (shouldPromptForPrintKey(*config_, store_.hasExistingConfig)) {
+        QTimer::singleShot(0, this, &App::promptPrintKeyOnFirstLaunch);
+    } else if (store_.usePrintKey && !PrintKey::isDecided(*config_)) {
         claimPrintKey();
     }
 }
@@ -319,6 +323,30 @@ void App::claimPrintKey()
 {
     PrintKey::claim(*config_);
     shortcuts_->setShortcut(PrintKey::actionId(), QKeySequence(Qt::Key_Print));
+}
+
+void App::promptPrintKeyOnFirstLaunch()
+{
+    if (!shouldPromptForPrintKey(*config_, store_.hasExistingConfig)) {
+        return;
+    }
+    QMessageBox box(QMessageBox::Question, tr("Use the Print key with Itsova?"),
+                    tr("Should Itsova take over the global Print key shortcut from its current application "
+                       "(usually Spectacle)?"));
+    box.setInformativeText(tr("You can change this anytime in Settings → General. Before uninstalling Itsova, "
+                              "turn it off there or run \"itsova --release-print-key\" to restore your previous "
+                              "shortcut."));
+    QPushButton *takeOverButton = box.addButton(tr("Take over Print key"), QMessageBox::AcceptRole);
+    box.addButton(tr("Keep current shortcut"), QMessageBox::RejectRole);
+    box.setDefaultButton(takeOverButton);
+    box.exec();
+    if (box.clickedButton() == takeOverButton) {
+        setUsePrintKey(true);
+    } else {
+        store_.usePrintKey = false;
+        markPrintKeyDeclined(*config_);
+        storeChanged();
+    }
 }
 
 void App::setUsePrintKey(bool on)

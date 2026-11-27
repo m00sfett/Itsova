@@ -1877,9 +1877,11 @@ QWidget *SettingsWindow::createGeneralPage()
 
     usePrintKey_ = new QCheckBox(tr("Use the Print key for Itsova"), page);
     form->addRow(tr("Print key:"), usePrintKey_);
-    form->addRow(QString(), makeHint(tr("Print saves all monitors right away. Turning this off gives the Print key "
-                                        "back to the application that had it before, usually Spectacle."),
-                                     page));
+    form->addRow(QString(),
+                 makeHint(tr("Turning this off gives the Print key back to the application that had it before "
+                             "(usually Spectacle). Before uninstalling Itsova, turn this off or run "
+                             "\"itsova --release-print-key\"."),
+                          page));
     connect(usePrintKey_, &QCheckBox::toggled, this, [this](bool on) {
         if (!updating_) {
             app_->setUsePrintKey(on);
