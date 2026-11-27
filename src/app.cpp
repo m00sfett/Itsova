@@ -2710,33 +2710,28 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
             return;
         }
 
+        const QString captureDir = store_.effectiveCaptureDirectory();
+        QDir().mkpath(captureDir);
+        const QString canonicalCaptureDir = QFileInfo(captureDir).canonicalFilePath();
+
         if (store_.mcp.accessMode == McpAccessMode::Allowlist) {
-            const QString canonicalCaptureDir = QFileInfo(store_.effectiveCaptureDirectory()).canonicalFilePath();
-            const auto isInsideCaptureDir = [&](const QString &candidate, bool existingFile) -> bool {
+            const auto isExistingFileInsideCaptureDir = [&](const QString &candidate) -> bool {
                 if (canonicalCaptureDir.isEmpty()) {
                     return false;
                 }
                 const QFileInfo fi(candidate);
-                const QString canon =
-                    existingFile ? fi.canonicalFilePath() : QFileInfo(fi.absolutePath()).canonicalFilePath();
+                const QString canon = fi.canonicalFilePath();
                 if (canon.isEmpty()) {
                     return false;
-                }
-                if (canon == canonicalCaptureDir) {
-                    return !existingFile;
                 }
                 const QString prefix = canonicalCaptureDir.endsWith(QLatin1Char('/'))
                                            ? canonicalCaptureDir
                                            : canonicalCaptureDir + QLatin1Char('/');
                 return canon.startsWith(prefix);
             };
-            if (!isInsideCaptureDir(inputPath, true)) {
+            if (!isExistingFileInsideCaptureDir(inputPath)) {
                 fail(tr("In MCP Allowlist mode, input_path must be an existing file inside Itsova's capture "
                         "directory."));
-                return;
-            }
-            if (!outputPath.isEmpty() && !isInsideCaptureDir(outputPath, false)) {
-                fail(tr("In MCP Allowlist mode, output_path must be inside Itsova's capture directory."));
                 return;
             }
         }
@@ -2744,6 +2739,7 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
         AnnotateRequest req;
         req.inputPath = inputPath;
         req.outputPath = outputPath;
+        req.allowedOutputDir = captureDir;
         req.operations = opsVal.toArray();
         req.overwrite = args.value(QStringLiteral("overwrite")).toBool(false);
         req.exportOptions = store_.exportOptions;
@@ -2755,10 +2751,21 @@ void App::mcpDispatchAsync(const QString &toolName, const QString &argumentsJson
             req.exportOptions.quality = *quality;
         }
 
-        const QString summary =
-            tr("An external MCP client wants to annotate \"%1\" (%2 operation(s)).")
-                .arg(QFileInfo(inputPath).fileName())
-                .arg(req.operations.size());
+        // Enforce capture-directory confinement, symlink rejection, and overwrite protection across all MCP modes.
+        const AnnotateOutputTarget target = resolveAnnotateOutputTarget(
+            req.inputPath, req.outputPath, req.exportOptions, req.formatExplicit, req.allowedOutputDir, req.overwrite);
+        if (!target.ok) {
+            fail(target.error);
+            return;
+        }
+
+        QString summary = tr("An external MCP client wants to annotate \"%1\" (%2 operation(s)).\n\nOutput: %3")
+                              .arg(QFileInfo(inputPath).fileName())
+                              .arg(req.operations.size())
+                              .arg(target.resolvedPath);
+        if (target.willOverwrite) {
+            summary += QStringLiteral("\n\n") + tr("Warning: this will overwrite the existing file.");
+        }
         QPointer<App> safeApp(this);
         runWithOptionalConfirm(basePolicy, summary, false, [safeApp, req, callback, fail] {
             if (!safeApp) {

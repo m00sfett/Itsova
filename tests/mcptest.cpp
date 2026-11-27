@@ -405,6 +405,100 @@ private Q_SLOTS:
         QVERIFY2(overwriteRes.ok, qPrintable(overwriteRes.error));
         QCOMPARE(overwriteRes.outputPath, srcPath);
     }
+
+    void annotateImageHardening()
+    {
+        QTemporaryDir captureDir;
+        QTemporaryDir outsideDir;
+        QVERIFY(captureDir.isValid());
+        QVERIFY(outsideDir.isValid());
+
+        const QString srcPath = captureDir.filePath(QStringLiteral("source.png"));
+        const QString otherExisting = captureDir.filePath(QStringLiteral("other.png"));
+        const QString outsideTarget = outsideDir.filePath(QStringLiteral("outside.png"));
+
+        QImage img(64, 64, QImage::Format_ARGB32_Premultiplied);
+        img.fill(Qt::blue);
+        QVERIFY(img.save(srcPath, "PNG"));
+        img.fill(Qt::green);
+        QVERIFY(img.save(otherExisting, "PNG"));
+        img.fill(Qt::red);
+        QVERIFY(img.save(outsideTarget, "PNG"));
+
+        QJsonArray ops;
+        ops.append(QJsonObject{{QStringLiteral("type"), QStringLiteral("redact")},
+                               {QStringLiteral("x"), 4},
+                               {QStringLiteral("y"), 4},
+                               {QStringLiteral("width"), 16},
+                               {QStringLiteral("height"), 16},
+                               {QStringLiteral("mode"), QStringLiteral("solid")}});
+
+        // 1. Refuse overwriting *any* existing file without overwrite=true (not just input_path).
+        AnnotateRequest req;
+        req.inputPath = srcPath;
+        req.outputPath = otherExisting;
+        req.allowedOutputDir = captureDir.path();
+        req.operations = ops;
+        req.overwrite = false;
+        req.exportOptions.format = ImageFormat::Png;
+        req.formatExplicit = true;
+
+        const AnnotateResult denyOther = applyProgrammaticAnnotations(req);
+        QVERIFY(!denyOther.ok);
+        QVERIFY(QImage(otherExisting).pixelColor(10, 10) == QColor(Qt::green));
+
+        // Confirmation helper reports willOverwrite=true when overwrite=true on existing file.
+        const AnnotateOutputTarget overwritePreview = resolveAnnotateOutputTarget(
+            srcPath, otherExisting, req.exportOptions, true, captureDir.path(), true);
+        QVERIFY2(overwritePreview.ok, qPrintable(overwritePreview.error));
+        QVERIFY(overwritePreview.willOverwrite);
+        QCOMPARE(overwritePreview.resolvedPath, otherExisting);
+
+        // 2. Reject symlinks even with overwrite=true, and keep symlink target untouched.
+        const QString linkPath = captureDir.filePath(QStringLiteral("link.png"));
+        QVERIFY(QFile::link(outsideTarget, linkPath));
+        AnnotateRequest symReq = req;
+        symReq.outputPath = linkPath;
+        symReq.overwrite = true;
+        const AnnotateResult symRes = applyProgrammaticAnnotations(symReq);
+        QVERIFY(!symRes.ok);
+        QVERIFY(QImage(outsideTarget).pixelColor(10, 10) == QColor(Qt::red));
+
+        // Direct writeImageToFile also refuses symlinks.
+        QString writeErr;
+        QVERIFY(!writeImageToFile(linkPath, img, req.exportOptions, &writeErr));
+        QVERIFY(!writeErr.isEmpty());
+
+        // 3. Confine outputPath to allowedOutputDir (blocks direct outside paths and traversal).
+        AnnotateRequest outsideReq = req;
+        outsideReq.outputPath = outsideDir.filePath(QStringLiteral("escape.png"));
+        outsideReq.overwrite = true;
+        QVERIFY(!applyProgrammaticAnnotations(outsideReq).ok);
+        QVERIFY(!QFileInfo::exists(outsideReq.outputPath));
+
+        AnnotateRequest traversalReq = req;
+        traversalReq.outputPath = captureDir.filePath(QStringLiteral("../escape2.png"));
+        traversalReq.overwrite = true;
+        QVERIFY(!applyProgrammaticAnnotations(traversalReq).ok);
+
+        // Symlinked subdirectory pointing outside captureDir is also rejected.
+        const QString linkSubdir = captureDir.filePath(QStringLiteral("sublink"));
+        QVERIFY(QFile::link(outsideDir.path(), linkSubdir));
+        AnnotateRequest sublinkReq = req;
+        sublinkReq.outputPath = QDir(linkSubdir).filePath(QStringLiteral("escaped.png"));
+        sublinkReq.overwrite = true;
+        QVERIFY(!applyProgrammaticAnnotations(sublinkReq).ok);
+        QVERIFY(!QFileInfo::exists(outsideDir.filePath(QStringLiteral("escaped.png"))));
+
+        // 4. Empty outputPath with an external inputPath writes inside allowedOutputDir.
+        AnnotateRequest defaultInCapture = req;
+        defaultInCapture.inputPath = outsideTarget;
+        defaultInCapture.outputPath.clear();
+        defaultInCapture.overwrite = false;
+        const AnnotateResult defaultRes = applyProgrammaticAnnotations(defaultInCapture);
+        QVERIFY2(defaultRes.ok, qPrintable(defaultRes.error));
+        QVERIFY(defaultRes.outputPath.startsWith(captureDir.path() + QLatin1Char('/')));
+    }
 };
 
 } // namespace

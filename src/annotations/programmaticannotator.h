@@ -13,10 +13,28 @@ struct AnnotateRequest
     QString inputPath;
     QJsonArray operations;
     QString outputPath;
+    QString allowedOutputDir;
     bool overwrite = false;
     ExportOptions exportOptions;
     bool formatExplicit = false;
 };
+
+struct AnnotateOutputTarget
+{
+    bool ok = false;
+    QString resolvedPath;
+    bool willOverwrite = false;
+    QString error;
+};
+
+// Validates and resolves the target output path for annotate_image, enforcing overwrite protection,
+// symlink rejection, and optional capture-directory confinement.
+[[nodiscard]] AnnotateOutputTarget resolveAnnotateOutputTarget(const QString &inputPath,
+                                                               const QString &requestedOutputPath,
+                                                               const ExportOptions &exportOptions,
+                                                               bool formatExplicit,
+                                                               const QString &allowedOutputDir,
+                                                               bool overwrite);
 
 struct AnnotateResult
 {

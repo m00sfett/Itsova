@@ -291,6 +291,8 @@ void ControlService::StopAllIntervals()
     app_->stopAllIntervals();
 }
 
+// Local session D-Bus capture endpoint (CLI/widget/local scripts). Intentionally governed by
+// the user's session D-Bus boundary, separate from MCP access modes (evaluateMcpAccess).
 QString ControlService::CaptureSync(const QString &requestJson)
 {
     qCInfo(lcDbus) << "CaptureSync";
