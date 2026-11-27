@@ -47,6 +47,29 @@ struct SampleRange
     qint64 end;
 };
 
+struct SizeExpressions
+{
+    QString width;
+    QString height;
+};
+
+SizeExpressions sizeExpressions(const QList<WindowResizeSample> &samples, qsizetype begin, qsizetype end)
+{
+    if (end - begin == 1) {
+        const QSize size = samples.at(begin).size;
+        return {QString::number(size.width()), QString::number(size.height())};
+    }
+    // FFmpeg limits expression nesting. Split at the midpoint so depth grows logarithmically.
+    const qsizetype middle = begin + (end - begin) / 2;
+    const SizeExpressions before = sizeExpressions(samples, begin, middle);
+    const SizeExpressions after = sizeExpressions(samples, middle, end);
+    const QString time = QString::number(samples.at(middle).timeSeconds, 'f', 3);
+    const auto dimension = [&](const QString &a, const QString &b) {
+        return a == b ? a : QStringLiteral("if(lt(t,%1),%2,%3)").arg(time, a, b);
+    };
+    return {dimension(before.width, after.width), dimension(before.height, after.height)};
+}
+
 QList<SampleRange> keptSamples(double targetSeconds, const QList<RecordingPause> &pauses)
 {
     const qint64 target = qRound64(targetSeconds * recordingAudioRate);
@@ -251,30 +274,19 @@ QString letterboxFilterGraph(const QSize &canvasSize, const QList<WindowResizeSa
         return {};
     }
 
-    const auto num = [](double v) { return QString::number(v, 'f', 3); };
-    QString width;
-    QString height;
-    for (qsizetype i = clean.size(); i-- > 0;) {
-        const WindowResizeSample &seg = clean.at(i);
+    for (WindowResizeSample &seg : clean) {
         const double sw = double(seg.size.width());
         const double sh = double(seg.size.height());
         const double scale = std::min(canvasW / sw, canvasH / sh);
         const int fitW = std::clamp(int(std::lround(sw * scale)) & ~1, 2, canvasSize.width());
         const int fitH = std::clamp(int(std::lround(sh * scale)) & ~1, 2, canvasSize.height());
-        const auto dimension = [&](int fit, const QString &later) {
-            const QString value = QString::number(fit);
-            if (later.isEmpty() || later == value) {
-                return value;
-            }
-            return QStringLiteral("if(lt(t,%1),%2,%3)").arg(num(clean.at(i + 1).timeSeconds), value, later);
-        };
-        width = dimension(fitW, width);
-        height = dimension(fitH, height);
+        seg.size = QSize(fitW, fitH);
     }
+    const SizeExpressions expressions = sizeExpressions(clean, 0, clean.size());
     // One chain scales each sparse frame at its existing PTS without queuing other resize segments.
     return QStringLiteral("[0:v]scale=w='%1':h='%2':eval=frame,"
                           "pad=w=%3:h=%4:x='(ow-iw)/2':y='(oh-ih)/2':color=black:eval=frame,setsar=1[outv]")
-        .arg(width, height)
+        .arg(expressions.width, expressions.height)
         .arg(canvasSize.width())
         .arg(canvasSize.height());
 }
