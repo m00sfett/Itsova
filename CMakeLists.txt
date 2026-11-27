@@ -50,9 +50,14 @@ find_package(LayerShellQt 6.3 REQUIRED)
 add_executable(itsova
     src/main.cpp
     src/app.cpp
+    src/app_capture.cpp
+    src/app_mcp.cpp
+    src/app_recording.cpp
     src/colorpicker.cpp
     src/controlservice.cpp
     src/captureoverlay.cpp
+    src/captureoverlay_panel.cpp
+    src/capturesession.cpp
     src/pinmanager.cpp
     src/printkey.cpp
     src/settingswindow.cpp
