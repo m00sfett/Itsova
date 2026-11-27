@@ -2,6 +2,28 @@ cmake_minimum_required(VERSION 3.25)
 
 project(itsova VERSION 0.12.0 LANGUAGES C CXX)
 
+set(ITSOVA_PRERELEASE "" CACHE STRING "Optional prerelease label without leading hyphen (e.g. beta.1)")
+if(NOT ITSOVA_PRERELEASE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    find_package(Git QUIET)
+    if(Git_FOUND)
+        execute_process(
+            COMMAND "${GIT_EXECUTABLE}" describe --tags --exact-match
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+            OUTPUT_VARIABLE _itsova_exact_tag
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+        )
+        if(_itsova_exact_tag MATCHES "^v${PROJECT_VERSION}-([0-9A-Za-z.-]+)$")
+            set(ITSOVA_PRERELEASE "${CMAKE_MATCH_1}")
+        endif()
+    endif()
+endif()
+if(ITSOVA_PRERELEASE)
+    set(ITSOVA_VERSION "${PROJECT_VERSION}-${ITSOVA_PRERELEASE}")
+else()
+    set(ITSOVA_VERSION "${PROJECT_VERSION}")
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -37,7 +59,7 @@ add_executable(itsova
     src/shortcutmanager.cpp
     src/traycontroller.cpp
 )
-target_compile_definitions(itsova PRIVATE ITSOVA_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(itsova PRIVATE ITSOVA_VERSION="${ITSOVA_VERSION}")
 # Brand marks for the footer of the settings window.
 qt_add_resources(itsova "brand" PREFIX "/brand" BASE data FILES data/brand-roteson.png data/brand-r2w2.png)
 
@@ -102,7 +124,7 @@ add_library(itsova_capture STATIC
     src/windowpick.cpp
 )
 target_include_directories(itsova_capture PUBLIC src)
-target_compile_definitions(itsova_capture PUBLIC ITSOVA_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(itsova_capture PUBLIC ITSOVA_VERSION="${ITSOVA_VERSION}")
 target_link_libraries(itsova_capture PUBLIC Qt6::Gui KF6::ConfigCore PRIVATE Qt6::Concurrent Qt6::DBus)
 
 # The recorder lives in its own library so tests can drive it without the application (#92, #90).
@@ -184,7 +206,6 @@ configure_file(data/io.github.m00sfett.itsova.service.in "${CMAKE_CURRENT_BINARY
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/io.github.m00sfett.itsova.service" DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 
 # Plasma widget (QML package).
-set(ITSOVA_VERSION "${PROJECT_VERSION}")
 set(ITSOVA_PLASMOID_DIR ${CMAKE_INSTALL_DATADIR}/plasma/plasmoids/io.github.m00sfett.itsova.widget)
 configure_file(plasmoid/metadata.json "${CMAKE_CURRENT_BINARY_DIR}/plasmoid/metadata.json" @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/plasmoid/metadata.json" DESTINATION ${ITSOVA_PLASMOID_DIR})

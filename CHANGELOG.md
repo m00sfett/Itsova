@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.12.0] - Unreleased
+## [Unreleased]
 
-Tray, recording shortcut and recording feedback from the 0.11.0 hand test (milestone 0.12.0).
+## [0.12.0-beta.1] - 2026-11-27
+
+First public beta release: rename to Itsova, tray visibility, default recording shortcut, recording hints, and Debian/Arch packaging (milestone 0.12.0).
 
 ### Changed
 
@@ -15,19 +17,22 @@ Tray, recording shortcut and recording feedback from the 0.11.0 hand test (miles
 
 ### Added
 
-- Tray icon visibility (#123): *Settings → General → Tray icon* offers *Always* (default, as before), *Only while something runs* (a recording or interval captures) and *Only while recording*. Hidden, the status notifier item is removed, not only moved to the hidden part of the tray; it comes back with the recording icon as soon as a recording starts, so it can always be stopped, and goes when it ends. A hint under the setting says how to get back to the settings: a second start of `glimply` without arguments (launcher entry or command line) now opens the settings of the running instance, whatever the tray setting. glimply no longer quits when its last notification closes while no window and no tray icon is left.
+- Tray icon visibility (#123): *Settings → General → Tray icon* offers *Always* (default, as before), *Only while something runs* (a recording or interval captures) and *Only while recording*. Hidden, the status notifier item is removed, not only moved to the hidden part of the tray; it comes back with the recording icon as soon as a recording starts, so it can always be stopped, and goes when it ends. A hint under the setting says how to get back to the settings: a second start of `itsova` without arguments (launcher entry or command line) now opens the settings of the running instance, whatever the tray setting. Itsova no longer quits when its last notification closes while no window and no tray icon is left.
 
 - Default recording target (#124): the start/stop recording shortcut now records only the target pinned as its default; without one it opens the overlay in record mode at once. In the overlay's record menus (Monitors, Windows, Areas, and the Record list) every entry has a pin at its right end, faint while the entry is hovered or has the keyboard and filled on the default; a click on it or `P` on the focused entry sets or clears the default (one at a time). A drawn rectangle is pinned with the pin button next to *Record* (also `P`). New entry *Active Window*: the window that has the focus when the recording starts. A pinned window that has been closed clears the default, and the shortcut opens the overlay. *Settings → Storage* shows the default next to the recording shortcuts, with a *Remove* button. The old last-recorded target becomes the default once after the update, so the shortcut keeps doing what it did; it is no longer updated by every recording.
 
 - Recording hints (#125): every recording shows a short hint when it starts (target and how to stop), pauses, resumes, stops (*Recording saved* with the file name; a click opens it) or fails. The hint is a small layer-shell surface placed where the recording does not see it: for a window recording on the window's monitor (window streams hold only the window), for a region on a monitor it does not touch or beside it in the largest free strip. When everything is recorded (the only monitor, all monitors), the start hint shows first and the recording starts once it has gone (about 1.7 s); resuming such a recording works the same way. Pressing the shortcut or stopping during that wait cancels the start. *Settings → Storage → Hints* turns them off (default on). They replace the "how to stop" notification of #98 (its notification event is gone) and, while on, the *Recording saved* notification. Builds now need LayerShellQt (`layer-shell-qt`).
+
+- Packaging and beta release automation (#135, #136): native Debian 13 (`packaging/debian/`) and Arch Linux (`packaging/arch/itsova/`, `packaging/arch/itsova-git/`) packaging recipes, plus a GitHub Actions beta prerelease workflow (`.github/workflows/beta.yml`) with a Debian 13 build/test gate and prerelease version string support (`-DITSOVA_PRERELEASE`).
 
 - Translations of the new 0.12.0 strings (tray visibility, default recording target, recording hints) in all 18 languages.
 
 ### Fixed
 
 - Moving a recorded window (#122): checked, the recording does not stop. KWin sends a window frame only when the window's content changes, and a move is no change, so the video holds the last picture until the window draws again; the file is as long as the recording. New nested regression test `record-window-move`; the README says what a window recording contains.
+- Debian 13 / LayerShellQt 6.3 compatibility (#135): added a compile-time fallback for `LayerShellQt::Window::setScreen()` in `src/recordinghint.cpp` so builds succeed on LayerShellQt 6.3 (Debian 13 `trixie`). Pausing recordings remains unsupported with KPipeWire 6.3 (including Debian 13).
 
-## [0.11.0] - Unreleased
+## [0.11.0] - 2026-11-26
 
 Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0).
 
@@ -59,7 +64,7 @@ Overlay and recording usability pass from the 0.10.0 hand test (milestone 0.11.0
 - A recording that ends without a stop from the user now says so (#90): when the recorded window closes or the monitor goes away, glimply keeps what was recorded and shows *Recording ended early* with the reason (new notification event `recordingInterrupted`). The 0.10.0 report of a covered, static window that stopped after 10 s did not reproduce: a 60 s recording of a fully covered static window runs the full 60 s (nested-KWin test), and in KPipeWire the encoder only reaches its *Rendering* state through a stop call, which glimply makes only on a stop from the tray, the widget, a shortcut, D-Bus or quit. Since 0.11.0 the journal names that origin.
 - Notification settings had no effect (#91): the notification events were installed as `glimply.notifyrc`, but KNotification looks for `io.github.m00sfett.glimply.notifyrc`, so every notification fell back to the defaults and logged "No event config could be found". The file now carries the component's name; the installer removes the old file.
 
-## [0.10.0] - Unreleased
+## [0.10.0] - 2026-11-25
 
 Screen recording (milestone 0.10.0, #30).
 
@@ -81,7 +86,7 @@ Screen recording (milestone 0.10.0, #30).
 - KWin sends a new frame only when the screen changes, so a recording ending on a still picture would stop at the last change (a 10 s recording came out 6.9 s long). glimply now holds the last frame until the moment of *Stop* by rewriting only the container timing with FFmpeg (stream copy, no re-encoding).
 - Pauses are cut out of the file: KPipeWire drops the frames of a pause but its clock keeps running, so a paused recording showed the pause as a still picture. The same FFmpeg pass shifts the frames after each pause back by its length.
 
-## [0.9.0] - Unreleased
+## [0.9.0] - 2026-11-25
 
 Overlay redesign and capture latency (milestone 0.9.0).
 
@@ -105,7 +110,7 @@ Overlay redesign and capture latency (milestone 0.9.0).
 
 - The pin test no longer fails inside a Plasma Wayland session (#76): it compared readout boxes measured at two window sizes after the window met its output's scale. CTest now runs every test on the offscreen platform, so no test window shows on the desktop.
 
-## [0.8.0] - Unreleased
+## [0.8.0] - 2026-11-24
 
 Public release readiness: translations, packaging and documentation.
 

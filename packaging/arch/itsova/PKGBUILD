@@ -24,10 +24,15 @@ source=("$pkgname-$_tag.tar.gz::$url/archive/refs/tags/$_tag.tar.gz")
 sha256sums=('REPLACE_WITH_VERIFIED_SHA256')
 
 build() {
+  local prerelease_args=()
+  if [[ "$_tag" == *-* ]]; then
+    prerelease_args+=("-DITSOVA_PRERELEASE=${_tag#*-}")
+  fi
   cmake -B build -S "Itsova-${_tag#v}" -G Ninja \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_TESTING=ON
+    -DBUILD_TESTING=ON \
+    "${prerelease_args[@]}"
   cmake --build build
 }
 
