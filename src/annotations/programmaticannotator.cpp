@@ -105,7 +105,122 @@ bool readPoints(const QJsonObject &obj, QList<QPointF> *outPoints)
     return true;
 }
 
+bool isPathInsideDirectory(const QString &candidatePath, const QString &allowedDir)
+{
+    const QFileInfo dirInfo(allowedDir);
+    const QString canonicalAllowed = dirInfo.canonicalFilePath();
+    if (canonicalAllowed.isEmpty()) {
+        return false;
+    }
+    const QString prefix =
+        canonicalAllowed.endsWith(QLatin1Char('/')) ? canonicalAllowed : canonicalAllowed + QLatin1Char('/');
+
+    const QFileInfo candInfo(candidatePath);
+    if (candInfo.isSymLink()) {
+        return false;
+    }
+
+    // Walk up from candidatePath's parent until we find an existing directory, rejecting any symlink component.
+    QString probe = candInfo.absolutePath();
+    while (!probe.isEmpty()) {
+        const QFileInfo probeInfo(probe);
+        if (probeInfo.isSymLink()) {
+            return false;
+        }
+        if (probeInfo.exists()) {
+            const QString canonParent = probeInfo.canonicalFilePath();
+            if (canonParent.isEmpty()) {
+                return false;
+            }
+            if (canonParent != canonicalAllowed && !canonParent.startsWith(prefix)) {
+                return false;
+            }
+            break;
+        }
+        const QString parent = QFileInfo(probe).absolutePath();
+        if (parent == probe) {
+            return false;
+        }
+        probe = parent;
+    }
+
+    if (candInfo.exists()) {
+        const QString canonFile = candInfo.canonicalFilePath();
+        if (canonFile.isEmpty() || !canonFile.startsWith(prefix)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ExportOptions resolvedExportOptions(const QString &inputPath,
+                                    const QString &requestedOutputPath,
+                                    const ExportOptions &baseOptions,
+                                    bool formatExplicit)
+{
+    ExportOptions opts = baseOptions;
+    if (!formatExplicit) {
+        const QString probePath =
+            !requestedOutputPath.trimmed().isEmpty() ? requestedOutputPath.trimmed() : QFileInfo(inputPath).absoluteFilePath();
+        if (const std::optional<ImageFormat> fmt = imageFormatFromPath(probePath); fmt && isImageFormatSupported(*fmt)) {
+            opts.format = *fmt;
+        } else {
+            opts.format = ImageFormat::Png;
+        }
+    }
+    return opts;
+}
+
 } // namespace
+
+AnnotateOutputTarget resolveAnnotateOutputTarget(const QString &inputPath,
+                                                 const QString &requestedOutputPath,
+                                                 const ExportOptions &exportOptions,
+                                                 bool formatExplicit,
+                                                 const QString &allowedOutputDir,
+                                                 bool overwrite)
+{
+    AnnotateOutputTarget target;
+    const QFileInfo inInfo(inputPath.trimmed());
+    const ExportOptions opts = resolvedExportOptions(inputPath, requestedOutputPath, exportOptions, formatExplicit);
+    const QString requestedOut = requestedOutputPath.trimmed();
+
+    if (requestedOut.isEmpty()) {
+        const QString outDir =
+            !allowedOutputDir.trimmed().isEmpty() ? allowedOutputDir.trimmed() : inInfo.absolutePath();
+        const QString baseName =
+            inInfo.completeBaseName() + QStringLiteral("-annotated.") + canonicalExtension(opts.format);
+        const QString candidate = QDir(outDir).filePath(baseName);
+        if (!allowedOutputDir.trimmed().isEmpty() && !isPathInsideDirectory(candidate, allowedOutputDir.trimmed())) {
+            target.error = AnnotatorText::tr("Output path must be inside Itsova's capture directory.");
+            return target;
+        }
+        target.ok = true;
+        target.resolvedPath = QFileInfo(candidate).absoluteFilePath();
+        target.willOverwrite = false;
+        return target;
+    }
+
+    const QFileInfo outInfo(requestedOut);
+    const QString absOut = outInfo.absoluteFilePath();
+    if (outInfo.isSymLink()) {
+        target.error = AnnotatorText::tr("Refusing to write through symbolic link: %1").arg(absOut);
+        return target;
+    }
+    if (!allowedOutputDir.trimmed().isEmpty() && !isPathInsideDirectory(absOut, allowedOutputDir.trimmed())) {
+        target.error = AnnotatorText::tr("Output path must be inside Itsova's capture directory.");
+        return target;
+    }
+    const bool exists = outInfo.exists();
+    if (exists && !overwrite) {
+        target.error = AnnotatorText::tr("Refusing to overwrite existing file '%1' without overwrite=true.").arg(absOut);
+        return target;
+    }
+    target.ok = true;
+    target.resolvedPath = absOut;
+    target.willOverwrite = exists;
+    return target;
+}
 
 AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request)
 {
@@ -122,7 +237,6 @@ AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request)
         return res;
     }
     const QString absInput = inInfo.absoluteFilePath();
-    const QString canonicalInput = inInfo.canonicalFilePath();
 
     QImageReader reader(absInput);
     reader.setAutoTransform(true);
@@ -133,18 +247,17 @@ AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request)
     }
     source.setDevicePixelRatio(1.0);
 
-    ExportOptions opts = request.exportOptions;
-    if (!request.formatExplicit) {
-        const QString probePath =
-            !request.outputPath.trimmed().isEmpty() ? request.outputPath.trimmed() : absInput;
-        if (const std::optional<ImageFormat> fmt = imageFormatFromPath(probePath); fmt && isImageFormatSupported(*fmt)) {
-            opts.format = *fmt;
-        } else {
-            opts.format = ImageFormat::Png;
-        }
-    }
+    const ExportOptions opts =
+        resolvedExportOptions(absInput, request.outputPath, request.exportOptions, request.formatExplicit);
     if (!isImageFormatSupported(opts.format)) {
         res.error = AnnotatorText::tr("Requested export image format is not supported on this system.");
+        return res;
+    }
+
+    const AnnotateOutputTarget target = resolveAnnotateOutputTarget(
+        absInput, request.outputPath, opts, true, request.allowedOutputDir, request.overwrite);
+    if (!target.ok) {
+        res.error = target.error;
         return res;
     }
 
@@ -315,25 +428,26 @@ AnnotateResult applyProgrammaticAnnotations(const AnnotateRequest &request)
     QString writeErr;
     const QString requestedOut = request.outputPath.trimmed();
     if (requestedOut.isEmpty()) {
+        const QString outDir = !request.allowedOutputDir.trimmed().isEmpty() ? request.allowedOutputDir.trimmed()
+                                                                             : inInfo.absolutePath();
         const QString baseName = inInfo.completeBaseName() + QStringLiteral("-annotated.") + canonicalExtension(opts.format);
-        if (!writeUniqueImageFile(inInfo.absolutePath(), baseName, rendered, opts, &writtenPath, &writeErr)) {
+        if (!writeUniqueImageFile(outDir, baseName, rendered, opts, &writtenPath, &writeErr)) {
             res.error = writeErr;
             return res;
         }
     } else {
-        const QFileInfo outInfo(requestedOut);
-        const QString absOut = outInfo.absoluteFilePath();
-        const QString canonicalOut = outInfo.exists() ? outInfo.canonicalFilePath() : absOut;
-        const bool sameFile = (absOut == absInput) || (!canonicalInput.isEmpty() && canonicalOut == canonicalInput);
-        if (sameFile && !request.overwrite) {
-            res.error = AnnotatorText::tr("Refusing to overwrite input file '%1' without overwrite=true.").arg(absInput);
+        // Re-check immediately before writing to narrow TOCTOU windows.
+        const AnnotateOutputTarget writeTarget = resolveAnnotateOutputTarget(
+            absInput, requestedOut, opts, true, request.allowedOutputDir, request.overwrite);
+        if (!writeTarget.ok) {
+            res.error = writeTarget.error;
             return res;
         }
-        if (!writeImageToFile(absOut, rendered, opts, &writeErr)) {
+        if (!writeImageToFile(writeTarget.resolvedPath, rendered, opts, &writeErr)) {
             res.error = writeErr;
             return res;
         }
-        writtenPath = absOut;
+        writtenPath = writeTarget.resolvedPath;
     }
 
     res.ok = true;

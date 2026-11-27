@@ -67,8 +67,10 @@ Itsova runs strictly locally on your machine:
   ```
 - **Local MCP server (disabled by default):** `itsova mcp` exposes 10 local stdio tools (`list_targets`, `list_monitors`, `list_windows`, `capture_target`, `capture_region`, `capture_window`, `get_last_capture`, `start_interval`, `stop_interval`, `annotate_image`) and denies all calls until explicitly enabled under **Settings -> Automation -> Local MCP Server**. Access scopes:
   - `Allowlist` — only pre-approved saved targets (`list_windows`, `capture_region`, and `capture_window` are blocked).
-  - `ConfirmPerCapture` — asks the user via dialog before captures, interval starts, and annotations.
+  - `ConfirmPerCapture` — asks the user via dialog before captures, interval starts, and annotations (showing input, resolved output path, and overwrite warnings).
   - `FullSession` — allows all MCP tools without per-call confirmation for the configured session scope.
+  - Across all MCP modes, `annotate_image` writes are confined to Itsova's configured capture directory, refuse symlinks, and refuse overwriting any existing file unless `overwrite=true` is passed explicitly.
+  - **Session D-Bus boundary:** MCP access modes govern the MCP interface (`itsova mcp`) only. Local session D-Bus methods on `io.github.m00sfett.itsova.Control` (such as `CaptureSync`, used by the CLI and Plasma widget) are intentionally separate and follow the user's local D-Bus session boundary.
 - **Optional OCR (`tesseract`):** Only executed locally when *Copy Text* or `itsova capture --ocr` is invoked; requires `tesseract` and the matching language data (such as `tesseract-data-eng`).
 
 ---

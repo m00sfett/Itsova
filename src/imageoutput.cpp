@@ -382,6 +382,12 @@ bool writeImageToFile(const QString &targetPath, const QImage &image, const Expo
         return false;
     }
     const QFileInfo info(targetPath);
+    if (info.isSymLink()) {
+        if (error) {
+            *error = ImageOutputStrings::tr("Refusing to write through symbolic link: %1").arg(targetPath);
+        }
+        return false;
+    }
     if (!info.dir().exists() && !QDir().mkpath(info.absolutePath())) {
         if (error) {
             *error = ImageOutputStrings::tr("Cannot create capture directory: %1").arg(info.absolutePath());
