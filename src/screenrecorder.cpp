@@ -150,11 +150,13 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
 
     target_ = target;
     options_ = options;
-    if (options_.audioSource != RecordingAudioSource::None
-        && (options_.format == RecordingFormat::Gif || !canRecordAudio()
-            || (options_.audioSource == RecordingAudioSource::Application && !target_.supportsApplicationAudio()))) {
-        qCInfo(lcRecord) << "audio is unavailable for this recording";
-        options_.audioSource = RecordingAudioSource::None;
+    if (!options_.audio.isEmpty()) {
+        if (options_.format == RecordingFormat::Gif || !canRecordAudio()) {
+            qCInfo(lcRecord) << "audio is unavailable for this recording";
+            options_.audio = {};
+        } else {
+            options_.audio = target_.availableAudio(options_.audio);
+        }
     }
     stopRequested_ = false;
     endReason_.clear();
@@ -232,12 +234,11 @@ void ScreenRecorder::onEncoderStateChanged()
         if (state_ == State::Starting) {
             const qint64 now = monotonic_.elapsed();
             clock_.start(now);
-            if (options_.audioSource != RecordingAudioSource::None) {
-                const QString title = recordingAudioSourceLabel(options_.audioSource);
-                audioCapture_ = RecordingAudioCapture::start(options_.audioSource, title, options_.path, monotonic_,
-                                                              now, target_.windowPid, options_.microphoneDevice);
-                if (!audioCapture_) {
-                    options_.audioSource = RecordingAudioSource::None;
+            for (const auto source : options_.audio.sources()) {
+                auto capture = RecordingAudioCapture::start(source, recordingAudioSourceLabel(source), options_.path,
+                                                            monotonic_, now, target_.windowPid, options_.microphoneDevice);
+                if (capture) {
+                    audioCaptures_.push_back(std::move(capture));
                 }
             }
             setState(State::Recording);
@@ -248,8 +249,8 @@ void ScreenRecorder::onEncoderStateChanged()
         } else if (state_ == State::Paused) {
             const qint64 now = monotonic_.elapsed();
             clock_.resume(now);
-            if (audioCapture_) {
-                audioCapture_->setPaused(false, now);
+            for (const auto &capture : audioCaptures_) {
+                capture->setPaused(false, now);
             }
             setState(State::Recording);
             if (target_.kind == RecordingTarget::Kind::Window) {
@@ -264,8 +265,8 @@ void ScreenRecorder::onEncoderStateChanged()
             resizePollTimer_->stop();
             const qint64 now = monotonic_.elapsed();
             clock_.pause(now);
-            if (audioCapture_) {
-                audioCapture_->setPaused(true, now);
+            for (const auto &capture : audioCaptures_) {
+                capture->setPaused(true, now);
             }
             setState(State::Paused);
         }
@@ -341,8 +342,8 @@ void ScreenRecorder::finalizeFile()
         pauses.append({double(start) / 1000.0, double(end) / 1000.0});
     }
     QList<RecordingAudioTrack> audioTracks;
-    if (audioCapture_) {
-        if (const auto track = audioCapture_->track()) {
+    for (const auto &capture : audioCaptures_) {
+        if (const auto track = capture->track()) {
             audioTracks.append(*track);
         } else {
             qCInfo(lcRecord) << "no usable audio samples for recording";
@@ -483,8 +484,10 @@ void ScreenRecorder::setState(State state)
     if (state_ == state) {
         return;
     }
-    if (state == State::Finishing && audioCapture_) {
-        audioCapture_->stop();
+    if (state == State::Finishing) {
+        for (const auto &capture : audioCaptures_) {
+            capture->stop();
+        }
     }
     qCInfo(lcRecord) << "state" << state_ << "->" << state;
     state_ = state;
@@ -503,8 +506,8 @@ void ScreenRecorder::cleanUp()
         stream_.release()->deleteLater();
     }
     finalizer_.reset();
-    audioCapture_.reset();
-    options_.audioSource = RecordingAudioSource::None;
+    audioCaptures_.clear();
+    options_.audio = {};
     finalizing_ = false;
 }
 

@@ -166,8 +166,7 @@ public:
     // Screen recording (#30). targetId: "screen:<connector>", "all", an area id,
     // "window:<uuid>" or "region:x,y,w,h". Starts after delaySeconds (0: at once) and remembers
     // the target for the start/stop shortcut. Returns an error message, or an empty string.
-    QString startRecording(const QString &targetId, int delaySeconds = 0,
-                           RecordingAudioSource audio = RecordingAudioSource::None);
+    QString startRecording(const QString &targetId, int delaySeconds = 0, RecordingAudioSelection audio = {});
     [[nodiscard]] bool recordingAudioAvailable() const;
     void stopRecording(const QString &origin);
     // `itsova --verbose` adds debug logging on top of the setting (#92).
@@ -226,8 +225,8 @@ private:
     void historyModified(bool sweepThumbnails);
     void requestThumbnails();
     [[nodiscard]] std::optional<RecordingTarget> recordingTargetFor(const QString &targetId, QString *error) const;
-    void beginRecording(const QString &targetId, RecordingAudioSource audio);
-    void startRecorder(const QString &targetId, RecordingAudioSource audio);
+    void beginRecording(const QString &targetId, RecordingAudioSelection audio);
+    void startRecorder(const QString &targetId, RecordingAudioSelection audio);
     [[nodiscard]] qreal nativeScale(const ScreenInfo &screen) const;
     void syncRecordingUi();
 

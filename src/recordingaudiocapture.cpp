@@ -27,6 +27,9 @@ namespace
 {
 constexpr pa_sample_spec format{PA_SAMPLE_S16LE, recordingAudioRate, recordingAudioChannels};
 constexpr int fragmentUs = 20000;
+constexpr qint64 driftCheckIntervalUs = 1000000;
+constexpr qint64 driftThresholdFrames = 2LL * fragmentUs * recordingAudioRate / 1000000;
+constexpr int driftCorrectionFrames = recordingAudioRate / 1000;
 
 qint64 sampleIndex(qint64 timestampUs)
 {
@@ -98,6 +101,8 @@ struct RecordingAudioCapture::Capture
     bool controlPending = false;
     qint64 captureAfterUs = 0;
     std::optional<qint64> nextFrame;
+    qint64 nextDriftCheckUs = 0;
+    int driftChecks = 0;
     std::optional<qint64> firstFrame;
     qint64 endFrame = 0;
 
@@ -500,18 +505,9 @@ struct RecordingAudioCapture::Capture
         if (bytes % recordingAudioFrameBytes != 0) {
             return false;
         }
-        if (!nextFrame) {
-            // Anchor the first sample of each active interval on the same clock as the video.
-            // The stream may deliver its first fragment before timing info arrives.
-            pa_usec_t latency = 0;
-            int negative = 0;
-            const size_t available = pa_stream_readable_size(stream);
-            const qint64 bufferedUs = qint64(pa_bytes_to_usec(available == size_t(-1) ? bytes : available, &format));
-            const qint64 now = nowUs();
-            const qint64 delay = pa_stream_get_latency(stream, &latency, &negative) == 0
-                ? (negative ? -qint64(latency) : qint64(latency))
-                : bufferedUs;
-            nextFrame = sampleIndex(now - delay);
+        const qint64 now = nowUs();
+        if (!nextFrame || now >= nextDriftCheckUs) {
+            updateSamplePosition(bytes, now);
         }
         const qint64 packetStart = *nextFrame;
         *nextFrame += qint64(bytes / recordingAudioFrameBytes);
@@ -530,6 +526,41 @@ struct RecordingAudioCapture::Capture
         // The sidecar spans the original timeline. Gaps are sparse zeros, including pauses.
         endFrame = *nextFrame;
         return true;
+    }
+
+    void updateSamplePosition(size_t bytes, qint64 now)
+    {
+        pa_usec_t latency = 0;
+        int negative = 0;
+        nextDriftCheckUs = now + driftCheckIntervalUs;
+        const bool hasLatency = pa_stream_get_latency(stream, &latency, &negative) == 0;
+        const qint64 delay = negative ? -qint64(latency) : qint64(latency);
+        if (!nextFrame) {
+            // Each active interval starts on the video clock. Pulse can deliver the first
+            // fragment before sending timing information.
+            const size_t available = pa_stream_readable_size(stream);
+            const qint64 bufferedUs = qint64(pa_bytes_to_usec(available == size_t(-1) ? bytes : available, &format));
+            nextFrame = sampleIndex(now - (hasLatency ? delay : bufferedUs));
+            driftChecks = 0;
+            return;
+        }
+
+        // Device clocks can drift against the video clock. Ignore jitter below two fragments and
+        // require three consecutive measurements in the same direction before nudging by 1 ms.
+        // The normal sidecar write then leaves a small gap or drops overlapping samples.
+        const qint64 drift = hasLatency ? sampleIndex(now - delay) - *nextFrame : 0;
+        if (drift > driftThresholdFrames) {
+            driftChecks = std::clamp(driftChecks + 1, 1, 3);
+        } else if (drift < -driftThresholdFrames) {
+            driftChecks = std::clamp(driftChecks - 1, -3, -1);
+        } else {
+            driftChecks = 0;
+        }
+        if (driftChecks == 3) {
+            *nextFrame += driftCorrectionFrames;
+        } else if (driftChecks == -3) {
+            *nextFrame -= driftCorrectionFrames;
+        }
     }
 
     void submit(pa_operation *operation)

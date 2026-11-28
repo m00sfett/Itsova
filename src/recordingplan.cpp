@@ -13,6 +13,48 @@
 namespace itsova
 {
 
+void RecordingAudioSelection::toggle(RecordingAudioSource source)
+{
+    switch (source) {
+    case RecordingAudioSource::None:
+        *this = {};
+        break;
+    case RecordingAudioSource::Microphone:
+        microphone_ = !microphone_;
+        break;
+    case RecordingAudioSource::System:
+    case RecordingAudioSource::Application:
+        playback_ = playback_ == source ? RecordingAudioSource::None : source;
+        break;
+    }
+}
+
+bool RecordingAudioSelection::includes(RecordingAudioSource source) const
+{
+    switch (source) {
+    case RecordingAudioSource::None:
+        return isEmpty();
+    case RecordingAudioSource::Microphone:
+        return microphone_;
+    case RecordingAudioSource::System:
+    case RecordingAudioSource::Application:
+        return playback_ == source;
+    }
+    return false;
+}
+
+QList<RecordingAudioSource> RecordingAudioSelection::sources() const
+{
+    QList<RecordingAudioSource> sources;
+    if (playback_ != RecordingAudioSource::None) {
+        sources.append(playback_);
+    }
+    if (microphone_) {
+        sources.append(RecordingAudioSource::Microphone);
+    }
+    return sources;
+}
+
 QString recordingAudioSourceLabel(RecordingAudioSource source)
 {
     switch (source) {
@@ -26,6 +68,24 @@ QString recordingAudioSourceLabel(RecordingAudioSource source)
         return QCoreApplication::translate("RecordingPlan", "Window audio");
     }
     return {};
+}
+
+QString recordingAudioSelectionLabel(const RecordingAudioSelection &selection)
+{
+    const auto playback = selection.playback();
+    if (selection.microphone() && playback != RecordingAudioSource::None) {
+        return QCoreApplication::translate("RecordingPlan", "%1 + %2")
+            .arg(recordingAudioSourceLabel(playback), recordingAudioSourceLabel(RecordingAudioSource::Microphone));
+    }
+    return recordingAudioSourceLabel(selection.microphone() ? RecordingAudioSource::Microphone : playback);
+}
+
+RecordingAudioSelection RecordingTarget::availableAudio(RecordingAudioSelection selection) const
+{
+    if (!supportsApplicationAudio() && selection.includes(RecordingAudioSource::Application)) {
+        selection.toggle(RecordingAudioSource::Application);
+    }
+    return selection;
 }
 
 QString recordingFormatKey(RecordingFormat format)

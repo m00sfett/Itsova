@@ -207,7 +207,7 @@ bool App::recordingAudioAvailable() const
         && ScreenRecorder::canRecordAudio();
 }
 
-QString App::startRecording(const QString &targetId, int delaySeconds, RecordingAudioSource audio)
+QString App::startRecording(const QString &targetId, int delaySeconds, RecordingAudioSelection audio)
 {
     qCInfo(lcRecord) << "start requested for" << targetId << "delay" << delaySeconds;
     if (recorder_->isBusy() || recordingStartPending()) {
@@ -253,7 +253,7 @@ qreal App::nativeScale(const ScreenInfo &screen) const
     return qscreen ? qscreen->devicePixelRatio() : 1.0;
 }
 
-void App::beginRecording(const QString &targetId, RecordingAudioSource audio)
+void App::beginRecording(const QString &targetId, RecordingAudioSelection audio)
 {
     // Region streams need each monitor's real scale, which only a capture reveals. One frame per
     // monitor whose scale is not known yet (about 20 ms); later recordings reuse it.
@@ -305,7 +305,7 @@ void App::beginRecording(const QString &targetId, RecordingAudioSource audio)
     }));
 }
 
-void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
+void App::startRecorder(const QString &targetId, RecordingAudioSelection audio)
 {
     QString error;
     const std::optional<RecordingTarget> target = recordingTargetFor(targetId, &error);
@@ -322,11 +322,11 @@ void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
     options.format = store_.recordingFormat;
     options.frameRate = store_.recordingFrameRate;
     options.includeCursor = store_.recordingCursor;
-    options.audioSource = audio != RecordingAudioSource::None && recordingAudioAvailable()
-        && (audio != RecordingAudioSource::Application || target->supportsApplicationAudio())
-        ? audio : RecordingAudioSource::None;
-    if (options.audioSource == RecordingAudioSource::Microphone) {
-        options.microphoneDevice = store_.recordingMicrophoneDevice;
+    if (!audio.isEmpty() && recordingAudioAvailable()) {
+        options.audio = target->availableAudio(audio);
+        if (options.audio.microphone()) {
+            options.microphoneDevice = store_.recordingMicrophoneDevice;
+        }
     }
     {
         // Where the recording comes from (#103), for a later replay on the same monitors.
@@ -355,8 +355,8 @@ void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
         recordingHint_ = new RecordingHint;
     }
     QString hintDetail = recordingStopInstruction();
-    if (options.audioSource != RecordingAudioSource::None) {
-        hintDetail = tr("Audio: %1").arg(recordingAudioSourceLabel(options.audioSource)) + QLatin1Char('\n') + hintDetail;
+    if (!options.audio.isEmpty()) {
+        hintDetail = tr("Audio: %1").arg(recordingAudioSelectionLabel(options.audio)) + QLatin1Char('\n') + hintDetail;
     }
     recordingHint_->setContent(QStringLiteral("media-record"), tr("Recording %1").arg(target->displayName),
                                hintDetail, false);
@@ -382,7 +382,7 @@ void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
         qCInfo(lcRecord) << "start hint gone, starting the recording";
         syncRecordingUi();
         if (!store_.experimentalRecordingAudio) {
-            options.audioSource = RecordingAudioSource::None;
+            options.audio = {};
         }
         recorder_->start(target, options);
     });

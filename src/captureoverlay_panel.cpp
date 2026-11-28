@@ -57,6 +57,7 @@
 #include <QtConcurrent>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdlib>
 #include <mutex>
@@ -415,6 +416,10 @@ void CaptureOverlay::buildPanel()
     panel_->hide();
 }
 
+using AudioSource = RecordingAudioSource;
+static constexpr std::array audioOptions{AudioSource::None, AudioSource::System, AudioSource::Microphone,
+                                         AudioSource::Application};
+
 static QString recordingAudioIcon(RecordingAudioSource source)
 {
     switch (source) {
@@ -468,8 +473,7 @@ void CaptureOverlay::rebuildMainRow(const QString &state)
     };
     const auto audio = [&] {
         if (session_->recordingAudioAvailable()) {
-            audioButton_ = drawer(Drawer::Audio, recordingAudioIcon(session_->recordingAudioSelection()),
-                                  tr("Recording audio"), {});
+            audioButton_ = drawer(Drawer::Audio, recordingAudioIcon(AudioSource::None), tr("Recording audio"), {});
         }
     };
     // Every tool letter opens Markup; listed one by one, never abbreviated.
@@ -1048,16 +1052,13 @@ QWidget *CaptureOverlay::buildDelayRow()
 
 QWidget *CaptureOverlay::buildAudioRow()
 {
-    using Source = RecordingAudioSource;
-    const auto sources = {Source::None, Source::System, Source::Microphone, Source::Application};
+    audioOptions_.clear();
     QList<QWidget *> buttons;
-    for (const auto source : sources) {
+    for (const auto source : audioOptions) {
         auto *button = new PanelButton(recordingAudioIcon(source), recordingAudioSourceLabel(source), {}, nullptr);
         button->setCheckable(true);
-        const bool selected = source == session_->recordingAudioSelection();
-        button->setChecked(selected);
-        button->setActive(selected);
-        connect(button, &QAbstractButton::clicked, this, [this, source] { session_->chooseRecordingAudio(source); });
+        connect(button, &QAbstractButton::clicked, this, [this, source] { session_->toggleRecordingAudio(source); });
+        audioOptions_.append(button);
         buttons.append(button);
     }
 
@@ -1066,10 +1067,11 @@ QWidget *CaptureOverlay::buildAudioRow()
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(buttonRow(buttons));
-    auto *help = new QLabel(tr("Playback from the app that owns the recorded window."), content);
+    auto *help = new QLabel(tr("Window audio captures the app that owns the recorded window. "
+                               "The microphone uses a separate track."), content);
     help->setWordWrap(true);
     help->setMargin(4);
-    help->setMaximumWidth(int(sources.size()) * PanelButton::side);
+    help->setMaximumWidth(int(audioOptions.size()) * PanelButton::side);
     layout->addWidget(help);
     return content;
 }
@@ -1342,10 +1344,22 @@ void CaptureOverlay::refreshPanel()
         const int delay = session_->captureDelaySeconds();
         delayButton_->setBadge(delay > 0 ? tr("%1 s").arg(delay) : QString());
     }
+    const auto selection = session_->recordingAudioSelection();
     if (audioButton_) {
-        const auto source = session_->recordingAudioSelection();
+        const auto playback = selection.playback();
+        const auto source = playback == AudioSource::None && selection.microphone() ? AudioSource::Microphone : playback;
         audioButton_->setIconName(recordingAudioIcon(source));
-        audioButton_->setTitle(tr("Recording audio: %1").arg(recordingAudioSourceLabel(source)));
+        audioButton_->setBadge(playback != AudioSource::None && selection.microphone() ? tr("2") : QString());
+        audioButton_->setTitle(tr("Recording audio: %1").arg(recordingAudioSelectionLabel(selection)));
+    }
+    if (drawer == Drawer::Audio) {
+        for (qsizetype i = 0; i < audioOptions_.size(); ++i) {
+            if (const auto &button = audioOptions_.at(i)) {
+                const bool selected = selection.includes(audioOptions[i]);
+                button->setChecked(selected);
+                button->setActive(selected);
+            }
+        }
     }
 
     panel_->adjustSize();

@@ -11,6 +11,7 @@
 #include <QString>
 
 #include <memory>
+#include <vector>
 
 class PipeWireRecord;
 class QTimer;
@@ -48,7 +49,7 @@ public:
         bool includeCursor = true;
         QString path; // the file to write
         QString metadata; // #103: written into the file when it is finalized
-        RecordingAudioSource audioSource = RecordingAudioSource::None;
+        RecordingAudioSelection audio;
         QString microphoneDevice; // exact PulseAudio source name or empty for the system default
     };
 
@@ -71,7 +72,6 @@ public:
     [[nodiscard]] qint64 elapsedMs() const;
     [[nodiscard]] const RecordingTarget &target() const { return target_; }
     [[nodiscard]] QString path() const { return options_.path; }
-    [[nodiscard]] RecordingAudioSource audioSource() const { return options_.audioSource; }
 
 Q_SIGNALS:
     void stateChanged(itsova::ScreenRecorder::State state);
@@ -99,7 +99,7 @@ private:
     std::unique_ptr<ScreencastManager> manager_;
     std::unique_ptr<ScreencastStream> stream_;
     std::unique_ptr<PipeWireRecord> encoder_;
-    std::unique_ptr<RecordingAudioCapture> audioCapture_;
+    std::vector<std::unique_ptr<RecordingAudioCapture>> audioCaptures_;
     std::unique_ptr<RecordingFinalizer> finalizer_;
     QTimer *resizePollTimer_ = nullptr;
     QList<WindowResizeSample> windowResizes_;

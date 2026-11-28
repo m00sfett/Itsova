@@ -17,6 +17,7 @@ namespace itsova
 enum class RecordingFormat { Mp4, Gif, WebM };
 
 [[nodiscard]] QString recordingAudioSourceLabel(RecordingAudioSource source);
+[[nodiscard]] QString recordingAudioSelectionLabel(const RecordingAudioSelection &selection);
 [[nodiscard]] QString recordingFormatKey(RecordingFormat format); // "mp4", "gif", "webm"
 [[nodiscard]] RecordingFormat recordingFormatFromKey(const QString &key); // unknown keys: Mp4
 [[nodiscard]] QString recordingExtension(RecordingFormat format);
@@ -44,6 +45,7 @@ struct RecordingTarget
 
     [[nodiscard]] bool isValid() const;
     [[nodiscard]] bool supportsApplicationAudio() const { return kind == Kind::Window && windowPid > 0; }
+    [[nodiscard]] RecordingAudioSelection availableAudio(RecordingAudioSelection selection) const;
 };
 
 // Scale of a region stream: the highest scale of the monitors it touches, so nothing is recorded
