@@ -5,7 +5,7 @@
 namespace itsova
 {
 
-enum class RecordingAudioSource { None, System, Microphone };
+enum class RecordingAudioSource { None, System, Microphone, Application };
 
 inline constexpr int recordingAudioRate = 48000;
 inline constexpr int recordingAudioChannels = 2;

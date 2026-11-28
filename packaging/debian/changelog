@@ -1,7 +1,8 @@
-itsova (0.12.2) UNRELEASED; urgency=medium
+itsova (0.12.3) UNRELEASED; urgency=medium
 
   * Preserve recording timing when finalizing video and audio.
   * Add opt-in recording from the default system output or microphone.
+  * Support audio from the application of a recorded window.
 
  -- Itsova contributors <m00sfett@users.noreply.github.com>  Fri, 27 Nov 2026 23:54:00 +0100
 

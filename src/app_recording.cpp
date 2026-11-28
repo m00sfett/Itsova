@@ -146,6 +146,7 @@ std::optional<RecordingTarget> App::recordingTargetFor(const QString &targetId, 
         }
         target.kind = RecordingTarget::Kind::Window;
         target.windowHandle = handle;
+        target.windowPid = it->pid;
         target.region = it->geometry; // where the window is, for the recording's metadata (#103)
         target.displayName = it->caption.isEmpty() ? it->appName : it->caption;
         target.token = windowToken(*it);
@@ -322,6 +323,7 @@ void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
     options.frameRate = store_.recordingFrameRate;
     options.includeCursor = store_.recordingCursor;
     options.audioSource = audio != RecordingAudioSource::None && recordingAudioAvailable()
+        && (audio != RecordingAudioSource::Application || target->supportsApplicationAudio())
         ? audio : RecordingAudioSource::None;
     {
         // Where the recording comes from (#103), for a later replay on the same monitors.

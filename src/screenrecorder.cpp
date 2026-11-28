@@ -151,7 +151,8 @@ bool ScreenRecorder::start(const RecordingTarget &target, const Options &options
     target_ = target;
     options_ = options;
     if (options_.audioSource != RecordingAudioSource::None
-        && (options_.format == RecordingFormat::Gif || !canRecordAudio())) {
+        && (options_.format == RecordingFormat::Gif || !canRecordAudio()
+            || (options_.audioSource == RecordingAudioSource::Application && !target_.supportsApplicationAudio()))) {
         qCInfo(lcRecord) << "audio is unavailable for this recording";
         options_.audioSource = RecordingAudioSource::None;
     }
@@ -232,9 +233,10 @@ void ScreenRecorder::onEncoderStateChanged()
             const qint64 now = monotonic_.elapsed();
             clock_.start(now);
             if (options_.audioSource != RecordingAudioSource::None) {
-                const QString title = options_.audioSource == RecordingAudioSource::System ? tr("System audio")
-                                                                                            : tr("Microphone");
-                audioCapture_ = RecordingAudioCapture::start(options_.audioSource, title, options_.path, monotonic_, now);
+                const QString title = options_.audioSource == RecordingAudioSource::Microphone
+                    ? tr("Microphone") : recordingAudioSourceLabel(options_.audioSource);
+                audioCapture_ = RecordingAudioCapture::start(options_.audioSource, title, options_.path, monotonic_,
+                                                              now, target_.windowPid);
                 if (!audioCapture_) {
                     options_.audioSource = RecordingAudioSource::None;
                 }

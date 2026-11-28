@@ -3,6 +3,7 @@
 #ifdef ITSOVA_HAVE_RECORDING_AUDIO
 #include "logging.h"
 
+#include <QByteArray>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -72,6 +73,7 @@ bool writeSamples(int handle, const char *data, size_t bytes, qint64 offset)
 struct RecordingAudioCapture::Capture
 {
     RecordingAudioSource source;
+    QByteArray windowPid;
     QString title;
     QElapsedTimer clock;
     qint64 videoStartUs;
@@ -81,6 +83,10 @@ struct RecordingAudioCapture::Capture
     pa_context *context = nullptr;
     pa_stream *stream = nullptr;
     QByteArray device;
+    uint32_t playbackStream = PA_INVALID_INDEX;
+    uint32_t playbackSink = PA_INVALID_INDEX;
+    uint32_t monitorSource = PA_INVALID_INDEX;
+    bool applicationRouteVerified = false;
     bool started = false;
     bool failed = false;
     bool wantsSamples = true;
@@ -122,7 +128,7 @@ struct RecordingAudioCapture::Capture
             auto &self = *static_cast<Capture *>(userdata);
             switch (pa_context_get_state(context)) {
             case PA_CONTEXT_READY:
-                self.findDefaultDevice();
+                self.findDevice();
                 break;
             case PA_CONTEXT_FAILED:
             case PA_CONTEXT_TERMINATED:
@@ -159,6 +165,7 @@ struct RecordingAudioCapture::Capture
         }
         if (context) {
             pa_context_set_state_callback(context, nullptr, nullptr);
+            pa_context_set_subscribe_callback(context, nullptr, nullptr);
             pa_context_disconnect(context);
             pa_context_unref(context);
             context = nullptr;
@@ -170,11 +177,18 @@ struct RecordingAudioCapture::Capture
         }
     }
 
-    void findDefaultDevice()
+    void findDevice()
     {
         submit(pa_context_get_server_info(context, [](pa_context *context, const pa_server_info *info, void *userdata) {
             auto &self = *static_cast<Capture *>(userdata);
-            if (info && self.source == RecordingAudioSource::System && info->default_sink_name
+            if (self.source == RecordingAudioSource::Application) {
+                // The direct route check below is specific to PipeWire's PulseAudio server.
+                if (!info || !info->server_name || !QByteArrayView(info->server_name).startsWith("PulseAudio (on PipeWire ")) {
+                    self.fail("application audio requires the PipeWire PulseAudio service");
+                    return;
+                }
+                self.watchApplicationStream();
+            } else if (info && self.source == RecordingAudioSource::System && info->default_sink_name
                 && *info->default_sink_name) {
                 self.submit(pa_context_get_sink_info_by_name(context, info->default_sink_name,
                     [](pa_context *, const pa_sink_info *sink, int end, void *userdata) {
@@ -202,6 +216,92 @@ struct RecordingAudioCapture::Capture
         }, this));
     }
 
+    void watchApplicationStream()
+    {
+        pa_context_set_subscribe_callback(context, [](pa_context *, pa_subscription_event_type_t event, uint32_t index,
+                                                       void *userdata) {
+            auto &self = *static_cast<Capture *>(userdata);
+            if (index == self.playbackStream
+                && (event & PA_SUBSCRIPTION_EVENT_FACILITY_MASK) == PA_SUBSCRIPTION_EVENT_SINK_INPUT
+                && (event & PA_SUBSCRIPTION_EVENT_TYPE_MASK) == PA_SUBSCRIPTION_EVENT_REMOVE) {
+                self.fail("the window application's playback stream disappeared");
+            }
+        }, this);
+        submit(pa_context_subscribe(context, PA_SUBSCRIPTION_MASK_SINK_INPUT, [](pa_context *, int success,
+                                                                                void *userdata) {
+            auto &self = *static_cast<Capture *>(userdata);
+            if (success) {
+                self.findApplicationStream();
+            } else {
+                self.fail("could not watch the window application's playback stream");
+            }
+        }, this));
+    }
+
+    void findApplicationStream()
+    {
+        submit(pa_context_get_sink_input_info_list(context, [](pa_context *, const pa_sink_input_info *input,
+                                                               int end, void *userdata) {
+            auto &self = *static_cast<Capture *>(userdata);
+            if (self.failed) {
+                return;
+            }
+            if (end != 0) {
+                if (end < 0 || self.playbackStream == PA_INVALID_INDEX || self.playbackSink == PA_INVALID_INDEX) {
+                    self.fail("the window application has no identifiable playback stream on an audio output");
+                } else {
+                    self.findApplicationMonitor();
+                }
+                return;
+            }
+            const char *pid = input && input->proplist
+                ? pa_proplist_gets(input->proplist, PA_PROP_APPLICATION_PROCESS_ID) : nullptr;
+            if (!pid || self.windowPid != pid) {
+                return;
+            }
+            // Zero is not a valid direct target in PipeWire's PulseAudio service.
+            if (self.playbackStream != PA_INVALID_INDEX || input->index == PA_INVALID_INDEX || input->index == 0) {
+                self.fail("the window application's playback stream is ambiguous or unavailable");
+                return;
+            }
+            self.playbackStream = input->index;
+            self.playbackSink = input->sink;
+        }, this));
+    }
+
+    void findApplicationMonitor()
+    {
+        submit(pa_context_get_sink_info_by_index(context, playbackSink, [](pa_context *, const pa_sink_info *sink,
+                                                                          int end, void *userdata) {
+            auto &self = *static_cast<Capture *>(userdata);
+            if (self.failed) {
+                return;
+            }
+            if (sink && sink->index == self.playbackSink && sink->monitor_source != PA_INVALID_INDEX
+                && sink->monitor_source_name && *sink->monitor_source_name) {
+                self.monitorSource = sink->monitor_source;
+                self.connectDevice(sink->monitor_source_name);
+            } else if (end != 0 && !self.stream) {
+                self.fail("the window application's audio output has no monitor");
+            }
+        }, this));
+    }
+
+    pa_stream *createStream()
+    {
+        if (source != RecordingAudioSource::Application) {
+            return pa_stream_new(context, "Itsova screen recording", &format, nullptr);
+        }
+        const std::unique_ptr<pa_proplist, decltype(&pa_proplist_free)> properties(pa_proplist_new(), pa_proplist_free);
+        if (!properties || pa_proplist_sets(properties.get(), "node.dont-fallback", "true") < 0
+            || pa_proplist_sets(properties.get(), "node.dont-move", "true") < 0
+            || pa_proplist_sets(properties.get(), "node.dont-reconnect", "true") < 0
+            || pa_proplist_sets(properties.get(), "stream.restore-target", "false") < 0) {
+            return nullptr;
+        }
+        return pa_stream_new_with_proplist(context, "Itsova screen recording", &format, nullptr, properties.get());
+    }
+
     void connectDevice(const char *name)
     {
         if (!name || !*name) {
@@ -209,9 +309,13 @@ struct RecordingAudioCapture::Capture
             return;
         }
         device = name;
-        stream = pa_stream_new(context, "Itsova screen recording", &format, nullptr);
+        stream = createStream();
         if (!stream) {
             fail("could not create audio stream");
+            return;
+        }
+        if (source == RecordingAudioSource::Application && pa_stream_set_monitor_stream(stream, playbackStream) < 0) {
+            fail("could not select the window application's playback stream");
             return;
         }
         pa_stream_set_state_callback(stream, [](pa_stream *stream, void *userdata) {
@@ -219,7 +323,11 @@ struct RecordingAudioCapture::Capture
             switch (pa_stream_get_state(stream)) {
             case PA_STREAM_READY:
                 self.checkDevice();
-                self.updateStream();
+                if (self.source == RecordingAudioSource::Application && !self.failed) {
+                    self.verifyApplicationRoute();
+                } else {
+                    self.updateStream();
+                }
                 break;
             case PA_STREAM_FAILED:
             case PA_STREAM_TERMINATED:
@@ -230,7 +338,12 @@ struct RecordingAudioCapture::Capture
             }
         }, this);
         pa_stream_set_moved_callback(stream, [](pa_stream *, void *userdata) {
-            static_cast<Capture *>(userdata)->checkDevice();
+            auto &self = *static_cast<Capture *>(userdata);
+            if (self.source == RecordingAudioSource::Application) {
+                self.fail("the window application's recording stream was moved");
+            } else {
+                self.checkDevice();
+            }
         }, this);
         pa_stream_set_read_callback(stream, [](pa_stream *, size_t, void *userdata) {
             static_cast<Capture *>(userdata)->readSamples();
@@ -250,9 +363,34 @@ struct RecordingAudioCapture::Capture
 
     void checkDevice()
     {
-        if (device != pa_stream_get_device_name(stream)) {
+        if (device != pa_stream_get_device_name(stream)
+            || (source == RecordingAudioSource::Application && pa_stream_get_device_index(stream) != monitorSource)) {
             fail("audio service did not keep the selected device");
         }
+    }
+
+    void verifyApplicationRoute()
+    {
+        submit(pa_context_get_source_output_info(context, pa_stream_get_index(stream),
+            [](pa_context *, const pa_source_output_info *output, int end, void *userdata) {
+                auto &self = *static_cast<Capture *>(userdata);
+                if (self.failed) {
+                    return;
+                }
+                if (output) {
+                    // PipeWire reports a source index for an ordinary device or sink monitor.
+                    // A direct playback peer has no source index here, only a target object.
+                    const char *target = output->proplist ? pa_proplist_gets(output->proplist, "target.object") : nullptr;
+                    if (output->source == PA_INVALID_INDEX && QByteArray::number(self.playbackStream) == target) {
+                        self.applicationRouteVerified = true;
+                        self.updateStream();
+                    } else {
+                        self.fail("audio service did not provide a direct application route");
+                    }
+                } else if (end != 0 && !self.applicationRouteVerified) {
+                    self.fail("could not verify the direct application route");
+                }
+            }, this));
     }
 
     void setPaused(bool paused, qint64 nowMs)
@@ -275,7 +413,8 @@ struct RecordingAudioCapture::Capture
 
     void updateStream()
     {
-        if (failed || controlPending || !stream || pa_stream_get_state(stream) != PA_STREAM_READY) {
+        if (failed || (source == RecordingAudioSource::Application && !applicationRouteVerified)
+            || controlPending || !stream || pa_stream_get_state(stream) != PA_STREAM_READY) {
             return;
         }
         if (pa_stream_is_corked(stream) == 1) {
@@ -423,14 +562,17 @@ bool RecordingAudioCapture::isSupported()
 
 std::unique_ptr<RecordingAudioCapture> RecordingAudioCapture::start(RecordingAudioSource source, const QString &title,
                                                                     const QString &videoPath, QElapsedTimer clock,
-                                                                    qint64 videoStartMs)
+                                                                    qint64 videoStartMs, qint64 windowPid)
 {
 #ifdef ITSOVA_HAVE_RECORDING_AUDIO
-    if (source == RecordingAudioSource::None) {
+    if (source == RecordingAudioSource::None || (source == RecordingAudioSource::Application && windowPid <= 0)) {
         return {};
     }
     auto capture = std::make_unique<Capture>();
     capture->source = source;
+    if (source == RecordingAudioSource::Application) {
+        capture->windowPid = QByteArray::number(windowPid);
+    }
     capture->title = title;
     capture->clock = clock;
     capture->videoStartUs = videoStartMs * 1000;
@@ -444,6 +586,7 @@ std::unique_ptr<RecordingAudioCapture> RecordingAudioCapture::start(RecordingAud
     Q_UNUSED(videoPath)
     Q_UNUSED(clock)
     Q_UNUSED(videoStartMs)
+    Q_UNUSED(windowPid)
 #endif
     return {};
 }

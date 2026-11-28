@@ -96,15 +96,17 @@ QList<WindowInfo> listWindows(qint64 excludedPid)
     const QString activity = currentActivity();
     for (const QString &handle : windowHandles()) {
         const QVariantMap info = windowInfo(handle);
+        const qint64 pid = info.value(QStringLiteral("pid")).toLongLong();
         if (info.isEmpty() || info.value(QStringLiteral("skipTaskbar")).toBool()
             || info.value(QStringLiteral("excludeFromCapture")).toBool()
-            || info.value(QStringLiteral("pid")).toLongLong() == excludedPid) {
+            || pid == excludedPid) {
             continue;
         }
         WindowInfo window;
         window.handle = handle;
         window.caption = info.value(QStringLiteral("caption")).toString();
         window.appName = info.value(QStringLiteral("resourceName")).toString();
+        window.pid = pid;
         const QString desktopFile = info.value(QStringLiteral("desktopFile")).toString();
         window.iconName = desktopFile.isEmpty() ? info.value(QStringLiteral("resourceClass")).toString() : desktopFile;
         window.geometry = QRectF(info.value(QStringLiteral("x")).toDouble(), info.value(QStringLiteral("y")).toDouble(),
