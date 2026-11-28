@@ -1,6 +1,6 @@
 # Maintainer: m00sfett <https://github.com/m00sfett>
 pkgname=itsova-git
-pkgver=0.12.5.r0.g0000000
+pkgver=0.12.6.r0.g0000000
 pkgrel=1
 pkgdesc='Screenshot, annotation, and screen recording utility for KDE Plasma Wayland (development version)'
 arch=('x86_64')
@@ -8,12 +8,13 @@ url='https://github.com/m00sfett/Itsova'
 license=('AGPL-3.0-or-later')
 depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
          'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'layer-shell-qt' 'kwidgetsaddons' 'kwin' 'kxmlgui'
-         'qt6-base' 'qt6-multimedia' 'qt6-wayland' 'wayland')
-makedepends=('cmake' 'git' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
+         'libpulse' 'qt6-base' 'qt6-multimedia' 'qt6-wayland' 'wayland')
+makedepends=('cmake' 'git' 'ninja' 'pkgconf' 'plasma-wayland-protocols' 'qt6-tools')
 checkdepends=('python' 'qt6-imageformats')
 optdepends=('tesseract: text recognition (Copy Text, itsova capture --ocr)'
             'tesseract-data-eng: English text recognition'
             'qt6-imageformats: WebP and additional export image formats'
+            'pipewire-pulse: experimental audio recording on PipeWire'
             'plasma-workspace: the Itsova Plasma widget')
 provides=('itsova')
 conflicts=('itsova' 'glimply' 'glimply-git')

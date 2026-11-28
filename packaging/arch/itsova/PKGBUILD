@@ -12,12 +12,13 @@ license=('AGPL-3.0-or-later')
 conflicts=('glimply' 'glimply-git')
 depends=('gcc-libs' 'glibc' 'hicolor-icon-theme' 'kconfig' 'kdbusaddons' 'kglobalaccel' 'ki18n'
          'ffmpeg' 'knotifications' 'kpipewire' 'kstatusnotifieritem' 'layer-shell-qt' 'kwidgetsaddons' 'kwin' 'kxmlgui'
-         'qt6-base' 'qt6-multimedia' 'qt6-wayland' 'wayland')
-makedepends=('cmake' 'ninja' 'plasma-wayland-protocols' 'qt6-tools')
+         'libpulse' 'qt6-base' 'qt6-multimedia' 'qt6-wayland' 'wayland')
+makedepends=('cmake' 'ninja' 'pkgconf' 'plasma-wayland-protocols' 'qt6-tools')
 checkdepends=('python' 'qt6-imageformats')
 optdepends=('tesseract: text recognition (Copy Text, itsova capture --ocr)'
             'tesseract-data-eng: English text recognition'
             'qt6-imageformats: WebP and additional export image formats'
+            'pipewire-pulse: experimental audio recording on PipeWire'
             'plasma-workspace: the Itsova Plasma widget')
 source=("$pkgname-$_tag.tar.gz::$url/archive/refs/tags/$_tag.tar.gz")
 # Placeholder intentionally fails verification until the published archive is checked.

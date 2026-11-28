@@ -1,12 +1,13 @@
-itsova (0.12.5) UNRELEASED; urgency=medium
+itsova (0.12.6) UNRELEASED; urgency=medium
 
   * Preserve recording timing when finalizing video and audio.
   * Add opt-in recording from the default system output or microphone.
   * Support audio from the application of a recorded window.
   * Allow choosing a specific microphone for recordings.
   * Write playback and microphone as separate audio tracks.
+  * Declare audio dependencies for the supported package recipes.
 
- -- Itsova contributors <m00sfett@users.noreply.github.com>  Sat, 28 Nov 2026 04:37:00 +0100
+ -- Itsova contributors <m00sfett@users.noreply.github.com>  Sat, 28 Nov 2026 04:45:00 +0100
 
 itsova (0.12.0~beta.1) unstable; urgency=medium
 

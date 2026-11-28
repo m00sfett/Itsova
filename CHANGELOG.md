@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Window recordings can capture a playback stream from the window's application. Itsova requires an unambiguous stream from the window's process and leaves the recording silent if it cannot select one (#156).
 - Settings → Storage can keep the system default microphone or select a specific recording device. Video continues silently if the selected device is unavailable (#157).
 - MP4 and WebM can record microphone audio alongside either system audio or window audio. Each source has its own track, and an unavailable source does not stop the other track (#158).
+- The current Arch and Debian recipes build the optional audio backend without raising the minimum KPipeWire version. Source builds can omit audio and still record video (#159).
 
 ### Fixed
 
