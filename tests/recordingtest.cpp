@@ -70,6 +70,41 @@ private:
     }
 
 private Q_SLOTS:
+    void recordingAudioSelection()
+    {
+        using Source = RecordingAudioSource;
+        RecordingAudioSelection audio;
+        QVERIFY(audio.includes(Source::None));
+        QVERIFY(audio.sources().isEmpty());
+
+        audio.toggle(Source::Microphone);
+        audio.toggle(Source::System);
+        QCOMPARE(audio.sources(), (QList{Source::System, Source::Microphone}));
+        QVERIFY(!audio.includes(Source::None));
+        QVERIFY(audio.includes(Source::System));
+        QVERIFY(audio.includes(Source::Microphone));
+
+        audio.toggle(Source::Application);
+        QCOMPARE(audio.sources(), (QList{Source::Application, Source::Microphone}));
+        QVERIFY(!audio.includes(Source::System));
+        RecordingTarget target;
+        QCOMPARE(target.availableAudio(audio).sources(), QList{Source::Microphone});
+        target.kind = RecordingTarget::Kind::Window;
+        QCOMPARE(target.availableAudio(audio).sources(), QList{Source::Microphone});
+        target.windowPid = 1024;
+        QCOMPARE(target.availableAudio(audio).sources(), audio.sources());
+
+        audio.toggle(Source::Application);
+        QCOMPARE(audio.sources(), QList{Source::Microphone});
+        audio.toggle(Source::System);
+        audio.toggle(Source::Microphone);
+        QCOMPARE(audio.sources(), QList{Source::System});
+        audio.toggle(Source::Microphone);
+        audio.toggle(Source::None);
+        QVERIFY(audio.includes(Source::None));
+        QVERIFY(audio.sources().isEmpty());
+    }
+
     // #98: the tooltip always says how to stop.
     void stopHints()
     {

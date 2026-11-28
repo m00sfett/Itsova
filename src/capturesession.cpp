@@ -1828,10 +1828,10 @@ bool CaptureSession::recordingAudioAvailable() const
     return purpose_ == Purpose::Print && app_->recordingAudioAvailable();
 }
 
-void CaptureSession::chooseRecordingAudio(RecordingAudioSource source)
+void CaptureSession::toggleRecordingAudio(RecordingAudioSource source)
 {
-    recordingAudioSelection_ = recordingAudioAvailable() ? source : RecordingAudioSource::None;
-    setPanelDrawer(PanelDrawer::None);
+    recordingAudioSelection_.toggle(recordingAudioAvailable() ? source : RecordingAudioSource::None);
+    changed();
 }
 
 void CaptureSession::record(const QString &targetId)
@@ -1845,7 +1845,7 @@ void CaptureSession::record(const QString &targetId)
     // The Print file (if any) stays as it is; the recording is its own result. The overlay must be
     // off the screen before KWin starts the stream, or its last frame ends up in the recording.
     const int delay = captureDelaySeconds();
-    const RecordingAudioSource audio = recordingAudioSelection_;
+    const RecordingAudioSelection audio = recordingAudioSelection_;
     App *app = app_;
     finish({}, {});
     QTimer::singleShot(liveHideDelayMs, app, [app, targetId, delay, audio] {

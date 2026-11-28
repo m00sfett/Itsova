@@ -188,8 +188,8 @@ public:
     void setRecordMode(bool on);
     [[nodiscard]] bool recordMode() const { return recordMode_; }
     [[nodiscard]] bool recordingAudioAvailable() const;
-    [[nodiscard]] RecordingAudioSource recordingAudioSelection() const { return recordingAudioSelection_; }
-    void chooseRecordingAudio(RecordingAudioSource source);
+    [[nodiscard]] RecordingAudioSelection recordingAudioSelection() const { return recordingAudioSelection_; }
+    void toggleRecordingAudio(RecordingAudioSource source);
     // Closes the overlay and records targetId (see App::startRecording) once it is gone, after the
     // delay chosen in the panel.
     void record(const QString &targetId);
@@ -268,7 +268,7 @@ private:
     bool forceShowOverlay_ = false;
     bool textMode_ = false;
     bool recordMode_ = false;
-    RecordingAudioSource recordingAudioSelection_ = RecordingAudioSource::None;
+    RecordingAudioSelection recordingAudioSelection_;
     bool frozen_ = true;
     bool forceNew_ = false;
     bool dragging_ = false;
@@ -406,6 +406,7 @@ private:
     QPointer<PanelButton> saveButton_;
     QPointer<PanelButton> delayButton_;
     QPointer<PanelButton> audioButton_;
+    QList<QPointer<PanelButton>> audioOptions_;
     bool panelDragging_ = false;
     QPoint panelGrabOffset_;
 };
