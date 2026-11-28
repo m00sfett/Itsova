@@ -18,7 +18,8 @@ public:
     [[nodiscard]] static bool isSupported();
     [[nodiscard]] static std::unique_ptr<RecordingAudioCapture> start(RecordingAudioSource source,
                                                                       const QString &title, const QString &videoPath,
-                                                                      QElapsedTimer clock, qint64 videoStartMs);
+                                                                      QElapsedTimer clock, qint64 videoStartMs,
+                                                                      qint64 windowPid);
     ~RecordingAudioCapture();
 
     void setPaused(bool paused, qint64 nowMs);

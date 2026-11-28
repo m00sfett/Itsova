@@ -40,8 +40,10 @@ struct RecordingTarget
     QRect region; // Region: global logical rectangle; Window: the window's geometry at the start
     qreal scale = 1.0; // Region: device pixels per logical pixel of the stream
     QString windowHandle; // Window: KWin window UUID
+    qint64 windowPid = 0; // Window: KWin window process ID
 
     [[nodiscard]] bool isValid() const;
+    [[nodiscard]] bool supportsApplicationAudio() const { return kind == Kind::Window && windowPid > 0; }
 };
 
 // Scale of a region stream: the highest scale of the monitors it touches, so nothing is recorded

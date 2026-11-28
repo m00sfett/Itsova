@@ -18,6 +18,7 @@ struct WindowInfo {
     bool fullscreen = false;
     int layer = 2;                 // KWin's stacking layer (2 = normal, 4 = keep above, …)
     bool onCurrentDesktop = true;  // on the current virtual desktop and activity
+    qint64 pid = 0; // KWin's window process ID, zero when unavailable
 };
 
 // Open application windows in KWin's order (most recently used first). Skips windows that hide

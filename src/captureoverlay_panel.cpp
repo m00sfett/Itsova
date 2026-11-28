@@ -422,6 +422,8 @@ static QString recordingAudioIcon(RecordingAudioSource source)
         return QStringLiteral("audio-volume-high-symbolic");
     case RecordingAudioSource::Microphone:
         return QStringLiteral("audio-input-microphone-symbolic");
+    case RecordingAudioSource::Application:
+        return QStringLiteral("window");
     case RecordingAudioSource::None:
         return QStringLiteral("audio-volume-muted-symbolic");
     }
@@ -1046,8 +1048,10 @@ QWidget *CaptureOverlay::buildDelayRow()
 
 QWidget *CaptureOverlay::buildAudioRow()
 {
+    using Source = RecordingAudioSource;
+    const auto sources = {Source::None, Source::System, Source::Microphone, Source::Application};
     QList<QWidget *> buttons;
-    for (const auto source : {RecordingAudioSource::None, RecordingAudioSource::System, RecordingAudioSource::Microphone}) {
+    for (const auto source : sources) {
         auto *button = new PanelButton(recordingAudioIcon(source), recordingAudioSourceLabel(source), {}, nullptr);
         button->setCheckable(true);
         const bool selected = source == session_->recordingAudioSelection();
@@ -1056,7 +1060,18 @@ QWidget *CaptureOverlay::buildAudioRow()
         connect(button, &QAbstractButton::clicked, this, [this, source] { session_->chooseRecordingAudio(source); });
         buttons.append(button);
     }
-    return buttonRow(buttons);
+
+    auto *content = new QWidget;
+    auto *layout = new QVBoxLayout(content);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->addWidget(buttonRow(buttons));
+    auto *help = new QLabel(tr("Playback from the app that owns the recorded window."), content);
+    help->setWordWrap(true);
+    help->setMargin(4);
+    help->setMaximumWidth(int(sources.size()) * PanelButton::side);
+    layout->addWidget(help);
+    return content;
 }
 
 QWidget *CaptureOverlay::buildMoreRow()

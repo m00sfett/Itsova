@@ -22,6 +22,8 @@ QString recordingAudioSourceLabel(RecordingAudioSource source)
         return QCoreApplication::translate("RecordingPlan", "System audio");
     case RecordingAudioSource::Microphone:
         return QCoreApplication::translate("RecordingPlan", "Default microphone");
+    case RecordingAudioSource::Application:
+        return QCoreApplication::translate("RecordingPlan", "Window audio");
     }
     return {};
 }
