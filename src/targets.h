@@ -210,6 +210,7 @@ public:
     int recordingFrameRate = 30;
     bool recordingHints = true; // #125: short hints for every recording state change, outside the video
     bool experimentalRecordingAudio = false;
+    QString recordingMicrophoneDevice; // empty: use the system default
     bool recordingCursor = true;
     // What the start/stop shortcut records (#124), pinned in the overlay; empty: ask in the overlay.
     // Taken once from the old [Recording] LastTarget.

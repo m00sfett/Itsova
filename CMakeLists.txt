@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(itsova VERSION 0.12.3 LANGUAGES C CXX)
+project(itsova VERSION 0.12.4 LANGUAGES C CXX)
 
 set(ITSOVA_PRERELEASE "" CACHE STRING "Optional prerelease label without leading hyphen (e.g. beta.1)")
 if(NOT ITSOVA_PRERELEASE AND EXISTS "${CMAKE_SOURCE_DIR}/.git")

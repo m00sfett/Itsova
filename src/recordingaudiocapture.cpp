@@ -5,6 +5,7 @@
 
 #include <QByteArray>
 #include <QCoreApplication>
+#include <QDeadlineTimer>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -74,6 +75,8 @@ struct RecordingAudioCapture::Capture
 {
     RecordingAudioSource source;
     QByteArray windowPid;
+    QByteArray microphoneName;
+    uint32_t microphoneIndex = PA_INVALID_INDEX;
     QString title;
     QElapsedTimer clock;
     qint64 videoStartUs;
@@ -179,6 +182,10 @@ struct RecordingAudioCapture::Capture
 
     void findDevice()
     {
+        if (source == RecordingAudioSource::Microphone && !microphoneName.isEmpty()) {
+            findMicrophone();
+            return;
+        }
         submit(pa_context_get_server_info(context, [](pa_context *context, const pa_server_info *info, void *userdata) {
             auto &self = *static_cast<Capture *>(userdata);
             if (self.source == RecordingAudioSource::Application) {
@@ -201,19 +208,29 @@ struct RecordingAudioCapture::Capture
                     }, &self));
             } else if (info && self.source == RecordingAudioSource::Microphone && info->default_source_name
                        && *info->default_source_name) {
-                self.submit(pa_context_get_source_info_by_name(context, info->default_source_name,
-                    [](pa_context *, const pa_source_info *input, int end, void *userdata) {
-                        auto &self = *static_cast<Capture *>(userdata);
-                        if (input && input->monitor_of_sink == PA_INVALID_INDEX) {
-                            self.connectDevice(input->name);
-                        } else if (end != 0 && !self.stream) {
-                            self.fail("default audio input is not a microphone");
-                        }
-                    }, &self));
+                self.microphoneName = info->default_source_name;
+                self.findMicrophone();
             } else {
                 self.fail("selected default audio device is unavailable");
             }
         }, this));
+    }
+
+    void findMicrophone()
+    {
+        submit(pa_context_get_source_info_by_name(context, microphoneName.constData(),
+            [](pa_context *, const pa_source_info *input, int end, void *userdata) {
+                auto &self = *static_cast<Capture *>(userdata);
+                if (end != 0) {
+                    if (!self.stream) {
+                        self.fail("selected microphone is unavailable");
+                    }
+                } else if (input && input->name && self.microphoneName == input->name
+                           && input->monitor_of_sink == PA_INVALID_INDEX && input->index != PA_INVALID_INDEX) {
+                    self.microphoneIndex = input->index;
+                    self.connectDevice(input->name);
+                }
+            }, this));
     }
 
     void watchApplicationStream()
@@ -363,8 +380,9 @@ struct RecordingAudioCapture::Capture
 
     void checkDevice()
     {
-        if (device != pa_stream_get_device_name(stream)
-            || (source == RecordingAudioSource::Application && pa_stream_get_device_index(stream) != monitorSource)) {
+        const uint32_t index = pa_stream_get_device_index(stream);
+        if (device != pa_stream_get_device_name(stream) || (source == RecordingAudioSource::Application && index != monitorSource)
+            || (source == RecordingAudioSource::Microphone && index != microphoneIndex)) {
             fail("audio service did not keep the selected device");
         }
     }
@@ -560,9 +578,68 @@ bool RecordingAudioCapture::isSupported()
 #endif
 }
 
+std::optional<QList<RecordingMicrophoneDevice>> RecordingAudioCapture::microphoneDevices()
+{
+#ifdef ITSOVA_HAVE_RECORDING_AUDIO
+    struct DeviceList
+    {
+        QList<RecordingMicrophoneDevice> devices;
+        bool complete = false;
+    };
+
+    const QDeadlineTimer deadline(1500);
+    const std::unique_ptr<pa_mainloop, decltype(&pa_mainloop_free)> loop(pa_mainloop_new(), pa_mainloop_free);
+    if (!loop) {
+        return std::nullopt;
+    }
+    const std::unique_ptr<pa_context, decltype(&pa_context_unref)> context(
+        pa_context_new(pa_mainloop_get_api(loop.get()), "Itsova"), pa_context_unref);
+    if (!context || pa_context_connect(context.get(), nullptr, PA_CONTEXT_NOAUTOSPAWN, nullptr) < 0) {
+        return std::nullopt;
+    }
+    // Use the same deadline for connecting and listing, including an unresponsive server.
+    const auto dispatch = [&] {
+        const qint64 remainingMs = deadline.remainingTime();
+        return remainingMs > 0 && pa_mainloop_prepare(loop.get(), int(remainingMs * 1000)) >= 0
+            && pa_mainloop_poll(loop.get()) >= 0 && pa_mainloop_dispatch(loop.get()) >= 0;
+    };
+    while (pa_context_get_state(context.get()) != PA_CONTEXT_READY) {
+        if (!PA_CONTEXT_IS_GOOD(pa_context_get_state(context.get())) || !dispatch()) {
+            return std::nullopt;
+        }
+    }
+
+    DeviceList list;
+    const std::unique_ptr<pa_operation, decltype(&pa_operation_unref)> operation(
+        pa_context_get_source_info_list(context.get(), [](pa_context *, const pa_source_info *input, int end,
+                                                         void *userdata) {
+            auto &list = *static_cast<DeviceList *>(userdata);
+            if (end != 0) {
+                list.complete = end > 0;
+            } else if (input && input->name && *input->name && input->monitor_of_sink == PA_INVALID_INDEX) {
+                list.devices.append({QString::fromUtf8(input->name), QString::fromUtf8(input->description)});
+            }
+        }, &list), pa_operation_unref);
+    if (!operation) {
+        return std::nullopt;
+    }
+    while (!list.complete && pa_operation_get_state(operation.get()) == PA_OPERATION_RUNNING) {
+        if (pa_context_get_state(context.get()) != PA_CONTEXT_READY || !dispatch()) {
+            pa_operation_cancel(operation.get());
+            return std::nullopt;
+        }
+    }
+    if (list.complete) {
+        return std::move(list.devices);
+    }
+#endif
+    return std::nullopt;
+}
+
 std::unique_ptr<RecordingAudioCapture> RecordingAudioCapture::start(RecordingAudioSource source, const QString &title,
-                                                                    const QString &videoPath, QElapsedTimer clock,
-                                                                    qint64 videoStartMs, qint64 windowPid)
+                                                                   const QString &videoPath, QElapsedTimer clock,
+                                                                   qint64 videoStartMs, qint64 windowPid,
+                                                                   const QString &microphoneDevice)
 {
 #ifdef ITSOVA_HAVE_RECORDING_AUDIO
     if (source == RecordingAudioSource::None || (source == RecordingAudioSource::Application && windowPid <= 0)) {
@@ -572,6 +649,8 @@ std::unique_ptr<RecordingAudioCapture> RecordingAudioCapture::start(RecordingAud
     capture->source = source;
     if (source == RecordingAudioSource::Application) {
         capture->windowPid = QByteArray::number(windowPid);
+    } else if (source == RecordingAudioSource::Microphone) {
+        capture->microphoneName = microphoneDevice.toUtf8();
     }
     capture->title = title;
     capture->clock = clock;
@@ -587,6 +666,7 @@ std::unique_ptr<RecordingAudioCapture> RecordingAudioCapture::start(RecordingAud
     Q_UNUSED(clock)
     Q_UNUSED(videoStartMs)
     Q_UNUSED(windowPid)
+    Q_UNUSED(microphoneDevice)
 #endif
     return {};
 }

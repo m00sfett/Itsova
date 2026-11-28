@@ -9,6 +9,7 @@ class KMessageWidget;
 class KPageWidgetItem;
 class QCheckBox;
 class QComboBox;
+class QFormLayout;
 class QLabel;
 class QLineEdit;
 class QListWidget;
@@ -56,6 +57,7 @@ private:
     void refreshGroups();
     void refreshGroupDetails();
     void refreshStorage();
+    void refreshMicrophoneDevices();
     void refreshReplay();
     void refreshTextRecognition();
     void refreshAutomation();
@@ -146,6 +148,10 @@ private:
     QLabel *recordingDefault_ = nullptr;
     QCheckBox *recordingHints_ = nullptr;
     QCheckBox *recordingAudio_ = nullptr;
+    QFormLayout *storageForm_ = nullptr;
+    QComboBox *microphoneDevice_ = nullptr;
+    QLabel *microphoneStatus_ = nullptr;
+    bool microphoneQueryPending_ = false;
     QPushButton *recordingDefaultRemove_ = nullptr;
     QPushButton *resetPanelPosition_ = nullptr;
     QPushButton *showFirstHintAgain_ = nullptr;

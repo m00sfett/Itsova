@@ -216,15 +216,23 @@ void TargetsTest::recordingAudioRequiresOptIn()
     TargetStore store;
     store.load(config);
     QVERIFY(!store.experimentalRecordingAudio);
+    QVERIFY(store.recordingMicrophoneDevice.isEmpty());
     store.experimentalRecordingAudio = true;
+    store.recordingMicrophoneDevice = QStringLiteral("alsa_input.usb-Fixture_Microphone.analog-stereo");
     store.save(config);
     TargetStore restored;
     restored.load(config);
     QVERIFY(restored.experimentalRecordingAudio);
+    QCOMPARE(restored.recordingMicrophoneDevice, store.recordingMicrophoneDevice);
     restored.experimentalRecordingAudio = false;
     restored.save(config);
     store.load(config);
     QVERIFY(!store.experimentalRecordingAudio);
+    QCOMPARE(store.recordingMicrophoneDevice, restored.recordingMicrophoneDevice);
+    store.recordingMicrophoneDevice.clear();
+    store.save(config);
+    restored.load(config);
+    QVERIFY(restored.recordingMicrophoneDevice.isEmpty());
 }
 
 void TargetsTest::defaultRecordingTargetResolution()

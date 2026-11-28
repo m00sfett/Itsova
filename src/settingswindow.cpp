@@ -9,6 +9,7 @@
 #include "hookrunner.h"
 #include "imageoutput.h"
 #include "ocrengine.h"
+#include "recordingaudiocapture.h"
 #include "screens.h"
 #include "selectiongeometry.h"
 #include "shortcutmanager.h"
@@ -30,6 +31,7 @@
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QFrame>
+#include <QFutureWatcher>
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -52,6 +54,7 @@
 #include <QTreeWidget>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <QtConcurrentRun>
 
 #include <functional>
 
@@ -480,6 +483,11 @@ SettingsWindow::SettingsWindow(App *app, QWidget *parent)
     auto *storage = addPage(createStoragePage(), tr("Storage"));
     storage->setHeader(tr("Where captures are saved"));
     storage->setIcon(QIcon::fromTheme(QStringLiteral("folder-pictures")));
+    connect(this, &KPageDialog::currentPageChanged, this, [this, storage](KPageWidgetItem *current) {
+        if (current == storage) {
+            refreshMicrophoneDevices();
+        }
+    });
     auto *general = addPage(createGeneralPage(), tr("General"));
     general->setHeader(tr("General"));
     general->setIcon(QIcon::fromTheme(QStringLiteral("configure")));
@@ -1579,7 +1587,7 @@ QWidget *SettingsWindow::createStoragePage()
     auto *content = new QWidget(page);
     content->setMaximumWidth(680);
     outer->addWidget(content);
-    auto *form = new QFormLayout(content);
+    auto *form = storageForm_ = new QFormLayout(content);
     form->setContentsMargins(0, 0, 0, 0);
     form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
 
@@ -1673,6 +1681,24 @@ QWidget *SettingsWindow::createStoragePage()
         if (!updating_) {
             app_->store().experimentalRecordingAudio = enabled;
             app_->storeChanged();
+            if (enabled) {
+                refreshMicrophoneDevices();
+            }
+        }
+    });
+    microphoneDevice_ = new QComboBox(page);
+    microphoneDevice_->setAccessibleName(tr("Microphone device"));
+    microphoneDevice_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    microphoneDevice_->addItem(tr("System default"), QString());
+    form->addRow(tr("Microphone device:"), microphoneDevice_);
+    microphoneStatus_ = makeHint({}, page);
+    form->addRow(QString(), microphoneStatus_);
+    form->setRowVisible(microphoneStatus_, false);
+    connect(microphoneDevice_, &QComboBox::activated, this, [this] {
+        const QString device = microphoneDevice_->currentData().toString();
+        if (device != app_->store().recordingMicrophoneDevice) {
+            app_->store().recordingMicrophoneDevice = device;
+            app_->storeChanged();
         }
     });
     // #125: short hints for start, stop, pause and errors, placed where the recording does not see them.
@@ -1721,8 +1747,8 @@ QWidget *SettingsWindow::createStoragePage()
                                         "records the default target: pin it with the pin next to an entry in the "
                                         "overlay's record menus (or P). Without one, the shortcut opens the overlay "
                                         "to choose. Hints show beside what is recorded; when everything is recorded, the recording "
-                                        "starts once the start hint has gone. GIF recordings use at most %1 fps. "
-                                        "Recordings have no sound.")
+                                        "starts once the start hint has gone. GIF recordings are silent and use at "
+                                        "most %1 fps.")
                                          .arg(maxGifFrameRate),
                                      page));
     connect(recordingFormat_, &QComboBox::currentIndexChanged, this, [this] {
@@ -2401,6 +2427,9 @@ void SettingsWindow::refreshStorage()
     recordingCursor_->setChecked(store.recordingCursor);
     recordingHints_->setChecked(store.recordingHints);
     recordingAudio_->setChecked(store.experimentalRecordingAudio);
+    const bool showMicrophone = recordingAudio_->isEnabled() && store.experimentalRecordingAudio;
+    storageForm_->setRowVisible(microphoneDevice_, showMicrophone);
+    storageForm_->setRowVisible(microphoneStatus_, showMicrophone && !microphoneStatus_->text().isEmpty());
     refreshRecordingDefault();
     recordToggleShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordToggleActionId()));
     recordPauseShortcut_->setKeySequence(app_->shortcuts()->shortcut(recordPauseActionId()));
@@ -2428,6 +2457,61 @@ void SettingsWindow::refreshStorage()
     verboseLogging_->setChecked(store.verboseLogging);
     colorPickerShortcut_->setKeySequence(app_->shortcuts()->shortcut(colorPickerTargetId()));
     updating_ = false;
+}
+
+void SettingsWindow::refreshMicrophoneDevices()
+{
+    if (microphoneQueryPending_ || !recordingAudio_->isEnabled() || !app_->store().experimentalRecordingAudio) {
+        return;
+    }
+    const QString selected = app_->store().recordingMicrophoneDevice;
+    if (microphoneDevice_->findData(selected) < 0) {
+        microphoneDevice_->addItem(selected, selected);
+        microphoneDevice_->setCurrentIndex(microphoneDevice_->count() - 1);
+    }
+    microphoneQueryPending_ = true;
+    microphoneStatus_->setText(tr("Looking for microphones…"));
+    storageForm_->setRowVisible(microphoneStatus_, true);
+
+    using Devices = std::optional<QList<RecordingMicrophoneDevice>>;
+    auto *watcher = new QFutureWatcher<Devices>(this);
+    connect(watcher, &QFutureWatcher<Devices>::finished, this, [this, watcher] {
+        watcher->deleteLater();
+        microphoneQueryPending_ = false;
+        microphoneStatus_->clear();
+        if (!app_->store().experimentalRecordingAudio) {
+            return;
+        }
+        const QString selected = app_->store().recordingMicrophoneDevice;
+        const Devices devices = watcher->result();
+        microphoneDevice_->clear();
+        microphoneDevice_->addItem(tr("System default"), QString());
+        if (devices) {
+            QHash<QString, int> descriptionCounts;
+            for (const auto &device : *devices) {
+                ++descriptionCounts[device.description];
+            }
+            for (const auto &device : *devices) {
+                const QString label = device.description.isEmpty() ? device.name
+                    : descriptionCounts.value(device.description) > 1
+                        ? tr("%1 (%2)").arg(device.description, device.name) : device.description;
+                microphoneDevice_->addItem(label, device.name);
+            }
+        }
+        int index = microphoneDevice_->findData(selected);
+        if (index < 0) {
+            microphoneDevice_->addItem(tr("%1 (unavailable)").arg(selected), selected);
+            index = microphoneDevice_->count() - 1;
+        }
+        microphoneDevice_->setCurrentIndex(index);
+        if (!devices) {
+            microphoneStatus_->setText(tr("Microphone devices could not be listed."));
+        } else if (devices->isEmpty()) {
+            microphoneStatus_->setText(tr("No microphones found."));
+        }
+        storageForm_->setRowVisible(microphoneStatus_, !microphoneStatus_->text().isEmpty());
+    });
+    watcher->setFuture(QtConcurrent::run(&RecordingAudioCapture::microphoneDevices));
 }
 
 void SettingsWindow::refreshAutomation()

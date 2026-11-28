@@ -49,6 +49,7 @@ public:
         QString path; // the file to write
         QString metadata; // #103: written into the file when it is finalized
         RecordingAudioSource audioSource = RecordingAudioSource::None;
+        QString microphoneDevice; // exact PulseAudio source name or empty for the system default
     };
 
     explicit ScreenRecorder(QObject *parent = nullptr);
