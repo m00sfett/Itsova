@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Optional experimental audio for MP4 and WebM recordings. Enable it under Settings → Storage, then choose system audio or the default microphone for each recording in the overlay. Recording starts silent by default and continues if the audio source is unavailable (#155).
 - Window recordings can capture a playback stream from the window's application. Itsova requires an unambiguous stream from the window's process and leaves the recording silent if it cannot select one (#156).
+- Settings → Storage can keep the system default microphone or select a specific recording device. Video continues silently if the selected device is unavailable (#157).
 
 ### Fixed
 

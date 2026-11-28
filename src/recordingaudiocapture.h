@@ -3,6 +3,7 @@
 #include "recordingaudio.h"
 
 #include <QElapsedTimer>
+#include <QList>
 
 #include <memory>
 #include <optional>
@@ -10,16 +11,24 @@
 namespace itsova
 {
 
+struct RecordingMicrophoneDevice
+{
+    QString name;
+    QString description;
+};
+
 // Capture one explicitly selected source through the PulseAudio protocol. Its private sidecar
 // remains readable by the finalizer until this object is destroyed.
 class RecordingAudioCapture
 {
 public:
     [[nodiscard]] static bool isSupported();
+    // Queries device metadata only. Call from a worker thread.
+    [[nodiscard]] static std::optional<QList<RecordingMicrophoneDevice>> microphoneDevices();
     [[nodiscard]] static std::unique_ptr<RecordingAudioCapture> start(RecordingAudioSource source,
                                                                       const QString &title, const QString &videoPath,
                                                                       QElapsedTimer clock, qint64 videoStartMs,
-                                                                      qint64 windowPid);
+                                                                      qint64 windowPid, const QString &microphoneDevice);
     ~RecordingAudioCapture();
 
     void setPaused(bool paused, qint64 nowMs);

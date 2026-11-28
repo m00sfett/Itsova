@@ -325,6 +325,9 @@ void App::startRecorder(const QString &targetId, RecordingAudioSource audio)
     options.audioSource = audio != RecordingAudioSource::None && recordingAudioAvailable()
         && (audio != RecordingAudioSource::Application || target->supportsApplicationAudio())
         ? audio : RecordingAudioSource::None;
+    if (options.audioSource == RecordingAudioSource::Microphone) {
+        options.microphoneDevice = store_.recordingMicrophoneDevice;
+    }
     {
         // Where the recording comes from (#103), for a later replay on the same monitors.
         const QList<ScreenInfo> screens = currentScreens();

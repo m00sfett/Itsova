@@ -233,10 +233,9 @@ void ScreenRecorder::onEncoderStateChanged()
             const qint64 now = monotonic_.elapsed();
             clock_.start(now);
             if (options_.audioSource != RecordingAudioSource::None) {
-                const QString title = options_.audioSource == RecordingAudioSource::Microphone
-                    ? tr("Microphone") : recordingAudioSourceLabel(options_.audioSource);
+                const QString title = recordingAudioSourceLabel(options_.audioSource);
                 audioCapture_ = RecordingAudioCapture::start(options_.audioSource, title, options_.path, monotonic_,
-                                                              now, target_.windowPid);
+                                                              now, target_.windowPid, options_.microphoneDevice);
                 if (!audioCapture_) {
                     options_.audioSource = RecordingAudioSource::None;
                 }
