@@ -61,7 +61,7 @@ Itsova runs strictly locally on your machine:
 
 - **Screen capture (`org.kde.KWin.ScreenShot2`):** Itsova installs a desktop file that declares `X-KDE-DBUS-Restricted-Interfaces=org.kde.KWin.ScreenShot2` and points `Exec=` at the installed binary. This is the access model KWin documents: KWin should only accept `ScreenShot2` requests from programs started through such a file. On the development system, KWin did not enforce it. Test programs without a matching file, including a plain Python script, received captures without a prompt, and the cause is not yet known. Do not treat this declaration as a security boundary against other programs in your session. Install Itsova with a matching prefix (or use `scripts/install.sh` for `~/.local`) and run the installed binary rather than running straight from a temporary build directory. When Autostart is enabled in settings, Itsova keeps the autostart `.desktop` entry pointing at the active binary.
 - **Screen recording (`zkde_screencast_unstable_v1`):** KWin grants its screencast protocol through the desktop file (`X-KDE-Wayland-Interfaces=zkde_screencast_unstable_v1`); KPipeWire encodes the video. Because this is an unstable KDE Wayland protocol, upstream protocol changes and successor protocols are tracked in [#140](https://github.com/m00sfett/Itsova/issues/140). Itsova uses `ffprobe` and `ffmpeg` to hold the final picture until *Stop* and attach any audio.
-- **Experimental recording audio:** Enable it under *Settings → Storage → Audio*, then pick audio sources in the overlay for each MP4 or WebM recording. System audio and window audio are alternative playback sources. A microphone can be added to either and is saved on a separate track. The audio feature is off on a fresh setup. Direct starts such as a pinned shortcut and GIF recordings stay silent. If a source is unavailable, video and any other available track continue. This first implementation targets CachyOS with KDE Plasma and PipeWire. Distribution support is tracked in [#159](https://github.com/m00sfett/Itsova/issues/159).
+- **Experimental recording audio:** Enable it under *Settings → Storage → Audio*, then pick audio sources in the overlay for each MP4 or WebM recording. System audio and window audio are alternative playback sources. A microphone can be added to either and is saved on a separate track. The audio feature is off on a fresh setup. Direct starts such as a pinned shortcut and GIF recordings stay silent. If a source is unavailable, video and any other available track continue. See [Audio compatibility](#audio-compatibility) for build and runtime requirements.
 - **Window application audio:** Choose the recorded window's application as the source. Itsova looks for a playback stream from the same process as the selected window. Audio can be shared by several windows of the same process. If the application uses a separate playback process, has no active stream, or has several matching streams, the video continues without application audio. Itsova will not substitute the system output.
 - **Microphone choice:** With experimental audio enabled, *Settings → Storage* can use the system default or remember a specific microphone. The microphone is only used when selected in the recording overlay. If the saved device is disconnected, that recording continues silently until a working device is chosen.
 - **Global `Print` key shortcut:** Itsova can register `Print` through KDE GlobalAccel to launch its capture overlay. To release the `Print` binding cleanly (for example before switching back to Spectacle or uninstalling), run:
@@ -99,6 +99,21 @@ Minimum required toolchain:
   - `qt6-imageformats` (Arch) / `qt6-image-formats-plugins` (Debian) for WebP and extra export formats
   - `tesseract` + traineddata packs (e.g. `tesseract-data-eng`) for OCR
   - `plasma-workspace` for the Plasma widget
+
+### Audio compatibility
+
+Audio uses the PipeWire PulseAudio service (`pipewire-pulse`) and FFmpeg (`ffmpeg` and `ffprobe`).
+MP4 needs FFmpeg's `aac` encoder and WebM needs the `libopus` encoder. Window audio also needs an
+identifiable playback stream and a direct route through PipeWire. KPipeWire still handles video
+and keeps its existing minimum of 6.3.
+
+| Target | Audio availability |
+| --- | --- |
+| Arch Linux / CachyOS with KDE Plasma Wayland | The current package recipes include the audio backend. Capture and fallback were exercised on CachyOS using an isolated PipeWire session. |
+| Debian 13 with KDE Plasma Wayland | The package builds with audio enabled and the distribution's KPipeWire 6.3. Pause remains unavailable on that KPipeWire version. |
+| Other Linux source builds | CMake includes the backend when `pkg-config` can find `libpulse`. A build without it or with `-DITSOVA_ENABLE_AUDIO=OFF` supports silent video recordings. |
+
+Audio remains off by default on every target. A missing audio service or source leaves video recording available.
 
 ---
 
@@ -143,8 +158,8 @@ On Debian 13, install the build tools and dependencies and build from a checkout
 
 ```bash
 sudo apt update
-sudo apt install git build-essential debhelper cmake ninja-build python3 gettext ffmpeg \
-  qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+sudo apt install git build-essential debhelper cmake ninja-build python3 gettext ffmpeg pkgconf libpulse-dev \
+  qt6-base-dev qt6-multimedia-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
   qt6-wayland-dev qt6-wayland-dev-tools plasma-wayland-protocols \
   libkf6config-dev libkf6globalaccel-dev libkf6statusnotifieritem-dev \
   libkf6notifications-dev libkf6dbusaddons-dev libkf6widgetsaddons-dev \
