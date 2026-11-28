@@ -1348,9 +1348,15 @@ void CaptureOverlay::refreshPanel()
     if (audioButton_) {
         const auto playback = selection.playback();
         const auto source = playback == AudioSource::None && selection.microphone() ? AudioSource::Microphone : playback;
+        const bool twoTracks = playback != AudioSource::None && selection.microphone();
+        QString title = recordingAudioSourceLabel(source);
+        if (twoTracks) {
+            title = playback == AudioSource::System ? tr("System + mic") : tr("Window + mic");
+        }
         audioButton_->setIconName(recordingAudioIcon(source));
-        audioButton_->setBadge(playback != AudioSource::None && selection.microphone() ? tr("2") : QString());
-        audioButton_->setTitle(tr("Recording audio: %1").arg(recordingAudioSelectionLabel(selection)));
+        audioButton_->setBadge(twoTracks ? tr("2") : QString());
+        audioButton_->setTitle(title);
+        audioButton_->setAccessibleDescription(tr("Recording audio: %1").arg(recordingAudioSelectionLabel(selection)));
     }
     if (drawer == Drawer::Audio) {
         for (qsizetype i = 0; i < audioOptions_.size(); ++i) {
